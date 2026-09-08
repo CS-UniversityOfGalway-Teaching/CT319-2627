@@ -74,7 +74,7 @@
 <div class="focus-block">
 <h3 id="what-is-happening-underneath">What is happening underneath</h3>
 <p>ELIZA does not build a model of your meaning and then decide what to say.</p>
-<figure class="figure--secondary"><img class="figure__img" src="../../media/week-01/eliza-processing-loop.svg" alt="Simplified ELIZA processing loop" loading="lazy" decoding="async"><figcaption>Figure 3. Simplified ELIZA processing loop, redrawn for CT319 from Weizenbaum (1966) and the recovered source-code walkthrough at Finding ELIZA. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-01/eliza-processing-loop.svg" alt="Simplified ELIZA processing loop" loading="lazy" decoding="async"><figcaption>Figure 3. Simplified ELIZA processing loop, redrawn for CT319 from Weizenbaum (1966) and the recovered source-code walkthrough at Finding ELIZA. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 </div>
 <p>Several pieces work together:</p>
 <ul><li><strong>keywords</strong> identify potentially useful parts of the input</li><li><strong>keyword ranking</strong> decides which recognised keyword takes priority</li><li><strong>decomposition rules</strong> divide the sentence into parts</li><li><strong>reassembly rules</strong> use those parts to build a response</li><li><strong>substitutions</strong> change words such as pronouns when text is reused</li><li><strong>memory</strong> allows a limited piece of earlier input to be recalled later</li><li><strong>scripts</strong> define the conversational role</li></ul>
@@ -91,7 +91,7 @@
 <p>The recovered script lets us go past the simplified example and read an authentic rule. One keyword entry is:</p>
 <pre data-lang="text"><code class="language-text">(ALIKE 10 (=DIT))</code></pre>
 <p><code>ALIKE</code> is the keyword, <code>10</code> is its ranking, and <code>=DIT</code> redirects processing to another rule group about similarity. One available response in that group is <code>(IN WHAT WAY)</code>.</p>
-<figure class="figure--secondary"><img class="figure__img" src="../../media/week-01/doctor-keyword-route.svg" alt="One authentic DOCTOR keyword route" loading="lazy" decoding="async"><figcaption>Figure 4. One authentic DOCTOR keyword route traced from input to reply. Rule fragments are taken from the recovered DOCTOR script, whose source scan is released under <strong>CC0</strong>. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-01/doctor-keyword-route.svg" alt="One authentic DOCTOR keyword route" loading="lazy" decoding="async"><figcaption>Figure 4. One authentic DOCTOR keyword route traced from input to reply. Rule fragments are taken from the recovered DOCTOR script, whose source scan is released under <strong>CC0</strong>. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 </div>
 <p>Nothing on that route requires ELIZA to understand what it means for people to be alike.</p>
 <div class="callout callout--note"><span class="callout__label">Note</span><p><strong>MECHANISM CHECK</strong></p>

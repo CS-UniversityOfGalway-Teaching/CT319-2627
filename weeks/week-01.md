@@ -111,7 +111,7 @@ In ordinary conversation that might sound evasive. From a therapist it sounds en
 
 ELIZA does not build a model of your meaning and then decide what to say.
 
-![Simplified ELIZA processing loop](../../media/week-01/eliza-processing-loop.svg "secondary")
+![Simplified ELIZA processing loop](../../media/week-01/eliza-processing-loop.svg "hero")
 
 <sub><em>Figure 3. Simplified ELIZA processing loop, redrawn for CT319 from Weizenbaum (1966) and the recovered source-code walkthrough at Finding ELIZA. Diagram created for these pages; no external image licence is used.</em></sub>
 
@@ -159,7 +159,7 @@ The recovered script lets us go past the simplified example and read an authenti
 
 `ALIKE` is the keyword, `10` is its ranking, and `=DIT` redirects processing to another rule group about similarity. One available response in that group is `(IN WHAT WAY)`.
 
-![One authentic DOCTOR keyword route](../../media/week-01/doctor-keyword-route.svg "secondary")
+![One authentic DOCTOR keyword route](../../media/week-01/doctor-keyword-route.svg "hero")
 
 <sub><em>Figure 4. One authentic DOCTOR keyword route traced from input to reply. Rule fragments are taken from the recovered DOCTOR script, whose source scan is released under <strong>CC0</strong>. Diagram created for these pages; no external image licence is used.</em></sub>
 
