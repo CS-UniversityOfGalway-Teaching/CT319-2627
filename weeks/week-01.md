@@ -111,11 +111,11 @@ In ordinary conversation that might sound evasive. From a therapist it sounds en
 
 ELIZA does not build a model of your meaning and then decide what to say.
 
-<!-- ct319:endfocus -->
-
 ![Simplified ELIZA processing loop](../../media/week-01/eliza-processing-loop.svg "secondary")
 
 <sub><em>Figure 3. Simplified ELIZA processing loop, redrawn for CT319 from Weizenbaum (1966) and the recovered source-code walkthrough at Finding ELIZA. Diagram created for these pages; no external image licence is used.</em></sub>
+
+<!-- ct319:endfocus -->
 
 Several pieces work together:
 

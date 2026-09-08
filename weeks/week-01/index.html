@@ -74,8 +74,8 @@
 <div class="focus-block">
 <h3 id="what-is-happening-underneath">What is happening underneath</h3>
 <p>ELIZA does not build a model of your meaning and then decide what to say.</p>
-</div>
 <figure class="figure--secondary"><img class="figure__img" src="../../media/week-01/eliza-processing-loop.svg" alt="Simplified ELIZA processing loop" loading="lazy" decoding="async"><figcaption>Figure 3. Simplified ELIZA processing loop, redrawn for CT319 from Weizenbaum (1966) and the recovered source-code walkthrough at Finding ELIZA. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+</div>
 <p>Several pieces work together:</p>
 <ul><li><strong>keywords</strong> identify potentially useful parts of the input</li><li><strong>keyword ranking</strong> decides which recognised keyword takes priority</li><li><strong>decomposition rules</strong> divide the sentence into parts</li><li><strong>reassembly rules</strong> use those parts to build a response</li><li><strong>substitutions</strong> change words such as pronouns when text is reused</li><li><strong>memory</strong> allows a limited piece of earlier input to be recalled later</li><li><strong>scripts</strong> define the conversational role</li></ul>
 <p>Reducing all of that to "it looks for keywords" misses most of the interesting machinery.</p>
