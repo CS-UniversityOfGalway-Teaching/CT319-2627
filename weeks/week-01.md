@@ -3,6 +3,7 @@ title: Week 1 — Can machines think?
 eyebrow: CT319 Artificial Intelligence · Week 1 · What is AI?
 question: Can a machine appear intelligent without understanding anything?
 description: CT319 Week 1. ELIZA, Turing's imitation game, and a small behavioural experiment you run yourself with a language model on your own machine.
+bar: Week 1 · Sections
 source: week-01.md
 ---
 
@@ -14,9 +15,11 @@ This week we take that problem apart, and then run a small experiment on it ours
 
 Three words do most of the work, and we keep them apart all week:
 
-- **BEHAVIOUR** — what the system does
-- **MECHANISM** — how that behaviour is produced
-- **EVALUATION** — what a particular test actually establishes
+<div class="lenses">
+<div class="lens"><span class="lens__key">Behaviour</span><span class="lens__gloss">what the system does</span></div>
+<div class="lens"><span class="lens__key">Mechanism</span><span class="lens__gloss">how that behaviour is produced</span></div>
+<div class="lens"><span class="lens__key">Evaluation</span><span class="lens__gloss">what a particular test actually establishes</span></div>
+</div>
 
 They are related, and they are not interchangeable. Seeing intelligent-looking behaviour does not tell you how it was produced, or what the system understood.
 
@@ -351,6 +354,18 @@ Useful for the shape of the argument in five minutes. Note that it shows the sim
 Reading about an experiment and running one are different activities, and the second teaches more. We are going to build a small three-party test with the same three roles Turing described, and treat it as what it actually is: **a behavioural experiment on human judgement**.
 
 Before touching any software, be clear about what is being asked and what an answer would mean.
+
+<ol class="flow" aria-label="The shape of the experiment, in order">
+<li><span>Question</span></li>
+<li><span>Hypothesis</span></li>
+<li><span>Control</span></li>
+<li><span>Run</span></li>
+<li><span>Observe</span></li>
+<li><span class="is-pivot">Change one thing</span></li>
+<li><span>Compare</span></li>
+<li><span>Interpret</span></li>
+</ol>
+<p class="flow__note">That order is the experiment. The highlighted step is the one that turns a demonstration into a comparison.</p>
 
 ### Question
 

@@ -92,7 +92,10 @@ a:hover { text-decoration-thickness: 2px; }
 
 /* ---------- opening framing ---------- */
 
-.masthead { padding: clamp(1.75rem, 5vw, 3rem) 0 0.5rem; }
+/* The measure is capped here, at the body's font size, so the question frame
+   lines up with the prose below it rather than resolving 72ch against its
+   own larger type. */
+.masthead { padding: clamp(1.75rem, 5vw, 3rem) 0 0.5rem; max-width: var(--measure); }
 
 .eyebrow {
   margin: 0 0 0.4rem;
@@ -111,14 +114,58 @@ a:hover { text-decoration-thickness: 2px; }
 }
 
 .week-question {
-  margin: 0 0 1.25rem;
-  font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+  margin: 1.1rem 0 1.5rem;
+  padding: 0.8rem 1rem 0.85rem;
+  border-left: 4px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--accent-soft);
+  font-size: clamp(1.08rem, 2.4vw, 1.35rem);
   font-weight: 600;
-  color: var(--accent);
+  line-height: 1.4;
+  color: var(--text);
   max-width: var(--measure);
 }
 
 .lede { max-width: var(--measure); }
+
+/* ---------- the three lenses: behaviour / mechanism / evaluation ---------- */
+
+.lenses {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.7rem;
+  margin: 1.1rem 0 1.4rem;
+  max-width: var(--measure);
+}
+
+.lens {
+  padding: 0.7rem 0.85rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.lens__key {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.lens__gloss {
+  display: block;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+@media (max-width: 700px) {
+  .lenses { grid-template-columns: 1fr; gap: 0.45rem; }
+  .lens { padding: 0.55rem 0.8rem 0.6rem; }
+}
 
 /* ---------- sticky control bar ---------- */
 
@@ -128,9 +175,9 @@ a:hover { text-decoration-thickness: 2px; }
   z-index: 10;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 0.75rem;
+  gap: 0.4rem 0.6rem;
   align-items: center;
-  padding: 0.6rem 0;
+  padding: 0.5rem 0;
   margin: 1.5rem 0 1rem;
   background: color-mix(in srgb, var(--page) 92%, transparent);
   backdrop-filter: blur(8px);
@@ -168,13 +215,16 @@ a:hover { text-decoration-thickness: 2px; }
 .beat {
   counter-increment: beat;
   border: 1px solid var(--line);
+  /* The left edge is always 3px so opening a beat colours it in without
+     shifting any content sideways. */
+  border-left: 3px solid var(--line);
   border-radius: var(--radius);
   background: var(--page);
   margin: 0 0 0.6rem;
   box-shadow: var(--shadow);
 }
 
-.beat[open] { background: var(--page); }
+.beat[open] { border-left-color: var(--accent); }
 
 .beat > summary {
   display: flex;
@@ -202,6 +252,13 @@ a:hover { text-decoration-thickness: 2px; }
   border-bottom: 1px solid var(--line);
   border-radius: var(--radius) var(--radius) 0 0;
   background: var(--surface);
+}
+
+/* The number badge fills in on the open beat, so the section under discussion
+   is identifiable at a glance from the back of a lecture theatre. */
+.beat[open] > summary::before {
+  color: var(--page);
+  background: var(--accent);
 }
 
 .beat > summary::before {
@@ -342,6 +399,63 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .video-link { display: block; margin: 1.6rem 0; }
 .video-link img { width: 100%; max-width: 520px; height: auto; border-radius: var(--radius); border: 1px solid var(--line); }
 
+/* ---------- experiment flow map ---------- */
+
+.flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  list-style: none;
+  margin: 1.4rem 0 0.5rem;
+  padding: 0;
+  max-width: var(--measure);
+}
+
+.flow li {
+  display: flex;
+  align-items: center;
+  margin: 0.18rem 0;
+}
+
+/* The chevron trails each step rather than leading the next one, so a row
+   that wraps still begins with a step and not a stray arrow. */
+.flow li:not(:last-child)::after {
+  content: "";
+  flex: none;
+  width: 0.38rem;
+  height: 0.38rem;
+  margin: 0 0.4rem;
+  border-right: 2px solid var(--line-strong);
+  border-bottom: 2px solid var(--line-strong);
+  transform: rotate(-45deg);
+}
+
+.flow span {
+  display: inline-block;
+  padding: 0.28rem 0.62rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.flow span.is-pivot {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.beat__body p.flow__note {
+  margin: 0 0 1.5rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
 /* ---------- step lists for the setup ---------- */
 
 .beat__body ol.steps { counter-reset: step; list-style: none; padding-left: 0; }
@@ -365,6 +479,9 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
   .beat__body { padding: 0.3rem 0.9rem 1.2rem; }
   pre { font-size: 0.85rem; }
   .beat-bar__label { width: 100%; margin-right: 0; }
+  .week-question { padding: 0.65rem 0.85rem 0.7rem; }
+  .flow span { font-size: 0.68rem; padding: 0.24rem 0.52rem; }
+  .flow li:not(:last-child)::after { margin: 0 0.3rem; }
 }
 
 /* ---------- print / fully expanded revision view ---------- */
@@ -374,6 +491,9 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
   .beat { border: 0; box-shadow: none; margin-bottom: 1rem; page-break-inside: auto; }
   .beat > summary { background: none !important; border-bottom: 1px solid var(--line); padding-left: 0; }
   .beat > summary::after { display: none; }
+  .beat { border-left: 0; }
+  .beat[open] > summary::before { color: var(--text); background: none; }
+  .week-question { background: none; }
   .beat__body { padding-left: 0; padding-right: 0; }
   /* Reveal collapsed sections so a printed page is complete notes. Modern
      browsers hide closed <details> content with content-visibility rather than

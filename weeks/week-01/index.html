@@ -24,7 +24,11 @@
 <p>The difficult part is deciding what we are entitled to conclude from that behaviour. A system may <strong>appear</strong> to understand a conversation without understanding it the way a person does. A mechanism that looks trivial from the inside can still produce behaviour people find convincing.</p>
 <p>This week we take that problem apart, and then run a small experiment on it ourselves.</p>
 <p>Three words do most of the work, and we keep them apart all week:</p>
-<ul><li><strong>BEHAVIOUR</strong> — what the system does</li><li><strong>MECHANISM</strong> — how that behaviour is produced</li><li><strong>EVALUATION</strong> — what a particular test actually establishes</li></ul>
+<div class="lenses">
+<div class="lens"><span class="lens__key">Behaviour</span><span class="lens__gloss">what the system does</span></div>
+<div class="lens"><span class="lens__key">Mechanism</span><span class="lens__gloss">how that behaviour is produced</span></div>
+<div class="lens"><span class="lens__key">Evaluation</span><span class="lens__gloss">what a particular test actually establishes</span></div>
+</div>
 <p>They are related, and they are not interchangeable. Seeing intelligent-looking behaviour does not tell you how it was produced, or what the system understood.</p>
 <div class="callout callout--important"><span class="callout__label">Important</span><p class="callout__title">AI is not ChatGPT</p>
 <p>Conversational AI is one part of artificial intelligence. Search, planning, optimisation, robotics, computer vision, recommendation, classification and machine learning are all part of the field too.</p>
@@ -35,7 +39,7 @@
   </div>
 
   <div class="beat-bar" data-beat-bar hidden>
-    <span class="beat-bar__label">This class, section by section</span>
+    <span class="beat-bar__label">Week 1 · Sections</span>
     <button type="button" data-expand-all>Expand all</button>
     <button type="button" data-collapse-all>Collapse all</button>
   </div>
@@ -166,6 +170,17 @@ INSTEAD  Can a machine behave, under controlled conditions,
 <p>Useful for the shape of the argument in five minutes. Note that it shows the simplified human-versus-machine version rather than Turing's original setup.</p></div></details>
 <details class="beat" id="the-experiment-we-are-about-to-run"><summary><h2 class="beat__title">The experiment we are about to run</h2></summary><div class="beat__body"><p>Reading about an experiment and running one are different activities, and the second teaches more. We are going to build a small three-party test with the same three roles Turing described, and treat it as what it actually is: <strong>a behavioural experiment on human judgement</strong>.</p>
 <p>Before touching any software, be clear about what is being asked and what an answer would mean.</p>
+<ol class="flow" aria-label="The shape of the experiment, in order">
+<li><span>Question</span></li>
+<li><span>Hypothesis</span></li>
+<li><span>Control</span></li>
+<li><span>Run</span></li>
+<li><span>Observe</span></li>
+<li><span class="is-pivot">Change one thing</span></li>
+<li><span>Compare</span></li>
+<li><span>Interpret</span></li>
+</ol>
+<p class="flow__note">That order is the experiment. The highlighted step is the one that turns a demonstration into a comparison.</p>
 <h3 id="question">Question</h3>
 <blockquote><p><strong>Can people distinguish a machine from a human through conversation alone?</strong></p></blockquote>
 <h3 id="rationale">Rationale</h3>

@@ -446,6 +446,7 @@ def build_page(md_path: Path) -> str:
         "TITLE": html.escape(meta.get("title", md_path.stem), quote=True),
         "DESCRIPTION": html.escape(meta.get("description", ""), quote=True),
         "EYEBROW": html.escape(meta.get("eyebrow", ""), quote=True),
+        "BARLABEL": html.escape(meta.get("bar", "Sections"), quote=True),
         "HEADING": inline(meta.get("title", md_path.stem)),
         "QUESTION": inline(question) if question else "",
         "OPENING": opening_html,
