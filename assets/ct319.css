@@ -396,15 +396,25 @@ figcaption a { color: var(--muted); }
    is obvious while scrolling. Everything else keeps its ordinary size. */
 
 .figure--hero {
-  margin: 2.4rem -1.1rem;
+  /* Break out past the 900px reading column, so a hero figure is larger than
+     the page rather than merely the largest thing inside it. The 3rem gutter
+     is wider than any classic scrollbar, which is what keeps 100vw from
+     overflowing the document. */
+  --hero-w: min(1120px, calc(100vw - 3rem));
+  width: var(--hero-w);
+  margin: 2.6rem 0 2.6rem calc(50% - var(--hero-w) / 2);
 }
 .figure--hero > .figure__img {
   border: 1px solid var(--line);
   border-radius: 0;
 }
+/* Centred, not flush left: a hero figure overhangs the beat card, and a
+   left-aligned caption would start outside it and be crossed by the card's
+   open-state accent border. */
 .figure--hero > figcaption {
-  margin-top: 0.7rem;
+  margin: 0.7rem auto 0;
   padding: 0 1.1rem;
+  max-width: var(--measure);
 }
 
 .figure--secondary {
@@ -415,13 +425,13 @@ figcaption a { color: var(--muted); }
 @media (max-width: 620px) {
   /* The beat card has less padding here, and 80% of a phone screen is not a
      usable diagram, so both levels fall back to the full column. */
-  .figure--hero { margin: 1.8rem -0.9rem; }
+  .figure--hero { width: auto; margin: 1.8rem -0.9rem; }
   .figure--hero > figcaption { padding: 0 0.9rem; }
   .figure--secondary { max-width: 100%; }
 }
 
 @media print {
-  .figure--hero { margin-left: 0; margin-right: 0; }
+  .figure--hero { width: auto; margin-left: 0; margin-right: 0; }
   .figure--hero > figcaption { padding: 0; }
 }
 
