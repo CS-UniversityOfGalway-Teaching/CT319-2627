@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}} — CT319</title>
+<meta name="description" content="{{DESCRIPTION}}">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230969da'/%3E%3Cpath d='M8 8h7v4h-3v8h3v4H8zm9 0h7v16h-7v-4h3v-8h-3z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/ct319.css">
+</head>
+<body>
+<a class="skip-link" href="#beats">Skip to the teaching sections</a>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">{{EYEBROW}}</p>
+    <h1>{{HEADING}}</h1>
+    <p class="week-question">{{QUESTION}}</p>
+  </header>
+
+  <div class="lede">
+{{OPENING}}
+  </div>
+
+  <div class="beat-bar" data-beat-bar hidden>
+    <span class="beat-bar__label">This class, section by section</span>
+    <button type="button" data-expand-all>Expand all</button>
+    <button type="button" data-collapse-all>Collapse all</button>
+  </div>
+
+  <main class="beats" id="beats">
+{{BEATS}}
+  </main>
+
+  <div class="tail">
+{{TAIL}}
+  </div>
+
+  <footer class="page-footer">
+    <p>
+      CT319 Artificial Intelligence · University of Galway ·
+      <a href="../../">Module pages</a> ·
+      <a href="https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/weeks/{{SOURCE}}">Markdown source</a> ·
+      <a href="?open=all">Open every section</a>
+    </p>
+    <p>Formal slides and notes are on Canvas. These pages are the companion material.</p>
+  </footer>
+
+</div>
+
+<script src="../../assets/ct319.js" defer></script>
+</body>
+</html>

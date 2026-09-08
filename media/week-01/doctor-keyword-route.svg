@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="230" viewBox="0 0 960 230" role="img" aria-labelledby="title desc">
+  <title id="title">One authentic DOCTOR keyword route</title>
+  <desc id="desc">The input sentence "Men are all alike" matches the keyword ALIKE at rank 10, which redirects processing to the DIT rule group, which supplies the reply "IN WHAT WAY".</desc>
+
+  <style>
+    :root {
+      --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --card:#ffffff; --edge:#8c959f;
+      --io:#8250df; --iobg:#f5eeff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --card:#0d1117; --edge:#6e7681;
+        --io:#a371f7; --iobg:#1d162b; }
+    }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .n    { font-size:13px; font-weight:600; }
+    .mono { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:14px; font-weight:700; }
+    .cap  { font-size:11.5px; font-weight:700; letter-spacing:1.1px; fill:var(--muted); }
+    .note { font-size:13px; fill:var(--muted); }
+    .box  { fill:var(--card); stroke:var(--line); stroke-width:2; }
+    .io   { fill:var(--iobg); stroke:var(--io); stroke-width:2; }
+    .e    { stroke:var(--edge); stroke-width:2; fill:none; stroke-linecap:round; }
+  </style>
+
+  <defs>
+    <marker id="d-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--edge)"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="230" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="22" y="34">INPUT &#8594; RANKED KEYWORD &#8594; REDIRECT &#8594; REPLY</text>
+
+  <text class="cap" x="22"  y="64">WHAT THE USER TYPED</text>
+  <rect class="io" x="22" y="76" width="212" height="60" rx="10"/>
+  <text class="mono" x="128" y="112" text-anchor="middle" fill="var(--io)">Men are all alike</text>
+
+  <text class="cap" x="264" y="64">KEYWORD AND RANK</text>
+  <rect class="box" x="264" y="76" width="190" height="60" rx="10"/>
+  <text class="mono" x="359" y="105" text-anchor="middle">ALIKE</text>
+  <text class="n"    x="359" y="124" text-anchor="middle">rank 10</text>
+
+  <text class="cap" x="484" y="64">RULE GROUP</text>
+  <rect class="box" x="484" y="76" width="190" height="60" rx="10"/>
+  <text class="n"    x="579" y="105" text-anchor="middle">redirect to</text>
+  <text class="mono" x="579" y="124" text-anchor="middle">=DIT</text>
+
+  <text class="cap" x="704" y="64">WHAT ELIZA REPLIED</text>
+  <rect class="io" x="704" y="76" width="212" height="60" rx="10"/>
+  <text class="mono" x="810" y="112" text-anchor="middle" fill="var(--io)">IN WHAT WAY</text>
+
+  <line class="e" x1="236" y1="106" x2="260" y2="106" marker-end="url(#d-ar)"/>
+  <line class="e" x1="456" y1="106" x2="480" y2="106" marker-end="url(#d-ar)"/>
+  <line class="e" x1="676" y1="106" x2="700" y2="106" marker-end="url(#d-ar)"/>
+
+  <text class="note" x="22" y="176">Nothing on this route requires the program to know what it means for people to be alike.</text>
+  <text class="note" x="22" y="200">A ranked keyword, a redirect and a stored reply are enough to produce a response that fits the conversation.</text>
+</svg>

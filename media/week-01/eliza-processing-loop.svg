@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="270" viewBox="0 0 960 270" role="img" aria-labelledby="title desc">
+  <title id="title">Simplified ELIZA processing loop</title>
+  <desc id="desc">A user sentence is scanned and substituted, the highest-ranked keyword is found, a decomposition rule is matched, a reassembly rule is applied, and a response is returned. The response then becomes the next thing the user replies to, closing the loop.</desc>
+
+  <style>
+    :root {
+      --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --card:#ffffff; --edge:#8c959f;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --card:#0d1117; --edge:#6e7681; }
+    }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .n    { font-size:12.5px; font-weight:600; }
+    .note { font-size:13px; fill:var(--muted); }
+    .box  { fill:var(--card); stroke:var(--line); stroke-width:2; }
+    .box.a { fill:var(--panel); stroke:var(--accent); }
+    .e    { stroke:var(--edge); stroke-width:2; fill:none; stroke-linecap:round; }
+    .loop { stroke:var(--accent); stroke-width:2; fill:none; stroke-linecap:round; stroke-dasharray:6 4; }
+  </style>
+
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--edge)"/>
+    </marker>
+    <marker id="al" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="270" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="22" y="34">WHAT ELIZA DOES WITH ONE SENTENCE</text>
+
+  <rect class="box a" x="22"  y="60" width="136" height="66" rx="10"/>
+  <text class="n" x="90"  y="89" text-anchor="middle">User</text>
+  <text class="n" x="90"  y="107" text-anchor="middle">sentence</text>
+
+  <rect class="box" x="178" y="60" width="136" height="66" rx="10"/>
+  <text class="n" x="246" y="89" text-anchor="middle">Scan and</text>
+  <text class="n" x="246" y="107" text-anchor="middle">substitute</text>
+
+  <rect class="box" x="334" y="60" width="136" height="66" rx="10"/>
+  <text class="n" x="402" y="89" text-anchor="middle">Find highest-</text>
+  <text class="n" x="402" y="107" text-anchor="middle">ranked keyword</text>
+
+  <rect class="box" x="490" y="60" width="136" height="66" rx="10"/>
+  <text class="n" x="558" y="89" text-anchor="middle">Match</text>
+  <text class="n" x="558" y="107" text-anchor="middle">decomposition rule</text>
+
+  <rect class="box" x="646" y="60" width="136" height="66" rx="10"/>
+  <text class="n" x="714" y="89" text-anchor="middle">Apply</text>
+  <text class="n" x="714" y="107" text-anchor="middle">reassembly rule</text>
+
+  <rect class="box a" x="802" y="60" width="136" height="66" rx="10"/>
+  <text class="n" x="870" y="89" text-anchor="middle">Return</text>
+  <text class="n" x="870" y="107" text-anchor="middle">response</text>
+
+  <line class="e" x1="160" y1="93" x2="174" y2="93" marker-end="url(#ar)"/>
+  <line class="e" x1="316" y1="93" x2="330" y2="93" marker-end="url(#ar)"/>
+  <line class="e" x1="472" y1="93" x2="486" y2="93" marker-end="url(#ar)"/>
+  <line class="e" x1="628" y1="93" x2="642" y2="93" marker-end="url(#ar)"/>
+  <line class="e" x1="784" y1="93" x2="798" y2="93" marker-end="url(#ar)"/>
+
+  <path class="loop" d="M870 130 L870 172 L90 172 L90 134" marker-end="url(#al)"/>
+  <text class="note" x="480" y="196" text-anchor="middle" fill="var(--accent)">the response becomes the thing the user replies to next</text>
+
+  <text class="note" x="22" y="234">No step on this path builds a representation of what the sentence means. Each step transforms text into other text.</text>
+</svg>

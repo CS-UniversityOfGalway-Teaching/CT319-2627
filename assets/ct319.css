@@ -1,0 +1,392 @@
+/* CT319 teaching pages — shared presentation layer.
+   Restrained, academic, projector-friendly. Light and dark. */
+
+:root {
+  color-scheme: light dark;
+  --page: #ffffff;
+  --surface: #f6f8fa;
+  --surface-strong: #eef1f4;
+  --text: #1f2328;
+  --muted: #57606a;
+  --line: #d0d7de;
+  --line-strong: #8c959f;
+  --accent: #0969da;
+  --accent-soft: #ddf4ff;
+  --note: #0969da;
+  --note-soft: #ddf4ff;
+  --important: #8250df;
+  --important-soft: #f3ecff;
+  --warning: #9a6700;
+  --warning-soft: #fff8c5;
+  --tip: #1a7f37;
+  --tip-soft: #dafbe1;
+  --shadow: 0 1px 2px rgba(31, 35, 40, 0.08);
+  --radius: 10px;
+  --measure: 72ch;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #0d1117;
+    --surface: #161b22;
+    --surface-strong: #21262d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --line: #30363d;
+    --line-strong: #6e7681;
+    --accent: #58a6ff;
+    --accent-soft: #10263c;
+    --note: #58a6ff;
+    --note-soft: #0d1d2e;
+    --important: #a371f7;
+    --important-soft: #1d162b;
+    --warning: #d29922;
+    --warning-soft: #2b2413;
+    --tip: #3fb950;
+    --tip-soft: #10261a;
+    --shadow: 0 1px 2px rgba(1, 4, 9, 0.5);
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.6rem 1rem;
+  z-index: 20;
+  border-radius: 0 0 var(--radius) 0;
+}
+.skip-link:focus { left: 0; }
+
+:where(a):focus-visible,
+:where(button):focus-visible,
+:where(summary):focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+a { color: var(--accent); text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }
+
+.wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 2rem);
+}
+
+/* ---------- opening framing ---------- */
+
+.masthead { padding: clamp(1.75rem, 5vw, 3rem) 0 0.5rem; }
+
+.eyebrow {
+  margin: 0 0 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.masthead h1 {
+  margin: 0 0 0.6rem;
+  font-size: clamp(1.9rem, 4.6vw, 2.6rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+.week-question {
+  margin: 0 0 1.25rem;
+  font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+  font-weight: 600;
+  color: var(--accent);
+  max-width: var(--measure);
+}
+
+.lede { max-width: var(--measure); }
+
+/* ---------- sticky control bar ---------- */
+
+.beat-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  align-items: center;
+  padding: 0.6rem 0;
+  margin: 1.5rem 0 1rem;
+  background: color-mix(in srgb, var(--page) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.beat-bar__label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-right: auto;
+}
+
+.beat-bar button {
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.35rem 0.8rem;
+  cursor: pointer;
+}
+.beat-bar button:hover { background: var(--surface-strong); border-color: var(--line-strong); }
+.beat-bar button:active { transform: translateY(1px); }
+
+/* ---------- teaching beats ---------- */
+
+.beats { counter-reset: beat; }
+
+.beat {
+  counter-increment: beat;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--page);
+  margin: 0 0 0.6rem;
+  box-shadow: var(--shadow);
+}
+
+.beat[open] { background: var(--page); }
+
+.beat > summary {
+  display: flex;
+  gap: 0.85rem;
+  align-items: baseline;
+  padding: 0.95rem 1.1rem;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+  font-size: clamp(1.02rem, 2.2vw, 1.18rem);
+  border-radius: var(--radius);
+}
+.beat > summary::-webkit-details-marker { display: none; }
+
+/* The beat title is a real <h2> so the page keeps a usable heading outline
+   for screen readers and heading navigation. It inherits the summary's type. */
+.beat__title {
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  flex: 1 1 auto;
+}
+.beat > summary:hover { background: var(--surface); }
+.beat[open] > summary {
+  border-bottom: 1px solid var(--line);
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: var(--surface);
+}
+
+.beat > summary::before {
+  content: counter(beat);
+  flex: none;
+  min-width: 1.7em;
+  height: 1.7em;
+  display: inline-grid;
+  place-items: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 6px;
+  transform: translateY(-0.1em);
+}
+
+.beat > summary::after {
+  content: "";
+  flex: none;
+  margin-left: auto;
+  width: 0.55em;
+  height: 0.55em;
+  border-right: 2.5px solid var(--muted);
+  border-bottom: 2.5px solid var(--muted);
+  transform: translateY(-0.15em) rotate(45deg);
+  transition: transform 0.15s ease;
+}
+.beat[open] > summary::after { transform: translateY(0.1em) rotate(-135deg); }
+
+.beat__body { padding: 0.4rem 1.1rem 1.4rem; }
+.beat__body > :first-child { margin-top: 0.8rem; }
+.beat__body > :last-child { margin-bottom: 0; }
+
+/* ---------- prose ---------- */
+
+.beat__body p,
+.beat__body ul,
+.beat__body ol,
+.tail p,
+.tail ul,
+.tail ol,
+.lede p { max-width: var(--measure); }
+
+h2, h3, h4 { line-height: 1.25; letter-spacing: -0.01em; }
+.beat__body h3 { font-size: 1.22rem; margin: 1.9rem 0 0.6rem; }
+.beat__body h4 { font-size: 1.05rem; margin: 1.5rem 0 0.5rem; color: var(--muted); }
+
+.tail { margin-top: 2.5rem; }
+.tail h2 {
+  font-size: 1.4rem;
+  margin: 2.2rem 0 0.7rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line);
+}
+.tail h3 { font-size: 1.08rem; margin: 1.5rem 0 0.5rem; }
+
+ul, ol { padding-left: 1.35rem; }
+li { margin: 0.3rem 0; }
+li > ul, li > ol { margin: 0.3rem 0; }
+
+hr { border: 0; border-top: 1px solid var(--line); margin: 2rem 0; }
+
+strong { font-weight: 650; }
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.88em;
+  background: var(--surface-strong);
+  border-radius: 5px;
+  padding: 0.12em 0.36em;
+}
+
+pre {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+pre code { background: none; padding: 0; font-size: inherit; }
+
+blockquote {
+  margin: 1.2rem 0;
+  padding: 0.1rem 0 0.1rem 1.1rem;
+  border-left: 4px solid var(--line-strong);
+  color: var(--text);
+  max-width: var(--measure);
+}
+blockquote p { font-size: 1.05rem; }
+
+/* ---------- callouts ---------- */
+
+.callout {
+  margin: 1.3rem 0;
+  padding: 0.85rem 1.05rem;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--cal, var(--accent));
+  border-radius: var(--radius);
+  background: var(--cal-soft, var(--surface));
+  max-width: var(--measure);
+}
+.callout > :first-child { margin-top: 0; }
+.callout > :last-child { margin-bottom: 0; }
+.callout p, .callout ul, .callout ol { max-width: none; }
+.callout__label {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cal, var(--accent));
+  margin-bottom: 0.35rem;
+}
+.callout__title { margin: 0.2rem 0 0.4rem; font-size: 1.05rem; font-weight: 650; color: var(--text); }
+.callout--note      { --cal: var(--note);      --cal-soft: var(--note-soft); }
+.callout--important { --cal: var(--important); --cal-soft: var(--important-soft); }
+.callout--warning   { --cal: var(--warning);   --cal-soft: var(--warning-soft); }
+.callout--tip       { --cal: var(--tip);       --cal-soft: var(--tip-soft); }
+
+/* ---------- figures, tables, media ---------- */
+
+figure { margin: 1.6rem 0; }
+figure img { display: block; width: 100%; height: auto; border-radius: var(--radius); }
+figure img.is-portrait { width: auto; max-width: min(100%, 320px); }
+figcaption { margin-top: 0.55rem; font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+figcaption a { color: var(--muted); }
+
+.table-scroll { overflow-x: auto; margin: 1.3rem 0; }
+table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+th, td { border: 1px solid var(--line); padding: 0.5rem 0.7rem; text-align: left; }
+th { background: var(--surface); font-weight: 650; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+.video-link { display: block; margin: 1.6rem 0; }
+.video-link img { width: 100%; max-width: 520px; height: auto; border-radius: var(--radius); border: 1px solid var(--line); }
+
+/* ---------- step lists for the setup ---------- */
+
+.beat__body ol.steps { counter-reset: step; list-style: none; padding-left: 0; }
+
+/* ---------- footer ---------- */
+
+.page-footer {
+  margin: 3rem 0 2.5rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.page-footer a { color: var(--muted); }
+
+/* ---------- narrow screens ---------- */
+
+@media (max-width: 620px) {
+  body { font-size: 16px; }
+  .beat > summary { padding: 0.85rem 0.9rem; gap: 0.6rem; }
+  .beat__body { padding: 0.3rem 0.9rem 1.2rem; }
+  pre { font-size: 0.85rem; }
+  .beat-bar__label { width: 100%; margin-right: 0; }
+}
+
+/* ---------- print / fully expanded revision view ---------- */
+
+@media print {
+  .beat-bar, .skip-link { display: none !important; }
+  .beat { border: 0; box-shadow: none; margin-bottom: 1rem; page-break-inside: auto; }
+  .beat > summary { background: none !important; border-bottom: 1px solid var(--line); padding-left: 0; }
+  .beat > summary::after { display: none; }
+  .beat__body { padding-left: 0; padding-right: 0; }
+  /* Reveal collapsed sections so a printed page is complete notes. Modern
+     browsers hide closed <details> content with content-visibility rather than
+     display, so both have to be overridden. ct319.js also opens every beat on
+     beforeprint, which covers engines that ignore this. */
+  .beat:not([open]) > .beat__body {
+    display: block !important;
+    content-visibility: visible !important;
+  }
+  a { text-decoration: none; color: inherit; }
+  pre, figure, table { page-break-inside: avoid; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}

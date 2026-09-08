@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Compare blind search and strict hill climbing on the CT319 maze.">
+  <title>CT319 Search Lab — Blind and heuristic search</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230969da'/%3E%3Cpath d='M8 8h7v4h-3v8h3v4H8zm9 0h7v16h-7v-4h3v-8h-3z' fill='white'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#lab">Skip to the Search Lab</a>
+
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">CT319 · Weeks 2–4 teaching artefact</p>
+      <h1>Search Lab</h1>
+      <p class="lede">Same maze. Same <code>neighbours(state)</code>. Blind search or a local heuristic choice.</p>
+    </div>
+    <div class="policy-summary" aria-label="Search policy summary">
+      <span>BFS removes the <strong>oldest</strong></span>
+      <span>DFS removes the <strong>newest</strong></span>
+      <span>Hill climbing takes a strictly <strong>lower h</strong></span>
+    </div>
+  </header>
+
+  <main id="lab">
+    <section class="control-panel" aria-labelledby="controls-heading">
+      <div class="control-panel__heading">
+        <div>
+          <p class="section-label">Set up the comparison</p>
+          <h2 id="controls-heading">Search controls</h2>
+        </div>
+        <p id="run-status" class="run-status" role="status" aria-live="polite">Ready. The start state is on the frontier.</p>
+      </div>
+
+      <div class="controls-grid">
+        <fieldset class="mode-control">
+          <legend>Mode</legend>
+          <div class="segmented-control" id="mode-buttons">
+            <button type="button" data-mode="BFS" aria-pressed="true">BFS</button>
+            <button type="button" data-mode="DFS" aria-pressed="false">DFS</button>
+            <button type="button" data-mode="RACE" aria-pressed="false">Race</button>
+            <button type="button" data-mode="HILL" aria-pressed="false">Hill climb</button>
+          </div>
+        </fieldset>
+
+        <label class="field-control" for="preset-select">
+          <span>Maze preset</span>
+          <select id="preset-select"></select>
+        </label>
+
+        <label class="field-control field-control--wide" for="order-select">
+          <span><code>neighbours()</code> order <small>generated first → last</small></span>
+          <select id="order-select"></select>
+        </label>
+
+        <label class="field-control speed-control" for="speed-control">
+          <span>Run speed <output id="speed-output" for="speed-control">500 ms</output></span>
+          <input id="speed-control" type="range" min="100" max="1200" step="100" value="500">
+        </label>
+
+        <label class="heuristic-control" for="heuristic-toggle">
+          <input id="heuristic-toggle" type="checkbox">
+          <span>Show Manhattan <code>h</code></span>
+        </label>
+      </div>
+
+      <div class="control-footer">
+        <div class="transport-controls" aria-label="Animation controls">
+          <button type="button" id="step-button" class="button button--primary">Step</button>
+          <button type="button" id="run-button" class="button">Run</button>
+          <button type="button" id="pause-button" class="button" disabled>Pause</button>
+          <button type="button" id="reset-button" class="button">Reset</button>
+        </div>
+        <div class="experiment-note">
+          <strong id="preset-description">The exact Week 2 maze.</strong>
+          <span id="order-explanation">BFS takes the oldest waiting state; DFS takes the newest.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="search-stage" class="search-stage" aria-label="Search visualisation"></section>
+
+    <section class="legend-panel" aria-labelledby="legend-heading">
+      <div>
+        <p class="section-label">Read the grid</p>
+        <h2 id="legend-heading">Visual states</h2>
+      </div>
+      <ul class="legend-list">
+        <li><span class="legend-swatch start"></span>Start</li>
+        <li><span class="legend-swatch goal"></span>Goal</li>
+        <li><span class="legend-swatch wall"></span>Wall</li>
+        <li><span class="legend-swatch current"></span>Current</li>
+        <li><span class="legend-swatch frontier"></span>Frontier</li>
+        <li><span class="legend-swatch explored"></span>Explored</li>
+        <li><span class="legend-swatch path"></span>Final path</li>
+      </ul>
+      <p class="legend-note">Race advances BFS and DFS together. Hill climbing inspects every legal neighbour, chooses a strictly lower <code>h</code>, and uses successor order only to break a tie.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Built for CT319. No framework, backend or API. BFS, DFS and strict hill climbing share one problem definition.</p>
+  </footer>
+
+  <script src="problems.js"></script>
+  <script src="search.js"></script>
+  <script src="hill-climbing.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

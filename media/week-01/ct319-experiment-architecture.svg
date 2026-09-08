@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="790" viewBox="0 0 960 790" role="img" aria-labelledby="title desc">
+  <title id="title">CT319 local Turing-test experiment architecture</title>
+  <desc id="desc">The interrogator's question and the witness instructions go to a Python script, which posts to the local Ollama chat endpoint on localhost port 11434. Ollama runs the local model and returns an anonymous witness response. The script, the endpoint, Ollama and the model all run on the classroom machine, with no cloud API key.</desc>
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #1f2328;
+      --muted: #57606a;
+      --line: #d0d7de;
+      --accent: #0969da;
+      --panel: #f6f8fa;
+      --card: #ffffff;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117;
+        --fg: #e6edf3;
+        --muted: #8b949e;
+        --line: #30363d;
+        --accent: #58a6ff;
+        --panel: #161b22;
+        --card: #0d1117;
+      }
+    }
+
+    text {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      fill: var(--fg);
+    }
+
+    .label {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      fill: var(--accent);
+    }
+
+    .main {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .note {
+      font-size: 15px;
+      fill: var(--muted);
+    }
+
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .card {
+      fill: var(--card);
+      stroke: var(--line);
+      stroke-width: 1.5;
+    }
+
+    .accentcard {
+      fill: var(--card);
+      stroke: var(--accent);
+      stroke-width: 2.5;
+    }
+
+    .zone {
+      fill: var(--panel);
+      stroke: var(--line);
+      stroke-width: 2;
+      stroke-dasharray: 8 6;
+    }
+
+    .connector {
+      stroke: var(--muted);
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+    }
+  </style>
+
+  <rect width="960" height="790" rx="18" fill="var(--bg)"/>
+
+  <!-- Input -->
+  <rect class="card" x="180" y="44" width="600" height="76" rx="12"/>
+  <text class="main" x="480" y="78" text-anchor="middle">Question + witness instructions</text>
+  <text class="note" x="480" y="102" text-anchor="middle">basic mode or persona mode — the only thing we change between runs</text>
+
+  <line class="connector" x1="480" y1="120" x2="480" y2="164"/>
+  <path class="connector" d="M470 154 L480 165 L490 154"/>
+
+  <!-- Local machine zone -->
+  <rect class="zone" x="110" y="172" width="740" height="452" rx="16"/>
+  <text class="label" x="140" y="204">LOCAL MACHINE · NO CLOUD API KEY</text>
+
+  <rect class="card" x="180" y="222" width="600" height="76" rx="12"/>
+  <text class="main" x="480" y="256" text-anchor="middle">Python experiment script</text>
+  <text class="note" x="480" y="280" text-anchor="middle">ct319_turing_test.py — randomises A/B, hides the human answer, records the vote</text>
+
+  <line class="connector" x1="480" y1="298" x2="480" y2="330"/>
+  <path class="connector" d="M470 320 L480 331 L490 320"/>
+
+  <rect class="accentcard" x="180" y="338" width="600" height="70" rx="12"/>
+  <text class="mono" x="480" y="372" text-anchor="middle">POST localhost:11434/api/chat</text>
+  <text class="note" x="480" y="394" text-anchor="middle">ordinary HTTP request, never leaving the machine</text>
+
+  <line class="connector" x1="480" y1="408" x2="480" y2="440"/>
+  <path class="connector" d="M470 430 L480 441 L490 430"/>
+
+  <rect class="card" x="180" y="448" width="600" height="70" rx="12"/>
+  <text class="main" x="480" y="482" text-anchor="middle">Ollama runtime</text>
+  <text class="note" x="480" y="504" text-anchor="middle">loads the model and serves the local API</text>
+
+  <line class="connector" x1="480" y1="518" x2="480" y2="550"/>
+  <path class="connector" d="M470 540 L480 551 L490 540"/>
+
+  <rect class="card" x="180" y="558" width="600" height="50" rx="12"/>
+  <text class="main" x="480" y="590" text-anchor="middle">Local model · set by CT319_MODEL</text>
+
+  <!-- Output -->
+  <line class="connector" x1="480" y1="624" x2="480" y2="668"/>
+  <path class="connector" d="M470 658 L480 669 L490 658"/>
+
+  <rect class="card" x="180" y="676" width="600" height="76" rx="12"/>
+  <text class="main" x="480" y="710" text-anchor="middle">Anonymous witness response</text>
+  <text class="note" x="480" y="734" text-anchor="middle">shown as Witness A or Witness B, alongside the human answer</text>
+</svg>

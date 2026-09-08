@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 1 — Can machines think? — CT319</title>
+<meta name="description" content="CT319 Week 1. ELIZA, Turing&#x27;s imitation game, and a small behavioural experiment you run yourself with a language model on your own machine.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230969da'/%3E%3Cpath d='M8 8h7v4h-3v8h3v4H8zm9 0h7v16h-7v-4h3v-8h-3z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/ct319.css">
+</head>
+<body>
+<a class="skip-link" href="#beats">Skip to the teaching sections</a>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">CT319 Artificial Intelligence · Week 1 · What is AI?</p>
+    <h1>Week 1 — Can machines think?</h1>
+    <p class="week-question">Can a machine appear intelligent without understanding anything?</p>
+  </header>
+
+  <div class="lede">
+<p>Modern AI systems produce behaviour that looks remarkably intelligent. They answer questions, follow instructions, write code, explain ideas and hold convincing conversations.</p>
+<p>The difficult part is deciding what we are entitled to conclude from that behaviour. A system may <strong>appear</strong> to understand a conversation without understanding it the way a person does. A mechanism that looks trivial from the inside can still produce behaviour people find convincing.</p>
+<p>This week we take that problem apart, and then run a small experiment on it ourselves.</p>
+<p>Three words do most of the work, and we keep them apart all week:</p>
+<ul><li><strong>BEHAVIOUR</strong> — what the system does</li><li><strong>MECHANISM</strong> — how that behaviour is produced</li><li><strong>EVALUATION</strong> — what a particular test actually establishes</li></ul>
+<p>They are related, and they are not interchangeable. Seeing intelligent-looking behaviour does not tell you how it was produced, or what the system understood.</p>
+<div class="callout callout--important"><span class="callout__label">Important</span><p class="callout__title">AI is not ChatGPT</p>
+<p>Conversational AI is one part of artificial intelligence. Search, planning, optimisation, robotics, computer vision, recommendation, classification and machine learning are all part of the field too.</p>
+<p>We use conversational systems in Week 1 because they make the relationship between behaviour, mechanism and evaluation unusually easy to see.</p></div>
+<div class="callout callout--note"><span class="callout__label">Note</span><p class="callout__title">Why ELIZA comes before Turing</p>
+<p>Turing published <em>Computing Machinery and Intelligence</em> in 1950, sixteen years before ELIZA was written. We take them the other way round on purpose.</p>
+<p>ELIZA gives you the experience first: convincing behaviour does not reveal the mechanism behind it. Turing then gives you a way of thinking about what behavioural evidence is worth.</p></div>
+  </div>
+
+  <div class="beat-bar" data-beat-bar hidden>
+    <span class="beat-bar__label">This class, section by section</span>
+    <button type="button" data-expand-all>Expand all</button>
+    <button type="button" data-collapse-all>Collapse all</button>
+  </div>
+
+  <main class="beats" id="beats">
+<details class="beat" id="eliza--when-a-machine-appears-to-listen"><summary><h2 class="beat__title">ELIZA — when a machine appears to listen</h2></summary><div class="beat__body"><p>ELIZA is a good place to start because there is an obvious gap between <strong>what the conversation feels like</strong> and <strong>what the program is actually doing</strong>.</p>
+<p>Joseph Weizenbaum wrote ELIZA at MIT in the mid-1960s. You could type a sentence, get a relevant-looking response, keep going, and very quickly find yourself treating the program as though it were following what you meant.</p>
+<figure><img class="figure__img is-portrait" src="https://commons.wikimedia.org/wiki/Special:FilePath/Joseph%20Weizenbaum.jpg?width=480" alt="Joseph Weizenbaum" loading="lazy" decoding="async"><figcaption>Figure 1. Joseph Weizenbaum, creator of ELIZA, photographed by Ulrich Hansen in Berlin in 2005. Source: <a href="https://commons.wikimedia.org/wiki/File:Joseph_Weizenbaum.jpg">Wikimedia Commons — Joseph Weizenbaum.jpg</a>. Licence: <strong>CC BY-SA 3.0</strong> and <strong>GFDL 1.2+</strong>.</figcaption></figure>
+<p>The conversations could look surprisingly convincing.</p>
+<figure><img class="figure__img" src="https://commons.wikimedia.org/wiki/Special:FilePath/ELIZA%20conversation.png?width=1200" alt="A conversation with ELIZA" loading="lazy" decoding="async"><figcaption>Figure 2. Example conversation with ELIZA. Source: <a href="https://commons.wikimedia.org/wiki/File:ELIZA_conversation.png">Wikimedia Commons — ELIZA conversation.png</a>. The depicted text is marked <strong>public domain</strong> on Wikimedia Commons.</figcaption></figure>
+<p>The question worth asking is not whether that looks intelligent. It is:</p>
+<blockquote><p><strong>How much machinery is actually required to produce that impression?</strong></p></blockquote>
+<ul><li><strong>BEHAVIOUR</strong> — ELIZA appears to respond to what you are saying.</li><li><strong>MECHANISM</strong> — the response comes from a fairly small collection of rules.</li></ul>
+<p>That gap is why ELIZA still matters sixty years later.</p>
+<h3 id="try-it-before-we-look-inside">Try it before we look inside</h3>
+<p>The effect is much easier to understand once you have felt it, so do this first.</p>
+<p>🔗 <a href="https://www.masswerk.at/eliza/"><strong>Open the ELIZA recreation</strong></a></p>
+<p>Hold a normal conversation rather than immediately trying to break the program. While you do, notice:</p>
+<ul><li>which replies seem genuinely responsive</li><li>when a reply feels vague or evasive</li><li>whether you start supplying meaning that is not actually in the response</li><li>what finally gives the mechanism away</li></ul>
+<p>For a version closer to the recovered 1966 program, <a href="https://findingeliza.org/"><strong>Finding ELIZA</strong></a> has an interactive reconstruction alongside the original source.</p>
+<h3 id="eliza-and-doctor-are-not-the-same-thing">ELIZA and DOCTOR are not the same thing</h3>
+<p><strong>ELIZA</strong> was the conversational program: the machinery for reading input, finding useful patterns and producing a response according to a script.</p>
+<p><strong>DOCTOR</strong> was one such script. It cast ELIZA as a non-directive psychotherapist, and became the best-known version, which is why the two names get used interchangeably.</p>
+<div class="callout callout--note"><span class="callout__label">Note</span><p><strong>ELIZA</strong> provided the conversational machinery. <strong>DOCTOR</strong> provided the psychotherapist rules.</p>
+<p>The distinction matters because ELIZA was a framework, not a fixed therapist. Change the script and the same program behaves differently.</p></div>
+<p>The therapist role was an unusually good fit for the program's limitations. A psychotherapist can plausibly ask you to elaborate, repeat part of what you just said, turn statements back into questions, avoid factual claims, and let you do most of the talking.</p>
+<p>Consider a reply like:</p>
+<pre data-lang="text"><code class="language-text">Why do you think that?</code></pre>
+<p>In ordinary conversation that might sound evasive. From a therapist it sounds entirely appropriate. ELIZA did not need a model of the world to seem relevant here — the conversational role did much of the work.</p>
+<h3 id="what-is-happening-underneath">What is happening underneath</h3>
+<p>ELIZA does not build a model of your meaning and then decide what to say.</p>
+<figure><img class="figure__img" src="../../media/week-01/eliza-processing-loop.svg" alt="Simplified ELIZA processing loop" loading="lazy" decoding="async"><figcaption>Figure 3. Simplified ELIZA processing loop, redrawn for CT319 from Weizenbaum (1966) and the recovered source-code walkthrough at Finding ELIZA. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<p>Several pieces work together:</p>
+<ul><li><strong>keywords</strong> identify potentially useful parts of the input</li><li><strong>keyword ranking</strong> decides which recognised keyword takes priority</li><li><strong>decomposition rules</strong> divide the sentence into parts</li><li><strong>reassembly rules</strong> use those parts to build a response</li><li><strong>substitutions</strong> change words such as pronouns when text is reused</li><li><strong>memory</strong> allows a limited piece of earlier input to be recalled later</li><li><strong>scripts</strong> define the conversational role</li></ul>
+<p>Reducing all of that to "it looks for keywords" misses most of the interesting machinery.</p>
+<h3 id="from-a-sentence-to-a-response">From a sentence to a response</h3>
+<p>Take a simplified input:</p>
+<pre data-lang="text"><code class="language-text">My mother worries me.</code></pre>
+<p>A rule attached to <code>MY</code> can split the sentence into something equivalent to <code>MY &lt;something&gt;</code>, then reuse the captured part:</p>
+<pre data-lang="text"><code class="language-text">Tell me more about your mother.</code></pre>
+<p>The response fits the conversation. Producing it does not require ELIZA to know what a mother is, what worry feels like, why you are worried, or what a therapist should recommend. It needs a rule that turns one piece of text into another plausible piece of text.</p>
+<p>That is the central trick: <strong>your own language supplies most of the apparent meaning</strong>.</p>
+<h3 id="a-real-doctor-rule">A real DOCTOR rule</h3>
+<p>The recovered script lets us go past the simplified example and read an authentic rule. One keyword entry is:</p>
+<pre data-lang="text"><code class="language-text">(ALIKE 10 (=DIT))</code></pre>
+<p><code>ALIKE</code> is the keyword, <code>10</code> is its ranking, and <code>=DIT</code> redirects processing to another rule group about similarity. One available response in that group is <code>(IN WHAT WAY)</code>.</p>
+<figure><img class="figure__img" src="../../media/week-01/doctor-keyword-route.svg" alt="One authentic DOCTOR keyword route" loading="lazy" decoding="async"><figcaption>Figure 4. One authentic DOCTOR keyword route traced from input to reply. Rule fragments are taken from the recovered DOCTOR script, whose source scan is released under <strong>CC0</strong>. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<p>Nothing on that route requires ELIZA to understand what it means for people to be alike.</p>
+<div class="callout callout--note"><span class="callout__label">Note</span><p><strong>MECHANISM CHECK</strong></p>
+<p>A response can be relevant to a sentence without the program representing the meaning of that sentence.</p></div>
+<h3 id="what-about-memory">What about memory?</h3>
+<p>ELIZA had a limited form of memory. DOCTOR could notice certain statements, store a transformed version, and return to it later:</p>
+<pre data-lang="text"><code class="language-text">earlier
+"My brother never listens to me."
+
+...
+
+later
+"Earlier you mentioned your brother."</code></pre>
+<p>A callback like that feels like evidence that the program has been following the conversation. But the memory was narrow and mechanical: stored material was recalled through a small control mechanism, not through any general representation of what had been said.</p>
+<div class="callout callout--important"><span class="callout__label">Important</span><p>Saying <strong>ELIZA had memory</strong> is technically correct. It does <strong>not</strong> mean ELIZA maintained anything like the persistent understanding we might assume from a modern conversational system.</p></div>
+<h3 id="why-people-found-it-convincing">Why people found it convincing</h3>
+<p>The mechanism explains how the responses were generated. It does not fully explain why people believed them.</p>
+<p>You contribute a great deal to the interaction. People interpret language, connect replies to earlier statements, and infer intention behind what the other participant says. ELIZA could therefore supply very little while you supplied the coherence.</p>
+<p>This became known as the <strong>ELIZA effect</strong>: attributing more understanding, intention or awareness to a system than its mechanism justifies.</p>
+<figure><img class="figure__img" src="../../media/week-01/eliza-behaviour-mechanism.svg" alt="ELIZA behaviour and mechanism" loading="lazy" decoding="async"><figcaption>Figure 5. The same ELIZA interaction described at two levels: the behaviour the user experiences, and the mechanism producing it. Both descriptions are true. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<div class="callout callout--warning"><span class="callout__label">Warning</span><p><strong>Do not over-generalise from ELIZA</strong></p>
+<p>Modern language models are vastly more capable and work in a fundamentally different way. The lesson is <strong>not</strong> that ChatGPT or a local LLM is a bigger ELIZA.</p>
+<p>The lesson is more general: <strong>convincing behaviour can push us into inferring properties that the behaviour alone does not establish.</strong></p></div>
+<h3 id="if-you-want-the-original-material">If you want the original material</h3>
+<ul><li>📄 <a href="https://doi.org/10.1145/365153.365168"><strong><em>ELIZA — A Computer Program for the Study of Natural Language Communication Between Man and Machine</em></strong></a> — Joseph Weizenbaum, <em>Communications of the ACM</em>, 9(1), 36–45. The technical paper.</li><li>🔗 <a href="https://findingeliza.org/doctor.html"><strong>Finding ELIZA — the DOCTOR script</strong></a> — the recovered script, to read against the paper.</li><li>🔗 <a href="https://dome.mit.edu/handle/1721.3/201699"><strong>MIT archive — Computer conversations, 1965</strong></a> — the preserved original source listing.</li><li>🔗 <a href="https://commons.wikimedia.org/wiki/File:ORIGINAL_ELIZA_IN_MAD_SLIP.pdf"><strong>Original ELIZA in MAD-SLIP</strong></a> — scan of the original source. <strong>CC0 / public domain dedication</strong>.</li></ul>
+<p>Read the paper as a technical description rather than a historical essay: how keywords are identified and ranked, how decomposition splits an input, how reassembly builds the response, what happens when no rule applies, and how a script changes the behaviour of the same program.</p>
+<figure><a class="video-link" href="https://www.youtube.com/watch?v=iRs-nC8vEro"><img src="https://img.youtube.com/vi/iRs-nC8vEro/hqdefault.jpg" alt="Talking to the Machine — ELIZA" loading="lazy" decoding="async"></a><figcaption>Video 1. "Talking to the Machine 2/4 — ELIZA, or the First Bot and Immediate Problems", Copernicus, 2020. Source: <a href="https://www.youtube.com/watch?v=iRs-nC8vEro">YouTube</a>. No open reuse licence was identified on the source page; copyright remains with the rights holders. The image above is a linked preview only.</figcaption></figure></div></details>
+<details class="beat" id="what-exactly-are-we-testing"><summary><h2 class="beat__title">What exactly are we testing?</h2></summary><div class="beat__body"><p>ELIZA leaves us with two descriptions of one interaction, and both of them are true. The conversation was responsive. The machinery was a few hundred lines of pattern rules. The mistake is assuming the first tells you what you need to know about the second.</p>
+<p>So we need a harder question:</p>
+<blockquote><p><strong>If intelligent-looking behaviour does not by itself prove understanding, can behaviour still be useful evidence of intelligence?</strong></p></blockquote>
+<h3 id="can-machines-think-is-a-trap">"Can machines think?" is a trap</h3>
+<p>It sounds like the right question, and it is the one Turing opens his 1950 paper with — immediately in order to reject it.</p>
+<p>His reason is worth taking seriously. The question cannot be settled by investigation, because we do not agree on what the words mean. <em>Machine</em> is loose enough to need stipulating. <em>Think</em> is worse: any definition we offer already contains our conclusion. Define thinking as something biological and machines are excluded before any evidence is collected. Define it as information processing and thermostats are admitted. The argument becomes a dispute about vocabulary rather than about the world.</p>
+<p>That is a <strong>definitional</strong> problem, not an empirical one, and Turing's move is to stop trying to solve it.</p>
+<h3 id="the-substitution">The substitution</h3>
+<p>Instead of asking what thinking <em>is</em>, he asks what we would accept as <strong>evidence</strong>, and then builds a procedure that produces that evidence.</p>
+<pre data-lang="text"><code class="language-text">NOT      Can machines think?
+INSTEAD  Can a machine behave, under controlled conditions,
+         in a way that people cannot distinguish from a person?</code></pre>
+<p>The second question can be run. The first cannot.</p>
+<p>That substitution is Turing's whole contribution, and it is the thing to hold on to for the rest of the week — including when we run our own version, and when we read a study that ran it properly with 1,023 games. <strong>A test built on a substitution can only ever answer the substituted question.</strong></p>
+<div class="callout callout--important"><span class="callout__label">Important</span><p>This is the <strong>EVALUATION</strong> lens doing its work.</p>
+<p>Evaluation is not only about what result a test produces. It is about what the test admits as evidence in the first place, and therefore about which conclusions it was ever capable of supporting.</p></div></div></details>
+<details class="beat" id="turings-imitation-game"><summary><h2 class="beat__title">Turing's imitation game</h2></summary><div class="beat__body"><p>Alan Turing was a mathematician and one of the founding figures of computer science. Three dates matter this week:</p>
+<ul><li><strong>1936</strong> — his work on computability established the theoretical idea of a general-purpose computing machine.</li><li><strong>1939–45</strong> — wartime cryptanalysis at Bletchley Park.</li><li><strong>1950</strong> — <em>Computing Machinery and Intelligence</em>, published in <em>Mind</em>. That is the paper.</li></ul>
+<figure><img class="figure__img is-portrait" src="https://commons.wikimedia.org/wiki/Special:FilePath/Alan%20Turing%20(1951).jpg?width=480" alt="Alan Turing in 1951" loading="lazy" decoding="async"><figcaption>Figure 6. Alan Turing, photographed on 29 March 1951. Source: <a href="https://commons.wikimedia.org/wiki/File:Alan_Turing_(1951).jpg">Wikimedia Commons — Alan Turing (1951).jpg</a>. Commons metadata associates the portrait with Elliott &amp; Fry and marks the photograph <strong>public domain</strong> in its source country.</figcaption></figure>
+<h3 id="the-original-game-is-stranger-than-the-textbook-version">The original game is stranger than the textbook version</h3>
+<p>Most summaries jump straight to a human and a machine, which loses the point. Turing begins with no machine at all.</p>
+<p>Three people, communicating only in writing:</p>
+<ul><li><strong>A, a man</strong> — hidden from the interrogator, trying to mislead them into the wrong identification.</li><li><strong>B, a woman</strong> — also hidden, trying to help the interrogator get it right.</li><li><strong>C, the interrogator</strong> — questions both, cannot see or hear either, and has to work out which is which.</li></ul>
+<p>So the starting scenario is already a game about <em>imitation through a text-only channel</em>: one person sustaining a performance of being someone they are not, while a judge tries to see through it. Only then does Turing ask his real question — what happens if a machine takes the part of A?</p>
+<figure><img class="figure__img" src="../../media/week-01/turing-imitation-game.svg" alt="The original imitation game and the machine substitution" loading="lazy" decoding="async"><figcaption>Figure 7. The original imitation game, and Turing's substitution of a machine for participant A. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<p>Starting from the man-and-woman version tells us what kind of ability is being measured. The man is not being tested on intelligence; he is being tested on whether he can produce text a judge reads as coming from a particular kind of person. When the machine takes that seat, it inherits that task — not a grander one.</p>
+<div class="callout callout--note"><span class="callout__label">Note</span><p><strong>The test was never neutral about what it measures</strong></p>
+<p>The imitation game is a test of successful impersonation under interrogation. That is a real and demanding capability, and it is narrower than "intelligence" — it was narrower from the very first version.</p></div>
+<h3 id="why-the-channel-is-text-only">Why the channel is text-only</h3>
+<p>The text-only constraint is not a limitation of 1950 technology. It is a deliberate decision about what may count as evidence.</p>
+<p>Written exchange removes appearance, voice, timing, physical embodiment and any ability to inspect the participant. The interrogator cannot open the machine or reason from how it looks. Everything the judgement rests on arrives through the same narrow channel for both witnesses.</p>
+<p>Mechanism is ruled out by design; behaviour is all that remains. A system that a glance through a window would expose instantly can pass a test conducted through a keyhole — and that is a fact about the test, not about the system.</p>
+<h3 id="turings-prediction-and-what-it-does-not-say">Turing's prediction, and what it does not say</h3>
+<p>Turing offered a forecast: in about fifty years, machines would play the imitation game well enough that an average interrogator would have no more than roughly a <strong>70% chance of making the correct identification after five minutes</strong> of questioning.</p>
+<p>This is the most misread sentence in the paper.</p>
+<p>It is a <strong>prediction about future capability</strong>, not a definition of success. Turing does <strong>not</strong> propose 70% as a threshold, does <strong>not</strong> say that fooling 30% of judges constitutes passing, and does <strong>not</strong> describe the number as a criterion at all. The widely repeated "30% rule" was invented later and read back into the text.</p>
+<p>Notice too that the figure is tied to a duration — five minutes — which tells us Turing expected the result to depend on how long the interrogation runs. That expectation is testable, and later this week we see it tested.</p>
+<div class="callout callout--warning"><span class="callout__label">Warning</span><p><strong>A percentage is not a pass mark unless somebody defines it as one</strong></p>
+<p>Turing predicted a rate of correct identification. He did not set a threshold. Any "pass mark" you meet — including the ones in modern studies — was chosen by whoever designed that experiment, and should be read as their choice.</p></div>
+<h3 id="the-objections-he-anticipated">The objections he anticipated</h3>
+<p>Much of the paper answers objections, and three are still the ones people raise today.</p>
+<p>The <strong>consciousness objection</strong> says a machine could produce every appropriate response without there being anything it is like to be that machine, so it is not really thinking. Turing's reply is uncomfortable and hard to escape: the same doubt applies to other people. We grant each other inner lives on behavioural evidence, because we have no other kind. Demanding more for machines than we can supply for humans sets a standard nobody meets. That does not prove machines have experience — he does not claim it does — but it shows the objection cuts deeper than intended.</p>
+<p><strong>Lady Lovelace's objection</strong>, from Ada Lovelace's notes on Babbage's Analytical Engine, says a machine can only do what we know how to order it to do, and so can never originate anything. Turing answers that we are routinely surprised by our own machines, and that "originality" may amount to behaviour we did not anticipate. The modern form is entirely familiar: whether a generative model creates anything or only recombines its training data. That the argument survives unchanged since 1843 is itself informative.</p>
+<p>Finally, <strong>learning machines</strong>. Turing's closing suggestion is that programming an adult mind directly is the wrong strategy — it would be easier to build something with the capacity of a child and then educate it, specifying a learning process rather than finished knowledge. Read in 2026 this is the most striking passage in the paper, because it describes the approach that actually won.</p>
+<h3 id="what-the-game-can-and-cannot-establish">What the game can and cannot establish</h3>
+<p>A successful performance establishes <strong>behavioural indistinguishability under particular conditions</strong> — this interface, this duration, these questions, these judges. That is a genuine empirical result, and it is not nothing: sustaining a convincing performance under adversarial questioning is hard.</p>
+<p>It does not establish:</p>
+<ul><li><strong>consciousness or subjective experience</strong> — the test cannot see them</li><li><strong>mechanism</strong> — the interface is built to hide it</li><li><strong>general competence</strong> — conversational performance predicts little about anything else</li><li><strong>reliability</strong> — a convincing witness is not thereby a correct one</li><li><strong>human-like internal reasoning</strong> — very different mechanisms can produce the same visible text, which is exactly what ELIZA already showed us</li></ul>
+<p><strong>BEHAVIOUR</strong> is what the test measures. <strong>MECHANISM</strong> is what it is designed to exclude. <strong>EVALUATION</strong> is the work of keeping those apart when a result arrives.</p>
+<h3 id="reading-the-paper">Reading the paper</h3>
+<ul><li>📄 <a href="https://doi.org/10.1093/mind/LIX.236.433"><strong><em>Computing Machinery and Intelligence</em></strong></a> — A. M. Turing, <em>Mind</em>, LIX(236), 433–460.</li><li>🔗 <a href="https://turingarchive.kings.cam.ac.uk/publications-lectures-and-talks-amtb/amt-b-9"><strong>Turing Digital Archive — AMT/B/9</strong></a> — the archival record at King's College, Cambridge.</li></ul>
+<p>It is readable without a technical background, and better approached in pieces. Four places repay attention:</p>
+<ul><li><strong>Section 1, The Imitation Game</strong> — the original setup and the substitution. Notice how fast Turing moves from question to procedure.</li><li><strong>Section 6, Contrary Views on the Main Question</strong> — the objections, each stated in its strongest form before being answered.</li><li><strong>The consciousness and Lady Lovelace objections</strong>, both inside section 6 — worth comparing with their modern versions.</li><li><strong>Section 7, Learning Machines</strong> — the child-machine proposal, and the closest thing here to a prediction that came true.</li></ul>
+<figure><a class="video-link" href="https://www.youtube.com/watch?v=3wLqsRLvV-c"><img src="https://img.youtube.com/vi/3wLqsRLvV-c/hqdefault.jpg" alt="TED-Ed — The Turing test: Can a computer pass for a human?" loading="lazy" decoding="async"></a><figcaption>Video 2. "The Turing test: Can a computer pass for a human?", TED-Ed, 2016. Lesson by Alex Gendler; animation directed by Patrick Smith. Source: <a href="https://www.youtube.com/watch?v=3wLqsRLvV-c">YouTube</a>; lesson page at <a href="https://ed.ted.com/lessons/the-turing-test-can-a-computer-pass-for-a-human-alex-gendler">TED-Ed</a>. No open reuse licence was identified; copyright remains with TED-Ed and the credited creators. The image above is a linked preview only.</figcaption></figure>
+<p>Useful for the shape of the argument in five minutes. Note that it shows the simplified human-versus-machine version rather than Turing's original setup.</p></div></details>
+<details class="beat" id="the-experiment-we-are-about-to-run"><summary><h2 class="beat__title">The experiment we are about to run</h2></summary><div class="beat__body"><p>Reading about an experiment and running one are different activities, and the second teaches more. We are going to build a small three-party test with the same three roles Turing described, and treat it as what it actually is: <strong>a behavioural experiment on human judgement</strong>.</p>
+<p>Before touching any software, be clear about what is being asked and what an answer would mean.</p>
+<h3 id="question">Question</h3>
+<blockquote><p><strong>Can people distinguish a machine from a human through conversation alone?</strong></p></blockquote>
+<h3 id="rationale">Rationale</h3>
+<p>Turing replaced the vague question <em>can machines think?</em> with something observable: how people judge behaviour when the mechanism is hidden from them. That substitution is what makes an experiment possible at all. We are running the smallest honest version of it.</p>
+<h3 id="hypothesis">Hypothesis</h3>
+<blockquote><p>If the machine produces sufficiently human-like responses, participants will sometimes classify it as the human.</p></blockquote>
+<p>Notice the shape of that sentence. It predicts something about <strong>participants</strong>, not about the machine's mind. It is falsifiable: if nobody ever picks the machine, the hypothesis is in trouble.</p>
+<h3 id="what-are-we-measuring">What are we measuring?</h3>
+<p><strong>Human judgement of behaviour.</strong> Specifically: which witness a group of people picks as the human, how confident they are, and what they say made them decide.</p>
+<p>We are <strong>not</strong> measuring:</p>
+<ul><li>intelligence</li><li>understanding</li><li>consciousness</li></ul>
+<p>None of those is visible through the channel we are using — which is exactly the property Turing's text-only interface was designed to have. Being clear about this now is what stops the result being over-claimed later.</p>
+<h3 id="controls">Controls</h3>
+<p>A control is anything we hold steady so that a difference in the result can be attributed to something in particular. Four of them matter here, and the supplied program enforces each one for us.</p>
+<ul><li><strong>Both witnesses get the same question.</strong> If the human and the machine were asked different things, any difference in their answers might just be a difference in the questions. The program sends your question to both.</li><li><strong>Identities stay hidden until the judgement is made.</strong> The witnesses are shown only as <em>Witness A</em> and <em>Witness B</em>, and which is which is decided at random and then <strong>fixed for the whole round</strong> — so follow-up questions still refer to the same witness.</li><li><strong>The human's answer is hidden while it is typed.</strong> On a screen the class can see, watching somebody type the answer would give the game away completely. The program hides the typing.</li><li><strong>The vote, the confidence and the reason are recorded before the reveal.</strong> This is the most important ordering in the whole exercise. A reason given <em>after</em> you know the answer is a rationalisation, not evidence.</li></ul>
+<p>One more condition is worth stating: keep everything else comparable between runs. Same room, same kind of question, same length of conversation. Otherwise you cannot tell which change moved the result.</p>
+<figure><img class="figure__img" src="../../media/week-01/ct319-experiment-architecture.svg" alt="CT319 local Turing-test experiment architecture" loading="lazy" decoding="async"><figcaption>Figure 8. How the experiment fits together. A question and a set of witness instructions go into a Python program, which sends the conversation to Ollama running a language model on the same computer, and gets a reply back. The reply appears anonymously beside the human witness's answer. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<h3 id="why-a-model-on-your-own-machine-and-not-chatgpt">Why a model on your own machine, and not ChatGPT</h3>
+<p>Using a local model rather than a commercial chat product is a deliberate experimental choice:</p>
+<ul><li><strong>It is closer to the published research.</strong> In the studies we read later, the AI witnesses were models given instructions through an interface — not consumer products with their own personality.</li><li><strong>It removes interface tells.</strong> ChatGPT and Claude have recognisable habits: characteristic formatting, particular hedging phrases, a house style. Those belong to a deployed assistant, not to language models in general, and they would hand you an answer that has nothing to do with the question you are asking.</li><li><strong>No accounts, keys or payment.</strong> Nobody needs a subscription to take part or to repeat this at home.</li><li><strong>It makes the point that AI is not ChatGPT</strong> better than any slide can.</li><li><strong>Every part is open to you.</strong> The model, the instructions, the interface and the scoring are all in front of you and all changeable — which is the entire reason this is an experiment rather than a demonstration.</li></ul></div></details>
+<details class="beat" id="set-up-your-machine"><summary><h2 class="beat__title">Set up your machine</h2></summary><div class="beat__body"><p>Everything here runs on your own computer. Nothing is sent to a company, no account is needed, and nothing costs money.</p>
+<p>Work through the steps in order. Each one tells you what it does, the exact command to type, and what you should see if it worked. If a step does not produce what it says it should, fix that before moving on — a problem at step 2 cannot be debugged at step 7.</p>
+<p>You will type these into a <strong>terminal</strong>: <em>Terminal</em> on macOS, <em>PowerShell</em> on Windows, or your usual terminal on Linux.</p>
+<h3 id="1--install-ollama">1 · Install Ollama</h3>
+<p>Ollama is the program that runs a language model on your own machine.</p>
+<p>Download it from the <a href="https://ollama.com/download"><strong>official Ollama site</strong></a> and install it the way you would install any other application. Platform instructions: <a href="https://docs.ollama.com/macos">macOS</a>, <a href="https://docs.ollama.com/windows">Windows</a>, <a href="https://docs.ollama.com/linux">Linux</a>.</p>
+<h3 id="2--check-that-ollama-is-installed">2 · Check that Ollama is installed</h3>
+<p>This asks Ollama to report its version, which confirms the computer can find it.</p>
+<pre data-lang="bash"><code class="language-bash">ollama --version</code></pre>
+<p>You should see a version number, something like <code>ollama version 0.6.2</code>. If you instead see <em>command not found</em> or <em>not recognized</em>, see the troubleshooting list at the end of this section.</p>
+<h3 id="3--get-the-model">3 · Get the model</h3>
+<p>This downloads the language model that will act as the machine witness. It is a large download, so do it before class and on a decent connection.</p>
+<pre data-lang="bash"><code class="language-bash">ollama pull qwen3.5:4b</code></pre>
+<p>You should see a progress bar, finishing with <code>success</code>.</p>
+<p>If your machine is older or short on memory, get the lighter version instead:</p>
+<pre data-lang="bash"><code class="language-bash">ollama pull qwen3.5:2b-q4_K_M</code></pre>
+<h3 id="4--check-that-the-model-is-installed">4 · Check that the model is installed</h3>
+<p>This lists every model on your machine.</p>
+<pre data-lang="bash"><code class="language-bash">ollama list</code></pre>
+<p>You should see the model you just downloaded, with its size and a name like <code>qwen3.5:4b</code>. <strong>Copy that name exactly as it appears here</strong> — including the part after the colon. You need it in step 7, and model names change over time, so do not assume the name printed on this page is the name on your computer.</p>
+<h3 id="5--check-that-the-model-actually-answers">5 · Check that the model actually answers</h3>
+<p>Before involving any Python, confirm the model works on its own. This opens a direct chat with it.</p>
+<pre data-lang="bash"><code class="language-bash">ollama run qwen3.5:4b</code></pre>
+<p>Type any question, press Enter, and you should get a reply in a few seconds. The first reply after starting Ollama is always the slowest, because the model is being loaded into memory.</p>
+<p>Type <code>/bye</code> to leave.</p>
+<p>If this does not work, no Python problem is worth investigating yet.</p>
+<h3 id="6--get-the-experiment-code">6 · Get the experiment code</h3>
+<p>Download the module materials as a ZIP file:</p>
+<p>🔗 <a href="https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/archive/refs/heads/main.zip"><strong>Download CT319-2627 as a ZIP</strong></a></p>
+<p>Unzip it. Inside you will find a folder called <code>experiments/week-01</code> containing one file, <code>ct319_turing_test.py</code>. That is the whole experiment.</p>
+<p>Now open your terminal <strong>in that folder</strong>, because the command in step 8 only works if the terminal is looking at the right place.</p>
+<ul><li><strong>macOS</strong> — right-click the <code>week-01</code> folder → <em>Services</em> → <em>New Terminal at Folder</em>.</li><li><strong>Windows</strong> — open the <code>week-01</code> folder in File Explorer, click the address bar, type <code>powershell</code>, and press Enter.</li><li><strong>Any system</strong> — type <code>cd </code> in the terminal (with the space), then drag the folder onto the terminal window and press Enter.</li></ul>
+<p>To confirm you are in the right place, list the files:</p>
+<pre data-lang="bash"><code class="language-bash">ls</code></pre>
+<p>On Windows PowerShell, <code>dir</code> does the same thing. You should see <code>ct319_turing_test.py</code> in the output. If you do not, the terminal is looking at the wrong folder.</p>
+<div class="callout callout--note"><span class="callout__label">Note</span><p>If you already use Git, <code>git clone https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627.git</code> works too. The ZIP is the easier route and there is no advantage to Git here.</p></div>
+<h3 id="7--check-python-and-tell-the-program-which-model-to-use">7 · Check Python, and tell the program which model to use</h3>
+<p>The program is written in Python, which most systems already have. This checks it:</p>
+<pre data-lang="bash"><code class="language-bash">python --version</code></pre>
+<p>On Windows, use <code>py --version</code>. You should see <code>Python 3.9</code> or higher. Nothing needs installing — the program uses only what comes with Python.</p>
+<p>Now tell the program which model to use. Use the exact name you copied in step 4.</p>
+<p>On macOS and Linux:</p>
+<pre data-lang="bash"><code class="language-bash">export CT319_MODEL="qwen3.5:4b"</code></pre>
+<p>On Windows PowerShell:</p>
+<pre data-lang="powershell"><code class="language-powershell">$env:CT319_MODEL = "qwen3.5:4b"</code></pre>
+<p>This lasts for the current terminal window only. If you open a new terminal, set it again.</p>
+<h3 id="8--run-it">8 · Run it</h3>
+<pre data-lang="bash"><code class="language-bash">python ct319_turing_test.py --mode basic</code></pre>
+<p>On Windows, <code>py ct319_turing_test.py --mode basic</code>.</p>
+<p>You should see the model name and the local address it is using, then a prompt asking for your first question:</p>
+<pre data-lang="text"><code class="language-text">Local model: qwen3.5:4b
+Ollama endpoint: http://localhost:11434/api/chat
+
+====================================================================
+CT319 TURING-STYLE ROUND
+Mode: basic
+The witness mapping is hidden until the class commits to a vote.
+====================================================================
+
+Interrogator question:</code></pre>
+<p>If you see that, the setup is finished.</p>
+<h3 id="if-something-goes-wrong">If something goes wrong</h3>
+<ul><li><strong><code>ollama: command not found</code></strong>, or <strong><code>not recognized</code></strong> — Ollama is not installed, or your terminal cannot find it. Reinstall it and <strong>open a new terminal</strong>: installers often do not update a window that was already open.</li><li><strong><code>Could not reach Ollama at http://localhost:11434/api/chat</code></strong> — Ollama is not running. Start the Ollama application, or run <code>ollama serve</code>. Check with <code>ollama list</code>: if that fails too, the problem is Ollama, not the experiment.</li><li><strong><code>model not found</code></strong> — the name you set in step 7 does not match anything installed. Run <code>ollama list</code> and copy the name exactly, including the part after the colon.</li><li><strong><code>CT319_MODEL is not set</code></strong> — most often because you opened a new terminal after setting it. Set it again in the terminal you are actually using.</li><li><strong><code>python: command not found</code></strong> — try <code>python3</code> instead, or <code>py</code> on Windows. If none work, install Python from <a href="https://www.python.org/downloads/">python.org</a>.</li><li><strong><code>can't open file ... No such file or directory</code></strong> — the terminal is in the wrong folder. Go back to step 6 and check that <code>ls</code> (or <code>dir</code>) shows <code>ct319_turing_test.py</code>.</li><li><strong>The first reply takes a long time</strong> — normal. The model is loading into memory. Later replies are much faster.</li><li><strong>Every reply is slow</strong> — the model is too big for your machine. Use the lighter one from step 3 and set <code>CT319_MODEL</code> to match.</li></ul></div></details>
+<details class="beat" id="run-it-change-one-thing-run-it-again"><summary><h2 class="beat__title">Run it, change one thing, run it again</h2></summary><div class="beat__body"><p>This is the experiment proper. Two runs, one deliberate difference between them.</p>
+<h3 id="run-1--the-baseline">Run 1 · the baseline</h3>
+<pre data-lang="bash"><code class="language-bash">python ct319_turing_test.py --mode basic</code></pre>
+<p>In basic mode the machine witness is told the situation and asked to reply naturally, briefly and conversationally, and to avoid assistant-style formatting. <strong>It is not told who to be.</strong> That is our baseline condition.</p>
+<p>The roles are:</p>
+<ul><li><strong>the class</strong> — the interrogator</li><li><strong>one student</strong> — the human witness, typing answers where nobody can see them</li><li><strong>the model on this machine</strong> — the machine witness</li></ul>
+<p>Ask a question. Both answers appear as <em>Witness A</em> and <em>Witness B</em>. Type <code>MORE</code> to ask a follow-up, or press Enter to move to the vote.</p>
+<h4 id="choosing-the-question-is-part-of-the-experiment">Choosing the question is part of the experiment</h4>
+<p>Take a moment over this, because the question is one of the variables.</p>
+<ul><li><strong>Ordinary life and social judgement</strong> tend to be the <em>most</em> revealing — what someone did at the weekend, whether a situation was awkward, what they make of some shared local irritation.</li><li><strong>Questions with one correct answer</strong> are usually the <em>least</em> revealing, because both witnesses can answer them, and the machine often answers better.</li></ul>
+<p>Keep questions short. The aim is not to defeat the model with obscure trivia. It is to find the questions where your judgement about human behaviour becomes interesting.</p>
+<h4 id="commit-before-the-reveal">Commit before the reveal</h4>
+<p>The program will ask for three things, in this order, before it tells you anything:</p>
+<ol><li><strong>A or B</strong> — which witness is the human?</li><li><strong>Confidence</strong>, from 1 to 5.</li><li><strong>Your reason</strong> — what specifically made you decide?</li></ol>
+<p>The reason matters more than the vote. A correct guess with a bad reason tells you very little; a wrong guess with a precise reason tells you a great deal.</p>
+<p>Each round appends one line to <code>ct319_turing_results.csv</code> in the folder you are working in: the timestamp, model, mode, number of turns, which label was the human, the vote, whether it was correct, the confidence and the reason. The witnesses' actual answers are not stored. Use <code>--log somewhere-else.csv</code> to write elsewhere.</p>
+<h3 id="observe">Observe</h3>
+<p>Before doing anything else, work through these:</p>
+<ul><li>Which response did you think was human?</li><li>Were you right?</li><li><strong>Why?</strong> What specifically made you decide?</li><li>Which behavioural or linguistic clues influenced you — length, register, punctuation, hesitation, willingness to have an opinion, being too helpful?</li></ul>
+<p>Collect a few reasons out loud. The reasons are the actual data; the score is just a summary of them.</p>
+<h3 id="change-one-thing">Change one thing</h3>
+<p>Now change exactly <strong>one</strong> condition and run again.</p>
+<div class="callout callout--important"><span class="callout__label">Important</span><p><strong>Change one variable at a time</strong></p>
+<p>If you change the persona <em>and</em> the question <em>and</em> the model, and the result moves, you have learned nothing about which change moved it. Holding everything else steady is what turns a demonstration into an experiment.</p></div>
+<p>Four variables are available, and each is genuinely supported by the program:</p>
+<ul><li><strong>The prompting condition (persona).</strong> Run <code>--mode persona</code> instead of <code>--mode basic</code>. Same model, same program, same interface, same computer. The only difference is the instruction: the witness is now asked to portray a plausible university student in their early twenties — informal, brief, allowed to be uncertain or to change their mind, and consistent across the conversation.</li><li><strong>The kind of question.</strong> Ask something ordinary and social in one run, and something formal and reasoning-shaped — a short logic or arithmetic problem — in the other.</li><li><strong>The model.</strong> Set <code>CT319_MODEL</code> to a different model you have installed and run the same mode again.</li><li><strong>The interrogator's time.</strong> Settle one round on a single question, and another after four or five follow-ups using <code>MORE</code>.</li></ul>
+<p>The persona change is the one to run first if you only have time for one.</p>
+<h3 id="run-again">Run again</h3>
+<pre data-lang="bash"><code class="language-bash">python ct319_turing_test.py --mode persona</code></pre>
+<p>Same procedure: ask, commit to a vote, give a confidence and a reason, then reveal.</p>
+<h3 id="compare">Compare</h3>
+<ul><li>Did the class judgement change?</li><li>Did the <em>confidence</em> change, even where the vote did not?</li><li>Which specific cues changed — length, register, punctuation, willingness to hold an opinion?</li><li>Why might the change have moved the result?</li></ul>
+<p>And the question that matters most:</p>
+<blockquote><p><strong>Did the machine become more intelligent, or only more human-like?</strong></p></blockquote>
+<p>Nothing about the model's capabilities changed between those two runs. Only the instruction did.</p>
+<p>If you ran the question-type variable instead, you will probably find the machine performs <em>better</em> on the formal reasoning question and is <em>identified more easily</em> because of it. Being impressively correct is a tell. That is worth sitting with: a test built out of reasoning problems would rank these witnesses in a completely different order, and would be measuring something else entirely.</p>
+<h3 id="two-optional-probes-if-there-is-time">Two optional probes, if there is time</h3>
+<p>Run <strong>one short constraint task</strong> — a three-sentence answer where each sentence is shorter than the last, or a short description that never uses a particular common letter. Keep it to a single example: the purpose is to locate a boundary, not to assemble a compilation of failures. A page of cherry-picked mistakes teaches nothing except that cherry-picking works.</p>
+<p>Then balance it with <strong>one task the model does well</strong> — summarising a paragraph, rewriting something in a different register, explaining an error message.</p>
+<p>Both are needed. The claim we are examining is not "AI is stupid" and not "AI is intelligent". It is that behaviour is uneven, and that a test sampling one part of that range will mislead you about the rest.</p></div></details>
+<details class="beat" id="what-happened-when-researchers-ran-this-properly"><summary><h2 class="beat__title">What happened when researchers ran this properly</h2></summary><div class="beat__body"><p>You have now run a small, uncontrolled version of Turing's test and watched a single instruction change the answer. The obvious next question is what happens when the same thing is done carefully, at scale, with real controls.</p>
+<p>It has been. In 2026 the imitation game was run as Turing described it — three parties, text only, real judges — with modern systems in the machine's seat.</p>
+<ul><li>📄 <a href="https://doi.org/10.1073/pnas.2524472123"><strong><em>Large language models pass a standard three-party Turing test</em></strong></a> — Cameron R. Jones and Benjamin K. Bergen, <em>PNAS</em>, 123(21), e2524472123. Published 19 May 2026. Open access under <strong>CC BY 4.0</strong>.</li><li>🔗 <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC13214042/"><strong>PubMed Central</strong></a> — open-access full text.</li><li>🔗 <a href="https://arxiv.org/abs/2503.23674"><strong>arXiv:2503.23674</strong></a> — the earlier preprint.</li><li>🔗 <a href="https://osf.io/jk7bw"><strong>OSF</strong></a> — the anonymised conversation data.</li><li>🔗 <a href="https://turingtest.live/"><strong>turingtest.live</strong></a> — the experiment site the authors used.</li></ul>
+<p>The studies were randomised, controlled and preregistered. This is not an argument about whether machines can think. It is a measurement, and measurements can be interrogated.</p>
+<h3 id="how-their-experiment-worked">How their experiment worked</h3>
+<p>The design will look familiar, because it is the one you just ran. An <strong>interrogator</strong> holds two simultaneous text conversations, one with a <strong>human witness</strong> and one with an <strong>AI witness</strong>, through the same interface, with no cue which is which. At the end the interrogator names the one they believe to be human, states their confidence, and gives a reason.</p>
+<p>Both witnesses are trying to be identified as the human. The AI's task is not to be helpful or correct; it is to be picked.</p>
+<p>Two differences from our version are worth noting, and both make their result stronger than ours:</p>
+<ul><li>Conversations ran up to <strong>five minutes</strong>, against our few questions.</li><li>Two populations were recruited — undergraduates at <strong>UC San Diego</strong> and participants through <strong>Prolific</strong> — giving <strong>1,023 analysed games</strong> after exclusions. A result holding only among psychology undergraduates would be much weaker.</li></ul>
+<h3 id="which-systems-were-tested">Which systems were tested</h3>
+<ul><li><strong>GPT-4.5</strong> — the frontier model at the time</li><li><strong>LLaMa-3.1-405B</strong> — a large open-weight model</li><li><strong>GPT-4o</strong> — a widely deployed assistant model</li><li><strong>ELIZA</strong> — yes, that ELIZA, included deliberately as a baseline</li></ul>
+<p>That last inclusion is a control, and a good one. If a modern model cannot clearly beat a few hundred lines of pattern-matching, the experiment is not measuring what it claims to.</p>
+<h3 id="persona-and-no-persona">PERSONA and NO-PERSONA</h3>
+<p>This is the same variable you changed, described precisely.</p>
+<p><strong>Both</strong> conditions told the model that it was a witness in a Turing test, that an interrogator would question it, that its aim was to be selected as the human, and gave it common-ground information about the interface and setting.</p>
+<p>The <strong>PERSONA</strong> condition then added an instruction to adopt a specific plausible human character: a young, somewhat introverted person familiar with internet culture, using informal language and slang, with supporting detail such as a name, a location and current timestamps.</p>
+<p>So the comparison is not <em>instructions</em> against <em>no instructions</em>. It is a plausible human character against a bare description of the task — exactly the difference between <code>--mode persona</code> and <code>--mode basic</code>.</p>
+<h3 id="the-headline-result">The headline result</h3>
+<figure><img class="figure__img" src="../../media/week-01/jones-bergen-5min-win-rates.png" alt="Five-minute Turing-test win rates" loading="lazy" decoding="async"><figcaption>Figure 9. Overall five-minute win rates: the proportion of games in which each AI witness was selected as the human. The dashed line marks 50%, where interrogators are performing at chance. Chart created for these pages from the numerical results reported in Jones &amp; Bergen (2026); source article <strong>CC BY 4.0</strong>.</figcaption></figure>
+<div class="table-scroll"><table><thead><tr><th>AI witness</th><th class="num">Selected as the human</th></tr></thead><tbody><tr><td><strong>GPT-4.5 + PERSONA</strong></td><td class="num"><strong>73%</strong></td></tr><tr><td><strong>LLaMa-3.1 + PERSONA</strong></td><td class="num"><strong>56%</strong></td></tr><tr><td>LLaMa-3.1, no persona</td><td class="num">38%</td></tr><tr><td>GPT-4.5, no persona</td><td class="num">36%</td></tr><tr><td>ELIZA</td><td class="num">23%</td></tr><tr><td>GPT-4o, no persona</td><td class="num">21%</td></tr></tbody></table></div>
+<p>Three things are visible at once:</p>
+<ul><li>The two <strong>persona-prompted models</strong> sit at or above chance.</li><li>The <strong>same models without the persona instruction</strong> fall to the mid-thirties.</li><li><strong>ELIZA, at 23%, is not last.</strong> GPT-4o without a persona does slightly worse than a program from 1966.</li></ul>
+<p>That last detail is the most instructive line on the chart. GPT-4o is vastly more capable than ELIZA by any measure of what it can actually do. In this test it does slightly worse, because the test does not reward capability. It rewards not being spotted — and an unprompted assistant gives itself away immediately through fluency, helpfulness and formatting, the very features that make it useful.</p>
+<p>If you ran the persona variable yourself, you have seen the 36% → 73% effect in miniature. Nothing about the model changed between those two numbers.</p>
+<h3 id="what-73-actually-means">What 73% actually means</h3>
+<p><strong>73% is a human-identification rate, not an intelligence score.</strong> In 73% of the games where GPT-4.5 with a persona was the AI witness, the interrogator pointed at the machine when asked which participant was the human. It is a fact about what judges did, under a particular set of conditions.</p>
+<p>It is also above 50%, which is the genuinely surprising part. Interrogators were not merely failing to identify the machine better than chance; they were selecting it as the human <em>more often than they selected the actual human being</em>.</p>
+<p>"Passing", in this paper's operationalisation, means exactly that: interrogators could not reliably distinguish the machine from the human and performed no better than chance. That criterion was set out in advance, and it is a criterion about <strong>indistinguishability</strong> — the same thing Turing's game was built to measure. It is not a claim about understanding, and the paper does not make one.</p>
+<h3 id="longer-conversations-did-not-solve-it">Longer conversations did not solve it</h3>
+<p>The obvious objection to a five-minute test is that five minutes is not much. Give the interrogator longer and the machine will slip.</p>
+<p>The authors tested this directly. A replication tripled the conversation length to <strong>fifteen minutes</strong> and substituted <strong>GPT-5</strong> for GPT-4.5, which had been deprecated in the interval. After exclusions it analysed <strong>396 games</strong> with <strong>205 Prolific participants</strong>.</p>
+<figure><img class="figure__img" src="../../media/week-01/jones-bergen-15min-replication.png" alt="Fifteen-minute replication win rates" loading="lazy" decoding="async"><figcaption>Figure 10. Win rates in the fifteen-minute replication, in which GPT-5 replaced the deprecated GPT-4.5. Chart created for these pages from the numerical results reported in Jones &amp; Bergen (2026); source article <strong>CC BY 4.0</strong>.</figcaption></figure>
+<div class="table-scroll"><table><thead><tr><th>Fifteen-minute replication</th><th class="num">Selected as the human</th></tr></thead><tbody><tr><td><strong>GPT-5 + PERSONA</strong></td><td class="num"><strong>59%</strong></td></tr><tr><td><strong>LLaMa-3.1 + PERSONA</strong></td><td class="num"><strong>56%</strong></td></tr><tr><td>ELIZA</td><td class="num">17%</td></tr></tbody></table></div>
+<p>Both persona-prompted models stayed at or above chance over the longer conversations. ELIZA fell from 23% to 17%, which is what we should expect: more time is exactly what exposes a shallow mechanism, and it worked on the shallow mechanism.</p>
+<p>The teaching point is that extra time is not a general remedy. It helps against a system that runs out of things to do, and much less against one that does not. If you ran the follow-up-questions variable, compare what you found.</p>
+<h3 id="what-the-judges-were-actually-testing">What the judges were actually testing</h3>
+<p>The most useful part of the paper for us is not the win rates. It is the analysis of what interrogators <em>tried</em>.</p>
+<figure><img class="figure__img" src="../../media/week-01/jones-bergen-interrogator-strategies.png" alt="What interrogators tried in the five-minute studies" loading="lazy" decoding="async"><figcaption>Figure 11. Strategies used by interrogators in the five-minute studies, as a proportion of games. Chart created for these pages from the numerical results reported in Jones &amp; Bergen (2026); source article <strong>CC BY 4.0</strong>.</figcaption></figure>
+<div class="table-scroll"><table><thead><tr><th>What interrogators did</th><th class="num">Share of games</th></tr></thead><tbody><tr><td>Small talk and personal details</td><td class="num">~61%</td></tr><tr><td>Social and emotional probing</td><td class="num">~50%</td></tr><tr><td>Asking directly whether the witness was an AI</td><td class="num">~19%</td></tr><tr><td>Situational-awareness questions</td><td class="num">~13%</td></tr><tr><td>Knowledge and reasoning questions</td><td class="num">~12%</td></tr></tbody></table></div>
+<p>Given five minutes and a machine to unmask, people overwhelmingly chose to chat. Formal tests of knowledge or reasoning — the things we usually associate with intelligence testing — were the <em>least</em> common, in roughly one game in eight.</p>
+<p>This is not judges behaving foolishly. The question was not "which of these is more capable?" but "which of these is a person?", and for that, conversational texture is far more diagnostic than arithmetic. People were reading linguistic style, emotional plausibility, conversational rhythm, willingness to be vague, and the small imperfections of ordinary writing.</p>
+<p>Compare that with the reasons your own class gave before the reveal. They will probably be the same kind of reason.</p>
+<p>One consequence deserves emphasis: <strong>not knowing things became evidence of humanity.</strong> A hesitation, a typo, a flat refusal to have an opinion, an admission of ignorance — these read as human, because machines are expected to be informative. Competence had become a tell.</p>
+<h3 id="more-human-than-humans">More human than humans</h3>
+<p>GPT-4.5 with a persona was not merely hard to distinguish from the human witness. It was selected <em>instead of</em> the human, most of the time. A machine cannot be more human than a human being, so something else is going on.</p>
+<p>What the interrogators were comparing against was not humanity. It was their <strong>expectation</strong> of how a human sounds in a five-minute anonymous text chat — and alongside it, their expectation of how an AI sounds. Both expectations are learned, informal and frequently wrong. Real people in that situation are often terse, odd, distracted, or unwilling to perform. A model instructed to portray a plausible young person hits the stereotype more reliably than actual people do, because it is aiming at the stereotype while they are merely being themselves.</p>
+<div class="callout callout--important"><span class="callout__label">Important</span><p><strong>The judge is not a neutral instrument</strong></p>
+<p>The judge carries a model of what humans sound like and a model of what machines sound like. The test measures the fit between the witness and those models.</p>
+<p>Improve the machine's fit to the human stereotype and the score rises without anything about its understanding having changed at all. Whenever a system is scored by human judgement, some of the score belongs to the judge.</p></div>
+<h3 id="counterfeit-people">Counterfeit people</h3>
+<p>Suppose we reject the Turing test entirely as a measure of intelligence. The result still matters, and the philosopher <strong>Daniel Dennett</strong> supplied the phrase for why.</p>
+<p>Writing in <em>The Atlantic</em> in 2023, Dennett argued that the serious near-term danger from AI is not superintelligence but <strong>counterfeit people</strong>: systems able to pass as human convincingly enough to occupy the social roles we reserve for persons. His argument is economic as much as ethical — counterfeit currency devalues real currency, and counterfeit people devalue the trust that makes ordinary interaction possible.</p>
+<p>Jones and Bergen give that argument a measurement. The capability is now demonstrated under controlled conditions, at scale, with a prompt rather than a research programme. The consequences follow directly: impersonation, social engineering and fraud, automated misinformation that reads like ordinary conversation, and a general erosion of the assumption that whoever you are talking to online is a person.</p>
+<p>Note what none of this requires. It does not depend on the system understanding anything. Human-likeness is sufficient on its own — which is why a test we might dismiss as philosophically uninformative can still be measuring something that matters.</p>
+<ul><li>🔗 <a href="https://www.theatlantic.com/technology/archive/2023/05/problem-counterfeit-people/674075/"><strong><em>The Problem With Counterfeit People</em></strong></a> — Daniel C. Dennett, <em>The Atlantic</em>, 16 May 2023.</li></ul>
+<h3 id="questions-worth-pressing">Questions worth pressing</h3>
+<p>A good paper gives you things to argue with, and this one does.</p>
+<ul><li>Is five minutes long enough to tell us anything? Is fifteen? What would be?</li><li>How much of the result belongs to the model, and how much to the persona prompt? If a different prompt gives a different number, what exactly was measured?</li><li>Would AI researchers, or people who use these systems daily, perform differently as interrogators?</li><li>How much depends on the population? A judge's model of "how people write" is cultural and generational.</li><li>As familiarity with AI writing grows, will the test get harder for machines — or will people just learn new and equally unreliable tells?</li><li>Is imitating a human the right target at all? A system optimised to seem human is not thereby optimised to be useful, correct or safe.</li></ul>
+<p>You do not have to settle these. Being able to state them precisely is the skill.</p></div></details>
+<details class="beat" id="what-does-this-actually-prove"><summary><h2 class="beat__title">What does this actually prove?</h2></summary><div class="beat__body"><p>This is the part of the week that is assessable, and the part most often got wrong.</p>
+<h3 id="if-the-machine-was-picked">If the machine was picked</h3>
+<p>Suppose your class picked the machine. State the finding precisely:</p>
+<blockquote><p><strong>The model produced sufficiently convincing human-like behaviour under these experimental conditions.</strong></p></blockquote>
+<p>Those conditions are: this model, these instructions, these questions, this interface, this many turns, and these judges. That is a real result about a specific configuration, and it is the same <em>kind</em> of result Jones and Bergen report — narrower and less controlled, but the same kind.</p>
+<h3 id="what-it-does-not-establish">What it does not establish</h3>
+<p>The result does <strong>not</strong> show that the model:</p>
+<ul><li>understands anything</li><li>thinks the way a human thinks</li><li>is conscious, or has any subjective experience</li><li>possesses general intelligence</li><li>is reliable, truthful, or competent at anything you did not test</li></ul>
+<p>None of those is visible through the interface we used — which is precisely what Turing's text-only channel was designed to ensure. <strong>This distinction is one of the main things to take away from Week 1.</strong></p>
+<h3 id="the-reverse-also-holds">The reverse also holds</h3>
+<p>If your class identified the machine immediately, you have <strong>not</strong> shown it is unintelligent. You have shown that this configuration failed to sustain a convincing performance for these judges. Change the instruction, as the persona run does, and the result can reverse without a single thing about the model having changed.</p>
+<div class="callout callout--important"><span class="callout__label">Important</span><p><strong>The result belongs to the configuration, not to the model</strong></p>
+<p>Every claim from this experiment carries conditions attached. Stating a result without its conditions is the most common error in evaluating AI systems, and it is the habit this week exists to break.</p></div>
+<h3 id="the-whole-week-in-one-line-each">The whole week in one line each</h3>
+<p>The four parts answer four different questions, and the sequence is the argument:</p>
+<ol><li><strong>ELIZA</strong> showed us <strong>MECHANISM</strong> — convincing behaviour can come from machinery far simpler than the impression suggests, and the impression is not evidence about the machinery.</li><li><strong>Turing</strong> gave us <strong>EVALUATION</strong> — if the mechanism is hidden, behaviour can still be evidence, provided we constrain what reaches the judge and stay honest about what the answer covers.</li><li><strong>Our own experiment</strong> made the variables tangible, by letting us change one at a time and watch the outcome move.</li><li><strong>Jones and Bergen</strong> confirmed at scale that the result belongs to the whole system — model, instructions, interface, judge and questions — rather than to the model alone.</li></ol>
+<p>Which returns us to the question this page opened with:</p>
+<blockquote><p><strong>Can a machine appear intelligent without understanding anything?</strong></p></blockquote>
+<p>The answer is yes, demonstrably, and it has been yes since 1966. What has changed is the quality of the appearance and the difficulty of seeing through it. What has not changed is the discipline required in response: keep <strong>BEHAVIOUR</strong> and <strong>MECHANISM</strong> apart, and be exact about what any particular <strong>EVALUATION</strong> has and has not established.</p></div></details>
+  </main>
+
+  <div class="tail">
+<h2 id="the-three-lenses-as-a-reference">The three lenses, as a reference</h2>
+<p>All four parts separate the same three things. Keep them apart and most confused arguments about AI become easier to untangle.</p>
+<div class="table-scroll"><table><thead><tr><th>Lens</th><th>The question it asks</th><th>Where Week 1 tested it</th></tr></thead><tbody><tr><td><strong>BEHAVIOUR</strong></td><td>What does the system actually do?</td><td>ELIZA's conversation; our own witnesses; the win rates in the 2026 study</td></tr><tr><td><strong>MECHANISM</strong></td><td>How is that behaviour produced?</td><td>Keyword ranking, decomposition and reassembly; a local model behind <code>localhost</code></td></tr><tr><td><strong>EVALUATION</strong></td><td>What has a particular test established?</td><td>Turing's text-only channel; our vote before the reveal; the persona conditions</td></tr></tbody></table></div>
+<p>A Turing-style judgement, a model comparison and a capability probe measure different things. Reporting one as though it were another is the error this week is meant to prevent.</p>
+<div class="callout callout--important"><span class="callout__label">Important</span><p><strong>The Week 1 question is not simply "Is AI intelligent?"</strong></p>
+<p>A better question is: <strong>what evidence would justify that claim, and what does our evidence still leave unexplained?</strong></p></div>
+<h2 id="quick-revision">Quick revision</h2>
+<p>If you can answer these without reopening the page, you have the core of Week 1.</p>
+<ol><li>Why can ELIZA feel intelligent despite its simple mechanism?</li><li>Why did Turing replace "Can machines think?" with the imitation game — and why is his 70% figure not a pass mark?</li><li>In our experiment, what exactly were we measuring, and what were we not measuring?</li><li>Why do we change only one variable between runs?</li><li>Why must the vote, confidence and reason be recorded before the reveal?</li><li>What does the 73% result mean, and what does it <strong>not</strong> mean? Why did GPT-4o score below ELIZA?</li><li>If the class picks the machine, what is the strongest claim you are entitled to make?</li><li>Why can persona, interface, question choice and interaction length all change a Turing-style result without the model changing at all?</li></ol>
+<h2 id="before-week-2">Before Week 2</h2>
+<p>Next week we leave conversational imitation behind and make the problem concrete.</p>
+<p>A machine cannot search for a solution until we decide what counts as a <strong>state</strong>, what actions are possible, what the <strong>goal</strong> is, and how the problem should be represented.</p>
+<blockquote><p><strong>How do we turn a messy real-world problem into something a machine can search?</strong></p></blockquote>
+<h2 id="sources-and-licensing">Sources and licensing</h2>
+<h3 id="papers-and-articles">Papers and articles</h3>
+<ul><li>📄 <a href="https://doi.org/10.1093/mind/LIX.236.433"><strong><em>Computing Machinery and Intelligence</em></strong></a> — A. M. Turing, <em>Mind</em>, LIX(236), 433–460, 1950.</li><li>📄 <a href="https://doi.org/10.1145/365153.365168"><strong><em>ELIZA — A Computer Program for the Study of Natural Language Communication Between Man and Machine</em></strong></a> — Joseph Weizenbaum, <em>Communications of the ACM</em>, 9(1), 36–45, 1966.</li><li>📄 <a href="https://doi.org/10.1073/pnas.2524472123"><strong><em>Large language models pass a standard three-party Turing test</em></strong></a> — Cameron R. Jones and Benjamin K. Bergen, <em>PNAS</em>, 123(21), e2524472123, 2026. Open access under <strong>CC BY 4.0</strong>.</li><li>🔗 <a href="https://www.theatlantic.com/technology/archive/2023/05/problem-counterfeit-people/674075/"><strong><em>The Problem With Counterfeit People</em></strong></a> — Daniel C. Dennett, <em>The Atlantic</em>, 16 May 2023.</li><li>🔗 <a href="https://findingeliza.org/"><strong>Finding ELIZA / ELIZA Archaeology Project</strong></a> — interactive reconstruction and recovered-source walkthrough. Project materials © 2024–2026 the project authors except where indicated; the original ELIZA source scan is CC0.</li></ul>
+<h3 id="images-and-video">Images and video</h3>
+<ul><li>Every external image and video carries its source, creator, year and licence status <strong>in its own caption</strong>, at the point of use.</li><li>Figures 3, 4, 5, 7 and 8 are diagrams <strong>created for these pages</strong> and use no external image licence.</li><li>Figures 9, 10 and 11 are charts drawn for these pages from the numerical results reported in Jones &amp; Bergen (2026), which is <strong>CC BY 4.0</strong>.</li></ul>
+<h3 id="software">Software</h3>
+<ul><li>🔗 <a href="https://docs.ollama.com/quickstart"><strong>Ollama</strong></a> — the local model runtime used for the experiment. See also the <a href="https://docs.ollama.com/api/chat">local API documentation</a>.</li><li>🔗 <a href="https://ollama.com/library/qwen3.5"><strong>Qwen 3.5 model library</strong></a> — the September 2026 classroom baseline and its lighter variants.</li><li>📦 <a href="https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-01/ct319_turing_test.py"><strong><code>ct319_turing_test.py</code></strong></a> — written for this module; Python standard library only, no packages to install.</li></ul>
+  </div>
+
+  <footer class="page-footer">
+    <p>
+      CT319 Artificial Intelligence · University of Galway ·
+      <a href="../../">Module pages</a> ·
+      <a href="https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/weeks/week-01.md">Markdown source</a> ·
+      <a href="?open=all">Open every section</a>
+    </p>
+    <p>Formal slides and notes are on Canvas. These pages are the companion material.</p>
+  </footer>
+
+</div>
+
+<script src="../../assets/ct319.js" defer></script>
+</body>
+</html>

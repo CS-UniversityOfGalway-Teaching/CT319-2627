@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="700" viewBox="0 0 960 700" role="img" aria-labelledby="title desc">
+  <title id="title">The original imitation game and the machine substitution</title>
+  <desc id="desc">Two stages. Above, Turing's original game: an interrogator questions a man and a woman by text and must decide which is the woman. Below, the substitution: a machine takes the man's role and the interrogator must decide which is the human.</desc>
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #1f2328;
+      --muted: #57606a;
+      --line: #d0d7de;
+      --accent: #0969da;
+      --panel: #f6f8fa;
+      --card: #ffffff;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117;
+        --fg: #e6edf3;
+        --muted: #8b949e;
+        --line: #30363d;
+        --accent: #58a6ff;
+        --panel: #161b22;
+        --card: #0d1117;
+      }
+    }
+
+    text {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      fill: var(--fg);
+    }
+
+    .label {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      fill: var(--accent);
+    }
+
+    .role {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .note {
+      font-size: 15px;
+      fill: var(--muted);
+    }
+
+    .sub {
+      font-size: 17px;
+      fill: var(--muted);
+    }
+
+    .edge {
+      font-size: 14px;
+      fill: var(--muted);
+    }
+
+    .panel {
+      fill: var(--panel);
+      stroke: var(--line);
+      stroke-width: 1.5;
+    }
+
+    .card {
+      fill: var(--card);
+      stroke: var(--line);
+      stroke-width: 1.5;
+    }
+
+    .machine {
+      fill: var(--card);
+      stroke: var(--accent);
+      stroke-width: 2.5;
+    }
+
+    .connector {
+      stroke: var(--muted);
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+    }
+  </style>
+
+  <rect width="960" height="700" rx="18" fill="var(--bg)"/>
+
+  <!-- Stage 1 : the original game -->
+  <rect class="panel" x="60" y="40" width="840" height="270" rx="14"/>
+  <text class="label" x="92" y="74">ORIGINAL IMITATION GAME</text>
+
+  <rect class="card" x="120" y="92" width="240" height="66" rx="12"/>
+  <text class="role" x="240" y="122" text-anchor="middle">A · Man</text>
+  <text class="note" x="240" y="144" text-anchor="middle">tries to mislead</text>
+
+  <rect class="card" x="600" y="92" width="240" height="66" rx="12"/>
+  <text class="role" x="720" y="122" text-anchor="middle">B · Woman</text>
+  <text class="note" x="720" y="144" text-anchor="middle">tries to help</text>
+
+  <line class="connector" x1="450" y1="206" x2="290" y2="162"/>
+  <line class="connector" x1="510" y1="206" x2="670" y2="162"/>
+  <text class="edge" x="330" y="196" text-anchor="middle">text only</text>
+  <text class="edge" x="630" y="196" text-anchor="middle">text only</text>
+
+  <rect class="card" x="360" y="210" width="240" height="66" rx="12"/>
+  <text class="role" x="480" y="240" text-anchor="middle">C · Interrogator</text>
+  <text class="note" x="480" y="262" text-anchor="middle">cannot see or hear either</text>
+
+  <text class="sub" x="480" y="296" text-anchor="middle">C must decide: which one is the woman?</text>
+
+  <!-- Substitution arrow -->
+  <line class="connector" x1="480" y1="318" x2="480" y2="368"/>
+  <path class="connector" d="M470 358 L480 369 L490 358"/>
+  <text class="edge" x="500" y="348">Turing's substitution</text>
+
+  <!-- Stage 2 : the machine takes a role -->
+  <rect class="panel" x="60" y="378" width="840" height="270" rx="14"/>
+  <text class="label" x="92" y="412">MACHINE SUBSTITUTION</text>
+
+  <rect class="machine" x="120" y="430" width="240" height="66" rx="12"/>
+  <text class="role" x="240" y="460" text-anchor="middle">A · Machine</text>
+  <text class="note" x="240" y="482" text-anchor="middle">takes the man's role</text>
+
+  <rect class="card" x="600" y="430" width="240" height="66" rx="12"/>
+  <text class="role" x="720" y="460" text-anchor="middle">B · Human</text>
+  <text class="note" x="720" y="482" text-anchor="middle">tries to help</text>
+
+  <line class="connector" x1="450" y1="544" x2="290" y2="500"/>
+  <line class="connector" x1="510" y1="544" x2="670" y2="500"/>
+  <text class="edge" x="330" y="534" text-anchor="middle">text only</text>
+  <text class="edge" x="630" y="534" text-anchor="middle">text only</text>
+
+  <rect class="card" x="360" y="548" width="240" height="66" rx="12"/>
+  <text class="role" x="480" y="578" text-anchor="middle">C · Interrogator</text>
+  <text class="note" x="480" y="600" text-anchor="middle">same text-only interface</text>
+
+  <text class="sub" x="480" y="634" text-anchor="middle">C must decide: which one is the human?</text>
+
+  <text class="note" x="480" y="678" text-anchor="middle">The question changes from an internal property to a judgement about observable behaviour.</text>
+</svg>
