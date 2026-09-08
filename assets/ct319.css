@@ -433,6 +433,9 @@ figcaption a { color: var(--muted); }
 }
 .focus-block blockquote p { font-size: inherit; }
 .focus-block pre { font-size: 1.02rem; }
+/* A secondary figure that belongs to a focus block is part of that teaching
+   stop, so it fills the block rather than sitting at 80% inside it. */
+.focus-block .figure--secondary { max-width: 100%; }
 .focus-block li { margin: 0.45rem 0; }
 
 @media (max-width: 620px) {
