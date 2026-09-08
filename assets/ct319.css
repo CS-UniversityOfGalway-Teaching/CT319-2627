@@ -419,6 +419,13 @@ figcaption a { color: var(--muted); }
    way inside a focus block. */
 .focus-block :where(p, ul, ol, blockquote) { max-width: none; }
 .focus-block :where(p, li) { font-size: inherit; }
+/* Not :where() here — it has no specificity, and .beat__body h3 would win. */
+.focus-block h3,
+.focus-block h4 {
+  font-size: 1.12em;
+  color: var(--text);
+  margin: 0 0 0.9rem;
+}
 .focus-block blockquote {
   margin: 1.1rem 0;
   padding-left: 1.2rem;
@@ -463,6 +470,10 @@ figcaption a { color: var(--muted); }
 .figure--hero > .figure__img {
   border: 1px solid var(--line);
   border-radius: 0;
+}
+.figure--hero > .figure__img.is-portrait {
+  max-width: min(100%, 480px);
+  margin: 0 auto;
 }
 /* Centred, not flush left: a hero figure overhangs the beat card, and a
    left-aligned caption would start outside it and be crossed by the card's

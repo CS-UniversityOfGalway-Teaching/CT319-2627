@@ -105,9 +105,13 @@ Why do you think that?
 
 In ordinary conversation that might sound evasive. From a therapist it sounds entirely appropriate. ELIZA did not need a model of the world to seem relevant here — the conversational role did much of the work.
 
+<!-- ct319:focus -->
+
 ### What is happening underneath
 
 ELIZA does not build a model of your meaning and then decide what to say.
+
+<!-- ct319:endfocus -->
 
 ![Simplified ELIZA processing loop](../../media/week-01/eliza-processing-loop.svg "secondary")
 
@@ -143,6 +147,8 @@ The response fits the conversation. Producing it does not require ELIZA to know 
 
 That is the central trick: **your own language supplies most of the apparent meaning**.
 
+<!-- ct319:focus -->
+
 ### A real DOCTOR rule
 
 The recovered script lets us go past the simplified example and read an authentic rule. One keyword entry is:
@@ -152,6 +158,8 @@ The recovered script lets us go past the simplified example and read an authenti
 ```
 
 `ALIKE` is the keyword, `10` is its ranking, and `=DIT` redirects processing to another rule group about similarity. One available response in that group is `(IN WHAT WAY)`.
+
+<!-- ct319:endfocus -->
 
 ![One authentic DOCTOR keyword route](../../media/week-01/doctor-keyword-route.svg "secondary")
 
@@ -272,7 +280,7 @@ Alan Turing was a mathematician and one of the founding figures of computer scie
 - **1939–45** — wartime cryptanalysis at Bletchley Park.
 - **1950** — *Computing Machinery and Intelligence*, published in *Mind*. That is the paper.
 
-![Alan Turing in 1951](https://commons.wikimedia.org/wiki/Special:FilePath/Alan%20Turing%20(1951).jpg?width=480)
+![Alan Turing in 1951](https://commons.wikimedia.org/wiki/Special:FilePath/Alan%20Turing%20(1951).jpg?width=480 "hero")
 
 <sub><em>Figure 6. Alan Turing, photographed on 29 March 1951. Source: <a href="https://commons.wikimedia.org/wiki/File:Alan_Turing_(1951).jpg">Wikimedia Commons — Alan Turing (1951).jpg</a>. Commons metadata associates the portrait with Elliott &amp; Fry and marks the photograph <strong>public domain</strong> in its source country.</em></sub>
 
@@ -307,6 +315,8 @@ Written exchange removes appearance, voice, timing, physical embodiment and any 
 
 Mechanism is ruled out by design; behaviour is all that remains. A system that a glance through a window would expose instantly can pass a test conducted through a keyhole — and that is a fact about the test, not about the system.
 
+<!-- ct319:focus -->
+
 ### Turing's prediction, and what it does not say
 
 Turing offered a forecast: in about fifty years, machines would play the imitation game well enough that an average interrogator would have no more than roughly a **70% chance of making the correct identification after five minutes** of questioning.
@@ -316,6 +326,8 @@ This is the most misread sentence in the paper.
 It is a **prediction about future capability**, not a definition of success. Turing does **not** propose 70% as a threshold, does **not** say that fooling 30% of judges constitutes passing, and does **not** describe the number as a criterion at all. The widely repeated "30% rule" was invented later and read back into the text.
 
 Notice too that the figure is tied to a duration — five minutes — which tells us Turing expected the result to depend on how long the interrogation runs. That expectation is testable, and later this week we see it tested.
+
+<!-- ct319:endfocus -->
 
 > [!WARNING]
 > **A percentage is not a pass mark unless somebody defines it as one**
@@ -330,7 +342,11 @@ The **consciousness objection** says a machine could produce every appropriate r
 
 **Lady Lovelace's objection**, from Ada Lovelace's notes on Babbage's Analytical Engine, says a machine can only do what we know how to order it to do, and so can never originate anything. Turing answers that we are routinely surprised by our own machines, and that "originality" may amount to behaviour we did not anticipate. The modern form is entirely familiar: whether a generative model creates anything or only recombines its training data. That the argument survives unchanged since 1843 is itself informative.
 
+<!-- ct319:focus -->
+
 Finally, **learning machines**. Turing's closing suggestion is that programming an adult mind directly is the wrong strategy — it would be easier to build something with the capacity of a child and then educate it, specifying a learning process rather than finished knowledge. Read in 2026 this is the most striking passage in the paper, because it describes the approach that actually won.
+
+<!-- ct319:endfocus -->
 
 ### What the game can and cannot establish
 
@@ -703,11 +719,15 @@ You have now run a small, uncontrolled version of Turing's test and watched a si
 
 It has been. In 2026 the imitation game was run as Turing described it — three parties, text only, real judges — with modern systems in the machine's seat.
 
+<!-- ct319:focus -->
+
 - 📄 [***Large language models pass a standard three-party Turing test***](https://doi.org/10.1073/pnas.2524472123) — Cameron R. Jones and Benjamin K. Bergen, *PNAS*, 123(21), e2524472123. Published 19 May 2026. Open access under **CC BY 4.0**.
 - 🔗 [**PubMed Central**](https://pmc.ncbi.nlm.nih.gov/articles/PMC13214042/) — open-access full text.
 - 🔗 [**arXiv:2503.23674**](https://arxiv.org/abs/2503.23674) — the earlier preprint.
 - 🔗 [**OSF**](https://osf.io/jk7bw) — the anonymised conversation data.
 - 🔗 [**turingtest.live**](https://turingtest.live/) — the experiment site the authors used.
+
+<!-- ct319:endfocus -->
 
 The studies were randomised, controlled and preregistered. This is not an argument about whether machines can think. It is a measurement, and measurements can be interrogated.
 
@@ -722,6 +742,8 @@ Two differences from our version are worth noting, and both make their result st
 - Conversations ran up to **five minutes**, against our few questions.
 - Two populations were recruited — undergraduates at **UC San Diego** and participants through **Prolific** — giving **1,023 analysed games** after exclusions. A result holding only among psychology undergraduates would be much weaker.
 
+<!-- ct319:focus -->
+
 ### Which systems were tested
 
 - **GPT-4.5** — the frontier model at the time
@@ -730,6 +752,8 @@ Two differences from our version are worth noting, and both make their result st
 - **ELIZA** — yes, that ELIZA, included deliberately as a baseline
 
 That last inclusion is a control, and a good one. If a modern model cannot clearly beat a few hundred lines of pattern-matching, the experiment is not measuring what it claims to.
+
+<!-- ct319:endfocus -->
 
 ### PERSONA and NO-PERSONA
 
@@ -843,6 +867,8 @@ What the interrogators were comparing against was not humanity. It was their **e
 
 Suppose we reject the Turing test entirely as a measure of intelligence. The result still matters, and the philosopher **Daniel Dennett** supplied the phrase for why.
 
+<!-- ct319:focus -->
+
 Writing in *The Atlantic* in 2023, Dennett argued that the serious near-term danger from AI is not superintelligence but **counterfeit people**: systems able to pass as human convincingly enough to occupy the social roles we reserve for persons. His argument is economic as much as ethical — counterfeit currency devalues real currency, and counterfeit people devalue the trust that makes ordinary interaction possible.
 
 Jones and Bergen give that argument a measurement. The capability is now demonstrated under controlled conditions, at scale, with a prompt rather than a research programme. The consequences follow directly: impersonation, social engineering and fraud, automated misinformation that reads like ordinary conversation, and a general erosion of the assumption that whoever you are talking to online is a person.
@@ -850,6 +876,8 @@ Jones and Bergen give that argument a measurement. The capability is now demonst
 Note what none of this requires. It does not depend on the system understanding anything. Human-likeness is sufficient on its own — which is why a test we might dismiss as philosophically uninformative can still be measuring something that matters.
 
 - 🔗 [***The Problem With Counterfeit People***](https://www.theatlantic.com/technology/archive/2023/05/problem-counterfeit-people/674075/) — Daniel C. Dennett, *The Atlantic*, 16 May 2023.
+
+<!-- ct319:endfocus -->
 
 ### Questions worth pressing
 
@@ -867,11 +895,11 @@ You do not have to settle these. Being able to state them precisely is the skill
 <!-- ct319:beat -->
 ## What does this actually prove?
 
-This is the part of the week that is assessable, and the part most often got wrong.
+A result from an experiment like this one is easy to over-read. What follows is what the evidence actually supports, and where it stops.
 
-### If the machine was picked
+### If the machine is selected as the human
 
-Suppose your class picked the machine. State the finding precisely:
+If the machine is selected as the human, the strongest available conclusion is narrower than it may first appear:
 
 > **The model produced sufficiently convincing human-like behaviour under these experimental conditions.**
 
@@ -895,12 +923,14 @@ None of those is visible through the interface we used — which is precisely wh
 
 ### The reverse also holds
 
-If your class identified the machine immediately, you have **not** shown it is unintelligent. You have shown that this configuration failed to sustain a convincing performance for these judges. Change the instruction, as the persona run does, and the result can reverse without a single thing about the model having changed.
+If the machine is identified immediately, the reverse conclusion is limited in the same way. That result does **not** show the model is unintelligent. It shows that this configuration failed to sustain a convincing performance for these judges. Change the instruction, as the persona run does, and the result can reverse without a single thing about the model having changed.
 
 > [!IMPORTANT]
 > **The result belongs to the configuration, not to the model**
 >
-> Every claim from this experiment carries conditions attached. Stating a result without its conditions is the most common error in evaluating AI systems, and it is the habit this week exists to break.
+> Every claim from this experiment carries conditions attached. A result reported without its conditions is the most common error in evaluating AI systems, and avoiding it is the habit this week exists to build.
+
+<!-- ct319:focus -->
 
 ### The whole week in one line each
 
@@ -916,6 +946,8 @@ Which returns us to the question this page opened with:
 > **Can a machine appear intelligent without understanding anything?**
 
 The answer is yes, demonstrably, and it has been yes since 1966. What has changed is the quality of the appearance and the difficulty of seeing through it. What has not changed is the discipline required in response: keep **BEHAVIOUR** and **MECHANISM** apart, and be exact about what any particular **EVALUATION** has and has not established.
+
+<!-- ct319:endfocus -->
 
 <!-- ct319:endbeats -->
 

@@ -71,8 +71,10 @@
 <p>Consider a reply like:</p>
 <pre data-lang="text"><code class="language-text">Why do you think that?</code></pre>
 <p>In ordinary conversation that might sound evasive. From a therapist it sounds entirely appropriate. ELIZA did not need a model of the world to seem relevant here — the conversational role did much of the work.</p>
+<div class="focus-block">
 <h3 id="what-is-happening-underneath">What is happening underneath</h3>
 <p>ELIZA does not build a model of your meaning and then decide what to say.</p>
+</div>
 <figure class="figure--secondary"><img class="figure__img" src="../../media/week-01/eliza-processing-loop.svg" alt="Simplified ELIZA processing loop" loading="lazy" decoding="async"><figcaption>Figure 3. Simplified ELIZA processing loop, redrawn for CT319 from Weizenbaum (1966) and the recovered source-code walkthrough at Finding ELIZA. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <p>Several pieces work together:</p>
 <ul><li><strong>keywords</strong> identify potentially useful parts of the input</li><li><strong>keyword ranking</strong> decides which recognised keyword takes priority</li><li><strong>decomposition rules</strong> divide the sentence into parts</li><li><strong>reassembly rules</strong> use those parts to build a response</li><li><strong>substitutions</strong> change words such as pronouns when text is reused</li><li><strong>memory</strong> allows a limited piece of earlier input to be recalled later</li><li><strong>scripts</strong> define the conversational role</li></ul>
@@ -84,10 +86,12 @@
 <pre data-lang="text"><code class="language-text">Tell me more about your mother.</code></pre>
 <p>The response fits the conversation. Producing it does not require ELIZA to know what a mother is, what worry feels like, why you are worried, or what a therapist should recommend. It needs a rule that turns one piece of text into another plausible piece of text.</p>
 <p>That is the central trick: <strong>your own language supplies most of the apparent meaning</strong>.</p>
+<div class="focus-block">
 <h3 id="a-real-doctor-rule">A real DOCTOR rule</h3>
 <p>The recovered script lets us go past the simplified example and read an authentic rule. One keyword entry is:</p>
 <pre data-lang="text"><code class="language-text">(ALIKE 10 (=DIT))</code></pre>
 <p><code>ALIKE</code> is the keyword, <code>10</code> is its ranking, and <code>=DIT</code> redirects processing to another rule group about similarity. One available response in that group is <code>(IN WHAT WAY)</code>.</p>
+</div>
 <figure class="figure--secondary"><img class="figure__img" src="../../media/week-01/doctor-keyword-route.svg" alt="One authentic DOCTOR keyword route" loading="lazy" decoding="async"><figcaption>Figure 4. One authentic DOCTOR keyword route traced from input to reply. Rule fragments are taken from the recovered DOCTOR script, whose source scan is released under <strong>CC0</strong>. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <p>Nothing on that route requires ELIZA to understand what it means for people to be alike.</p>
 <div class="callout callout--note"><span class="callout__label">Note</span><p><strong>MECHANISM CHECK</strong></p>
@@ -139,7 +143,7 @@ INSTEAD  Can a machine behave, under controlled conditions,
 <p>Evaluation is not only about what result a test produces. It is about what the test admits as evidence in the first place, and therefore about which conclusions it was ever capable of supporting.</p></div></div></details>
 <details class="beat" id="turings-imitation-game"><summary><h2 class="beat__title">Turing's imitation game</h2></summary><div class="beat__body"><p>Alan Turing was a mathematician and one of the founding figures of computer science. Three dates matter this week:</p>
 <ul><li><strong>1936</strong> — his work on computability established the theoretical idea of a general-purpose computing machine.</li><li><strong>1939–45</strong> — wartime cryptanalysis at Bletchley Park.</li><li><strong>1950</strong> — <em>Computing Machinery and Intelligence</em>, published in <em>Mind</em>. That is the paper.</li></ul>
-<figure><img class="figure__img is-portrait" src="https://commons.wikimedia.org/wiki/Special:FilePath/Alan%20Turing%20(1951).jpg?width=480" alt="Alan Turing in 1951" loading="lazy" decoding="async"><figcaption>Figure 6. Alan Turing, photographed on 29 March 1951. Source: <a href="https://commons.wikimedia.org/wiki/File:Alan_Turing_(1951).jpg">Wikimedia Commons — Alan Turing (1951).jpg</a>. Commons metadata associates the portrait with Elliott &amp; Fry and marks the photograph <strong>public domain</strong> in its source country.</figcaption></figure>
+<figure class="figure--hero"><img class="figure__img is-portrait" src="https://commons.wikimedia.org/wiki/Special:FilePath/Alan%20Turing%20(1951).jpg?width=480" alt="Alan Turing in 1951" loading="lazy" decoding="async"><figcaption>Figure 6. Alan Turing, photographed on 29 March 1951. Source: <a href="https://commons.wikimedia.org/wiki/File:Alan_Turing_(1951).jpg">Wikimedia Commons — Alan Turing (1951).jpg</a>. Commons metadata associates the portrait with Elliott &amp; Fry and marks the photograph <strong>public domain</strong> in its source country.</figcaption></figure>
 <h3 id="the-original-game-is-stranger-than-the-textbook-version">The original game is stranger than the textbook version</h3>
 <p>Most summaries jump straight to a human and a machine, which loses the point. Turing begins with no machine at all.</p>
 <p>Three people, communicating only in writing:</p>
@@ -153,18 +157,22 @@ INSTEAD  Can a machine behave, under controlled conditions,
 <p>The text-only constraint is not a limitation of 1950 technology. It is a deliberate decision about what may count as evidence.</p>
 <p>Written exchange removes appearance, voice, timing, physical embodiment and any ability to inspect the participant. The interrogator cannot open the machine or reason from how it looks. Everything the judgement rests on arrives through the same narrow channel for both witnesses.</p>
 <p>Mechanism is ruled out by design; behaviour is all that remains. A system that a glance through a window would expose instantly can pass a test conducted through a keyhole — and that is a fact about the test, not about the system.</p>
+<div class="focus-block">
 <h3 id="turings-prediction-and-what-it-does-not-say">Turing's prediction, and what it does not say</h3>
 <p>Turing offered a forecast: in about fifty years, machines would play the imitation game well enough that an average interrogator would have no more than roughly a <strong>70% chance of making the correct identification after five minutes</strong> of questioning.</p>
 <p>This is the most misread sentence in the paper.</p>
 <p>It is a <strong>prediction about future capability</strong>, not a definition of success. Turing does <strong>not</strong> propose 70% as a threshold, does <strong>not</strong> say that fooling 30% of judges constitutes passing, and does <strong>not</strong> describe the number as a criterion at all. The widely repeated "30% rule" was invented later and read back into the text.</p>
 <p>Notice too that the figure is tied to a duration — five minutes — which tells us Turing expected the result to depend on how long the interrogation runs. That expectation is testable, and later this week we see it tested.</p>
+</div>
 <div class="callout callout--warning"><span class="callout__label">Warning</span><p><strong>A percentage is not a pass mark unless somebody defines it as one</strong></p>
 <p>Turing predicted a rate of correct identification. He did not set a threshold. Any "pass mark" you meet — including the ones in modern studies — was chosen by whoever designed that experiment, and should be read as their choice.</p></div>
 <h3 id="the-objections-he-anticipated">The objections he anticipated</h3>
 <p>Much of the paper answers objections, and three are still the ones people raise today.</p>
 <p>The <strong>consciousness objection</strong> says a machine could produce every appropriate response without there being anything it is like to be that machine, so it is not really thinking. Turing's reply is uncomfortable and hard to escape: the same doubt applies to other people. We grant each other inner lives on behavioural evidence, because we have no other kind. Demanding more for machines than we can supply for humans sets a standard nobody meets. That does not prove machines have experience — he does not claim it does — but it shows the objection cuts deeper than intended.</p>
 <p><strong>Lady Lovelace's objection</strong>, from Ada Lovelace's notes on Babbage's Analytical Engine, says a machine can only do what we know how to order it to do, and so can never originate anything. Turing answers that we are routinely surprised by our own machines, and that "originality" may amount to behaviour we did not anticipate. The modern form is entirely familiar: whether a generative model creates anything or only recombines its training data. That the argument survives unchanged since 1843 is itself informative.</p>
+<div class="focus-block">
 <p>Finally, <strong>learning machines</strong>. Turing's closing suggestion is that programming an adult mind directly is the wrong strategy — it would be easier to build something with the capacity of a child and then educate it, specifying a learning process rather than finished knowledge. Read in 2026 this is the most striking passage in the paper, because it describes the approach that actually won.</p>
+</div>
 <h3 id="what-the-game-can-and-cannot-establish">What the game can and cannot establish</h3>
 <p>A successful performance establishes <strong>behavioural indistinguishability under particular conditions</strong> — this interface, this duration, these questions, these judges. That is a genuine empirical result, and it is not nothing: sustaining a convincing performance under adversarial questioning is hard.</p>
 <p>It does not establish:</p>
@@ -318,16 +326,20 @@ Interrogator question:</code></pre>
 <p>Both are needed. The claim we are examining is not "AI is stupid" and not "AI is intelligent". It is that behaviour is uneven, and that a test sampling one part of that range will mislead you about the rest.</p></div></details>
 <details class="beat" id="what-happened-when-researchers-ran-this-properly"><summary><h2 class="beat__title">What happened when researchers ran this properly</h2></summary><div class="beat__body"><p>You have now run a small, uncontrolled version of Turing's test and watched a single instruction change the answer. The obvious next question is what happens when the same thing is done carefully, at scale, with real controls.</p>
 <p>It has been. In 2026 the imitation game was run as Turing described it — three parties, text only, real judges — with modern systems in the machine's seat.</p>
+<div class="focus-block">
 <ul><li>📄 <a href="https://doi.org/10.1073/pnas.2524472123"><strong><em>Large language models pass a standard three-party Turing test</em></strong></a> — Cameron R. Jones and Benjamin K. Bergen, <em>PNAS</em>, 123(21), e2524472123. Published 19 May 2026. Open access under <strong>CC BY 4.0</strong>.</li><li>🔗 <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC13214042/"><strong>PubMed Central</strong></a> — open-access full text.</li><li>🔗 <a href="https://arxiv.org/abs/2503.23674"><strong>arXiv:2503.23674</strong></a> — the earlier preprint.</li><li>🔗 <a href="https://osf.io/jk7bw"><strong>OSF</strong></a> — the anonymised conversation data.</li><li>🔗 <a href="https://turingtest.live/"><strong>turingtest.live</strong></a> — the experiment site the authors used.</li></ul>
+</div>
 <p>The studies were randomised, controlled and preregistered. This is not an argument about whether machines can think. It is a measurement, and measurements can be interrogated.</p>
 <h3 id="how-their-experiment-worked">How their experiment worked</h3>
 <p>The design will look familiar, because it is the one you just ran. An <strong>interrogator</strong> holds two simultaneous text conversations, one with a <strong>human witness</strong> and one with an <strong>AI witness</strong>, through the same interface, with no cue which is which. At the end the interrogator names the one they believe to be human, states their confidence, and gives a reason.</p>
 <p>Both witnesses are trying to be identified as the human. The AI's task is not to be helpful or correct; it is to be picked.</p>
 <p>Two differences from our version are worth noting, and both make their result stronger than ours:</p>
 <ul><li>Conversations ran up to <strong>five minutes</strong>, against our few questions.</li><li>Two populations were recruited — undergraduates at <strong>UC San Diego</strong> and participants through <strong>Prolific</strong> — giving <strong>1,023 analysed games</strong> after exclusions. A result holding only among psychology undergraduates would be much weaker.</li></ul>
+<div class="focus-block">
 <h3 id="which-systems-were-tested">Which systems were tested</h3>
 <ul><li><strong>GPT-4.5</strong> — the frontier model at the time</li><li><strong>LLaMa-3.1-405B</strong> — a large open-weight model</li><li><strong>GPT-4o</strong> — a widely deployed assistant model</li><li><strong>ELIZA</strong> — yes, that ELIZA, included deliberately as a baseline</li></ul>
 <p>That last inclusion is a control, and a good one. If a modern model cannot clearly beat a few hundred lines of pattern-matching, the experiment is not measuring what it claims to.</p>
+</div>
 <h3 id="persona-and-no-persona">PERSONA and NO-PERSONA</h3>
 <p>This is the same variable you changed, described precisely.</p>
 <p><strong>Both</strong> conditions told the model that it was a witness in a Turing test, that an interrogator would question it, that its aim was to be selected as the human, and gave it common-ground information about the interface and setting.</p>
@@ -371,17 +383,19 @@ Interrogator question:</code></pre>
 <p>Improve the machine's fit to the human stereotype and the score rises without anything about its understanding having changed at all. Whenever a system is scored by human judgement, some of the score belongs to the judge.</p></div>
 <h3 id="counterfeit-people">Counterfeit people</h3>
 <p>Suppose we reject the Turing test entirely as a measure of intelligence. The result still matters, and the philosopher <strong>Daniel Dennett</strong> supplied the phrase for why.</p>
+<div class="focus-block">
 <p>Writing in <em>The Atlantic</em> in 2023, Dennett argued that the serious near-term danger from AI is not superintelligence but <strong>counterfeit people</strong>: systems able to pass as human convincingly enough to occupy the social roles we reserve for persons. His argument is economic as much as ethical — counterfeit currency devalues real currency, and counterfeit people devalue the trust that makes ordinary interaction possible.</p>
 <p>Jones and Bergen give that argument a measurement. The capability is now demonstrated under controlled conditions, at scale, with a prompt rather than a research programme. The consequences follow directly: impersonation, social engineering and fraud, automated misinformation that reads like ordinary conversation, and a general erosion of the assumption that whoever you are talking to online is a person.</p>
 <p>Note what none of this requires. It does not depend on the system understanding anything. Human-likeness is sufficient on its own — which is why a test we might dismiss as philosophically uninformative can still be measuring something that matters.</p>
 <ul><li>🔗 <a href="https://www.theatlantic.com/technology/archive/2023/05/problem-counterfeit-people/674075/"><strong><em>The Problem With Counterfeit People</em></strong></a> — Daniel C. Dennett, <em>The Atlantic</em>, 16 May 2023.</li></ul>
+</div>
 <h3 id="questions-worth-pressing">Questions worth pressing</h3>
 <p>A good paper gives you things to argue with, and this one does.</p>
 <ul><li>Is five minutes long enough to tell us anything? Is fifteen? What would be?</li><li>How much of the result belongs to the model, and how much to the persona prompt? If a different prompt gives a different number, what exactly was measured?</li><li>Would AI researchers, or people who use these systems daily, perform differently as interrogators?</li><li>How much depends on the population? A judge's model of "how people write" is cultural and generational.</li><li>As familiarity with AI writing grows, will the test get harder for machines — or will people just learn new and equally unreliable tells?</li><li>Is imitating a human the right target at all? A system optimised to seem human is not thereby optimised to be useful, correct or safe.</li></ul>
 <p>You do not have to settle these. Being able to state them precisely is the skill.</p></div></details>
-<details class="beat" id="what-does-this-actually-prove"><summary><h2 class="beat__title">What does this actually prove?</h2></summary><div class="beat__body"><p>This is the part of the week that is assessable, and the part most often got wrong.</p>
-<h3 id="if-the-machine-was-picked">If the machine was picked</h3>
-<p>Suppose your class picked the machine. State the finding precisely:</p>
+<details class="beat" id="what-does-this-actually-prove"><summary><h2 class="beat__title">What does this actually prove?</h2></summary><div class="beat__body"><p>A result from an experiment like this one is easy to over-read. What follows is what the evidence actually supports, and where it stops.</p>
+<h3 id="if-the-machine-is-selected-as-the-human">If the machine is selected as the human</h3>
+<p>If the machine is selected as the human, the strongest available conclusion is narrower than it may first appear:</p>
 <blockquote><p><strong>The model produced sufficiently convincing human-like behaviour under these experimental conditions.</strong></p></blockquote>
 <p>Those conditions are: this model, these instructions, these questions, this interface, this many turns, and these judges. That is a real result about a specific configuration, and it is the same <em>kind</em> of result Jones and Bergen report — narrower and less controlled, but the same kind.</p>
 <h3 id="what-it-does-not-establish">What it does not establish</h3>
@@ -391,15 +405,17 @@ Interrogator question:</code></pre>
 <p>None of those is visible through the interface we used — which is precisely what Turing's text-only channel was designed to ensure. <strong>This distinction is one of the main things to take away from Week 1.</strong></p>
 </div>
 <h3 id="the-reverse-also-holds">The reverse also holds</h3>
-<p>If your class identified the machine immediately, you have <strong>not</strong> shown it is unintelligent. You have shown that this configuration failed to sustain a convincing performance for these judges. Change the instruction, as the persona run does, and the result can reverse without a single thing about the model having changed.</p>
+<p>If the machine is identified immediately, the reverse conclusion is limited in the same way. That result does <strong>not</strong> show the model is unintelligent. It shows that this configuration failed to sustain a convincing performance for these judges. Change the instruction, as the persona run does, and the result can reverse without a single thing about the model having changed.</p>
 <div class="callout callout--important"><span class="callout__label">Important</span><p><strong>The result belongs to the configuration, not to the model</strong></p>
-<p>Every claim from this experiment carries conditions attached. Stating a result without its conditions is the most common error in evaluating AI systems, and it is the habit this week exists to break.</p></div>
+<p>Every claim from this experiment carries conditions attached. A result reported without its conditions is the most common error in evaluating AI systems, and avoiding it is the habit this week exists to build.</p></div>
+<div class="focus-block">
 <h3 id="the-whole-week-in-one-line-each">The whole week in one line each</h3>
 <p>The four parts answer four different questions, and the sequence is the argument:</p>
 <ol><li><strong>ELIZA</strong> showed us <strong>MECHANISM</strong> — convincing behaviour can come from machinery far simpler than the impression suggests, and the impression is not evidence about the machinery.</li><li><strong>Turing</strong> gave us <strong>EVALUATION</strong> — if the mechanism is hidden, behaviour can still be evidence, provided we constrain what reaches the judge and stay honest about what the answer covers.</li><li><strong>Our own experiment</strong> made the variables tangible, by letting us change one at a time and watch the outcome move.</li><li><strong>Jones and Bergen</strong> confirmed at scale that the result belongs to the whole system — model, instructions, interface, judge and questions — rather than to the model alone.</li></ol>
 <p>Which returns us to the question this page opened with:</p>
 <blockquote><p><strong>Can a machine appear intelligent without understanding anything?</strong></p></blockquote>
-<p>The answer is yes, demonstrably, and it has been yes since 1966. What has changed is the quality of the appearance and the difficulty of seeing through it. What has not changed is the discipline required in response: keep <strong>BEHAVIOUR</strong> and <strong>MECHANISM</strong> apart, and be exact about what any particular <strong>EVALUATION</strong> has and has not established.</p></div></details>
+<p>The answer is yes, demonstrably, and it has been yes since 1966. What has changed is the quality of the appearance and the difficulty of seeing through it. What has not changed is the discipline required in response: keep <strong>BEHAVIOUR</strong> and <strong>MECHANISM</strong> apart, and be exact about what any particular <strong>EVALUATION</strong> has and has not established.</p>
+</div></div></details>
   </main>
 
   <div class="tail">
