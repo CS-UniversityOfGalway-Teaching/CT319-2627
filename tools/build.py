@@ -108,7 +108,14 @@ def inline(text: str) -> str:
 # --------------------------------------------------------------------------
 
 CAPTION_RE = re.compile(r"^<sub><em>(.*)</em></sub>\s*$", re.S)
-IMAGE_ONLY_RE = re.compile(r"^!\[([^\]]*)\]\((" + URL_DEST + r")\)\s*$")
+# An optional Markdown title carries the teaching weight of the figure:
+#   ![alt](src "hero")       stop-and-discuss anchor, widest on the page
+#   ![alt](src "secondary")  important supporting figure, ~80% width
+# Anything else (or no title) renders at the ordinary reference size.
+IMAGE_ONLY_RE = re.compile(
+    r"^!\[([^\]]*)\]\((" + URL_DEST + r")(?:\s+\"([^\"]*)\")?\)\s*$"
+)
+FIGURE_LEVELS = {"hero", "secondary"}
 LINKED_IMAGE_RE = re.compile(
     r"^\[!\[([^\]]*)\]\((" + URL_DEST + r")\)\]\((" + URL_DEST + r")\)\s*$"
 )
@@ -308,11 +315,13 @@ class Renderer:
         m = IMAGE_ONLY_RE.match(self.lines[self.i].strip())
         assert m
         alt, src = m.group(1), m.group(2)
+        level = (m.group(3) or "").strip().lower()
         self.i += 1
         caption = self.caption_ahead()
         portrait = " is-portrait" if "width=480" in src else ""
+        fig_cls = f' class="figure--{level}"' if level in FIGURE_LEVELS else ""
         parts = [
-            "<figure>",
+            f"<figure{fig_cls}>",
             f'<img class="figure__img{portrait}" src="{html.escape(src, quote=True)}"'
             f' alt="{html.escape(alt, quote=True)}" loading="lazy" decoding="async">',
         ]

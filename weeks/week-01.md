@@ -52,7 +52,7 @@ Joseph Weizenbaum wrote ELIZA at MIT in the mid-1960s. You could type a sentence
 
 The conversations could look surprisingly convincing.
 
-![A conversation with ELIZA](https://commons.wikimedia.org/wiki/Special:FilePath/ELIZA%20conversation.png?width=1200)
+![A conversation with ELIZA](https://commons.wikimedia.org/wiki/Special:FilePath/ELIZA%20conversation.png?width=1200 "hero")
 
 <sub><em>Figure 2. Example conversation with ELIZA. Source: <a href="https://commons.wikimedia.org/wiki/File:ELIZA_conversation.png">Wikimedia Commons — ELIZA conversation.png</a>. The depicted text is marked <strong>public domain</strong> on Wikimedia Commons.</em></sub>
 
@@ -105,7 +105,7 @@ In ordinary conversation that might sound evasive. From a therapist it sounds en
 
 ELIZA does not build a model of your meaning and then decide what to say.
 
-![Simplified ELIZA processing loop](../../media/week-01/eliza-processing-loop.svg)
+![Simplified ELIZA processing loop](../../media/week-01/eliza-processing-loop.svg "secondary")
 
 <sub><em>Figure 3. Simplified ELIZA processing loop, redrawn for CT319 from Weizenbaum (1966) and the recovered source-code walkthrough at Finding ELIZA. Diagram created for these pages; no external image licence is used.</em></sub>
 
@@ -149,7 +149,7 @@ The recovered script lets us go past the simplified example and read an authenti
 
 `ALIKE` is the keyword, `10` is its ranking, and `=DIT` redirects processing to another rule group about similarity. One available response in that group is `(IN WHAT WAY)`.
 
-![One authentic DOCTOR keyword route](../../media/week-01/doctor-keyword-route.svg)
+![One authentic DOCTOR keyword route](../../media/week-01/doctor-keyword-route.svg "secondary")
 
 <sub><em>Figure 4. One authentic DOCTOR keyword route traced from input to reply. Rule fragments are taken from the recovered DOCTOR script, whose source scan is released under <strong>CC0</strong>. Diagram created for these pages; no external image licence is used.</em></sub>
 
@@ -187,7 +187,7 @@ You contribute a great deal to the interaction. People interpret language, conne
 
 This became known as the **ELIZA effect**: attributing more understanding, intention or awareness to a system than its mechanism justifies.
 
-![ELIZA behaviour and mechanism](../../media/week-01/eliza-behaviour-mechanism.svg)
+![ELIZA behaviour and mechanism](../../media/week-01/eliza-behaviour-mechanism.svg "hero")
 
 <sub><em>Figure 5. The same ELIZA interaction described at two levels: the behaviour the user experiences, and the mechanism producing it. Both descriptions are true. Diagram created for these pages; no external image licence is used.</em></sub>
 
@@ -272,7 +272,7 @@ Three people, communicating only in writing:
 
 So the starting scenario is already a game about *imitation through a text-only channel*: one person sustaining a performance of being someone they are not, while a judge tries to see through it. Only then does Turing ask his real question — what happens if a machine takes the part of A?
 
-![The original imitation game and the machine substitution](../../media/week-01/turing-imitation-game.svg)
+![The original imitation game and the machine substitution](../../media/week-01/turing-imitation-game.svg "hero")
 
 <sub><em>Figure 7. The original imitation game, and Turing's substitution of a machine for participant A. Diagram created for these pages; no external image licence is used.</em></sub>
 
@@ -404,7 +404,7 @@ A control is anything we hold steady so that a difference in the result can be a
 
 One more condition is worth stating: keep everything else comparable between runs. Same room, same kind of question, same length of conversation. Otherwise you cannot tell which change moved the result.
 
-![CT319 local Turing-test experiment architecture](../../media/week-01/ct319-experiment-architecture.svg)
+![CT319 local Turing-test experiment architecture](../../media/week-01/ct319-experiment-architecture.svg "hero")
 
 <sub><em>Figure 8. How the experiment fits together. A question and a set of witness instructions go into a Python program, which sends the conversation to Ollama running a language model on the same computer, and gets a reply back. The reply appears anonymously beside the human witness's answer. Diagram created for these pages; no external image licence is used.</em></sub>
 
@@ -719,7 +719,7 @@ So the comparison is not *instructions* against *no instructions*. It is a plaus
 
 ### The headline result
 
-![Five-minute Turing-test win rates](../../media/week-01/jones-bergen-5min-win-rates.png)
+![Five-minute Turing-test win rates](../../media/week-01/jones-bergen-5min-win-rates.png "hero")
 
 <sub><em>Figure 9. Overall five-minute win rates: the proportion of games in which each AI witness was selected as the human. The dashed line marks 50%, where interrogators are performing at chance. Chart created for these pages from the numerical results reported in Jones &amp; Bergen (2026); source article <strong>CC BY 4.0</strong>.</em></sub>
 
@@ -756,7 +756,7 @@ The obvious objection to a five-minute test is that five minutes is not much. Gi
 
 The authors tested this directly. A replication tripled the conversation length to **fifteen minutes** and substituted **GPT-5** for GPT-4.5, which had been deprecated in the interval. After exclusions it analysed **396 games** with **205 Prolific participants**.
 
-![Fifteen-minute replication win rates](../../media/week-01/jones-bergen-15min-replication.png)
+![Fifteen-minute replication win rates](../../media/week-01/jones-bergen-15min-replication.png "secondary")
 
 <sub><em>Figure 10. Win rates in the fifteen-minute replication, in which GPT-5 replaced the deprecated GPT-4.5. Chart created for these pages from the numerical results reported in Jones &amp; Bergen (2026); source article <strong>CC BY 4.0</strong>.</em></sub>
 
@@ -774,7 +774,7 @@ The teaching point is that extra time is not a general remedy. It helps against 
 
 The most useful part of the paper for us is not the win rates. It is the analysis of what interrogators *tried*.
 
-![What interrogators tried in the five-minute studies](../../media/week-01/jones-bergen-interrogator-strategies.png)
+![What interrogators tried in the five-minute studies](../../media/week-01/jones-bergen-interrogator-strategies.png "hero")
 
 <sub><em>Figure 11. Strategies used by interrogators in the five-minute studies, as a proportion of games. Chart created for these pages from the numerical results reported in Jones &amp; Bergen (2026); source article <strong>CC BY 4.0</strong>.</em></sub>
 
