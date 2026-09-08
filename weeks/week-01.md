@@ -159,11 +159,11 @@ The recovered script lets us go past the simplified example and read an authenti
 
 `ALIKE` is the keyword, `10` is its ranking, and `=DIT` redirects processing to another rule group about similarity. One available response in that group is `(IN WHAT WAY)`.
 
-<!-- ct319:endfocus -->
-
 ![One authentic DOCTOR keyword route](../../media/week-01/doctor-keyword-route.svg "secondary")
 
 <sub><em>Figure 4. One authentic DOCTOR keyword route traced from input to reply. Rule fragments are taken from the recovered DOCTOR script, whose source scan is released under <strong>CC0</strong>. Diagram created for these pages; no external image licence is used.</em></sub>
+
+<!-- ct319:endfocus -->
 
 Nothing on that route requires ELIZA to understand what it means for people to be alike.
 
