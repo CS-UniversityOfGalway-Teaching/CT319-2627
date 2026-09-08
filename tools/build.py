@@ -116,6 +116,11 @@ IMAGE_ONLY_RE = re.compile(
     r"^!\[([^\]]*)\]\((" + URL_DEST + r")(?:\s+\"([^\"]*)\")?\)\s*$"
 )
 FIGURE_LEVELS = {"hero", "secondary"}
+
+# Wraps existing prose in a teaching-focus block. Both markers are HTML
+# comments, so the Markdown still reads normally on GitHub.
+FOCUS_START = "<!-- ct319:focus -->"
+FOCUS_END = "<!-- ct319:endfocus -->"
 LINKED_IMAGE_RE = re.compile(
     r"^\[!\[([^\]]*)\]\((" + URL_DEST + r")\)\]\((" + URL_DEST + r")\)\s*$"
 )
@@ -125,6 +130,7 @@ class Renderer:
     def __init__(self, lines: list[str]) -> None:
         self.lines = lines
         self.i = 0
+        self.focus_depth = 0
         self.out: list[str] = []
         self.headings: list[tuple[int, str, str]] = []
 
@@ -157,6 +163,16 @@ class Renderer:
 
             if not stripped:
                 self.i += 1
+            elif stripped == FOCUS_START:
+                self.out.append('<div class="focus-block">')
+                self.focus_depth += 1
+                self.i += 1
+            elif stripped == FOCUS_END:
+                if not self.focus_depth:
+                    raise SystemExit(f"stray {FOCUS_END} at line {self.i + 1}")
+                self.out.append("</div>")
+                self.focus_depth -= 1
+                self.i += 1
             elif stripped.startswith("```"):
                 self.code_block()
             elif re.match(r"^#{1,6}\s", stripped):
@@ -178,6 +194,8 @@ class Renderer:
                 self.figure()
             else:
                 self.paragraph()
+        if self.focus_depth:
+            raise SystemExit(f"{self.focus_depth} unclosed {FOCUS_START}")
         return "\n".join(self.out)
 
     # -- block handlers ---------------------------------------------------

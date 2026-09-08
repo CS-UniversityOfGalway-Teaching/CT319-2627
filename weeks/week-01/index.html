@@ -50,10 +50,12 @@
 <figure><img class="figure__img is-portrait" src="https://commons.wikimedia.org/wiki/Special:FilePath/Joseph%20Weizenbaum.jpg?width=480" alt="Joseph Weizenbaum" loading="lazy" decoding="async"><figcaption>Figure 1. Joseph Weizenbaum, creator of ELIZA, photographed by Ulrich Hansen in Berlin in 2005. Source: <a href="https://commons.wikimedia.org/wiki/File:Joseph_Weizenbaum.jpg">Wikimedia Commons — Joseph Weizenbaum.jpg</a>. Licence: <strong>CC BY-SA 3.0</strong> and <strong>GFDL 1.2+</strong>.</figcaption></figure>
 <p>The conversations could look surprisingly convincing.</p>
 <figure class="figure--hero"><img class="figure__img" src="https://commons.wikimedia.org/wiki/Special:FilePath/ELIZA%20conversation.png?width=1200" alt="A conversation with ELIZA" loading="lazy" decoding="async"><figcaption>Figure 2. Example conversation with ELIZA. Source: <a href="https://commons.wikimedia.org/wiki/File:ELIZA_conversation.png">Wikimedia Commons — ELIZA conversation.png</a>. The depicted text is marked <strong>public domain</strong> on Wikimedia Commons.</figcaption></figure>
+<div class="focus-block">
 <p>The question worth asking is not whether that looks intelligent. It is:</p>
 <blockquote><p><strong>How much machinery is actually required to produce that impression?</strong></p></blockquote>
 <ul><li><strong>BEHAVIOUR</strong> — ELIZA appears to respond to what you are saying.</li><li><strong>MECHANISM</strong> — the response comes from a fairly small collection of rules.</li></ul>
 <p>That gap is why ELIZA still matters sixty years later.</p>
+</div>
 <h3 id="try-it-before-we-look-inside">Try it before we look inside</h3>
 <p>The effect is much easier to understand once you have felt it, so do this first.</p>
 <p>🔗 <a href="https://www.masswerk.at/eliza/"><strong>Open the ELIZA recreation</strong></a></p>
@@ -103,8 +105,10 @@ later
 <div class="callout callout--important"><span class="callout__label">Important</span><p>Saying <strong>ELIZA had memory</strong> is technically correct. It does <strong>not</strong> mean ELIZA maintained anything like the persistent understanding we might assume from a modern conversational system.</p></div>
 <h3 id="why-people-found-it-convincing">Why people found it convincing</h3>
 <p>The mechanism explains how the responses were generated. It does not fully explain why people believed them.</p>
+<div class="focus-block">
 <p>You contribute a great deal to the interaction. People interpret language, connect replies to earlier statements, and infer intention behind what the other participant says. ELIZA could therefore supply very little while you supplied the coherence.</p>
 <p>This became known as the <strong>ELIZA effect</strong>: attributing more understanding, intention or awareness to a system than its mechanism justifies.</p>
+</div>
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-01/eliza-behaviour-mechanism.svg" alt="ELIZA behaviour and mechanism" loading="lazy" decoding="async"><figcaption>Figure 5. The same ELIZA interaction described at two levels: the behaviour the user experiences, and the mechanism producing it. Both descriptions are true. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <div class="callout callout--warning"><span class="callout__label">Warning</span><p><strong>Do not over-generalise from ELIZA</strong></p>
 <p>Modern language models are vastly more capable and work in a fundamentally different way. The lesson is <strong>not</strong> that ChatGPT or a local LLM is a bigger ELIZA.</p>
@@ -114,19 +118,23 @@ later
 <p>Read the paper as a technical description rather than a historical essay: how keywords are identified and ranked, how decomposition splits an input, how reassembly builds the response, what happens when no rule applies, and how a script changes the behaviour of the same program.</p>
 <figure><a class="video-link" href="https://www.youtube.com/watch?v=iRs-nC8vEro"><img src="https://img.youtube.com/vi/iRs-nC8vEro/hqdefault.jpg" alt="Talking to the Machine — ELIZA" loading="lazy" decoding="async"></a><figcaption>Video 1. "Talking to the Machine 2/4 — ELIZA, or the First Bot and Immediate Problems", Copernicus, 2020. Source: <a href="https://www.youtube.com/watch?v=iRs-nC8vEro">YouTube</a>. No open reuse licence was identified on the source page; copyright remains with the rights holders. The image above is a linked preview only.</figcaption></figure></div></details>
 <details class="beat" id="what-exactly-are-we-testing"><summary><h2 class="beat__title">What exactly are we testing?</h2></summary><div class="beat__body"><p>ELIZA leaves us with two descriptions of one interaction, and both of them are true. The conversation was responsive. The machinery was a few hundred lines of pattern rules. The mistake is assuming the first tells you what you need to know about the second.</p>
+<div class="focus-block">
 <p>So we need a harder question:</p>
 <blockquote><p><strong>If intelligent-looking behaviour does not by itself prove understanding, can behaviour still be useful evidence of intelligence?</strong></p></blockquote>
+</div>
 <h3 id="can-machines-think-is-a-trap">"Can machines think?" is a trap</h3>
 <p>It sounds like the right question, and it is the one Turing opens his 1950 paper with — immediately in order to reject it.</p>
 <p>His reason is worth taking seriously. The question cannot be settled by investigation, because we do not agree on what the words mean. <em>Machine</em> is loose enough to need stipulating. <em>Think</em> is worse: any definition we offer already contains our conclusion. Define thinking as something biological and machines are excluded before any evidence is collected. Define it as information processing and thermostats are admitted. The argument becomes a dispute about vocabulary rather than about the world.</p>
 <p>That is a <strong>definitional</strong> problem, not an empirical one, and Turing's move is to stop trying to solve it.</p>
 <h3 id="the-substitution">The substitution</h3>
 <p>Instead of asking what thinking <em>is</em>, he asks what we would accept as <strong>evidence</strong>, and then builds a procedure that produces that evidence.</p>
+<div class="focus-block">
 <pre data-lang="text"><code class="language-text">NOT      Can machines think?
 INSTEAD  Can a machine behave, under controlled conditions,
          in a way that people cannot distinguish from a person?</code></pre>
 <p>The second question can be run. The first cannot.</p>
 <p>That substitution is Turing's whole contribution, and it is the thing to hold on to for the rest of the week — including when we run our own version, and when we read a study that ran it properly with 1,023 games. <strong>A test built on a substitution can only ever answer the substituted question.</strong></p>
+</div>
 <div class="callout callout--important"><span class="callout__label">Important</span><p>This is the <strong>EVALUATION</strong> lens doing its work.</p>
 <p>Evaluation is not only about what result a test produces. It is about what the test admits as evidence in the first place, and therefore about which conclusions it was ever capable of supporting.</p></div></div></details>
 <details class="beat" id="turings-imitation-game"><summary><h2 class="beat__title">Turing's imitation game</h2></summary><div class="beat__body"><p>Alan Turing was a mathematician and one of the founding figures of computer science. Three dates matter this week:</p>
@@ -161,7 +169,9 @@ INSTEAD  Can a machine behave, under controlled conditions,
 <p>A successful performance establishes <strong>behavioural indistinguishability under particular conditions</strong> — this interface, this duration, these questions, these judges. That is a genuine empirical result, and it is not nothing: sustaining a convincing performance under adversarial questioning is hard.</p>
 <p>It does not establish:</p>
 <ul><li><strong>consciousness or subjective experience</strong> — the test cannot see them</li><li><strong>mechanism</strong> — the interface is built to hide it</li><li><strong>general competence</strong> — conversational performance predicts little about anything else</li><li><strong>reliability</strong> — a convincing witness is not thereby a correct one</li><li><strong>human-like internal reasoning</strong> — very different mechanisms can produce the same visible text, which is exactly what ELIZA already showed us</li></ul>
+<div class="focus-block">
 <p><strong>BEHAVIOUR</strong> is what the test measures. <strong>MECHANISM</strong> is what it is designed to exclude. <strong>EVALUATION</strong> is the work of keeping those apart when a result arrives.</p>
+</div>
 <h3 id="reading-the-paper">Reading the paper</h3>
 <ul><li>📄 <a href="https://doi.org/10.1093/mind/LIX.236.433"><strong><em>Computing Machinery and Intelligence</em></strong></a> — A. M. Turing, <em>Mind</em>, LIX(236), 433–460.</li><li>🔗 <a href="https://turingarchive.kings.cam.ac.uk/publications-lectures-and-talks-amtb/amt-b-9"><strong>Turing Digital Archive — AMT/B/9</strong></a> — the archival record at King's College, Cambridge.</li></ul>
 <p>It is readable without a technical background, and better approached in pieces. Four places repay attention:</p>
@@ -297,8 +307,10 @@ Interrogator question:</code></pre>
 <h3 id="compare">Compare</h3>
 <ul><li>Did the class judgement change?</li><li>Did the <em>confidence</em> change, even where the vote did not?</li><li>Which specific cues changed — length, register, punctuation, willingness to hold an opinion?</li><li>Why might the change have moved the result?</li></ul>
 <p>And the question that matters most:</p>
+<div class="focus-block">
 <blockquote><p><strong>Did the machine become more intelligent, or only more human-like?</strong></p></blockquote>
 <p>Nothing about the model's capabilities changed between those two runs. Only the instruction did.</p>
+</div>
 <p>If you ran the question-type variable instead, you will probably find the machine performs <em>better</em> on the formal reasoning question and is <em>identified more easily</em> because of it. Being impressively correct is a tell. That is worth sitting with: a test built out of reasoning problems would rank these witnesses in a completely different order, and would be measuring something else entirely.</p>
 <h3 id="two-optional-probes-if-there-is-time">Two optional probes, if there is time</h3>
 <p>Run <strong>one short constraint task</strong> — a three-sentence answer where each sentence is shorter than the last, or a short description that never uses a particular common letter. Keep it to a single example: the purpose is to locate a boundary, not to assemble a compilation of failures. A page of cherry-picked mistakes teaches nothing except that cherry-picking works.</p>
@@ -329,8 +341,10 @@ Interrogator question:</code></pre>
 <p>That last detail is the most instructive line on the chart. GPT-4o is vastly more capable than ELIZA by any measure of what it can actually do. In this test it does slightly worse, because the test does not reward capability. It rewards not being spotted — and an unprompted assistant gives itself away immediately through fluency, helpfulness and formatting, the very features that make it useful.</p>
 <p>If you ran the persona variable yourself, you have seen the 36% → 73% effect in miniature. Nothing about the model changed between those two numbers.</p>
 <h3 id="what-73-actually-means">What 73% actually means</h3>
+<div class="focus-block">
 <p><strong>73% is a human-identification rate, not an intelligence score.</strong> In 73% of the games where GPT-4.5 with a persona was the AI witness, the interrogator pointed at the machine when asked which participant was the human. It is a fact about what judges did, under a particular set of conditions.</p>
 <p>It is also above 50%, which is the genuinely surprising part. Interrogators were not merely failing to identify the machine better than chance; they were selecting it as the human <em>more often than they selected the actual human being</em>.</p>
+</div>
 <p>"Passing", in this paper's operationalisation, means exactly that: interrogators could not reliably distinguish the machine from the human and performed no better than chance. That criterion was set out in advance, and it is a criterion about <strong>indistinguishability</strong> — the same thing Turing's game was built to measure. It is not a claim about understanding, and the paper does not make one.</p>
 <h3 id="longer-conversations-did-not-solve-it">Longer conversations did not solve it</h3>
 <p>The obvious objection to a five-minute test is that five minutes is not much. Give the interrogator longer and the machine will slip.</p>
@@ -346,7 +360,9 @@ Interrogator question:</code></pre>
 <p>Given five minutes and a machine to unmask, people overwhelmingly chose to chat. Formal tests of knowledge or reasoning — the things we usually associate with intelligence testing — were the <em>least</em> common, in roughly one game in eight.</p>
 <p>This is not judges behaving foolishly. The question was not "which of these is more capable?" but "which of these is a person?", and for that, conversational texture is far more diagnostic than arithmetic. People were reading linguistic style, emotional plausibility, conversational rhythm, willingness to be vague, and the small imperfections of ordinary writing.</p>
 <p>Compare that with the reasons your own class gave before the reveal. They will probably be the same kind of reason.</p>
+<div class="focus-block">
 <p>One consequence deserves emphasis: <strong>not knowing things became evidence of humanity.</strong> A hesitation, a typo, a flat refusal to have an opinion, an admission of ignorance — these read as human, because machines are expected to be informative. Competence had become a tell.</p>
+</div>
 <h3 id="more-human-than-humans">More human than humans</h3>
 <p>GPT-4.5 with a persona was not merely hard to distinguish from the human witness. It was selected <em>instead of</em> the human, most of the time. A machine cannot be more human than a human being, so something else is going on.</p>
 <p>What the interrogators were comparing against was not humanity. It was their <strong>expectation</strong> of how a human sounds in a five-minute anonymous text chat — and alongside it, their expectation of how an AI sounds. Both expectations are learned, informal and frequently wrong. Real people in that situation are often terse, odd, distracted, or unwilling to perform. A model instructed to portray a plausible young person hits the stereotype more reliably than actual people do, because it is aiming at the stereotype while they are merely being themselves.</p>
@@ -369,9 +385,11 @@ Interrogator question:</code></pre>
 <blockquote><p><strong>The model produced sufficiently convincing human-like behaviour under these experimental conditions.</strong></p></blockquote>
 <p>Those conditions are: this model, these instructions, these questions, this interface, this many turns, and these judges. That is a real result about a specific configuration, and it is the same <em>kind</em> of result Jones and Bergen report — narrower and less controlled, but the same kind.</p>
 <h3 id="what-it-does-not-establish">What it does not establish</h3>
+<div class="focus-block">
 <p>The result does <strong>not</strong> show that the model:</p>
 <ul><li>understands anything</li><li>thinks the way a human thinks</li><li>is conscious, or has any subjective experience</li><li>possesses general intelligence</li><li>is reliable, truthful, or competent at anything you did not test</li></ul>
 <p>None of those is visible through the interface we used — which is precisely what Turing's text-only channel was designed to ensure. <strong>This distinction is one of the main things to take away from Week 1.</strong></p>
+</div>
 <h3 id="the-reverse-also-holds">The reverse also holds</h3>
 <p>If your class identified the machine immediately, you have <strong>not</strong> shown it is unintelligent. You have shown that this configuration failed to sustain a convincing performance for these judges. Change the instruction, as the persona run does, and the result can reverse without a single thing about the model having changed.</p>
 <div class="callout callout--important"><span class="callout__label">Important</span><p><strong>The result belongs to the configuration, not to the model</strong></p>

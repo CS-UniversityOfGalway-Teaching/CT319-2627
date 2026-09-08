@@ -56,6 +56,8 @@ The conversations could look surprisingly convincing.
 
 <sub><em>Figure 2. Example conversation with ELIZA. Source: <a href="https://commons.wikimedia.org/wiki/File:ELIZA_conversation.png">Wikimedia Commons — ELIZA conversation.png</a>. The depicted text is marked <strong>public domain</strong> on Wikimedia Commons.</em></sub>
 
+<!-- ct319:focus -->
+
 The question worth asking is not whether that looks intelligent. It is:
 
 > **How much machinery is actually required to produce that impression?**
@@ -64,6 +66,8 @@ The question worth asking is not whether that looks intelligent. It is:
 - **MECHANISM** — the response comes from a fairly small collection of rules.
 
 That gap is why ELIZA still matters sixty years later.
+
+<!-- ct319:endfocus -->
 
 ### Try it before we look inside
 
@@ -183,9 +187,13 @@ A callback like that feels like evidence that the program has been following the
 
 The mechanism explains how the responses were generated. It does not fully explain why people believed them.
 
+<!-- ct319:focus -->
+
 You contribute a great deal to the interaction. People interpret language, connect replies to earlier statements, and infer intention behind what the other participant says. ELIZA could therefore supply very little while you supplied the coherence.
 
 This became known as the **ELIZA effect**: attributing more understanding, intention or awareness to a system than its mechanism justifies.
+
+<!-- ct319:endfocus -->
 
 ![ELIZA behaviour and mechanism](../../media/week-01/eliza-behaviour-mechanism.svg "hero")
 
@@ -216,9 +224,13 @@ Read the paper as a technical description rather than a historical essay: how ke
 
 ELIZA leaves us with two descriptions of one interaction, and both of them are true. The conversation was responsive. The machinery was a few hundred lines of pattern rules. The mistake is assuming the first tells you what you need to know about the second.
 
+<!-- ct319:focus -->
+
 So we need a harder question:
 
 > **If intelligent-looking behaviour does not by itself prove understanding, can behaviour still be useful evidence of intelligence?**
+
+<!-- ct319:endfocus -->
 
 ### "Can machines think?" is a trap
 
@@ -232,6 +244,8 @@ That is a **definitional** problem, not an empirical one, and Turing's move is t
 
 Instead of asking what thinking *is*, he asks what we would accept as **evidence**, and then builds a procedure that produces that evidence.
 
+<!-- ct319:focus -->
+
 ```text
 NOT      Can machines think?
 INSTEAD  Can a machine behave, under controlled conditions,
@@ -241,6 +255,8 @@ INSTEAD  Can a machine behave, under controlled conditions,
 The second question can be run. The first cannot.
 
 That substitution is Turing's whole contribution, and it is the thing to hold on to for the rest of the week — including when we run our own version, and when we read a study that ran it properly with 1,023 games. **A test built on a substitution can only ever answer the substituted question.**
+
+<!-- ct319:endfocus -->
 
 > [!IMPORTANT]
 > This is the **EVALUATION** lens doing its work.
@@ -328,7 +344,11 @@ It does not establish:
 - **reliability** — a convincing witness is not thereby a correct one
 - **human-like internal reasoning** — very different mechanisms can produce the same visible text, which is exactly what ELIZA already showed us
 
+<!-- ct319:focus -->
+
 **BEHAVIOUR** is what the test measures. **MECHANISM** is what it is designed to exclude. **EVALUATION** is the work of keeping those apart when a result arrives.
+
+<!-- ct319:endfocus -->
 
 ### Reading the paper
 
@@ -658,9 +678,13 @@ Same procedure: ask, commit to a vote, give a confidence and a reason, then reve
 
 And the question that matters most:
 
+<!-- ct319:focus -->
+
 > **Did the machine become more intelligent, or only more human-like?**
 
 Nothing about the model's capabilities changed between those two runs. Only the instruction did.
+
+<!-- ct319:endfocus -->
 
 If you ran the question-type variable instead, you will probably find the machine performs *better* on the formal reasoning question and is *identified more easily* because of it. Being impressively correct is a tell. That is worth sitting with: a test built out of reasoning problems would rank these witnesses in a completely different order, and would be measuring something else entirely.
 
@@ -744,9 +768,13 @@ If you ran the persona variable yourself, you have seen the 36% → 73% effect i
 
 ### What 73% actually means
 
+<!-- ct319:focus -->
+
 **73% is a human-identification rate, not an intelligence score.** In 73% of the games where GPT-4.5 with a persona was the AI witness, the interrogator pointed at the machine when asked which participant was the human. It is a fact about what judges did, under a particular set of conditions.
 
 It is also above 50%, which is the genuinely surprising part. Interrogators were not merely failing to identify the machine better than chance; they were selecting it as the human *more often than they selected the actual human being*.
+
+<!-- ct319:endfocus -->
 
 "Passing", in this paper's operationalisation, means exactly that: interrogators could not reliably distinguish the machine from the human and performed no better than chance. That criterion was set out in advance, and it is a criterion about **indistinguishability** — the same thing Turing's game was built to measure. It is not a claim about understanding, and the paper does not make one.
 
@@ -792,7 +820,11 @@ This is not judges behaving foolishly. The question was not "which of these is m
 
 Compare that with the reasons your own class gave before the reveal. They will probably be the same kind of reason.
 
+<!-- ct319:focus -->
+
 One consequence deserves emphasis: **not knowing things became evidence of humanity.** A hesitation, a typo, a flat refusal to have an opinion, an admission of ignorance — these read as human, because machines are expected to be informative. Competence had become a tell.
+
+<!-- ct319:endfocus -->
 
 ### More human than humans
 
@@ -847,6 +879,8 @@ Those conditions are: this model, these instructions, these questions, this inte
 
 ### What it does not establish
 
+<!-- ct319:focus -->
+
 The result does **not** show that the model:
 
 - understands anything
@@ -856,6 +890,8 @@ The result does **not** show that the model:
 - is reliable, truthful, or competent at anything you did not test
 
 None of those is visible through the interface we used — which is precisely what Turing's text-only channel was designed to ensure. **This distinction is one of the main things to take away from Week 1.**
+
+<!-- ct319:endfocus -->
 
 ### The reverse also holds
 
