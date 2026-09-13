@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="400" viewBox="0 0 960 400" role="img" aria-labelledby="title desc">
+  <title id="title">The Farmer Jones river-crossing problem</title>
+  <desc id="desc">A river separates a south bank from a north bank. Farmer Jones, the wolf, the goat and the cabbage all begin on the south bank, with a small boat that carries the farmer and at most one other item.</desc>
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #1f2328;
+      --muted: #57606a;
+      --line: #d0d7de;
+      --accent: #0969da;
+      --panel: #f6f8fa;
+      --card: #ffffff;
+      --water: #ddeeff;
+      --waterline: #9ec5e8;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117; --fg: #e6edf3; --muted: #8b949e; --line: #30363d;
+        --accent: #58a6ff; --panel: #161b22; --card: #0d1117;
+        --water: #10263c; --waterline: #2b5c8a;
+      }
+    }
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: var(--fg); }
+    .label { font-size: 15px; font-weight: 700; letter-spacing: 1.6px; fill: var(--accent); }
+    .bankname { font-size: 15px; font-weight: 700; letter-spacing: 1.6px; fill: var(--muted); }
+    .token { font-size: 22px; font-weight: 700; fill: var(--fg); }
+    .name { font-size: 14px; fill: var(--muted); }
+    .note { font-size: 15px; fill: var(--muted); }
+    .bank { fill: var(--panel); stroke: var(--line); stroke-width: 1.5; }
+    .river { fill: var(--water); stroke: var(--waterline); stroke-width: 1.5; }
+    .chip { fill: var(--card); stroke: var(--line); stroke-width: 2; }
+    .chipF { fill: var(--card); stroke: var(--accent); stroke-width: 2.5; }
+    .boat { fill: var(--card); stroke: var(--muted); stroke-width: 2; }
+  </style>
+
+  <rect width="960" height="400" rx="18" fill="var(--bg)"/>
+
+  <rect class="bank" x="40" y="46" width="880" height="76" rx="12"/>
+  <text class="bankname" x="66" y="90">NORTH BANK  ·  N</text>
+
+  <rect class="river" x="40" y="134" width="880" height="96" rx="12"/>
+  <text class="bankname" x="66" y="188" fill="var(--waterline)">RIVER</text>
+
+  <path d="M300 200 q22 -10 44 0 t44 0 t44 0 t44 0" fill="none" stroke="var(--waterline)" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+  <path d="M300 170 q22 -10 44 0 t44 0 t44 0 t44 0" fill="none" stroke="var(--waterline)" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+
+  <rect class="boat" x="640" y="164" width="150" height="42" rx="20"/>
+  <text class="name" x="715" y="190" text-anchor="middle">boat · farmer + 1</text>
+
+  <rect class="bank" x="40" y="242" width="880" height="112" rx="12"/>
+  <text class="bankname" x="66" y="282">SOUTH BANK  ·  S</text>
+
+  <circle class="chipF" cx="250" cy="316" r="24"/>
+  <text class="token" x="250" y="324" text-anchor="middle">F</text>
+  <text class="name" x="250" y="352" text-anchor="middle">Farmer</text>
+
+  <circle class="chip" cx="390" cy="316" r="24"/>
+  <text class="token" x="390" y="324" text-anchor="middle">W</text>
+  <text class="name" x="390" y="352" text-anchor="middle">Wolf</text>
+
+  <circle class="chip" cx="530" cy="316" r="24"/>
+  <text class="token" x="530" y="324" text-anchor="middle">G</text>
+  <text class="name" x="530" y="352" text-anchor="middle">Goat</text>
+
+  <circle class="chip" cx="670" cy="316" r="24"/>
+  <text class="token" x="670" y="324" text-anchor="middle">C</text>
+  <text class="name" x="670" y="352" text-anchor="middle">Cabbage</text>
+
+  <text class="label" x="40" y="28">THE STARTING SITUATION</text>
+  <text class="note" x="920" y="28" text-anchor="end">Wolf + Goat, or Goat + Cabbage, must never be left without the farmer.</text>
+</svg>

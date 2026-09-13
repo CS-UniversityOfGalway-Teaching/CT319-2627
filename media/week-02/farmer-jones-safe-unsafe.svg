@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
+  <title id="title">Safe and unsafe Farmer Jones states</title>
+  <desc id="desc">Three bank arrangements. In the safe state the goat and cabbage share a bank but the farmer is with them. In the two unsafe states the goat is left with the cabbage, or the wolf is left with the goat, while the farmer is on the opposite bank.</desc>
+
+  <style>
+    :root {
+      --bg: #ffffff; --fg: #1f2328; --muted: #57606a; --line: #d0d7de;
+      --accent: #0969da; --panel: #f6f8fa; --card: #ffffff;
+      --water: #ddeeff; --waterline: #9ec5e8;
+      --bad: #cf222e; --good: #1a7f37;
+      --badbg: #fff5f5; --goodbg: #f2fbf4;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117; --fg: #e6edf3; --muted: #8b949e; --line: #30363d;
+        --accent: #58a6ff; --panel: #161b22; --card: #0d1117;
+        --water: #10263c; --waterline: #2b5c8a;
+        --bad: #f85149; --good: #3fb950;
+        --badbg: #1f1315; --goodbg: #10261a;
+      }
+    }
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: var(--fg); }
+    .verdict { font-size: 15px; font-weight: 700; letter-spacing: 1.8px; }
+    .tuple { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 19px; font-weight: 700; }
+    .token { font-size: 17px; font-weight: 700; }
+    .name { font-size: 13px; fill: var(--muted); }
+    .why { font-size: 14px; fill: var(--muted); }
+    .bank { fill: var(--panel); stroke: var(--line); stroke-width: 1.5; }
+    .river { fill: var(--water); stroke: var(--waterline); stroke-width: 1.2; }
+    .chip { fill: var(--card); stroke: var(--line); stroke-width: 2; }
+    .chipF { fill: var(--card); stroke: var(--accent); stroke-width: 2.5; }
+    .panelGood { fill: var(--goodbg); stroke: var(--good); stroke-width: 2; }
+    .panelBad { fill: var(--badbg); stroke: var(--bad); stroke-width: 2; }
+    .withF { fill: none; stroke: var(--good); stroke-width: 2.5; }
+    .alone { fill: none; stroke: var(--bad); stroke-width: 2.5; stroke-dasharray: 6 4; }
+  </style>
+
+  <rect width="960" height="500" rx="18" fill="var(--bg)"/>
+
+  <!-- ============ SAFE ============ -->
+  <rect class="panelGood" x="30" y="30" width="900" height="132" rx="14"/>
+  <text class="verdict" x="56" y="62" fill="var(--good)">SAFE</text>
+  <text class="tuple" x="150" y="62">(S, N, S, S)</text>
+  <text class="why" x="56" y="92">Goat and cabbage share the south bank —</text>
+  <text class="why" x="56" y="112">but the farmer is standing right there.</text>
+  <text class="why" x="56" y="140" fill="var(--good)">A conflicting pair is allowed when the farmer is present.</text>
+
+  <rect class="bank" x="560" y="52" width="350" height="34" rx="8"/>
+  <text class="name" x="574" y="74">north</text>
+  <rect class="river" x="560" y="92" width="350" height="8" rx="4"/>
+  <rect class="bank" x="560" y="106" width="350" height="34" rx="8"/>
+  <text class="name" x="574" y="128">south</text>
+
+  <circle class="chip" cx="770" cy="69" r="14"/><text class="token" x="770" y="75" text-anchor="middle">W</text>
+
+  <circle class="chipF" cx="730" cy="123" r="14"/><text class="token" x="730" y="129" text-anchor="middle">F</text>
+  <circle class="chip"  cx="790" cy="123" r="14"/><text class="token" x="790" y="129" text-anchor="middle">G</text>
+  <circle class="chip"  cx="850" cy="123" r="14"/><text class="token" x="850" y="129" text-anchor="middle">C</text>
+  <rect class="withF" x="710" y="104" width="160" height="38" rx="19"/>
+
+  <!-- ============ UNSAFE 1 ============ -->
+  <rect class="panelBad" x="30" y="182" width="900" height="132" rx="14"/>
+  <text class="verdict" x="56" y="214" fill="var(--bad)">UNSAFE</text>
+  <text class="tuple" x="150" y="214">(N, N, S, S)</text>
+  <text class="why" x="56" y="244">The farmer takes the wolf north.</text>
+  <text class="why" x="56" y="264">The goat is now alone with the cabbage.</text>
+  <text class="why" x="56" y="292" fill="var(--bad)">The goat eats the cabbage.</text>
+
+  <rect class="bank" x="560" y="204" width="350" height="34" rx="8"/>
+  <text class="name" x="574" y="226">north</text>
+  <rect class="river" x="560" y="244" width="350" height="8" rx="4"/>
+  <rect class="bank" x="560" y="258" width="350" height="34" rx="8"/>
+  <text class="name" x="574" y="280">south</text>
+
+  <circle class="chipF" cx="750" cy="221" r="14"/><text class="token" x="750" y="227" text-anchor="middle">F</text>
+  <circle class="chip"  cx="810" cy="221" r="14"/><text class="token" x="810" y="227" text-anchor="middle">W</text>
+
+  <circle class="chip" cx="750" cy="275" r="14"/><text class="token" x="750" y="281" text-anchor="middle">G</text>
+  <circle class="chip" cx="810" cy="275" r="14"/><text class="token" x="810" y="281" text-anchor="middle">C</text>
+  <rect class="alone" x="730" y="256" width="100" height="38" rx="19"/>
+
+  <!-- ============ UNSAFE 2 ============ -->
+  <rect class="panelBad" x="30" y="334" width="900" height="132" rx="14"/>
+  <text class="verdict" x="56" y="366" fill="var(--bad)">UNSAFE</text>
+  <text class="tuple" x="150" y="366">(N, S, S, N)</text>
+  <text class="why" x="56" y="396">The farmer takes the cabbage north.</text>
+  <text class="why" x="56" y="416">The wolf is now alone with the goat.</text>
+  <text class="why" x="56" y="444" fill="var(--bad)">The wolf eats the goat.</text>
+
+  <rect class="bank" x="560" y="356" width="350" height="34" rx="8"/>
+  <text class="name" x="574" y="378">north</text>
+  <rect class="river" x="560" y="396" width="350" height="8" rx="4"/>
+  <rect class="bank" x="560" y="410" width="350" height="34" rx="8"/>
+  <text class="name" x="574" y="432">south</text>
+
+  <circle class="chipF" cx="750" cy="373" r="14"/><text class="token" x="750" y="379" text-anchor="middle">F</text>
+  <circle class="chip"  cx="810" cy="373" r="14"/><text class="token" x="810" y="379" text-anchor="middle">C</text>
+
+  <circle class="chip" cx="750" cy="427" r="14"/><text class="token" x="750" y="433" text-anchor="middle">W</text>
+  <circle class="chip" cx="810" cy="427" r="14"/><text class="token" x="810" y="433" text-anchor="middle">G</text>
+  <rect class="alone" x="730" y="408" width="100" height="38" rx="19"/>
+
+  <text class="name" x="30" y="488">Tuple order: (Farmer, Wolf, Goat, Cabbage) · S = south bank, N = north bank · dashed = left without the farmer, solid green = farmer present</text>
+</svg>

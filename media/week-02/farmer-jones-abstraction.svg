@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="470" viewBox="0 0 960 470" role="img" aria-labelledby="title desc">
+  <title id="title">From the river scene to a four-position tuple</title>
+  <desc id="desc">Three stages. The physical river arrangement, then the four positions that actually matter, then the tuple that records them. The boat is dropped because it always travels with the farmer.</desc>
+
+  <style>
+    :root {
+      --bg: #ffffff; --fg: #1f2328; --muted: #57606a; --line: #d0d7de;
+      --accent: #0969da; --panel: #f6f8fa; --card: #ffffff;
+      --water: #ddeeff; --waterline: #9ec5e8; --drop: #cf222e;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117; --fg: #e6edf3; --muted: #8b949e; --line: #30363d;
+        --accent: #58a6ff; --panel: #161b22; --card: #0d1117;
+        --water: #10263c; --waterline: #2b5c8a; --drop: #f85149;
+      }
+    }
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: var(--fg); }
+    .stage { font-size: 14px; font-weight: 700; letter-spacing: 1.6px; fill: var(--accent); }
+    .token { font-size: 18px; font-weight: 700; }
+    .name { font-size: 13px; fill: var(--muted); }
+    .note { font-size: 14px; fill: var(--muted); }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 26px; font-weight: 700; }
+    .monosm { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 15px; fill: var(--muted); }
+    .bank { fill: var(--panel); stroke: var(--line); stroke-width: 1.5; }
+    .river { fill: var(--water); stroke: var(--waterline); stroke-width: 1.5; }
+    .chip { fill: var(--card); stroke: var(--line); stroke-width: 2; }
+    .chipF { fill: var(--card); stroke: var(--accent); stroke-width: 2.5; }
+    .dropped { fill: var(--card); stroke: var(--drop); stroke-width: 2; stroke-dasharray: 5 4; }
+    .connector { stroke: var(--muted); stroke-width: 2; fill: none; stroke-linecap: round; }
+    .card { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+  </style>
+
+  <rect width="960" height="470" rx="18" fill="var(--bg)"/>
+
+  <!-- Stage 1 : physical arrangement -->
+  <text class="stage" x="40" y="34">1 · THE PHYSICAL ARRANGEMENT</text>
+  <rect class="bank" x="40" y="46" width="880" height="34" rx="9"/>
+  <text class="name" x="58" y="68">north bank — empty</text>
+  <rect class="river" x="40" y="86" width="880" height="30" rx="9"/>
+  <rect class="bank" x="40" y="122" width="880" height="52" rx="9"/>
+
+  <circle class="chipF" cx="250" cy="148" r="19"/><text class="token" x="250" y="155" text-anchor="middle">F</text>
+  <circle class="chip"  cx="390" cy="148" r="19"/><text class="token" x="390" y="155" text-anchor="middle">W</text>
+  <circle class="chip"  cx="530" cy="148" r="19"/><text class="token" x="530" y="155" text-anchor="middle">G</text>
+  <circle class="chip"  cx="670" cy="148" r="19"/><text class="token" x="670" y="155" text-anchor="middle">C</text>
+  <circle class="dropped" cx="810" cy="148" r="19"/><text class="token" x="810" y="155" text-anchor="middle" fill="var(--drop)">B</text>
+  <text class="name" x="810" y="186" text-anchor="middle" fill="var(--drop)">boat — dropped</text>
+
+  <line class="connector" x1="480" y1="196" x2="480" y2="228"/>
+  <path class="connector" d="M470 218 L480 229 L490 218"/>
+
+  <!-- Stage 2 : the four positions that matter -->
+  <text class="stage" x="40" y="256">2 · THE FOUR POSITIONS THAT MATTER</text>
+  <rect class="card" x="40" y="268" width="880" height="72" rx="12"/>
+
+  <text class="name" x="130" y="296" text-anchor="middle">Farmer</text>
+  <text class="mono" x="130" y="324" text-anchor="middle">S</text>
+  <text class="name" x="330" y="296" text-anchor="middle">Wolf</text>
+  <text class="mono" x="330" y="324" text-anchor="middle">S</text>
+  <text class="name" x="530" y="296" text-anchor="middle">Goat</text>
+  <text class="mono" x="530" y="324" text-anchor="middle">S</text>
+  <text class="name" x="730" y="296" text-anchor="middle">Cabbage</text>
+  <text class="mono" x="730" y="324" text-anchor="middle">S</text>
+  <text class="monosm" x="866" y="318" text-anchor="middle">S = south</text>
+
+  <line class="connector" x1="480" y1="348" x2="480" y2="380"/>
+  <path class="connector" d="M470 370 L480 381 L490 370"/>
+
+  <!-- Stage 3 : the tuple -->
+  <text class="stage" x="40" y="408">3 · THE STATE</text>
+  <rect class="card" x="40" y="418" width="880" height="42" rx="12" stroke="var(--accent)" stroke-width="2.5"/>
+  <text class="mono" x="480" y="448" text-anchor="middle">(S, S, S, S)</text>
+</svg>

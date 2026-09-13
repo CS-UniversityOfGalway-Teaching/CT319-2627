@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="470" viewBox="0 0 960 470" role="img" aria-labelledby="title desc">
+  <title id="title">One situation, three goals, three representations</title>
+  <desc id="desc">The same Galway to Dublin journey is shown feeding into three different goals. Each goal makes different information relevant, so each produces a different representation of the same physical situation.</desc>
+
+  <style>
+    :root {
+      --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --card:#ffffff; --drop:#8c959f;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --card:#0d1117; --drop:#6e7681; }
+    }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .situation { font-size:19px; font-weight:600; }
+    .goal { font-size:16px; font-weight:700; }
+    .keep { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px; }
+    .drop { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px; fill:var(--drop); text-decoration:line-through; }
+    .head { font-size:12px; font-weight:700; letter-spacing:1.2px; fill:var(--muted); }
+    .note { font-size:14px; fill:var(--muted); }
+    .card { fill:var(--card); stroke:var(--line); stroke-width:1.8; }
+    .top { fill:var(--panel); stroke:var(--line); stroke-width:1.8; }
+    .connector { stroke:var(--muted); stroke-width:2; fill:none; stroke-linecap:round; }
+  </style>
+
+  <rect width="960" height="470" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="36">THE SAME SITUATION, ASKED THREE DIFFERENT QUESTIONS</text>
+
+  <rect class="top" x="30" y="52" width="900" height="72" rx="12"/>
+  <text class="situation" x="480" y="82" text-anchor="middle">Galway &#8594; Dublin tomorrow morning</text>
+  <text class="note" x="480" y="106" text-anchor="middle">&#8364;30 &#183; no car &#183; meeting at 11:00 &#183; might rain &#183; phone at 40% &#183; no breakfast</text>
+
+  <line class="connector" x1="180" y1="124" x2="180" y2="162"/>
+  <path class="connector" d="M170 152 L180 163 L190 152"/>
+  <line class="connector" x1="480" y1="124" x2="480" y2="162"/>
+  <path class="connector" d="M470 152 L480 163 L490 152"/>
+  <line class="connector" x1="780" y1="124" x2="780" y2="162"/>
+  <path class="connector" d="M770 152 L780 163 L790 152"/>
+
+  <!-- column 1 -->
+  <rect class="card" x="30" y="170" width="300" height="252" rx="12"/>
+  <text class="head" x="52" y="196">GOAL</text>
+  <text class="goal" x="52" y="220">Arrive before 11:00</text>
+  <line x1="52" y1="236" x2="308" y2="236" stroke="var(--line)" stroke-width="1.5"/>
+  <text class="head" x="52" y="260">KEEPS</text>
+  <text class="keep" x="52" y="282">departure times</text>
+  <text class="keep" x="52" y="302">journey durations</text>
+  <text class="keep" x="52" y="322">available transport</text>
+  <text class="head" x="52" y="352">DROPS</text>
+  <text class="drop" x="52" y="374">ticket prices</text>
+  <text class="drop" x="52" y="394">rainfall</text>
+
+  <!-- column 2 -->
+  <rect class="card" x="330" y="170" width="300" height="252" rx="12"/>
+  <text class="head" x="352" y="196">GOAL</text>
+  <text class="goal" x="352" y="220">Travel as cheaply as possible</text>
+  <line x1="352" y1="236" x2="608" y2="236" stroke="var(--line)" stroke-width="1.5"/>
+  <text class="head" x="352" y="260">KEEPS</text>
+  <text class="keep" x="352" y="282">ticket prices</text>
+  <text class="keep" x="352" y="302">the &#8364;30 budget</text>
+  <text class="keep" x="352" y="322">available transport</text>
+  <text class="head" x="352" y="352">DROPS</text>
+  <text class="drop" x="352" y="374">the 11:00 deadline</text>
+  <text class="drop" x="352" y="394">rainfall</text>
+
+  <!-- column 3 -->
+  <rect class="card" x="630" y="170" width="300" height="252" rx="12"/>
+  <text class="head" x="652" y="196">GOAL</text>
+  <text class="goal" x="652" y="220">Arrive by 11:00, stay dry</text>
+  <line x1="652" y1="236" x2="908" y2="236" stroke="var(--line)" stroke-width="1.5"/>
+  <text class="head" x="652" y="260">KEEPS</text>
+  <text class="keep" x="652" y="282">departure times</text>
+  <text class="keep" x="652" y="302">rainfall forecast</text>
+  <text class="keep" x="652" y="322">walking between stops</text>
+  <text class="head" x="652" y="352">DROPS</text>
+  <text class="drop" x="652" y="374">ticket prices</text>
+  <text class="drop" x="652" y="394">phone battery</text>
+
+  <text class="note" x="480" y="450" text-anchor="middle">The physical situation never changed. Only the question did — and with it, what counts as relevant.</text>
+</svg>
