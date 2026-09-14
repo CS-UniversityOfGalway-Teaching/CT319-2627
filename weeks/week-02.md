@@ -77,7 +77,7 @@ It is tempting to think of facts as intrinsically relevant or irrelevant. They a
 
 A computer cannot make that call. It has no way of knowing that the colour of a cabbage does not affect a river crossing while the bank the cabbage is standing on does. Someone has to decide.
 
-That means problem solving begins **before** any algorithm is chosen. The formal CT319 material puts this as three jobs, in order:
+That means problem solving begins **before** any algorithm is chosen. It breaks into three jobs, in order:
 
 1. define the problem precisely
 2. isolate and represent the knowledge needed to solve it
@@ -88,6 +88,30 @@ The order is the point. Choosing a clever technique before knowing what the stat
 ![From an unstructured situation to a searchable problem](../../media/week-02/representation-pipeline.svg "hero")
 
 <sub><em>Figure 2. The pipeline from an unstructured situation to a problem a machine can search. Week 2 covers every step except the last one's payoff. Diagram created for these pages; no external image licence is used.</em></sub>
+
+<!-- ct319:beat -->
+## Farmer Jones — solve the story first
+
+Farmer Jones has a wolf, a goat, a prize cabbage and a small boat. He needs all three of his charges moved from the **south bank** of a river to the **north bank**.
+
+The boat carries Farmer Jones and **at most one** other thing. And he has two problems:
+
+- left alone together, the wolf eats the goat
+- left alone together, the goat eats the cabbage
+
+![The Farmer Jones river-crossing problem](../../media/week-02/farmer-jones-river.svg "secondary")
+
+<sub><em>Figure 3. The starting situation. Everything begins on the south bank, and the boat holds the farmer plus at most one other item. Diagram created for these pages; no external image licence is used.</em></sub>
+
+> **How can Farmer Jones get everything safely to the north bank?**
+
+### Solve it as a human first
+
+Before formalising anything, solve it. It takes a few minutes and the experience matters for what follows.
+
+While you work, pay attention to what you are keeping track of in your head. Almost certainly it is which bank each of the four is on, and nothing else. You are not tracking the colour of the cabbage, the age of the wolf, the name of the boat, or why the farmer owns a wolf in the first place.
+
+That is the representation problem from the opening section, happening automatically, in a world small enough to watch yourself do it.
 
 <!-- ct319:beat -->
 ## What makes a representation useful?
@@ -104,7 +128,7 @@ The last two are in direct tension, and resolving that tension sensibly is the s
 
 ### The vocabulary we need
 
-Farmer Jones will do most of the real teaching, so we only need enough language here to describe what happens there.
+Farmer Jones will do most of the real teaching, so we only need enough language here to describe what you just did by hand.
 
 - **Abstraction** — deliberately dropping detail that the current question does not need.
 - **State** — a description of the situation at one particular moment, containing only what matters.
@@ -147,31 +171,7 @@ Search does not operate on the world. It operates on a representation of the wor
 
 If necessary information was left out, the machine cannot reason about it — the fact simply does not exist as far as the program is concerned. If unnecessary information was left in, we have created more situations to distinguish between than the problem actually requires.
 
-So before asking *how* to search, we have to be able to say precisely **what is being searched**. Farmer Jones gives us a complete worked example, small enough to hold entirely in view.
-
-<!-- ct319:beat -->
-## Farmer Jones — solve the story first
-
-Farmer Jones has a wolf, a goat, a prize cabbage and a small boat. He needs all three of his charges moved from the **south bank** of a river to the **north bank**.
-
-The boat carries Farmer Jones and **at most one** other thing. And he has two problems:
-
-- left alone together, the wolf eats the goat
-- left alone together, the goat eats the cabbage
-
-![The Farmer Jones river-crossing problem](../../media/week-02/farmer-jones-river.svg "secondary")
-
-<sub><em>Figure 3. The starting situation. Everything begins on the south bank, and the boat holds the farmer plus at most one other item. Diagram created for these pages; no external image licence is used.</em></sub>
-
-> **How can Farmer Jones get everything safely to the north bank?**
-
-### Solve it as a human first
-
-Before formalising anything, solve it. It takes a few minutes and the experience matters for what follows.
-
-While you work, pay attention to what you are keeping track of in your head. Almost certainly it is which bank each of the four is on, and nothing else. You are not tracking the colour of the cabbage, the age of the wolf, the name of the boat, or why the farmer owns a wolf in the first place.
-
-That is the representation problem from the previous section, happening automatically, in a world small enough to watch yourself do it.
+So before asking *how* to search, we have to be able to say precisely **what is being searched**. With the story already solved, Farmer Jones is small enough to hold entirely in view while we make it precise.
 
 <!-- ct319:beat -->
 ## Turning Farmer Jones into a state
@@ -329,7 +329,7 @@ So `(S,S,N,S)` has exactly three legal transitions. Do that for every state and 
 
 ![The complete safe state space for Farmer Jones](../../media/week-02/farmer-jones-state-space.svg "hero")
 
-<sub><em>Figure 6. All ten safe states, with an edge wherever one legal crossing turns one state into another. The graph was constructed by applying every operator to every safe state and keeping the results the constraints permit. Diagram created for these pages from the CT319 problem definition; no external image licence is used.</em></sub>
+<sub><em>Figure 6. All ten safe states, with an edge wherever one legal crossing turns one state into another. The graph was constructed by applying every operator to every safe state and keeping the results the constraints permit. Diagram created for these pages; no external image licence is used.</em></sub>
 
 Every node is a safe state. Every edge is one legal crossing, labelled with who travels with the farmer. This is the **state space**, and it was not drawn by inspiration — it is the exhaustive result of the definitions above.
 
@@ -391,7 +391,7 @@ Computationally it is nearly the same problem, and that is the point of putting 
 
 ### The maze
 
-![The CT319 Week 2 maze](../../media/week-02/maze-grid.svg "hero")
+![The Week 2 maze](../../media/week-02/maze-grid.svg "hero")
 
 <sub><em>Figure 8. The Week 2 maze: seven rows, nine columns, start at (0,0) and goal at (6,8). Every open cell is labelled with its (row, column) address. Diagram created for these pages; no external image licence is used.</em></sub>
 
@@ -742,9 +742,9 @@ If you can answer these without reopening the page, you have the core of Week 2.
 
 ## Sources and licensing notes
 
-### CT319 source material
+### Lecture material
 
-The representation terminology and the Farmer Jones example follow the existing CT319 *Introduction to AI* lecture material on Canvas, in particular its treatment of:
+The representation terminology and the Farmer Jones example follow the existing *Introduction to AI* lecture material on Canvas, in particular its treatment of:
 
 - intelligent problem solving
 - problem representation, and relevant versus irrelevant information

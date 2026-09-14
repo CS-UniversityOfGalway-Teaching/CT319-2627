@@ -113,7 +113,7 @@ ELIZA does not build a model of your meaning and then decide what to say.
 
 ![Simplified ELIZA processing loop](../../media/week-01/eliza-processing-loop.svg "hero")
 
-<sub><em>Figure 3. Simplified ELIZA processing loop, redrawn for CT319 from Weizenbaum (1966) and the recovered source-code walkthrough at Finding ELIZA. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 3. Simplified ELIZA processing loop, redrawn from Weizenbaum (1966) and the recovered source-code walkthrough at Finding ELIZA. Diagram created for these pages; no external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
@@ -440,7 +440,7 @@ A control is anything we hold steady so that a difference in the result can be a
 
 One more condition is worth stating: keep everything else comparable between runs. Same room, same kind of question, same length of conversation. Otherwise you cannot tell which change moved the result.
 
-![CT319 local Turing-test experiment architecture](../../media/week-01/ct319-experiment-architecture.svg "hero")
+![Local Turing-test experiment architecture](../../media/week-01/ct319-experiment-architecture.svg "hero")
 
 <sub><em>Figure 8. How the experiment fits together. A question and a set of witness instructions go into a Python program, which sends the conversation to Ollama running a language model on the same computer, and gets a reply back. The reply appears anonymously beside the human witness's answer. Diagram created for these pages; no external image licence is used.</em></sub>
 
