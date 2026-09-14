@@ -77,6 +77,8 @@ It is tempting to think of facts as intrinsically relevant or irrelevant. They a
 
 A computer cannot make that call. It has no way of knowing that the colour of a cabbage does not affect a river crossing while the bank the cabbage is standing on does. Someone has to decide.
 
+<!-- ct319:focus -->
+
 That means problem solving begins **before** any algorithm is chosen. It breaks into three jobs, in order:
 
 1. define the problem precisely
@@ -84,6 +86,8 @@ That means problem solving begins **before** any algorithm is chosen. It breaks 
 3. choose an appropriate problem-solving technique
 
 The order is the point. Choosing a clever technique before knowing what the states and legal actions are is working backwards.
+
+<!-- ct319:endfocus -->
 
 ![From an unstructured situation to a searchable problem](../../media/week-02/representation-pipeline.svg "hero")
 
@@ -103,6 +107,8 @@ The boat carries Farmer Jones and **at most one** other thing. And he has two pr
 
 <sub><em>Figure 3. The starting situation. Everything begins on the south bank, and the boat holds the farmer plus at most one other item. Diagram created for these pages; no external image licence is used.</em></sub>
 
+<!-- ct319:focus -->
+
 > **How can Farmer Jones get everything safely to the north bank?**
 
 ### Solve it as a human first
@@ -113,8 +119,12 @@ While you work, pay attention to what you are keeping track of in your head. Alm
 
 That is the representation problem from the opening section, happening automatically, in a world small enough to watch yourself do it.
 
+<!-- ct319:endfocus -->
+
 <!-- ct319:beat -->
 ## What makes a representation useful?
+
+<!-- ct319:focus -->
 
 A good representation is doing several jobs at once, and they pull against each other.
 
@@ -125,6 +135,8 @@ A good representation is doing several jobs at once, and they pull against each 
 - **Stay complete** enough for the task. If we discard departure times and then ask whether we can arrive by 11:00, the question is no longer answerable from what we kept.
 
 The last two are in direct tension, and resolving that tension sensibly is the skill. Keep too much and the problem becomes unwieldy; keep too little and correct answers become unreachable.
+
+<!-- ct319:endfocus -->
 
 ### The vocabulary we need
 
@@ -161,9 +173,15 @@ Keeping them separate lets us say something precise later: an operator is *usabl
 
 Whenever you meet a new problem, ask:
 
+<!-- ct319:focus -->
+
 > **What would have to be recorded in a state for the machine to work out what can happen next?**
 
+<!-- ct319:endfocus -->
+
 Whatever the answer is, that is roughly your representation. If two situations would allow different things to happen next, they cannot be the same state.
+
+<!-- ct319:focus -->
 
 ### Why this matters this week
 
@@ -172,6 +190,8 @@ Search does not operate on the world. It operates on a representation of the wor
 If necessary information was left out, the machine cannot reason about it — the fact simply does not exist as far as the program is concerned. If unnecessary information was left in, we have created more situations to distinguish between than the problem actually requires.
 
 So before asking *how* to search, we have to be able to say precisely **what is being searched**. With the story already solved, Farmer Jones is small enough to hold entirely in view while we make it precise.
+
+<!-- ct319:endfocus -->
 
 <!-- ct319:beat -->
 ## Turning Farmer Jones into a state
@@ -227,6 +247,8 @@ Four slots, two possible values each:
 
 Sixteen tuples can be formed. That is a fact about the *notation*, not about the puzzle — it counts what the representation is capable of expressing, before anyone asks whether those situations are allowed.
 
+<!-- ct319:focus -->
+
 Distinguishing three things here will save confusion later:
 
 - **raw configurations** — everything the representation can express. Sixteen.
@@ -234,6 +256,8 @@ Distinguishing three things here will save confusion later:
 - **reachable states** — the valid ones you can actually get to from the start.
 
 These are not automatically the same. A problem can easily have valid states that are unreachable, marooned somewhere the operators cannot take you. For Farmer Jones they happen to coincide: all ten valid states are reachable from `(S,S,S,S)`. Worth knowing that this is a fact about this puzzle rather than a general rule.
+
+<!-- ct319:endfocus -->
 
 <!-- ct319:beat -->
 ## Operators and transitions
@@ -370,6 +394,8 @@ Everything that made this a story has been consumed by the representation, and w
 
 That indifference is not a limitation. It is precisely what makes general problem-solving methods possible.
 
+<!-- ct319:focus -->
+
 ### Why this matters this week
 
 Farmer Jones contains the entire Week 2 idea at a size you can hold in your head.
@@ -379,6 +405,8 @@ Farmer Jones contains the entire Week 2 idea at a size you can hold in your head
 **`TRANSITION`** turned "he rows across with the goat" into an operator with a precondition, an effect and a constraint.
 
 **`SEARCH SPACE`** turned ten safe states and their legal connections into a graph in which "solution" means something exact.
+
+<!-- ct319:endfocus -->
 
 The puzzle is no longer merely something a human can reason about. It is something a machine *could* search. Whether that shape is peculiar to river puzzles is the next question.
 
@@ -455,6 +483,8 @@ An action proposes a transition. Whether it is legal is a separate question, and
 
 From `(0,0)` the arithmetic is even starker. `UP` and `LEFT` leave the grid, `DOWN` hits the wall at `(1,0)`, and only `RIGHT` survives. The start state has exactly one legal move — just as `(S,S,S,S)` did.
 
+<!-- ct319:focus -->
+
 ### The same computational shape
 
 Set the two problems side by side:
@@ -469,6 +499,8 @@ Set the two problems side by side:
 | **Transition** | a crossing whose result is safe | a move onto an open cell |
 
 The left-hand column is a folk puzzle. The right-hand column is a grid. The rows are the same rows.
+
+<!-- ct319:endfocus -->
 
 That is why representation is worth this much attention: it is the step that makes two unrelated-looking problems into instances of the same thing. Every open cell is a state, every legal move between neighbouring cells is an edge, and the picture of the maze is simply a convenient way of displaying a graph we never had to draw.
 
@@ -506,6 +538,8 @@ The maze is not a disposable example. We will keep this exact problem and change
 
 Holding the problem fixed is what will let us see clearly what changes.
 
+<!-- ct319:focus -->
+
 ### Why this matters this week
 
 Farmer Jones alone might suggest that state-space thinking is a trick for puzzles. The maze shows it is not.
@@ -517,6 +551,8 @@ The machinery never needed a concept of a wolf, and it does not need a concept o
 - a way to recognise the goal
 
 Anything able to provide those three things is searchable. So let us build exactly that, in code, and see how far it gets us.
+
+<!-- ct319:endfocus -->
 
 <!-- ct319:beat -->
 ## Building the searchable problem in code
@@ -678,6 +714,8 @@ That is the real distinction. Editing the data is routine. Editing what a state 
 > [!NOTE]
 > Try the instance changes first, and only reach for the key once the basic representation is completely clear. The key is a probe for testing understanding, not a way to make the starting example more elaborate.
 
+<!-- ct319:focus -->
+
 ### Why this matters this week
 
 The build makes one boundary concrete: **a problem representation is not a solving strategy.**
@@ -691,6 +729,8 @@ So Week 2 closes exactly where it should:
 **`TRANSITION`** — `neighbours(state)` generates the legal next states
 
 **`SEARCH SPACE`** — repeated transitions define everywhere the agent could reach
+
+<!-- ct319:endfocus -->
 
 And the missing piece is no longer an abstraction. It is one line:
 
@@ -715,6 +755,8 @@ Legal next states:
 
 The representation has done everything asked of it. The states exist, the constraints have been applied, the legal transitions have been generated, and the goal test is ready.
 
+<!-- ct319:focus -->
+
 > **We now know which states exist and which moves are legal.**
 >
 > **But if several next states are possible, which one should the machine explore first?**
@@ -722,6 +764,8 @@ The representation has done everything asked of it. The states exist, the constr
 Nothing on this page answers that. Notice that the question is not about the maze, or about Farmer Jones — both would pose it equally. It is a question about what to do with a state space once you have one.
 
 That is where Week 3 begins.
+
+<!-- ct319:endfocus -->
 
 ---
 
