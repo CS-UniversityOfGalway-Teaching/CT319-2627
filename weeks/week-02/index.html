@@ -65,13 +65,7 @@ I have not had breakfast.</p></blockquote>
 <p>That means problem solving begins <strong>before</strong> any algorithm is chosen. The formal CT319 material puts this as three jobs, in order:</p>
 <ol><li>define the problem precisely</li><li>isolate and represent the knowledge needed to solve it</li><li>choose an appropriate problem-solving technique</li></ol>
 <p>The order is the point. Choosing a clever technique before knowing what the states and legal actions are is working backwards.</p>
-<pre data-lang="mermaid"><code class="language-mermaid">flowchart LR
-    W["Messy real-world&lt;br/&gt;situation"] --&gt; Q["Choose the&lt;br/&gt;question"]
-    Q --&gt; R["Identify relevant&lt;br/&gt;information"]
-    R --&gt; P["Representation"]
-    P --&gt; S["States + actions&lt;br/&gt;+ constraints"]
-    S --&gt; X["Searchable&lt;br/&gt;problem"]</code></pre>
-<p class="standalone-caption"><sub><em>Figure 2. The pipeline from an unstructured situation to a problem a machine can search. Week 2 covers every step except the last one's payoff. Diagram created for these pages; no external image licence is used.</em></sub></p></div></details>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-02/representation-pipeline.svg" alt="From an unstructured situation to a searchable problem" loading="lazy" decoding="async"><figcaption>Figure 2. The pipeline from an unstructured situation to a problem a machine can search. Week 2 covers every step except the last one's payoff. Diagram created for these pages; no external image licence is used.</figcaption></figure></div></details>
 <details class="beat" id="what-makes-a-representation-useful"><summary><h2 class="beat__title">What makes a representation useful?</h2></summary><div class="beat__body"><p>A good representation is doing several jobs at once, and they pull against each other.</p>
 <ul><li><strong>Make the important objects and relationships explicit</strong> — in the Galway problem, that the journey has a start, an end and a departure time, rather than leaving those buried in prose.</li><li><strong>Suppress irrelevant detail</strong>, so the breakfast and the phone battery never reach the machine at all.</li><li><strong>Expose the constraints</strong>, because a problem is defined as much by what is forbidden as by what is possible. A €30 budget is not a decoration on the problem; it is part of its shape.</li><li><strong>Stay concise</strong> enough to work with. A representation that records every fact about tomorrow morning is faithful and useless.</li><li><strong>Stay complete</strong> enough for the task. If we discard departure times and then ask whether we can arrive by 11:00, the question is no longer answerable from what we kept.</li></ul>
 <p>The last two are in direct tension, and resolving that tension sensibly is the skill. Keep too much and the problem becomes unwieldy; keep too little and correct answers become unreachable.</p>
@@ -262,21 +256,7 @@ Have I finished?</code></pre>
 <pre data-lang="text"><code class="language-text">Which of these legal states should I look at first?</code></pre>
 <h3 id="the-shape-of-the-program">The shape of the program</h3>
 <p>The code splits into two parts, and keeping them apart is a genuine design decision rather than tidiness.</p>
-<pre data-lang="mermaid"><code class="language-mermaid">flowchart TB
-    subgraph PROB["PROBLEM DEFINITION — reused in later weeks"]
-        A["ROWS, COLS, START,&lt;br/&gt;GOAL, WALLS, MOVES"]
-        B["is_legal(state)"]
-        C["neighbours(state)"]
-        D["is_goal(state)"]
-    end
-    subgraph CTRL["WEEK 2 CONTROLLER — temporary"]
-        E["render(state)"]
-        F["show legal options"]
-        G["human chooses one"]
-    end
-    C --&gt; F
-    G --&gt; C</code></pre>
-<p class="standalone-caption"><sub><em>Figure 11. The problem definition describes what is true and what is legal. The controller is a placeholder for a decision the machine cannot yet make. Diagram created for these pages; no external image licence is used.</em></sub></p>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-02/problem-definition-vs-controller.svg" alt="The problem definition and the Week 2 controller" loading="lazy" decoding="async"><figcaption>Figure 11. The problem definition describes what is true and what is legal. The controller is a placeholder for a decision the machine cannot yet make. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <p>📦 <a href="https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-02/ct319_maze.py"><strong><code>ct319_maze.py</code></strong></a> — the complete Week 2 program. Python standard library only; nothing to install.</p>
 <h3 id="the-problem-definition">The problem definition</h3>
 <p>The maze becomes data. The picture stops being necessary.</p>
