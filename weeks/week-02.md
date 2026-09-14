@@ -329,7 +329,7 @@ So `(S,S,N,S)` has exactly three legal transitions. Do that for every state and 
 
 ![The complete safe state space for Farmer Jones](../../media/week-02/farmer-jones-state-space.svg "hero")
 
-<sub><em>Figure 6. All ten safe states, with an edge wherever one legal crossing turns one state into another. The graph was constructed by applying every operator to every safe state and keeping the results the constraints permit. Diagram created for these pages from the CT319 problem definition; no external image licence is used.</em></sub>
+<sub><em>Figure 6. All ten safe states, with an edge wherever one legal crossing turns one state into another. The graph was constructed by applying every operator to every safe state and keeping the results the constraints permit. Diagram created for these pages; no external image licence is used.</em></sub>
 
 Every node is a safe state. Every edge is one legal crossing, labelled with who travels with the farmer. This is the **state space**, and it was not drawn by inspiration — it is the exhaustive result of the definitions above.
 
@@ -391,7 +391,7 @@ Computationally it is nearly the same problem, and that is the point of putting 
 
 ### The maze
 
-![The CT319 Week 2 maze](../../media/week-02/maze-grid.svg "hero")
+![The Week 2 maze](../../media/week-02/maze-grid.svg "hero")
 
 <sub><em>Figure 8. The Week 2 maze: seven rows, nine columns, start at (0,0) and goal at (6,8). Every open cell is labelled with its (row, column) address. Diagram created for these pages; no external image licence is used.</em></sub>
 
@@ -742,9 +742,9 @@ If you can answer these without reopening the page, you have the core of Week 2.
 
 ## Sources and licensing notes
 
-### CT319 source material
+### Lecture material
 
-The representation terminology and the Farmer Jones example follow the existing CT319 *Introduction to AI* lecture material on Canvas, in particular its treatment of:
+The representation terminology and the Farmer Jones example follow the existing *Introduction to AI* lecture material on Canvas, in particular its treatment of:
 
 - intelligent problem solving
 - problem representation, and relevant versus irrelevant information
