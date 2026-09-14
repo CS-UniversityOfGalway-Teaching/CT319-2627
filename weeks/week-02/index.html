@@ -62,22 +62,28 @@ I have not had breakfast.</p></blockquote>
 <h3 id="relevance-is-not-a-property-of-the-information">Relevance is not a property of the information</h3>
 <p>It is tempting to think of facts as intrinsically relevant or irrelevant. They are not. <code>phone battery = 40%</code> is noise for a train timetable and essential for a problem about whether you can navigate once you arrive.</p>
 <p>A computer cannot make that call. It has no way of knowing that the colour of a cabbage does not affect a river crossing while the bank the cabbage is standing on does. Someone has to decide.</p>
+<div class="focus-block">
 <p>That means problem solving begins <strong>before</strong> any algorithm is chosen. It breaks into three jobs, in order:</p>
 <ol><li>define the problem precisely</li><li>isolate and represent the knowledge needed to solve it</li><li>choose an appropriate problem-solving technique</li></ol>
 <p>The order is the point. Choosing a clever technique before knowing what the states and legal actions are is working backwards.</p>
+</div>
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-02/representation-pipeline.svg" alt="From an unstructured situation to a searchable problem" loading="lazy" decoding="async"><figcaption>Figure 2. The pipeline from an unstructured situation to a problem a machine can search. Week 2 covers every step except the last one's payoff. Diagram created for these pages; no external image licence is used.</figcaption></figure></div></details>
 <details class="beat" id="farmer-jones--solve-the-story-first"><summary><h2 class="beat__title">Farmer Jones — solve the story first</h2></summary><div class="beat__body"><p>Farmer Jones has a wolf, a goat, a prize cabbage and a small boat. He needs all three of his charges moved from the <strong>south bank</strong> of a river to the <strong>north bank</strong>.</p>
 <p>The boat carries Farmer Jones and <strong>at most one</strong> other thing. And he has two problems:</p>
 <ul><li>left alone together, the wolf eats the goat</li><li>left alone together, the goat eats the cabbage</li></ul>
 <figure class="figure--secondary"><img class="figure__img" src="../../media/week-02/farmer-jones-river.svg" alt="The Farmer Jones river-crossing problem" loading="lazy" decoding="async"><figcaption>Figure 3. The starting situation. Everything begins on the south bank, and the boat holds the farmer plus at most one other item. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<div class="focus-block">
 <blockquote><p><strong>How can Farmer Jones get everything safely to the north bank?</strong></p></blockquote>
 <h3 id="solve-it-as-a-human-first">Solve it as a human first</h3>
 <p>Before formalising anything, solve it. It takes a few minutes and the experience matters for what follows.</p>
 <p>While you work, pay attention to what you are keeping track of in your head. Almost certainly it is which bank each of the four is on, and nothing else. You are not tracking the colour of the cabbage, the age of the wolf, the name of the boat, or why the farmer owns a wolf in the first place.</p>
-<p>That is the representation problem from the opening section, happening automatically, in a world small enough to watch yourself do it.</p></div></details>
-<details class="beat" id="what-makes-a-representation-useful"><summary><h2 class="beat__title">What makes a representation useful?</h2></summary><div class="beat__body"><p>A good representation is doing several jobs at once, and they pull against each other.</p>
+<p>That is the representation problem from the opening section, happening automatically, in a world small enough to watch yourself do it.</p>
+</div></div></details>
+<details class="beat" id="what-makes-a-representation-useful"><summary><h2 class="beat__title">What makes a representation useful?</h2></summary><div class="beat__body"><div class="focus-block">
+<p>A good representation is doing several jobs at once, and they pull against each other.</p>
 <ul><li><strong>Make the important objects and relationships explicit</strong> — in the Galway problem, that the journey has a start, an end and a departure time, rather than leaving those buried in prose.</li><li><strong>Suppress irrelevant detail</strong>, so the breakfast and the phone battery never reach the machine at all.</li><li><strong>Expose the constraints</strong>, because a problem is defined as much by what is forbidden as by what is possible. A €30 budget is not a decoration on the problem; it is part of its shape.</li><li><strong>Stay concise</strong> enough to work with. A representation that records every fact about tomorrow morning is faithful and useless.</li><li><strong>Stay complete</strong> enough for the task. If we discard departure times and then ask whether we can arrive by 11:00, the question is no longer answerable from what we kept.</li></ul>
 <p>The last two are in direct tension, and resolving that tension sensibly is the skill. Keep too much and the problem becomes unwieldy; keep too little and correct answers become unreachable.</p>
+</div>
 <h3 id="the-vocabulary-we-need">The vocabulary we need</h3>
 <p>Farmer Jones will do most of the real teaching, so we only need enough language here to describe what you just did by hand.</p>
 <ul><li><strong>Abstraction</strong> — deliberately dropping detail that the current question does not need.</li><li><strong>State</strong> — a description of the situation at one particular moment, containing only what matters.</li><li><strong>Initial state</strong> — where the problem begins.</li><li><strong>Goal</strong> — what counts as success. Where many different situations would count, it is more useful to speak of a <strong>goal test</strong>: a check answering <em>does this state satisfy the objective?</em></li><li><strong>Action</strong>, or <strong>operator</strong> — something the problem permits us to do, which turns one state into another.</li><li><strong>Transition</strong> — the actual change from one state to the next when an operator is applied.</li></ul>
@@ -91,12 +97,16 @@ I have not had breakfast.</p></blockquote>
 <p>Keeping them separate lets us say something precise later: an operator is <em>usable</em> when its precondition holds <strong>and</strong> the state it produces satisfies the constraints.</p>
 <h3 id="a-question-that-usually-exposes-the-representation">A question that usually exposes the representation</h3>
 <p>Whenever you meet a new problem, ask:</p>
+<div class="focus-block">
 <blockquote><p><strong>What would have to be recorded in a state for the machine to work out what can happen next?</strong></p></blockquote>
+</div>
 <p>Whatever the answer is, that is roughly your representation. If two situations would allow different things to happen next, they cannot be the same state.</p>
+<div class="focus-block">
 <h3 id="why-this-matters-this-week">Why this matters this week</h3>
 <p>Search does not operate on the world. It operates on a representation of the world that somebody built.</p>
 <p>If necessary information was left out, the machine cannot reason about it — the fact simply does not exist as far as the program is concerned. If unnecessary information was left in, we have created more situations to distinguish between than the problem actually requires.</p>
-<p>So before asking <em>how</em> to search, we have to be able to say precisely <strong>what is being searched</strong>. With the story already solved, Farmer Jones is small enough to hold entirely in view while we make it precise.</p></div></details>
+<p>So before asking <em>how</em> to search, we have to be able to say precisely <strong>what is being searched</strong>. With the story already solved, Farmer Jones is small enough to hold entirely in view while we make it precise.</p>
+</div></div></details>
 <details class="beat" id="turning-farmer-jones-into-a-state"><summary><h2 class="beat__title">Turning Farmer Jones into a state</h2></summary><div class="beat__body"><p>Four things, each on one of two banks. So a state can be written as four positions:</p>
 <pre data-lang="text"><code class="language-text">(Farmer, Wolf, Goat, Cabbage)</code></pre>
 <p>with:</p>
@@ -117,9 +127,11 @@ N = north bank</code></pre>
 <details class="beat" id="raw-configurations-valid-states-and-reachable-states"><summary><h2 class="beat__title">Raw configurations, valid states and reachable states</h2></summary><div class="beat__body"><p>Four slots, two possible values each:</p>
 <pre data-lang="text"><code class="language-text">2 × 2 × 2 × 2 = 16</code></pre>
 <p>Sixteen tuples can be formed. That is a fact about the <em>notation</em>, not about the puzzle — it counts what the representation is capable of expressing, before anyone asks whether those situations are allowed.</p>
+<div class="focus-block">
 <p>Distinguishing three things here will save confusion later:</p>
 <ul><li><strong>raw configurations</strong> — everything the representation can express. Sixteen.</li><li><strong>valid states</strong> — those the constraints permit. We are about to find there are ten.</li><li><strong>reachable states</strong> — the valid ones you can actually get to from the start.</li></ul>
-<p>These are not automatically the same. A problem can easily have valid states that are unreachable, marooned somewhere the operators cannot take you. For Farmer Jones they happen to coincide: all ten valid states are reachable from <code>(S,S,S,S)</code>. Worth knowing that this is a fact about this puzzle rather than a general rule.</p></div></details>
+<p>These are not automatically the same. A problem can easily have valid states that are unreachable, marooned somewhere the operators cannot take you. For Farmer Jones they happen to coincide: all ten valid states are reachable from <code>(S,S,S,S)</code>. Worth knowing that this is a fact about this puzzle rather than a general rule.</p>
+</div></div></details>
 <details class="beat" id="operators-and-transitions"><summary><h2 class="beat__title">Operators and transitions</h2></summary><div class="beat__body"><p>There are four things the farmer can do:</p>
 <pre data-lang="text"><code class="language-text">Farmer-Takes-Self
 Farmer-Takes-Wolf
@@ -184,11 +196,13 @@ the legal transitions between them</code></pre>
 <div class="callout callout--important"><span class="callout__label">Important</span><p><strong>The algorithm sees structure, not story.</strong></p>
 <p>The story matters enormously while we are designing the representation — it is the only source of the constraints. Once the representation is built, the same machinery works on farmers, robots, timetables or game positions without knowing the difference.</p></div>
 <p>That indifference is not a limitation. It is precisely what makes general problem-solving methods possible.</p>
+<div class="focus-block">
 <h3 id="why-this-matters-this-week">Why this matters this week</h3>
 <p>Farmer Jones contains the entire Week 2 idea at a size you can hold in your head.</p>
 <p><strong><code>REPRESENTATION</code></strong> turned a paragraph of English into <code>(Farmer, Wolf, Goat, Cabbage)</code>, and justified dropping the boat.</p>
 <p><strong><code>TRANSITION</code></strong> turned "he rows across with the goat" into an operator with a precondition, an effect and a constraint.</p>
 <p><strong><code>SEARCH SPACE</code></strong> turned ten safe states and their legal connections into a graph in which "solution" means something exact.</p>
+</div>
 <p>The puzzle is no longer merely something a human can reason about. It is something a machine <em>could</em> search. Whether that shape is peculiar to river puzzles is the next question.</p></div></details>
 <details class="beat" id="the-maze--the-same-computational-structure"><summary><h2 class="beat__title">The maze — the same computational structure</h2></summary><div class="beat__body"><p>A maze has no wolf, no goat, no cabbage, no boat and no river. To a person it has nothing whatsoever in common with the last section.</p>
 <p>Computationally it is nearly the same problem, and that is the point of putting it here.</p>
@@ -222,10 +236,12 @@ DOWN  = (+1, 0)        RIGHT = (0, +1)</code></pre>
 <p>An action proposes a transition. Whether it is legal is a separate question, and the constraints answer it: the destination must stay inside the grid, and must not be a wall.</p>
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-02/maze-neighbours.svg" alt="Legal neighbours of the state (2,3)" loading="lazy" decoding="async"><figcaption>Figure 9. From (2,3), all four move vectors are tried. Three land on open cells and become legal next states; DOWN reaches the wall at (3,3) and is discarded. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <p>From <code>(0,0)</code> the arithmetic is even starker. <code>UP</code> and <code>LEFT</code> leave the grid, <code>DOWN</code> hits the wall at <code>(1,0)</code>, and only <code>RIGHT</code> survives. The start state has exactly one legal move — just as <code>(S,S,S,S)</code> did.</p>
+<div class="focus-block">
 <h3 id="the-same-computational-shape">The same computational shape</h3>
 <p>Set the two problems side by side:</p>
 <div class="table-scroll"><table><thead><tr><th></th><th>Farmer Jones</th><th>Maze</th></tr></thead><tbody><tr><td><strong>State</strong></td><td><code>(Farmer, Wolf, Goat, Cabbage)</code></td><td><code>(row, column)</code></td></tr><tr><td><strong>Start</strong></td><td><code>(S,S,S,S)</code></td><td><code>(0,0)</code></td></tr><tr><td><strong>Goal</strong></td><td><code>(N,N,N,N)</code></td><td><code>(6,8)</code></td></tr><tr><td><strong>Actions</strong></td><td>four river crossings</td><td><code>UP</code> <code>DOWN</code> <code>LEFT</code> <code>RIGHT</code></td></tr><tr><td><strong>Constraints</strong></td><td>no unattended conflicting pair</td><td>stay on the grid, avoid walls</td></tr><tr><td><strong>Transition</strong></td><td>a crossing whose result is safe</td><td>a move onto an open cell</td></tr></tbody></table></div>
 <p>The left-hand column is a folk puzzle. The right-hand column is a grid. The rows are the same rows.</p>
+</div>
 <p>That is why representation is worth this much attention: it is the step that makes two unrelated-looking problems into instances of the same thing. Every open cell is a state, every legal move between neighbouring cells is an edge, and the picture of the maze is simply a convenient way of displaying a graph we never had to draw.</p></div></details>
 <details class="beat" id="when-position-alone-is-not-enough"><summary><h2 class="beat__title">When position alone is not enough</h2></summary><div class="beat__body"><p>Now break it deliberately. Suppose the maze contains a locked door and a key somewhere else.</p>
 <p>Is <code>(row, column)</code> still sufficient? Stand at <code>(4,3)</code>, immediately above the door at <code>(5,3)</code>.</p>
@@ -239,11 +255,13 @@ DOWN  = (+1, 0)        RIGHT = (0, +1)</code></pre>
 <p>The maze is not a disposable example. We will keep this exact problem and change what the machine does with it.</p>
 <ul><li><strong>This week</strong> — what is a state, which moves are legal, and what states can come next?</li><li><strong>Next</strong> — when several next states are legal, how should the machine choose between them?</li><li><strong>Later</strong> — can extra information help guide that choice?</li></ul>
 <p>Holding the problem fixed is what will let us see clearly what changes.</p>
+<div class="focus-block">
 <h3 id="why-this-matters-this-week">Why this matters this week</h3>
 <p>Farmer Jones alone might suggest that state-space thinking is a trick for puzzles. The maze shows it is not.</p>
 <p>The machinery never needed a concept of a wolf, and it does not need a concept of a wall. It needs a problem that can supply just three things:</p>
 <ul><li>a current state</li><li>the legal states that may follow it</li><li>a way to recognise the goal</li></ul>
-<p>Anything able to provide those three things is searchable. So let us build exactly that, in code, and see how far it gets us.</p></div></details>
+<p>Anything able to provide those three things is searchable. So let us build exactly that, in code, and see how far it gets us.</p>
+</div></div></details>
 <details class="beat" id="building-the-searchable-problem-in-code"><summary><h2 class="beat__title">Building the searchable problem in code</h2></summary><div class="beat__body"><p>The aim of the build is deliberately modest, and its limitation is the lesson.</p>
 <p>We are not writing something that finds a route. We are writing the thing a route-finder would need, and then stopping — one decision short — so that the missing piece becomes visible rather than theoretical.</p>
 <p>By the end, the program can answer:</p>
@@ -335,6 +353,7 @@ WALLS = {
 <p>and <code>is_legal</code>, <code>neighbours</code> and <code>is_goal</code> all have to be rewritten to handle a three-part state.</p>
 <p>That is the real distinction. Editing the data is routine. Editing what a state <em>is</em> changes the problem's structure, and everything built on top of it.</p>
 <div class="callout callout--note"><span class="callout__label">Note</span><p>Try the instance changes first, and only reach for the key once the basic representation is completely clear. The key is a probe for testing understanding, not a way to make the starting example more elaborate.</p></div>
+<div class="focus-block">
 <h3 id="why-this-matters-this-week">Why this matters this week</h3>
 <p>The build makes one boundary concrete: <strong>a problem representation is not a solving strategy.</strong></p>
 <p>Our program can enumerate every legal state that could come next, from any state, correctly, every time. It cannot decide which of them deserves attention, and nothing in it is even shaped like an opinion on the matter.</p>
@@ -342,6 +361,7 @@ WALLS = {
 <p><strong><code>REPRESENTATION</code></strong> — the maze exists as data, and a state is <code>(row, column)</code></p>
 <p><strong><code>TRANSITION</code></strong> — <code>neighbours(state)</code> generates the legal next states</p>
 <p><strong><code>SEARCH SPACE</code></strong> — repeated transitions define everywhere the agent could reach</p>
+</div>
 <p>And the missing piece is no longer an abstraction. It is one line:</p>
 <pre data-lang="python"><code class="language-python">choice = input("\nMove: ")</code></pre></div></details>
   </main>
@@ -356,10 +376,12 @@ Legal next states:
   LEFT  -&gt; (2, 2)
   RIGHT -&gt; (2, 4)</code></pre>
 <p>The representation has done everything asked of it. The states exist, the constraints have been applied, the legal transitions have been generated, and the goal test is ready.</p>
+<div class="focus-block">
 <blockquote><p><strong>We now know which states exist and which moves are legal.</strong></p>
 <p><strong>But if several next states are possible, which one should the machine explore first?</strong></p></blockquote>
 <p>Nothing on this page answers that. Notice that the question is not about the maze, or about Farmer Jones — both would pose it equally. It is a question about what to do with a state space once you have one.</p>
 <p>That is where Week 3 begins.</p>
+</div>
 <hr>
 <h2 id="quick-revision">Quick revision</h2>
 <p>If you can answer these without reopening the page, you have the core of Week 2.</p>
