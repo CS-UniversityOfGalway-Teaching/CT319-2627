@@ -85,14 +85,7 @@ That means problem solving begins **before** any algorithm is chosen. The formal
 
 The order is the point. Choosing a clever technique before knowing what the states and legal actions are is working backwards.
 
-```mermaid
-flowchart LR
-    W["Messy real-world<br/>situation"] --> Q["Choose the<br/>question"]
-    Q --> R["Identify relevant<br/>information"]
-    R --> P["Representation"]
-    P --> S["States + actions<br/>+ constraints"]
-    S --> X["Searchable<br/>problem"]
-```
+![From an unstructured situation to a searchable problem](../../media/week-02/representation-pipeline.svg "hero")
 
 <sub><em>Figure 2. The pipeline from an unstructured situation to a problem a machine can search. Week 2 covers every step except the last one's payoff. Diagram created for these pages; no external image licence is used.</em></sub>
 
@@ -552,22 +545,7 @@ Which of these legal states should I look at first?
 
 The code splits into two parts, and keeping them apart is a genuine design decision rather than tidiness.
 
-```mermaid
-flowchart TB
-    subgraph PROB["PROBLEM DEFINITION — reused in later weeks"]
-        A["ROWS, COLS, START,<br/>GOAL, WALLS, MOVES"]
-        B["is_legal(state)"]
-        C["neighbours(state)"]
-        D["is_goal(state)"]
-    end
-    subgraph CTRL["WEEK 2 CONTROLLER — temporary"]
-        E["render(state)"]
-        F["show legal options"]
-        G["human chooses one"]
-    end
-    C --> F
-    G --> C
-```
+![The problem definition and the Week 2 controller](../../media/week-02/problem-definition-vs-controller.svg "hero")
 
 <sub><em>Figure 11. The problem definition describes what is true and what is legal. The controller is a placeholder for a decision the machine cannot yet make. Diagram created for these pages; no external image licence is used.</em></sub>
 
