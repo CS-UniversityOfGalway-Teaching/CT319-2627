@@ -77,7 +77,7 @@ It is tempting to think of facts as intrinsically relevant or irrelevant. They a
 
 A computer cannot make that call. It has no way of knowing that the colour of a cabbage does not affect a river crossing while the bank the cabbage is standing on does. Someone has to decide.
 
-That means problem solving begins **before** any algorithm is chosen. The formal CT319 material puts this as three jobs, in order:
+That means problem solving begins **before** any algorithm is chosen. It breaks into three jobs, in order:
 
 1. define the problem precisely
 2. isolate and represent the knowledge needed to solve it
