@@ -20,7 +20,7 @@
     .wall { fill:var(--wall); stroke:var(--wall); stroke-width:1.5; }
     .cellmark { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:20px; font-weight:700; }
     .coord { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:12px; fill:var(--muted); }
-    .legend { font-size:14px; fill:var(--muted); }
+    .legend { font-size:12px; fill:var(--muted); }
     .lab { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
     .cur { fill:var(--accbg); stroke:var(--accent); stroke-width:3; }
     .okc { fill:var(--goodbg); stroke:var(--good); stroke-width:3; }
