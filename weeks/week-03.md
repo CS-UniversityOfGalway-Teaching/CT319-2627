@@ -76,6 +76,24 @@ That collection is the **frontier**.
 > [!IMPORTANT]
 > **The frontier contains states that have been discovered but are still waiting to be expanded.**
 
+### Why that word
+
+Picture yourself in an unlit maze. You are standing at a junction with three corridors leading off it. You can only walk down one, but the other two do not stop existing — you simply have not been down them. So you note them: *two corridors back there, unvisited.* When the corridor you chose runs out, you consult that note and pick another.
+
+The note is the frontier, and the name describes its shape. It is the edge of the map you have drawn so far:
+
+<!-- ct319:focus -->
+
+- **behind it** — states you have already expanded, where you have been and looked around
+- **the frontier itself** — states you know exist but have not visited, the doors you have seen and not opened
+- **beyond it** — states you have not yet heard of
+
+<!-- ct319:endfocus -->
+
+As the search runs, that edge is pushed outwards. This is worth holding on to, because it is literally what you will see later: the wave in Figure 6 is a frontier expanding evenly in every direction, and the thread in Figure 9 is the same frontier racing out along a single branch.
+
+The reason a machine needs one at all is that Week 2's program did not have one. It offered a human three moves, took the answer and forgot the alternatives. An algorithm has no instinct to choose with, so it cannot afford to forget: it keeps every state it has discovered but not examined, precisely so that it can come back. Without a frontier there is nothing to come back to.
+
 ### Generated is not the same as expanded
 
 This distinction is small, and everything else this week rests on it.
@@ -640,13 +658,21 @@ The Week 3 terminology and comparison follow the existing *Problem Solving using
 - uninformed versus informed search
 - breadth-first and depth-first search, and the memory trade-off between them
 
-The Wiki develops only **BFS and DFS**. The slides list further uninformed methods — depth-limited, iterative-deepening, uniform-cost and bidirectional search — which are not highlighted here because the live teaching story is the direct comparison between breadth and depth.
+These pages develop only **BFS and DFS**. The slides list further uninformed methods — depth-limited, iterative-deepening, uniform-cost and bidirectional search — which are not highlighted here because the live teaching story is the direct comparison between breadth and depth.
 
 Three statements are made more explicit here than in the slides:
 
 - BFS's guarantee is stated as **minimum depth when action costs are equal**, not as a claim about the cheapest route.
 - The weighted graph in the notes carries a clarification that standard BFS does not minimise unequal edge weights.
 - DFS completeness is stated with its assumptions: unrestricted infinite-depth tree search and finite graph search with reached-state checking are different cases.
+
+### Where the vocabulary comes from
+
+Two words on this page are standard textbook terms rather than slide terms, and it is worth knowing which is which.
+
+**Frontier** is the term used in Russell and Norvig, *Artificial Intelligence: A Modern Approach*, in its chapter on solving problems by searching. Older work calls the same collection the **fringe** (their second edition) or the **open list** (much of the classical search and path-finding literature). **Reached** follows the same book's more recent treatment, where earlier editions and older work say **explored set** or **closed list**.
+
+The slides describe a search strategy as the rule deciding which **node** is expanded next. That is the same idea: the node being chosen is a frontier node. If you are revising from the slides and the word *frontier* does not appear there, it is the vocabulary that differs, not the content.
 
 ### Continuity from Week 2
 
@@ -671,6 +697,6 @@ No external images, videos or interactives are used. Generic BFS/DFS visualisers
 
 ### Formal source
 
-The broader Week 3 lecture remains on Canvas. The Wiki focuses on the one question we spend live time on:
+The broader Week 3 lecture remains on Canvas. These pages focus on the one question we spend live time on:
 
 > **When several possibilities are waiting and the machine has no guidance, what rule should decide which one gets explored next?**
