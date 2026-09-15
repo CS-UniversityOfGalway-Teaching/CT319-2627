@@ -547,6 +547,10 @@ th, td { border: 1px solid var(--line); padding: 0.5rem 0.7rem; text-align: left
 th { background: var(--surface); font-weight: 650; }
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 
+/* A figure can sit inside a comparison table, where it carries no figure class
+   to size it. Without this a full-width screenshot overflows its cell. */
+td img { display: block; width: 100%; height: auto; border-radius: var(--radius); }
+
 .video-link { display: block; margin: 1.6rem 0; }
 .video-link img { width: 100%; max-width: 520px; height: auto; border-radius: var(--radius); border: 1px solid var(--line); }
 

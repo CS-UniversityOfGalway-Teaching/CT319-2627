@@ -47,7 +47,9 @@ RAW_INLINE = ("sub", "sup", "em", "strong", "a", "code", "br", "kbd", "abbr")
 # A link destination may contain balanced parentheses, as Wikimedia file URLs do
 # (".../Alan%20Turing%20(1951).jpg"). Matching one nested level covers every URL
 # these pages use and keeps the closing ")" of the Markdown link intact.
-URL_DEST = r"(?:[^()\s]+|\([^()\s]*\))+"
+# Each alternative consumes exactly one unit, so a FAILING match (for example an
+# image carrying a size title inside a table cell) cannot backtrack exponentially.
+URL_DEST = r"(?:[^()\s]|\([^()\s]*\))+"
 
 
 # --------------------------------------------------------------------------
