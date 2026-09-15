@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 3 — Blind search — CT319</title>
+<meta name="description" content="CT319 Week 3. The frontier, breadth-first and depth-first search, and what changes when the only thing that changes is the rule for choosing which state to expand next.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230969da'/%3E%3Cpath d='M8 8h7v4h-3v8h3v4H8zm9 0h7v16h-7v-4h3v-8h-3z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/ct319.css">
+</head>
+<body>
+<a class="skip-link" href="#beats">Skip to the teaching sections</a>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">CT319 Artificial Intelligence · Week 3 · Blind search</p>
+    <h1>Week 3 — Blind search</h1>
+    <p class="week-question">If the machine has no clue which direction is better, what should it try first?</p>
+  </header>
+
+  <div class="lede">
+<p>Week 2 ended with a program that could describe a problem perfectly well:</p>
+<pre data-lang="text"><code class="language-text">Current state: (2, 3)
+
+Legal next states:
+  UP    -&gt; (1, 3)
+  LEFT  -&gt; (2, 2)
+  RIGHT -&gt; (2, 4)</code></pre>
+<p>It knew the state, the goal, the legal actions and the transitions. Then it stopped, and a human had to finish the job:</p>
+<pre data-lang="python"><code class="language-python">choice = input("\nMove: ")</code></pre>
+<p>Week 3 removes that line. The question is no longer <em>what moves are possible?</em> — Week 2 answered that completely. It is <strong>if the machine has no clue which direction is better, what should it try first?</strong></p>
+<p>We work through four things.</p>
+<ul><li>We begin with the <a href="#the-frontier--where-possibilities-wait"><strong>frontier</strong></a>. Once a problem branches, the machine needs somewhere to keep the possibilities it has discovered but not examined. A search strategy is a rule for deciding which gets attention next.</li><li><a href="#breadth-first-search--everything-nearby-first"><strong>Breadth-first search</strong></a> refuses to go deeper while a shallower possibility is waiting. Its behaviour gives us a reason for the FIFO queue rather than asking us to memorise one.</li><li><a href="#depth-first-search--commit-to-one-possibility"><strong>Depth-first search</strong></a> makes the opposite commitment: follow one branch as far as it goes, then come back. The LIFO stack, the narrower frontier and the sensitivity to successor order all follow from that one decision.</li><li>Finally we <a href="#one-loop-two-policies"><strong>run both on the same Week 2 maze</strong></a>. Holding the problem fixed is what lets us attribute every difference to the strategy alone.</li></ul>
+<p>Three words carry the whole page, and it is worth keeping them apart:</p>
+<div class="focus-block">
+<div class="lenses">
+<div class="lens"><span class="lens__key">Frontier</span><span class="lens__gloss">the states we have discovered but have not yet explored</span></div>
+<div class="lens"><span class="lens__key">Strategy</span><span class="lens__gloss">the rule that decides which frontier entry is expanded next</span></div>
+<div class="lens"><span class="lens__key">Trade-off</span><span class="lens__gloss">what that rule buys us, and what it costs</span></div>
+</div>
+</div>
+<p>Nothing about the problem changes this week:</p>
+<pre data-lang="text"><code class="language-text">same maze
+same start
+same goal
+same walls
+same neighbours(state)</code></pre>
+<p>Only the rule for handling unexplored possibilities changes. That is what makes the comparison worth anything.</p>
+  </div>
+
+  <div class="beat-bar" data-beat-bar hidden>
+    <span class="beat-bar__label">Week 3 · Sections</span>
+    <button type="button" data-expand-all>Expand all</button>
+    <button type="button" data-collapse-all>Collapse all</button>
+  </div>
+
+  <main class="beats" id="beats">
+<details class="beat" id="the-frontier--where-possibilities-wait"><summary><h2 class="beat__title">The frontier — where possibilities wait</h2></summary><div class="beat__body"><p>Return to the Week 2 program. At <code>(2,3)</code>, <code>neighbours(state)</code> hands back three legal possibilities and a human picks one on instinct. An algorithm cannot say:</p>
+<blockquote><p>“Right feels promising.”</p></blockquote>
+<p>Nothing in the representation contains that judgement. So instead of committing to one move and forgetting the others, the algorithm keeps everything it has discovered and decides systematically which to examine next.</p>
+<p>That collection is the <strong>frontier</strong>.</p>
+<div class="callout callout--important"><span class="callout__label">Important</span><p><strong>The frontier contains states that have been discovered but are still waiting to be expanded.</strong></p></div>
+<h3 id="generated-is-not-the-same-as-expanded">Generated is not the same as expanded</h3>
+<p>This distinction is small, and everything else this week rests on it.</p>
+<ul><li><strong>GENERATED</strong> — the machine knows the state exists. It appeared as a legal successor of something already examined.</li><li><strong>EXPANDED</strong> — the machine has selected that state and called <code>neighbours(state)</code> on it, so its own successors are now known too.</li></ul>
+<p>A large search may know about thousands of possibilities while actively examining exactly one.</p>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-03/frontier-lifecycle.svg" alt="The life of a state during search: frontier, current, expanded" loading="lazy" decoding="async"><figcaption>Figure 1. The three places a state can be during a search, using real Week 2 maze states. The strategy moves one state into the middle column; expanding it generates new states, which join the frontier. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<p>To <strong>expand</strong> a state is to select it, ask the problem for its legal successors, and put the new ones on the frontier. Week 2 already built the middle step:</p>
+<pre data-lang="python"><code class="language-python">neighbours(state)</code></pre>
+<p>So Week 3 needs no new problem definition — only a rule for choosing which frontier state gets passed to <code>neighbours()</code> next.</p></div></details>
+<details class="beat" id="the-problem-we-are-searching"><summary><h2 class="beat__title">The problem we are searching</h2></summary><div class="beat__body"><figure class="figure--hero"><img class="figure__img" src="../../media/week-02/maze-grid.svg" alt="The Week 2 maze" loading="lazy" decoding="async"><figcaption>Figure 2. The recurring Week 2 maze: seven rows, nine columns, start at (0,0), goal at (6,8). Week 3 keeps this definition unchanged and adds a frontier policy. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<p>When the search expands <code>(2,3)</code> it calls the same <code>neighbours((2,3))</code> written in Week 2, and three legal states join the frontier. Which one is removed later is the only thing Week 3 adds.</p>
+<h3 id="the-state-belongs-to-the-problem-the-bookkeeping-does-not">The state belongs to the problem; the bookkeeping does not</h3>
+<p>A maze state is still <code>(row, column)</code> and nothing else. But the <em>search process</em> needs to remember three things the problem never cared about:</p>
+<ul><li>which states have already been <strong>reached</strong></li><li>where a state currently sits in the <strong>frontier</strong></li><li>which state it was generated from — its <strong>parent</strong></li></ul>
+<p>None of that is part of the maze. Reaching <code>(6,8)</code> says where the search finished, not how it got there, so <code>parent</code> is what recovers the route. We build it in <a href="#reconstruct-the-solution">Highlight 4</a>, beside the code that uses it.</p></div></details>
+<details class="beat" id="reached-states-and-repeated-work"><summary><h2 class="beat__title">Reached states and repeated work</h2></summary><div class="beat__body"><p>A maze contains cycles. If the agent can move from <code>A</code> to <code>B</code> it can usually move straight back, and a search with no memory will rediscover <code>A → B → A → B</code> forever.</p>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-03/cycle-repeated-states.svg" alt="A cycle produces repeated states" loading="lazy" decoding="async"><figcaption>Figure 3. A cycle produces repeated states. Without reached-state checking, a search can follow the same loop forever and never look at the goal. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<p>So the search keeps a second collection alongside the frontier:</p>
+<pre data-lang="python"><code class="language-python">reached = {START}</code></pre>
+<p>and consults it before adding anything new:</p>
+<pre data-lang="python"><code class="language-python">if next_state not in reached:
+    reached.add(next_state)
+    ...</code></pre>
+<p>The two collections differ. Everything on the frontier has been reached; not everything reached is still on the frontier, because some of it has been expanded already.</p>
+<div class="callout callout--note"><span class="callout__label">Note</span><p><strong>Tree search</strong> treats every newly generated path as a new branch, even when two branches arrive at the same state. <strong>Graph search</strong> notices the state has already been reached.</p>
+<p>Because our maze is a graph, reached-state checking stops the search processing the same state over and over. It is not an optimisation added for cleverness.</p></div></div></details>
+<details class="beat" id="what-makes-a-search-blind"><summary><h2 class="beat__title">What makes a search blind</h2></summary><div class="beat__body"><p>Search strategies divide into two families. An <strong>uninformed</strong> — or <strong>blind</strong> — strategy has no problem-specific information saying that one non-goal state looks more promising than another.</p>
+<p>Blind is not ignorant. The search still knows <code>START</code>, <code>GOAL</code>, <code>WALLS</code>, <code>MOVES</code>, <code>neighbours(state)</code> and <code>is_goal(state)</code>. What it lacks is <strong>guidance</strong>: nothing tells it that one waiting state is closer to the goal than another.</p>
+<p>So the frontier has to be organised by a rule that makes no estimate of progress at all. Two very simple rules produce very different behaviour.</p>
+<div class="focus-block">
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Week 2 gave us a state space. The frontier turns that static structure into a process: at any moment there are states already expanded, one being examined, and a set still waiting. That makes the central Week 3 decision precise:</p>
+<blockquote><p><strong>Which waiting state should be expanded next?</strong></p></blockquote>
+<p>Breadth-first search gives us one answer.</p>
+</div></div></details>
+<details class="beat" id="breadth-first-search--everything-nearby-first"><summary><h2 class="beat__title">Breadth-first search — everything nearby first</h2></summary><div class="beat__body"><p>Breadth-first search makes one commitment, and it is about behaviour, not data structures:</p>
+<div class="focus-block">
+<blockquote><p><strong>Do not explore a deeper state while a shallower one is still waiting.</strong></p></blockquote>
+</div>
+<p>Take a small tree and watch what that produces.</p>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-03/bfs-expansion-tree.svg" alt="Breadth-first expansion order on a small tree" loading="lazy" decoding="async"><figcaption>Figure 4. A small search tree, each node labelled with the order in which BFS expands it. Every depth-1 state is dealt with before any depth-2 state. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<p>The letters do not matter. The shape does: <strong>wide first, deep later</strong>.</p>
+<h3 id="watch-the-frontier-not-the-final-order">Watch the frontier, not the final order</h3>
+<p>That order is a symptom. The cause is what happens to the frontier.</p>
+<pre data-lang="text"><code class="language-text">start            [S]
+expand S         [A, B, C]
+expand A         [B, C, D, E]</code></pre>
+<p>Notice what did <strong>not</strong> happen. <code>D</code> and <code>E</code> are children of the state just expanded, and they do not jump ahead of <code>B</code> and <code>C</code>. The older, shallower possibilities keep their turn — which is exactly what a <strong>FIFO queue</strong> does.</p></div></details>
+<details class="beat" id="fifo-is-the-mechanism-not-the-definition"><summary><h2 class="beat__title">FIFO is the mechanism, not the definition</h2></summary><div class="beat__body"><p>FIFO means <strong>First In, First Out</strong>: whatever has waited longest leaves first.</p>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-03/frontier-fifo.svg" alt="A FIFO frontier: remove from the front, add at the back" loading="lazy" decoding="async"><figcaption>Figure 5. Removal happens at one end of the frontier and addition at the other. Newly generated states therefore queue behind everything already waiting. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<div class="callout callout--important"><span class="callout__label">Important</span><p><strong>BFS does not go level by level because somebody drew the tree that way.</strong></p>
+<p>It goes level by level because the frontier behaves as a FIFO queue. The data structure explains the visible behaviour, not the other way round.</p></div>
+<p>In Python that is one import and two method calls:</p>
+<pre data-lang="python"><code class="language-python">from collections import deque
+
+frontier = deque([START])
+
+state = frontier.popleft()      # remove the oldest waiting state
+frontier.append(next_state)     # add newly generated states at the back</code></pre></div></details>
+<details class="beat" id="the-maze-under-bfs"><summary><h2 class="beat__title">The maze under BFS</h2></summary><div class="beat__body"><p><code>START</code>, <code>GOAL</code> and <code>neighbours(state)</code> are still the Week 2 definitions. Only the frontier is new, and the visible result is a wave.</p>
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-03/bfs-search-wave.png" alt="Breadth-first search part-way through the Week 2 maze" loading="lazy" decoding="async"><figcaption>Figure 6. BFS after 18 expansions in the Search Lab. Grey cells are explored, purple cells are waiting on the frontier, and the amber cell is being expanded. Screenshot created from the Search Lab for these pages; no external image licence is used.</figcaption></figure>
+<p>BFS discovers everything one move from the start, then everything two moves away, and so on, so the explored region spreads outwards evenly. It has no idea where the goal is. It is refusing to skip a shallower possibility in favour of a deeper one.</p>
+<h3 id="the-guarantee-and-the-condition-attached-to-it">The guarantee, and the condition attached to it</h3>
+<p>Suppose every move costs one step. If BFS first reaches a goal at depth <code>5</code>, there cannot be an undiscovered goal at depth <code>3</code> — every reachable state at depths 0 to 4 was dealt with first. So, with equal action costs:</p>
+<div class="focus-block">
+<blockquote><p><strong>BFS finds a solution of minimum depth: the fewest moves.</strong></p></blockquote>
+</div>
+<p>The condition is not decoration. If one route takes two actions costing 10 each and another takes three costing 1 each, BFS prefers the two-action route because it is shallower, never noticing that <code>20</code> is worse than <code>3</code>. The precise claim is <em>minimum depth when action costs are equal</em>, not <em>the cheapest route</em>.</p>
+<div class="callout callout--note"><span class="callout__label">Note</span><p>The weighted graph in the formal notes is exactly this case. Standard BFS orders states by depth, not by accumulated edge weight, so a least-cost path with unequal costs needs a cost-aware strategy.</p></div>
+<p><strong>Completeness</strong> follows from the same behaviour. BFS cannot disappear down one branch, because every shallow frontier state eventually gets its turn. On the finite kind of maze we use here, if a reachable solution exists, BFS will find one.</p></div></details>
+<details class="beat" id="what-breadth-first-search-pays-for-it"><summary><h2 class="beat__title">What breadth-first search pays for it</h2></summary><div class="beat__body"><p>Memory. Suppose each expansion produced roughly three genuinely new states:</p>
+<pre data-lang="text"><code class="language-text">depth 0        1
+depth 1        3
+depth 2        9
+depth 3       27
+depth 4       81
+depth 5      243</code></pre>
+<p>BFS may hold most of one level in the frontier while it finishes the previous one, so the frontier can become enormous even when the solution path is short. The trade-off, then:</p>
+<ul><li><strong>Benefit</strong> — with equal step costs, the first goal found is at minimum depth.</li><li><strong>Cost</strong> — a wide frontier, and therefore a potentially large memory requirement.</li></ul>
+<div class="focus-block">
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>BFS gives the machine a mechanical answer to “what next?”:</p>
+<blockquote><p><strong>expand the shallowest waiting possibility</strong></p></blockquote>
+<p>A FIFO queue is how that answer gets enforced. Depth-first search makes almost the opposite bargain.</p>
+</div></div></details>
+<details class="beat" id="depth-first-search--commit-to-one-possibility"><summary><h2 class="beat__title">Depth-first search — commit to one possibility</h2></summary><div class="beat__body"><p>Depth-first search commits the other way:</p>
+<div class="focus-block">
+<blockquote><p><strong>Once you start down a branch, keep going until you cannot continue, then come back.</strong></p></blockquote>
+</div>
+<h3 id="behaviour-first-then-the-mechanism">Behaviour first, then the mechanism</h3>
+<p>Suppose the frontier holds <code>A, B, C</code> and an expansion has just generated <code>E</code> and <code>F</code>. DFS wants those new, deeper possibilities considered <em>before</em> it returns to the older alternatives.</p>
+<p>That is <strong>LIFO — Last In, First Out</strong>: the most recently added possibility is the next one removed. A stack provides it for nothing, and in Python an ordinary list is enough:</p>
+<pre data-lang="python"><code class="language-python">frontier = [START]
+
+state = frontier.pop()          # remove the newest waiting state
+frontier.append(next_state)     # add at the same end</code></pre>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-03/frontier-lifo.svg" alt="A LIFO frontier: add and remove at the same end" loading="lazy" decoding="async"><figcaption>Figure 7. The same frontier drawn the same way as Figure 5, with one difference: both arrows point at the same end. The bottom row is a dead end. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<h3 id="backtracking-is-not-a-separate-intelligence">Backtracking is not a separate intelligence</h3>
+<p>DFS often looks as though it is reasoning:</p>
+<blockquote><p>“That route failed. I should go back.”</p></blockquote>
+<p>There is no such step. In the bottom row of Figure 7, nothing new is pushed at the dead end, so the next <code>pop()</code> exposes an alternative that has been sitting on the stack since earlier. Backtracking is what a stack does when nothing arrives — not a judgement that the branch was a mistake.</p></div></details>
+<details class="beat" id="the-same-tree-the-other-rule"><summary><h2 class="beat__title">The same tree, the other rule</h2></summary><div class="beat__body"><figure class="figure--hero"><img class="figure__img" src="../../media/week-03/expansion-order.svg" alt="The same search tree expanded by BFS and by DFS, numbered by expansion order" loading="lazy" decoding="async"><figcaption>Figure 8. One tree, two frontier rules. The numbers give expansion order. BFS finishes an entire level before starting the next; DFS drives to a leaf and unwinds. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<p>Both panels use the same tree, goal test and successor order. Only the removal rule differs, and the two traversals are barely recognisable as the same search.</p>
+<p>Note which branch DFS opened first. Successors were generated <code>A</code>, <code>B</code>, <code>C</code>, so <code>C</code> was pushed last — and a stack removes the newest. That matters more than it looks, and we return to it below.</p>
+<h3 id="the-maze-under-dfs">The maze under DFS</h3>
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-03/dfs-search-path.png" alt="Depth-first search part-way through the Week 2 maze" loading="lazy" decoding="async"><figcaption>Figure 9. DFS after 18 expansions in the Search Lab — same problem, same number of expansions, same colour coding as Figure 6. Screenshot created from the Search Lab for these pages; no external image licence is used.</figcaption></figure>
+<p>Set Figure 9 beside Figure 6. Instead of a region spreading outwards there is a narrow trail, and the frontier holds a few alternatives from earlier turnings, waiting to be backtracked into.</p></div></details>
+<details class="beat" id="deep-does-not-mean-promising"><summary><h2 class="beat__title">Deep does not mean promising</h2></summary><div class="beat__body"><p>DFS can walk straight past the answer. Suppose the goal is one move from the start, on a branch DFS does not happen to open first:</p>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-03/dfs-shallow-goal.svg" alt="A shallow goal that depth-first search does not reach" loading="lazy" decoding="async"><figcaption>Figure 10. A shallow goal can sit untouched while DFS follows a deeper branch, depending on which successor was generated last. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<p>If DFS commits to <code>A</code> first, it may explore <code>A → B → C → D → E</code> before returning to a goal that was one step from the start. Nothing has gone wrong: DFS is doing exactly what its frontier rule says.</p>
+<div class="focus-block">
+<blockquote><p><strong>deep does not mean promising</strong></p></blockquote>
+</div>
+<p>Nothing tells the algorithm that deeper is better. It prefers recency, and recency is not evidence.</p>
+<h3 id="memory-cycles-and-termination">Memory, cycles and termination</h3>
+<p>Three consequences follow from the same rule, and each needs its condition attached.</p>
+<ul><li><strong>Frontier memory.</strong> DFS usually keeps a far narrower frontier than BFS, following one branch and retaining only the alternatives needed for backtracking. Our graph-search version also stores <code>reached</code> and <code>parent</code>, so it is not literally holding one path — the advantage is about the frontier.</li><li><strong>Cycles.</strong> Unrestricted, DFS can follow <code>A → B → C → A</code> indefinitely. That is exactly what the <code>reached</code> set from Highlight 1 prevents.</li><li><strong>Completeness.</strong> Unrestricted DFS can disappear down an infinite branch or around a cycle, so in general it is <strong>not complete</strong>. On our finite maze with reached-state checking it cannot generate endlessly many new states, so it terminates and will encounter a reachable goal. Both statements are true; they describe different cases.</li></ul>
+<p>DFS also has no minimum-depth guarantee: the first goal it finds is the first goal along whatever branch ordering the stack produced.</p>
+<h3 id="successor-order-breaks-the-ties">Successor order breaks the ties</h3>
+<p>BFS and DFS decide the broad strategy. They do not decide everything.</p>
+<pre data-lang="python"><code class="language-python">MOVES = {
+    "UP":    (-1, 0),
+    "DOWN":  (+1, 0),
+    "LEFT":  (0, -1),
+    "RIGHT": (0, +1),
+}</code></pre>
+<p><code>neighbours(state)</code> returns successors in that order, and a stack removes whichever was appended last. So the <strong>last</strong> legal successor generated is the <strong>first</strong> one DFS explores. Change the order in <code>MOVES</code> and DFS may follow an entirely different corridor — same maze, same start, same goal, same LIFO rule.</p>
+<p>This is not a flaw. It is a reminder that a strategy can leave ties unresolved, and the implementation still has to break them somehow. BFS is affected too, but its level-by-level character survives; DFS can look like a different algorithm. We test exactly this in the Search Lab.</p>
+<div class="focus-block">
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>DFS gives the machine the other mechanical answer:</p>
+<blockquote><p><strong>expand the newest, deepest waiting possibility</strong></p></blockquote>
+<p>A LIFO stack creates that behaviour. The benefit is a small frontier and the chance of reaching a deep solution quickly. The cost is that the branch may be terrible, the first solution need not be good, and unrestricted DFS needs care around repeated states and infinite depth.</p>
+<p>Neither strategy is the intelligent one. They are two rules for organising ignorance, and the useful comparison only appears when they run on the same problem.</p>
+</div></div></details>
+<details class="beat" id="one-loop-two-policies"><summary><h2 class="beat__title">One loop, two policies</h2></summary><div class="beat__body"><p>Everything below runs on the Week 2 problem, untouched:</p>
+<pre data-lang="text"><code class="language-text">same ROWS, COLS
+same START = (0,0)
+same GOAL  = (6,8)
+same WALLS
+same MOVES
+same neighbours(state)
+same is_goal(state)</code></pre>
+<p>The problem has not changed. One line has.</p>
+<p>BFS and DFS share almost the entire search:</p>
+<pre data-lang="python"><code class="language-python">frontier = ...
+reached  = {START}
+parent   = {START: None}
+
+while frontier:
+    state = remove_next(frontier)
+
+    if is_goal(state):
+        break
+
+    for action, next_state in neighbours(state):
+        if next_state not in reached:
+            reached.add(next_state)
+            parent[next_state] = state
+            add(frontier, next_state)</code></pre>
+<p>The start, goal test, <code>neighbours()</code>, reached-state rule and parent bookkeeping are identical for both. The entire week is concentrated in the one line that differs:</p>
+<pre data-lang="python"><code class="language-python">if mode == "BFS":
+    state = frontier.popleft()      # the oldest waiting state
+else:
+    state = frontier.pop()          # the newest waiting state</code></pre>
+<p>That is the executable version of the whole argument. Everything else in this section follows from <code>popleft()</code> versus <code>pop()</code>.</p>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-03/bfs-dfs-shared-machinery.svg" alt="Breadth-first and depth-first search share everything but the frontier policy" loading="lazy" decoding="async"><figcaption>Figure 11. BFS and DFS share the problem representation and nearly all of the search machinery. The one difference is frontier policy. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<p>This is why the Week 2 separation between <strong>problem definition</strong> and <strong>controller</strong> was worth insisting on: we replace the controller without touching the maze.</p></div></details>
+<details class="beat" id="run-the-race-yourself"><summary><h2 class="beat__title">Run the race yourself</h2></summary><div class="beat__body"><p>🧪 <a href="../../search-lab/"><strong>Open the Search Lab</strong></a></p>
+<p>The lab is a browser version of the exact Week 2 maze — same grid, start, goal, walls, move vectors, goal test and successor order — with BFS and DFS supplying two frontier policies. The frontier is always listed in removal order, <strong>next first</strong>, even though the two strategies remove from opposite ends. <strong>Run</strong>, <strong>Pause</strong>, <strong>Reset</strong> and the speed control change only how the process is watched, never the result.</p>
+<p>Four runs, in order:</p>
+<ol><li><strong>BFS.</strong> Press <strong>Step</strong> repeatedly. Watch three things rather than the outcome: the amber current state, the purple frontier, and the grey explored region.</li><li><strong>DFS.</strong> Press <strong>Reset</strong>, switch strategy, and step the same number of times. Ask: <em>what changed, given that the maze did not?</em></li><li><strong>Race.</strong> Each tick expands at most one state on each side. Compare states expanded, maximum frontier, path length and whether the goal was found.</li><li><strong>Successor order.</strong> Keep DFS selected, change the <strong><code>neighbours()</code> order</strong>, and run again. Ask: <em>did the algorithm change?</em></li></ol>
+<p>The answer to the last one is no. The frontier policy is still LIFO. What changed is which successor was generated last, and therefore which one the stack hands over first — and that alone redraws the whole traversal.</p>
+<h3 id="the-default-race-and-what-it-does-not-prove">The default race, and what it does not prove</h3>
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-03/search-lab-race.png" alt="BFS and DFS completed side by side in the Search Lab" loading="lazy" decoding="async"><figcaption>Figure 12. Race mode on the default maze with the Week 2 successor order. Screenshot created from the Search Lab for these pages; no external image licence is used.</figcaption></figure>
+<div class="table-scroll"><table><thead><tr><th></th><th class="num">States expanded</th><th class="num">Maximum frontier</th><th class="num">Path length</th></tr></thead><tbody><tr><td><strong>BFS</strong></td><td class="num">41</td><td class="num">6</td><td class="num">14</td></tr><tr><td><strong>DFS</strong></td><td class="num">26</td><td class="num">5</td><td class="num">14</td></tr></tbody></table></div>
+<p>DFS did less work here and returned a path of the same length. So:</p>
+<div class="focus-block">
+<blockquote><p><strong>Does DFS finding the same 14-move path prove that DFS is optimal?</strong></p></blockquote>
+</div>
+<p>No. It shows that <em>this</em> DFS run, on <em>this</em> maze, under <em>this</em> successor order, happened to return a 14-move path. BFS's 14 moves are guaranteed by the algorithm. DFS's 14 moves are a property of the instance, and nothing protects them if the maze or the successor order changes.</p>
+<p>An observed result and an algorithmic guarantee are different kinds of claim. The two optional open-grid presets make that testable: one hands DFS a lucky first branch, the other puts a shallow goal where the same ordering reaches it late.</p>
+<div class="callout callout--warning"><span class="callout__label">Warning</span><p><strong>Do not use wall-clock time as the headline measure on a maze this small.</strong></p>
+<p>A few milliseconds mostly measure the browser, the machine and the animation. Count the search work directly instead.</p></div>
+<h3 id="search-cost-is-not-solution-cost">Search cost is not solution cost</h3>
+<p>The Race panel shows both at once, which is why they separate most easily here.</p>
+<ul><li><strong>Search cost</strong> — how much work was needed to find a solution: <code>states expanded</code> and <code>maximum frontier size</code>.</li><li><strong>Solution cost</strong> — how expensive the returned solution is. On this equal-cost maze, the number of moves in the path.</li></ul>
+<p>They move independently: BFS did more search work for a guaranteed-minimum path, DFS less work for an equally short path with no guarantee behind it. An algorithm can have a high search cost and a low solution cost, or the reverse.</p></div></details>
+<details class="beat" id="comparing-the-two-strategies"><summary><h2 class="beat__title">Comparing the two strategies</h2></summary><div class="beat__body"><p>Strategies are compared on four concerns:</p>
+<ul><li><strong>Time — search work.</strong> Measured here as <code>states expanded</code>.</li><li><strong>Space — memory.</strong> Measured here as <code>maximum frontier size</code>.</li><li><strong>Completeness.</strong> Under the stated conditions, will a solution be found if one exists?</li><li><strong>Optimality.</strong> Does the returned solution minimise the cost we care about?</li></ul>
+<p>The important words are <em>under the stated conditions</em>. The assumptions travel with the claims.</p>
+<p><strong>Breadth-first search</strong></p>
+<ul><li>systematic shallow exploration</li><li>complete for our finite, reachable setting</li><li>a minimum-depth solution <strong>when action costs are equal</strong></li><li>a potentially wide frontier</li></ul>
+<p><strong>Depth-first search</strong></p>
+<ul><li>systematic deep exploration</li><li>often a much narrower frontier</li><li>strongly dependent on successor order</li><li>no minimum-depth guarantee</li><li>no general completeness guarantee for unrestricted infinite-depth tree search; terminates on a finite graph with proper reached-state checking</li></ul>
+<p>The conclusion is not that one wins. The choice is a <strong>trade-off</strong>, and which side you want is a property of the problem, not of the algorithm:</p>
+<ul><li>a shallow solution matters and memory is available → BFS is attractive</li><li>memory is tight and any solution will do → DFS is attractive</li><li>the first DFS branch happens to be a good one → DFS looks spectacular</li></ul>
+<p>But “happens to be good” is not knowledge available to a blind strategy.</p>
+<h3 id="reconstruct-the-solution">Reconstruct the solution</h3>
+<p>Finding the goal tells us where the search finished, not the route. This is where the <code>parent</code> bookkeeping from Highlight 1 earns its place.</p>
+<pre data-lang="python"><code class="language-python">parent = {START: None}
+
+# when next_state is first reached
+parent[next_state] = state</code></pre>
+<p>Every reached state records the state it was generated from. When the goal turns up, follow those links backwards:</p>
+<pre data-lang="python"><code class="language-python">def reconstruct_path(parent):
+    if GOAL not in parent:
+        return []
+
+    path = []
+    state = GOAL
+
+    while state is not None:
+        path.append(state)
+        state = parent[state]
+
+    return list(reversed(path))</code></pre>
+<p>That returns <code>START → ... → GOAL</code>. Week 2 defined what a solution path is; Week 3 produces one — an actual sequence of states, rather than the message “goal found”.</p>
+<p>The transferable idea is narrow, and worth keeping narrow: the same frontier machinery applies whenever a problem is represented as states connected by legal transitions.</p>
+<div class="focus-block">
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Week 3 changes exactly one thing from Week 2:</p>
+<blockquote><p><strong>who decides what gets attention next</strong></p></blockquote>
+<p>In Week 2 a human chooses; in Week 3 a frontier policy does, and every consequence traces back to it.</p>
+<ul><li><strong><code>FRONTIER</code></strong> — holds the discovered possibilities still waiting</li><li><strong><code>STRATEGY</code></strong> — BFS removes the oldest; DFS removes the newest</li><li><strong><code>TRADE-OFF</code></strong> — that choice changes expansion order, memory use, and what kind of guarantee is available</li></ul>
+<p>Both strategies share one striking limitation. Neither ever asks which state looks closer to the goal. They do not know. They are blind.</p>
+</div></div></details>
+  </main>
+
+  <div class="tail">
+<h2 id="before-week-4">Before Week 4</h2>
+<p>Run BFS, run DFS, change the successor order, try another preset, and watch the traversal change completely. Then notice what never appears in either strategy:</p>
+<ul><li>distance to the goal</li><li>estimated remaining cost</li><li>any notion of a promising direction</li></ul>
+<p>Both algorithms search systematically without a scrap of it. So the next question is:</p>
+<div class="focus-block">
+<blockquote><p><strong>What if the machine had a useful hint about which states looked more promising?</strong></p></blockquote>
+</div>
+<p>That is where <strong>heuristics</strong> begin.</p>
+<hr>
+<h2 id="quick-revision">Quick revision</h2>
+<p>If you can answer these without reopening the page, you have the core of Week 3.</p>
+<ol><li><strong>[WK-03-01]</strong> What is the frontier?</li><li>What is the difference between a <strong>generated</strong> state and an <strong>expanded</strong> state?</li><li>Why does the maze need a <code>reached</code> set, and why is it separate from the frontier?</li><li><strong>[WK-03-02]</strong> Why does a FIFO queue produce breadth-first behaviour?</li><li>Under what condition does BFS guarantee a minimum-move solution?</li><li><strong>[WK-03-03]</strong> Why does a LIFO stack produce depth-first behaviour, and why does backtracking emerge from it without any extra machinery?</li><li>Why can changing successor order alter a DFS run when the algorithm has not changed?</li><li><strong>[WK-03-04]</strong> Why does one good DFS result not prove that DFS is optimal?</li></ol>
+<hr>
+<h2 id="sources-and-licensing-notes">Sources and licensing notes</h2>
+<h3 id="lecture-material">Lecture material</h3>
+<p>The Week 3 terminology and comparison follow the existing <em>Problem Solving using Search</em> lecture material on Canvas, in particular its treatment of:</p>
+<ul><li>search as finding a path from an initial state to a goal state</li><li>search strategy as the rule deciding which node is expanded next</li><li>search cost and solution cost</li><li>time and space complexity</li><li>completeness and optimality</li><li>uninformed versus informed search</li><li>breadth-first and depth-first search, and the memory trade-off between them</li></ul>
+<p>The Wiki develops only <strong>BFS and DFS</strong>. The slides list further uninformed methods — depth-limited, iterative-deepening, uniform-cost and bidirectional search — which are not highlighted here because the live teaching story is the direct comparison between breadth and depth.</p>
+<p>Three statements are made more explicit here than in the slides:</p>
+<ul><li>BFS's guarantee is stated as <strong>minimum depth when action costs are equal</strong>, not as a claim about the cheapest route.</li><li>The weighted graph in the notes carries a clarification that standard BFS does not minimise unequal edge weights.</li><li>DFS completeness is stated with its assumptions: unrestricted infinite-depth tree search and finite graph search with reached-state checking are different cases.</li></ul>
+<h3 id="continuity-from-week-2">Continuity from Week 2</h3>
+<p>The maze problem definition is inherited unchanged: a 7 × 9 grid, <code>START = (0,0)</code>, <code>GOAL = (6,8)</code>, and the same <code>WALLS</code>, <code>MOVES</code>, <code>neighbours(state)</code> and <code>is_goal(state)</code>. Week 3 changes the controller, not the representation.</p>
+<p>The Search Lab preserves the same separation: <code>problems.js</code> holds the maze, legal moves, <code>neighbours()</code> and goal test; <code>search.js</code> supplies the shared graph-search process and the FIFO/LIFO policy; <code>app.js</code> handles only controls and presentation. No Week 4 search logic is included.</p>
+<h3 id="figures">Figures</h3>
+<p>Figures 1–12 were <strong>created for these pages</strong>. They use no external image licence.</p>
+<ul><li>Figure 2 reuses the Week 2 maze diagram unchanged, so the recurring problem is visibly the same object.</li><li>Figures 5 and 7 are a deliberate pair: one frontier, one visual language, differing only in where states are added and removed.</li><li>Figure 8 draws one tree twice instead of repeating it as separate diagrams. Its expansion numbers were verified against a <code>deque</code> implementation using <code>popleft()</code> and <code>pop()</code> on identical successor order: <code>S A B C D E F G H</code> for BFS, <code>S C H B G F A E D</code> for DFS.</li><li>Figures 6, 9 and 12 are Search Lab screenshots of the default maze and the Week 2 successor order.</li></ul>
+<p>No external images, videos or interactives are used. Generic BFS/DFS visualisers and explainer videos were reviewed and rejected: the Search Lab runs the exact Week 2 problem and allows stepping, resetting, racing and reordering successors, while external tools typically drag in weighted algorithms and other later-week material.</p>
+<h3 id="software">Software</h3>
+<ul><li>🧪 <a href="../../search-lab/"><strong>Search Lab</strong></a> — written for this module in HTML, CSS and vanilla JavaScript. No framework, backend, API or build step. The default preset reproduces the Week 2 maze exactly.</li></ul>
+<h3 id="formal-source">Formal source</h3>
+<p>The broader Week 3 lecture remains on Canvas. The Wiki focuses on the one question we spend live time on:</p>
+<blockquote><p><strong>When several possibilities are waiting and the machine has no guidance, what rule should decide which one gets explored next?</strong></p></blockquote>
+  </div>
+
+  <footer class="page-footer">
+    <p>
+      CT319 Artificial Intelligence · University of Galway ·
+      <a href="../../">Module pages</a> ·
+      <a href="https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/weeks/week-03.md">Markdown source</a> ·
+      <a href="?open=all">Open every section</a>
+    </p>
+    <p>Formal slides and notes are on Canvas. These pages are the companion material.</p>
+  </footer>
+
+</div>
+
+<script src="../../assets/ct319.js" defer></script>
+</body>
+</html>

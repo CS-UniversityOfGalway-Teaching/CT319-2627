@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520" role="img" aria-labelledby="title desc">
+  <title id="title">A LIFO frontier: add and remove at the same end</title>
+  <desc id="desc">The frontier holds A, B, C, D. Removal happens at the back, so D leaves first. Expanding D generates E and F, which are added at the same end, so F is taken next. When F turns out to be a dead end nothing is added, and the next removal exposes E, an alternative that has been waiting since earlier. That is backtracking.</desc>
+
+  <style>
+    :root {
+      --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa;
+      --out:#cf222e; --outbg:#fdeceb; --in:#1a7f37; --inbg:#e8f5ec;
+      --wait:#57606a; --waitbg:#ffffff; --old:#8250df; --oldbg:#f5eeff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22;
+        --out:#f85149; --outbg:#2b1416; --in:#3fb950; --inbg:#10261a;
+        --wait:#8b949e; --waitbg:#0d1117; --old:#a371f7; --oldbg:#1d162b; }
+    }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .cap  { font-size:13px; font-weight:700; letter-spacing:1.2px; fill:var(--muted); }
+    .item { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:20px; font-weight:700; }
+    .edge { font-size:13px; font-weight:700; }
+    .step { font-size:14px; }
+    .box  { fill:var(--waitbg); stroke:var(--wait); stroke-width:2; }
+    .box.o { fill:var(--outbg); stroke:var(--out); }
+    .box.i { fill:var(--inbg);  stroke:var(--in); }
+    .box.p { fill:var(--oldbg); stroke:var(--old); }
+    .rail { stroke:var(--line); stroke-width:1.8; fill:var(--panel); }
+    .arr  { stroke-width:2.5; fill:none; stroke-linecap:round; }
+  </style>
+
+  <defs>
+    <marker id="l-out" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--out)"/>
+    </marker>
+    <marker id="l-in" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--in)"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="520" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="36">DFS &#183; LIFO &#8212; LAST IN, FIRST OUT</text>
+
+  <!-- row 1 -->
+  <text class="cap" x="30" y="76">FRONTIER NOW</text>
+
+  <text class="edge" x="250" y="106" text-anchor="end" fill="var(--in)">ADD HERE</text>
+  <line class="arr" x1="262" y1="102" x2="348" y2="140" stroke="var(--in)" marker-end="url(#l-in)"/>
+  <text class="edge" x="500" y="106" text-anchor="start" fill="var(--out)">REMOVE HERE</text>
+  <line class="arr" x1="488" y1="102" x2="392" y2="140" stroke="var(--out)" marker-end="url(#l-out)"/>
+
+  <rect class="rail" x="30" y="146" width="520" height="76" rx="12"/>
+  <rect class="box" x="48"  y="162" width="80" height="44" rx="9"/>
+  <text class="item" x="88"  y="192" text-anchor="middle">A</text>
+  <rect class="box" x="140" y="162" width="80" height="44" rx="9"/>
+  <text class="item" x="180" y="192" text-anchor="middle">B</text>
+  <rect class="box" x="232" y="162" width="80" height="44" rx="9"/>
+  <text class="item" x="272" y="192" text-anchor="middle">C</text>
+  <rect class="box o" x="324" y="162" width="80" height="44" rx="9"/>
+  <text class="item" x="364" y="192" text-anchor="middle" fill="var(--out)">D</text>
+
+  <text class="step" x="590" y="180">Both arrows point at the same</text>
+  <text class="step" x="590" y="200">end. The newest arrival is always</text>
+  <text class="step" x="590" y="220">the next one out.</text>
+
+  <!-- row 2 -->
+  <text class="cap" x="30" y="272">AFTER EXPANDING D, WHICH GENERATES E AND F</text>
+
+  <rect class="rail" x="30" y="288" width="520" height="76" rx="12"/>
+  <rect class="box" x="48"  y="304" width="80" height="44" rx="9"/>
+  <text class="item" x="88"  y="334" text-anchor="middle">A</text>
+  <rect class="box" x="140" y="304" width="80" height="44" rx="9"/>
+  <text class="item" x="180" y="334" text-anchor="middle">B</text>
+  <rect class="box" x="232" y="304" width="80" height="44" rx="9"/>
+  <text class="item" x="272" y="334" text-anchor="middle">C</text>
+  <rect class="box i" x="324" y="304" width="80" height="44" rx="9"/>
+  <text class="item" x="364" y="334" text-anchor="middle" fill="var(--in)">E</text>
+  <rect class="box o" x="416" y="304" width="80" height="44" rx="9"/>
+  <text class="item" x="456" y="334" text-anchor="middle" fill="var(--out)">F</text>
+
+  <text class="step" x="590" y="322">F jumps ahead of A, B and C. The</text>
+  <text class="step" x="590" y="342">search keeps going deeper down</text>
+  <text class="step" x="590" y="362">the branch it has just opened.</text>
+
+  <!-- row 3 -->
+  <text class="cap" x="30" y="414">AFTER EXPANDING F, A DEAD END THAT GENERATES NOTHING</text>
+
+  <rect class="rail" x="30" y="430" width="520" height="70" rx="12"/>
+  <rect class="box" x="48"  y="443" width="80" height="44" rx="9"/>
+  <text class="item" x="88"  y="473" text-anchor="middle">A</text>
+  <rect class="box" x="140" y="443" width="80" height="44" rx="9"/>
+  <text class="item" x="180" y="473" text-anchor="middle">B</text>
+  <rect class="box" x="232" y="443" width="80" height="44" rx="9"/>
+  <text class="item" x="272" y="473" text-anchor="middle">C</text>
+  <rect class="box p" x="324" y="443" width="80" height="44" rx="9"/>
+  <text class="item" x="364" y="473" text-anchor="middle" fill="var(--old)">E</text>
+
+  <text class="step" x="590" y="455" fill="var(--old)">Nothing was added, so the next</text>
+  <text class="step" x="590" y="475" fill="var(--old)">removal exposes E, which has been</text>
+  <text class="step" x="590" y="495" fill="var(--old)">waiting all along. That is backtracking.</text>
+</svg>

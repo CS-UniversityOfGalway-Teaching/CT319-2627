@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Breadth-first and depth-first search share everything but the frontier policy</title>
+  <desc id="desc">The Week 2 problem feeds a single frontier. Breadth-first search removes the oldest entry and depth-first search removes the newest, and those two rules alone produce two different expansion patterns.</desc>
+
+  <style>
+    :root {
+      --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --card:#ffffff;
+      --frontier:#8250df; --frontierbg:#f5eeff;
+      --current:#9a6700;  --currentbg:#fff8c5;
+      --done:#57606a;     --donebg:#eaeef2;
+      --goal:#1a7f37;     --goalbg:#dafbe1;
+      --bad:#cf222e;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --card:#0d1117;
+        --frontier:#a371f7; --frontierbg:#1d162b;
+        --current:#d29922;  --currentbg:#2b2413;
+        --done:#8b949e;     --donebg:#161b22;
+        --goal:#3fb950;     --goalbg:#0f2916;
+        --bad:#f85149; }
+    }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .note { font-size:14px; fill:var(--muted); }
+    .cap  { font-size:12.5px; fill:var(--muted); }
+    .node { font-size:17px; font-weight:700; }
+    .ord  { font-size:12px; font-weight:700; fill:var(--muted); }
+    .circ { fill:var(--card); stroke:var(--line); stroke-width:2.2; }
+    .circG{ fill:var(--goalbg); stroke:var(--goal); stroke-width:2.8; }
+    .circS{ fill:var(--panel); stroke:var(--accent); stroke-width:2.8; }
+    .edge { stroke:var(--muted); stroke-width:2.2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .edgeBad { stroke:var(--bad); stroke-width:2.4; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .box  { fill:var(--card); stroke:var(--line); stroke-width:1.8; }
+    .boxA { fill:var(--panel); stroke:var(--accent); stroke-width:2.2; }
+    .mono { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px; }
+  </style>
+
+  <rect width="960" height="540" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="38">ONE PROBLEM, ONE FRONTIER, TWO POLICIES</text>
+  <rect class="boxA" x="300" y="58" width="360" height="74" rx="12"/>
+  <text class="node" x="480" y="86" text-anchor="middle" style="font-size:15px">The Week 2 problem</text>
+  <text class="mono" x="480" y="110" text-anchor="middle" style="fill:var(--muted)">same maze &#183; same neighbours(state)</text>
+  <path class="edge" d="M480 132 L480 176"/>
+  <path class="edge" d="M474 166 L480 176 L486 166"/>
+  <rect class="boxA" x="370" y="180" width="220" height="60" rx="12"/>
+  <text class="node" x="480" y="217" text-anchor="middle" style="font-size:16px">Frontier</text>
+  <path class="edge" d="M430 240 L250 292"/>
+  <path class="edge" d="M262 282 L242 295 L264 301"/>
+  <path class="edge" d="M530 240 L710 292"/>
+  <path class="edge" d="M696 282 L718 295 L698 301"/>
+  <rect class="box" x="120" y="298" width="260" height="72" rx="10"/>
+  <text class="node" x="250" y="326" text-anchor="middle" style="font-size:16px">BFS</text>
+  <text class="mono" x="250" y="350" text-anchor="middle" style="fill:var(--muted)">remove the oldest</text>
+  <path class="edge" d="M250 370 L250 410"/>
+  <path class="edge" d="M244 400 L250 410 L256 400"/>
+  <rect class="box" x="120" y="414" width="260" height="56" rx="10"/>
+  <rect class="box" x="580" y="298" width="260" height="72" rx="10"/>
+  <text class="node" x="710" y="326" text-anchor="middle" style="font-size:16px">DFS</text>
+  <text class="mono" x="710" y="350" text-anchor="middle" style="fill:var(--muted)">remove the newest</text>
+  <path class="edge" d="M710 370 L710 410"/>
+  <path class="edge" d="M704 400 L710 410 L716 400"/>
+  <rect class="box" x="580" y="414" width="260" height="56" rx="10"/>
+  <text class="node" x="250" y="448" text-anchor="middle" style="font-size:15px">Expansion pattern A</text>
+  <text class="node" x="710" y="448" text-anchor="middle" style="font-size:15px">Expansion pattern B</text>
+  <text class="note" x="480" y="510" text-anchor="middle">Everything above the split is shared. The only difference is which end of the frontier is read.</text>
+</svg>
