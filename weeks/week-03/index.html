@@ -61,6 +61,14 @@ same neighbours(state)</code></pre>
 <p>Nothing in the representation contains that judgement. So instead of committing to one move and forgetting the others, the algorithm keeps everything it has discovered and decides systematically which to examine next.</p>
 <p>That collection is the <strong>frontier</strong>.</p>
 <div class="callout callout--important"><span class="callout__label">Important</span><p><strong>The frontier contains states that have been discovered but are still waiting to be expanded.</strong></p></div>
+<h3 id="why-that-word">Why that word</h3>
+<p>Picture yourself in an unlit maze. You are standing at a junction with three corridors leading off it. You can only walk down one, but the other two do not stop existing — you simply have not been down them. So you note them: <em>two corridors back there, unvisited.</em> When the corridor you chose runs out, you consult that note and pick another.</p>
+<p>The note is the frontier, and the name describes its shape. It is the edge of the map you have drawn so far:</p>
+<div class="focus-block">
+<ul><li><strong>behind it</strong> — states you have already expanded, where you have been and looked around</li><li><strong>the frontier itself</strong> — states you know exist but have not visited, the doors you have seen and not opened</li><li><strong>beyond it</strong> — states you have not yet heard of</li></ul>
+</div>
+<p>As the search runs, that edge is pushed outwards. This is worth holding on to, because it is literally what you will see later: the wave in Figure 6 is a frontier expanding evenly in every direction, and the thread in Figure 9 is the same frontier racing out along a single branch.</p>
+<p>The reason a machine needs one at all is that Week 2's program did not have one. It offered a human three moves, took the answer and forgot the alternatives. An algorithm has no instinct to choose with, so it cannot afford to forget: it keeps every state it has discovered but not examined, precisely so that it can come back. Without a frontier there is nothing to come back to.</p>
 <h3 id="generated-is-not-the-same-as-expanded">Generated is not the same as expanded</h3>
 <p>This distinction is small, and everything else this week rests on it.</p>
 <ul><li><strong>GENERATED</strong> — the machine knows the state exists. It appeared as a legal successor of something already examined.</li><li><strong>EXPANDED</strong> — the machine has selected that state and called <code>neighbours(state)</code> on it, so its own successors are now known too.</li></ul>
@@ -307,9 +315,13 @@ parent[next_state] = state</code></pre>
 <h3 id="lecture-material">Lecture material</h3>
 <p>The Week 3 terminology and comparison follow the existing <em>Problem Solving using Search</em> lecture material on Canvas, in particular its treatment of:</p>
 <ul><li>search as finding a path from an initial state to a goal state</li><li>search strategy as the rule deciding which node is expanded next</li><li>search cost and solution cost</li><li>time and space complexity</li><li>completeness and optimality</li><li>uninformed versus informed search</li><li>breadth-first and depth-first search, and the memory trade-off between them</li></ul>
-<p>The Wiki develops only <strong>BFS and DFS</strong>. The slides list further uninformed methods — depth-limited, iterative-deepening, uniform-cost and bidirectional search — which are not highlighted here because the live teaching story is the direct comparison between breadth and depth.</p>
+<p>These pages develop only <strong>BFS and DFS</strong>. The slides list further uninformed methods — depth-limited, iterative-deepening, uniform-cost and bidirectional search — which are not highlighted here because the live teaching story is the direct comparison between breadth and depth.</p>
 <p>Three statements are made more explicit here than in the slides:</p>
 <ul><li>BFS's guarantee is stated as <strong>minimum depth when action costs are equal</strong>, not as a claim about the cheapest route.</li><li>The weighted graph in the notes carries a clarification that standard BFS does not minimise unequal edge weights.</li><li>DFS completeness is stated with its assumptions: unrestricted infinite-depth tree search and finite graph search with reached-state checking are different cases.</li></ul>
+<h3 id="where-the-vocabulary-comes-from">Where the vocabulary comes from</h3>
+<p>Two words on this page are standard textbook terms rather than slide terms, and it is worth knowing which is which.</p>
+<p><strong>Frontier</strong> is the term used in Russell and Norvig, <em>Artificial Intelligence: A Modern Approach</em>, in its chapter on solving problems by searching. Older work calls the same collection the <strong>fringe</strong> (their second edition) or the <strong>open list</strong> (much of the classical search and path-finding literature). <strong>Reached</strong> follows the same book's more recent treatment, where earlier editions and older work say <strong>explored set</strong> or <strong>closed list</strong>.</p>
+<p>The slides describe a search strategy as the rule deciding which <strong>node</strong> is expanded next. That is the same idea: the node being chosen is a frontier node. If you are revising from the slides and the word <em>frontier</em> does not appear there, it is the vocabulary that differs, not the content.</p>
 <h3 id="continuity-from-week-2">Continuity from Week 2</h3>
 <p>The maze problem definition is inherited unchanged: a 7 × 9 grid, <code>START = (0,0)</code>, <code>GOAL = (6,8)</code>, and the same <code>WALLS</code>, <code>MOVES</code>, <code>neighbours(state)</code> and <code>is_goal(state)</code>. Week 3 changes the controller, not the representation.</p>
 <p>The Search Lab preserves the same separation: <code>problems.js</code> holds the maze, legal moves, <code>neighbours()</code> and goal test; <code>search.js</code> supplies the shared graph-search process and the FIFO/LIFO policy; <code>app.js</code> handles only controls and presentation. No Week 4 search logic is included.</p>
@@ -320,7 +332,7 @@ parent[next_state] = state</code></pre>
 <h3 id="software">Software</h3>
 <ul><li>🧪 <a href="../../search-lab/"><strong>Search Lab</strong></a> — written for this module in HTML, CSS and vanilla JavaScript. No framework, backend, API or build step. The default preset reproduces the Week 2 maze exactly.</li></ul>
 <h3 id="formal-source">Formal source</h3>
-<p>The broader Week 3 lecture remains on Canvas. The Wiki focuses on the one question we spend live time on:</p>
+<p>The broader Week 3 lecture remains on Canvas. These pages focus on the one question we spend live time on:</p>
 <blockquote><p><strong>When several possibilities are waiting and the machine has no guidance, what rule should decide which one gets explored next?</strong></p></blockquote>
   </div>
 
