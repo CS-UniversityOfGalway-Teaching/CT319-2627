@@ -109,13 +109,14 @@ def inline(text: str) -> str:
 
 CAPTION_RE = re.compile(r"^<sub><em>(.*)</em></sub>\s*$", re.S)
 # An optional Markdown title carries the teaching weight of the figure:
-#   ![alt](src "hero")       stop-and-discuss anchor, widest on the page
+#   ![alt](src "wide")       a short, very wide diagram, widest on the page
+#   ![alt](src "hero")       stop-and-discuss anchor
 #   ![alt](src "secondary")  important supporting figure, ~80% width
 # Anything else (or no title) renders at the ordinary reference size.
 IMAGE_ONLY_RE = re.compile(
     r"^!\[([^\]]*)\]\((" + URL_DEST + r")(?:\s+\"([^\"]*)\")?\)\s*$"
 )
-FIGURE_LEVELS = {"hero", "secondary"}
+FIGURE_LEVELS = {"wide", "hero", "secondary"}
 
 # Wraps existing prose in a teaching-focus block. Both markers are HTML
 # comments, so the Markdown still reads normally on GitHub.

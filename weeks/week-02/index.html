@@ -22,14 +22,16 @@
   <div class="lede">
 <p>A river, a wolf, a goat and a cabbage sound like a story. A maze looks like a picture. Getting from Galway to Dublin sounds like an ordinary morning.</p>
 <p>People read all three without effort, and while reading them we quietly decide which details matter. A computer starts with none of that. Before it can look for a solution, somebody has to say what a situation <em>is</em>, what may be done to it, and what would count as success.</p>
-<p>Week 1 asked what we are entitled to conclude from a machine's behaviour. Week 2 is more concrete: <strong>what does a machine have to be given before problem solving is even possible?</strong></p>
+<p>Week 2 is more concrete: <strong>what does a machine have to be given before problem solving is even possible?</strong></p>
 <p>We work through four things.</p>
 <ul><li>We start with <a href="#from-a-messy-problem-to-a-representation"><strong>representation</strong></a>. The same real situation becomes several different computational problems depending on what we keep and what we throw away.</li><li>We then take the <a href="#farmer-jones--solve-the-story-first"><strong>Farmer Jones river-crossing puzzle</strong></a> and turn an English story into states, operators, constraints and a state space. This is the main formal work of the week.</li><li><a href="#the-maze--the-same-computational-structure"><strong>A maze</strong></a> then shows that two problems which look nothing alike to a person can have almost the same computational shape.</li><li>Finally we <a href="#building-the-searchable-problem-in-code"><strong>build a searchable problem</strong></a> in code. It will know where it is, what is legal and whether it has finished — and it will deliberately stop one decision short of solving anything.</li></ul>
 <p>Three words carry the whole page, and it is worth keeping them apart:</p>
+<div class="focus-block">
 <div class="lenses">
 <div class="lens"><span class="lens__key">Representation</span><span class="lens__gloss">what we choose to record about the problem</span></div>
 <div class="lens"><span class="lens__key">Transition</span><span class="lens__gloss">how one valid situation legally becomes another</span></div>
 <div class="lens"><span class="lens__key">Search space</span><span class="lens__gloss">the structure those states and transitions create between them</span></div>
+</div>
 </div>
 <p>The representation decides what states exist. The transitions connect them. Together they produce something in which the idea of a <em>solution</em> finally has a precise meaning.</p>
   </div>
@@ -65,28 +67,27 @@ I have not had breakfast.</p></blockquote>
 <div class="focus-block">
 <p>That means problem solving begins <strong>before</strong> any algorithm is chosen. It breaks into three jobs, in order:</p>
 <ol><li>define the problem precisely</li><li>isolate and represent the knowledge needed to solve it</li><li>choose an appropriate problem-solving technique</li></ol>
-<p>The order is the point. Choosing a clever technique before knowing what the states and legal actions are is working backwards.</p>
+<p class="focus-block__lead">The order is the point.</p>
+<p>Choosing a clever technique before knowing what the states and legal actions are is working backwards.</p>
 </div>
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-02/representation-pipeline.svg" alt="From an unstructured situation to a searchable problem" loading="lazy" decoding="async"><figcaption>Figure 2. The pipeline from an unstructured situation to a problem a machine can search. Week 2 covers every step except the last one's payoff. Diagram created for these pages; no external image licence is used.</figcaption></figure></div></details>
 <details class="beat" id="farmer-jones--solve-the-story-first"><summary><h2 class="beat__title">Farmer Jones — solve the story first</h2></summary><div class="beat__body"><p>Farmer Jones has a wolf, a goat, a prize cabbage and a small boat. He needs all three of his charges moved from the <strong>south bank</strong> of a river to the <strong>north bank</strong>.</p>
 <p>The boat carries Farmer Jones and <strong>at most one</strong> other thing. And he has two problems:</p>
 <ul><li>left alone together, the wolf eats the goat</li><li>left alone together, the goat eats the cabbage</li></ul>
-<figure class="figure--secondary"><img class="figure__img" src="../../media/week-02/farmer-jones-river.svg" alt="The Farmer Jones river-crossing problem" loading="lazy" decoding="async"><figcaption>Figure 3. The starting situation. Everything begins on the south bank, and the boat holds the farmer plus at most one other item. Diagram created for these pages; no external image licence is used.</figcaption></figure>
-<div class="focus-block">
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-02/farmer-jones-river.svg" alt="The Farmer Jones river-crossing problem" loading="lazy" decoding="async"><figcaption>Figure 3. The starting situation. Everything begins on the south bank, and the boat holds the farmer plus at most one other item. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <blockquote><p><strong>How can Farmer Jones get everything safely to the north bank?</strong></p></blockquote>
 <h3 id="solve-it-as-a-human-first">Solve it as a human first</h3>
 <p>Before formalising anything, solve it. It takes a few minutes and the experience matters for what follows.</p>
 <p>While you work, pay attention to what you are keeping track of in your head. Almost certainly it is which bank each of the four is on, and nothing else. You are not tracking the colour of the cabbage, the age of the wolf, the name of the boat, or why the farmer owns a wolf in the first place.</p>
-<p>That is the representation problem from the opening section, happening automatically, in a world small enough to watch yourself do it.</p>
-</div></div></details>
-<details class="beat" id="what-makes-a-representation-useful"><summary><h2 class="beat__title">What makes a representation useful?</h2></summary><div class="beat__body"><div class="focus-block">
-<p>A good representation is doing several jobs at once, and they pull against each other.</p>
+<p>That is the representation problem from the opening section, happening automatically, in a world small enough to watch yourself do it.</p></div></details>
+<details class="beat" id="what-makes-a-representation-useful"><summary><h2 class="beat__title">What makes a representation useful?</h2></summary><div class="beat__body"><p>A good representation is doing several jobs at once, and they pull against each other.</p>
 <ul><li><strong>Make the important objects and relationships explicit</strong> — in the Galway problem, that the journey has a start, an end and a departure time, rather than leaving those buried in prose.</li><li><strong>Suppress irrelevant detail</strong>, so the breakfast and the phone battery never reach the machine at all.</li><li><strong>Expose the constraints</strong>, because a problem is defined as much by what is forbidden as by what is possible. A €30 budget is not a decoration on the problem; it is part of its shape.</li><li><strong>Stay concise</strong> enough to work with. A representation that records every fact about tomorrow morning is faithful and useless.</li><li><strong>Stay complete</strong> enough for the task. If we discard departure times and then ask whether we can arrive by 11:00, the question is no longer answerable from what we kept.</li></ul>
 <p>The last two are in direct tension, and resolving that tension sensibly is the skill. Keep too much and the problem becomes unwieldy; keep too little and correct answers become unreachable.</p>
-</div>
+<div class="focus-block">
 <h3 id="the-vocabulary-we-need">The vocabulary we need</h3>
 <p>Farmer Jones will do most of the real teaching, so we only need enough language here to describe what you just did by hand.</p>
 <ul><li><strong>Abstraction</strong> — deliberately dropping detail that the current question does not need.</li><li><strong>State</strong> — a description of the situation at one particular moment, containing only what matters.</li><li><strong>Initial state</strong> — where the problem begins.</li><li><strong>Goal</strong> — what counts as success. Where many different situations would count, it is more useful to speak of a <strong>goal test</strong>: a check answering <em>does this state satisfy the objective?</em></li><li><strong>Action</strong>, or <strong>operator</strong> — something the problem permits us to do, which turns one state into another.</li><li><strong>Transition</strong> — the actual change from one state to the next when an operator is applied.</li></ul>
+</div>
 <p>Two more terms need more care than the rest.</p></div></details>
 <details class="beat" id="preconditions-and-constraints"><summary><h2 class="beat__title">Preconditions and constraints</h2></summary><div class="beat__body"><p>These are easy to blur together, and blurring them makes the Farmer Jones analysis muddy.</p>
 <p>A <strong>precondition</strong> is about the <em>operator</em>. It says what must already be true for this particular action to be applicable at all. You cannot carry the wolf across the river if you and the wolf are standing on opposite banks — not because it is a bad idea, but because the action is meaningless.</p>
@@ -94,7 +95,9 @@ I have not had breakfast.</p></blockquote>
 <div class="callout callout--note"><span class="callout__label">Note</span><p><strong>Precondition</strong> — can this action be applied here?</p>
 <p><strong>Constraint</strong> — is the resulting situation allowed to exist?</p>
 <p>They interact constantly, but they answer different questions. An action can be perfectly applicable and still produce a forbidden situation.</p></div>
+<div class="focus-block">
 <p>Keeping them separate lets us say something precise later: an operator is <em>usable</em> when its precondition holds <strong>and</strong> the state it produces satisfies the constraints.</p>
+</div>
 <h3 id="a-question-that-usually-exposes-the-representation">A question that usually exposes the representation</h3>
 <p>Whenever you meet a new problem, ask:</p>
 <div class="focus-block">
@@ -163,11 +166,7 @@ Wolf + Goat, or Goat + Cabbage, without the Farmer.</code></pre>
 <blockquote><p>If the farmer is not on a bank, then on that bank the wolf may not be with the goat, and the goat may not be with the cabbage.</p></blockquote>
 <p>Note that a conflicting pair is not forbidden in itself — the top panel of Figure 5 has the goat and cabbage side by side quite legally, because the farmer is standing there.</p></div></details>
 <details class="beat" id="building-the-state-space-graph"><summary><h2 class="beat__title">Building the state-space graph</h2></summary><div class="beat__body"><p>Applying that constraint to all sixteen tuples leaves ten:</p>
-<pre data-lang="text"><code class="language-text">(S,S,S,S)   (N,S,N,S)
-(S,S,S,N)   (N,S,N,N)
-(S,S,N,S)   (N,N,S,N)
-(S,N,S,S)   (N,N,N,S)
-(S,N,S,N)   (N,N,N,N)</code></pre>
+<div class="table-scroll"><table><thead><tr><th>Valid — farmer south</th><th>Valid — farmer north</th><th>Ruled out by the constraint</th></tr></thead><tbody><tr><td><code>(S,S,S,S)</code></td><td><code>(N,S,N,S)</code></td><td><del><code>(S,S,N,N)</code></del></td></tr><tr><td><code>(S,S,S,N)</code></td><td><code>(N,S,N,N)</code></td><td><del><code>(S,N,N,S)</code></del></td></tr><tr><td><code>(S,S,N,S)</code></td><td><code>(N,N,S,N)</code></td><td><del><code>(S,N,N,N)</code></del></td></tr><tr><td><code>(S,N,S,S)</code></td><td><code>(N,N,N,S)</code></td><td><del><code>(N,S,S,S)</code></del></td></tr><tr><td><code>(S,N,S,N)</code></td><td><code>(N,N,N,N)</code></td><td><del><code>(N,S,S,N)</code></del></td></tr><tr><td></td><td></td><td><del><code>(N,N,S,S)</code></del></td></tr></tbody></table></div>
 <p>Six configurations were expressible and forbidden. The problem is no longer "search every arrangement of four objects" but "search the ten the constraints allow", and we have not yet done any searching to achieve that reduction — it fell out of the representation.</p>
 <h3 id="building-the-graph-rather-than-being-handed-one">Building the graph, rather than being handed one</h3>
 <p>Before looking at the finished picture, work out one piece of it.</p>
@@ -179,11 +178,11 @@ Wolf + Goat, or Goat + Cabbage, without the Farmer.</code></pre>
 <ul><li><strong><code>Farmer-Takes-Self</code></strong> — precondition always holds. Gives <code>(N,S,N,S)</code>, which is safe.</li><li><strong><code>Farmer-Takes-Wolf</code></strong> — precondition holds, both are south. Gives <code>(N,N,N,S)</code>, safe, because the farmer is with the wolf and goat.</li><li><strong><code>Farmer-Takes-Cabbage</code></strong> — precondition holds. Gives <code>(N,S,N,N)</code>, safe for the same reason.</li><li><strong><code>Farmer-Takes-Goat</code></strong> — fails its precondition outright. The goat is north and the farmer is south, so there is no goat to take.</li></ul>
 <p>So <code>(S,S,N,S)</code> has exactly three legal transitions. Do that for every state and the graph builds itself.</p>
 <h3 id="the-complete-state-space">The complete state space</h3>
-<figure class="figure--hero"><img class="figure__img" src="../../media/week-02/farmer-jones-state-space.svg" alt="The complete safe state space for Farmer Jones" loading="lazy" decoding="async"><figcaption>Figure 6. All ten safe states, with an edge wherever one legal crossing turns one state into another. The graph was constructed by applying every operator to every safe state and keeping the results the constraints permit. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-02/farmer-jones-state-space.svg" alt="The complete safe state space for Farmer Jones" loading="lazy" decoding="async"><figcaption>Figure 6. All ten safe states, with an edge wherever one legal crossing turns one state into another. The graph was constructed by applying every operator to every safe state and keeping the results the constraints permit. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <p>Every node is a safe state. Every edge is one legal crossing, labelled with who travels with the farmer. This is the <strong>state space</strong>, and it was not drawn by inspiration — it is the exhaustive result of the definitions above.</p>
 <p>Three things are now visible that were not visible in the story:</p>
 <ul><li><strong>The start state has only one legal move.</strong> The goat must go first — and the graph makes that unavoidable rather than clever.</li><li><strong>The middle splits into two symmetric routes and rejoins</strong>, which is why the puzzle has two distinct shortest solutions rather than one.</li><li><strong><code>(S,S,N,S)</code> is the branch point</strong> where those two routes diverge. That is the state we just worked through by hand.</li></ul></div></details>
-<details class="beat" id="a-solution-becomes-a-path"><summary><h2 class="beat__title">A solution becomes a path</h2></summary><div class="beat__body"><figure class="figure--hero"><img class="figure__img" src="../../media/week-02/farmer-jones-solution-path.svg" alt="One solution path through the Farmer Jones state space" loading="lazy" decoding="async"><figcaption>Figure 7. One of the two seven-crossing solutions, numbered from the start state to the goal. The other runs through the lower branch and is exactly as good. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<details class="beat" id="a-solution-becomes-a-path"><summary><h2 class="beat__title">A solution becomes a path</h2></summary><div class="beat__body"><figure class="figure--wide"><img class="figure__img" src="../../media/week-02/farmer-jones-solution-path.svg" alt="One solution path through the Farmer Jones state space" loading="lazy" decoding="async"><figcaption>Figure 7. One of the two seven-crossing solutions, numbered from the start state to the goal. The other runs through the lower branch and is exactly as good. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <p>In words: take the goat over, come back alone, take the wolf over, bring the goat back, take the cabbage over, return alone, take the goat over. Seven crossings.</p>
 <p>The sequence is not the thing worth remembering. What matters is that <strong>a solution has become a path through a graph</strong> — and that is a completely different kind of object from a story about a farmer. Paths can be counted, compared and looked for systematically. Stories cannot.</p>
 <h3 id="the-algorithm-sees-structure-not-story">The algorithm sees structure, not story</h3>

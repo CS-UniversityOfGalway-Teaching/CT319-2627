@@ -11,7 +11,7 @@ A river, a wolf, a goat and a cabbage sound like a story. A maze looks like a pi
 
 People read all three without effort, and while reading them we quietly decide which details matter. A computer starts with none of that. Before it can look for a solution, somebody has to say what a situation *is*, what may be done to it, and what would count as success.
 
-Week 1 asked what we are entitled to conclude from a machine's behaviour. Week 2 is more concrete: **what does a machine have to be given before problem solving is even possible?**
+Week 2 is more concrete: **what does a machine have to be given before problem solving is even possible?**
 
 We work through four things.
 
@@ -25,11 +25,15 @@ We work through four things.
 
 Three words carry the whole page, and it is worth keeping them apart:
 
+<!-- ct319:focus -->
+
 <div class="lenses">
 <div class="lens"><span class="lens__key">Representation</span><span class="lens__gloss">what we choose to record about the problem</span></div>
 <div class="lens"><span class="lens__key">Transition</span><span class="lens__gloss">how one valid situation legally becomes another</span></div>
 <div class="lens"><span class="lens__key">Search space</span><span class="lens__gloss">the structure those states and transitions create between them</span></div>
 </div>
+
+<!-- ct319:endfocus -->
 
 The representation decides what states exist. The transitions connect them. Together they produce something in which the idea of a *solution* finally has a precise meaning.
 
@@ -85,7 +89,9 @@ That means problem solving begins **before** any algorithm is chosen. It breaks 
 2. isolate and represent the knowledge needed to solve it
 3. choose an appropriate problem-solving technique
 
-The order is the point. Choosing a clever technique before knowing what the states and legal actions are is working backwards.
+<p class="focus-block__lead">The order is the point.</p>
+
+Choosing a clever technique before knowing what the states and legal actions are is working backwards.
 
 <!-- ct319:endfocus -->
 
@@ -103,11 +109,9 @@ The boat carries Farmer Jones and **at most one** other thing. And he has two pr
 - left alone together, the wolf eats the goat
 - left alone together, the goat eats the cabbage
 
-![The Farmer Jones river-crossing problem](../../media/week-02/farmer-jones-river.svg "secondary")
+![The Farmer Jones river-crossing problem](../../media/week-02/farmer-jones-river.svg "hero")
 
 <sub><em>Figure 3. The starting situation. Everything begins on the south bank, and the boat holds the farmer plus at most one other item. Diagram created for these pages; no external image licence is used.</em></sub>
-
-<!-- ct319:focus -->
 
 > **How can Farmer Jones get everything safely to the north bank?**
 
@@ -119,12 +123,8 @@ While you work, pay attention to what you are keeping track of in your head. Alm
 
 That is the representation problem from the opening section, happening automatically, in a world small enough to watch yourself do it.
 
-<!-- ct319:endfocus -->
-
 <!-- ct319:beat -->
 ## What makes a representation useful?
-
-<!-- ct319:focus -->
 
 A good representation is doing several jobs at once, and they pull against each other.
 
@@ -136,7 +136,7 @@ A good representation is doing several jobs at once, and they pull against each 
 
 The last two are in direct tension, and resolving that tension sensibly is the skill. Keep too much and the problem becomes unwieldy; keep too little and correct answers become unreachable.
 
-<!-- ct319:endfocus -->
+<!-- ct319:focus -->
 
 ### The vocabulary we need
 
@@ -148,6 +148,8 @@ Farmer Jones will do most of the real teaching, so we only need enough language 
 - **Goal** — what counts as success. Where many different situations would count, it is more useful to speak of a **goal test**: a check answering *does this state satisfy the objective?*
 - **Action**, or **operator** — something the problem permits us to do, which turns one state into another.
 - **Transition** — the actual change from one state to the next when an operator is applied.
+
+<!-- ct319:endfocus -->
 
 Two more terms need more care than the rest.
 
@@ -167,7 +169,11 @@ A **constraint** is about the *problem*. It says which situations the problem pe
 >
 > They interact constantly, but they answer different questions. An action can be perfectly applicable and still produce a forbidden situation.
 
+<!-- ct319:focus -->
+
 Keeping them separate lets us say something precise later: an operator is *usable* when its precondition holds **and** the state it produces satisfies the constraints.
+
+<!-- ct319:endfocus -->
 
 ### A question that usually exposes the representation
 
@@ -318,13 +324,14 @@ Note that a conflicting pair is not forbidden in itself — the top panel of Fig
 
 Applying that constraint to all sixteen tuples leaves ten:
 
-```text
-(S,S,S,S)   (N,S,N,S)
-(S,S,S,N)   (N,S,N,N)
-(S,S,N,S)   (N,N,S,N)
-(S,N,S,S)   (N,N,N,S)
-(S,N,S,N)   (N,N,N,N)
-```
+| Valid — farmer south | Valid — farmer north | Ruled out by the constraint |
+| --- | --- | --- |
+| `(S,S,S,S)` | `(N,S,N,S)` | <del>`(S,S,N,N)`</del> |
+| `(S,S,S,N)` | `(N,S,N,N)` | <del>`(S,N,N,S)`</del> |
+| `(S,S,N,S)` | `(N,N,S,N)` | <del>`(S,N,N,N)`</del> |
+| `(S,N,S,S)` | `(N,N,N,S)` | <del>`(N,S,S,S)`</del> |
+| `(S,N,S,N)` | `(N,N,N,N)` | <del>`(N,S,S,N)`</del> |
+|  |  | <del>`(N,N,S,S)`</del> |
 
 Six configurations were expressible and forbidden. The problem is no longer "search every arrangement of four objects" but "search the ten the constraints allow", and we have not yet done any searching to achieve that reduction — it fell out of the representation.
 
@@ -351,7 +358,7 @@ So `(S,S,N,S)` has exactly three legal transitions. Do that for every state and 
 
 ### The complete state space
 
-![The complete safe state space for Farmer Jones](../../media/week-02/farmer-jones-state-space.svg "hero")
+![The complete safe state space for Farmer Jones](../../media/week-02/farmer-jones-state-space.svg "wide")
 
 <sub><em>Figure 6. All ten safe states, with an edge wherever one legal crossing turns one state into another. The graph was constructed by applying every operator to every safe state and keeping the results the constraints permit. Diagram created for these pages; no external image licence is used.</em></sub>
 
@@ -366,7 +373,7 @@ Three things are now visible that were not visible in the story:
 <!-- ct319:beat -->
 ## A solution becomes a path
 
-![One solution path through the Farmer Jones state space](../../media/week-02/farmer-jones-solution-path.svg "hero")
+![One solution path through the Farmer Jones state space](../../media/week-02/farmer-jones-solution-path.svg "wide")
 
 <sub><em>Figure 7. One of the two seven-crossing solutions, numbered from the start state to the goal. The other runs through the lower branch and is exactly as good. Diagram created for these pages; no external image licence is used.</em></sub>
 

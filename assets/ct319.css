@@ -344,6 +344,11 @@ pre {
 }
 pre code { background: none; padding: 0; font-size: inherit; }
 
+/* Struck-out material is shown so it can be dismissed, so it recedes
+   rather than competing with the text that survived. */
+del { color: var(--muted); text-decoration-color: var(--line-strong); }
+del code { background: var(--surface); color: inherit; }
+
 blockquote {
   margin: 1.2rem 0;
   padding: 0.1rem 0 0.1rem 1.1rem;
@@ -426,6 +431,18 @@ figcaption a { color: var(--muted); }
   color: var(--text);
   margin: 0 0 0.9rem;
 }
+/* The one sentence a focus block exists to land, set above the reasoning
+   that follows it. Carried by type, like the block itself, and deliberately
+   not a heading: it is a claim, not a section of the page. */
+.focus-block__lead {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1.22em;
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
 .focus-block blockquote {
   margin: 1.1rem 0;
   padding-left: 1.2rem;
@@ -436,7 +453,13 @@ figcaption a { color: var(--muted); }
 /* A secondary figure that belongs to a focus block is part of that teaching
    stop, so it fills the block rather than sitting at 80% inside it. */
 .focus-block .figure--secondary { max-width: 100%; }
+.focus-block .lenses { max-width: none; }
 .focus-block li { margin: 0.45rem 0; }
+
+/* The opening framing is a narrow, flush-left column, so the breakout above
+   would carry a focus block off the side of the page rather than out of a
+   beat card. There it stays inside the measure. */
+.lede .focus-block { width: auto; margin-left: 0; margin-right: 0; }
 
 @media (max-width: 620px) {
   .focus-block {
@@ -461,27 +484,36 @@ figcaption a { color: var(--muted); }
    it. A secondary figure is important support, set narrower so the difference
    is obvious while scrolling. Everything else keeps its ordinary size. */
 
-.figure--hero {
+.figure--hero,
+.figure--wide {
   /* Break out past the 900px reading column, so a hero figure is larger than
      the page rather than merely the largest thing inside it. The 3rem gutter
      is wider than any classic scrollbar, which is what keeps 100vw from
      overflowing the document. */
-  --hero-w: min(1120px, calc(100vw - 3rem));
-  width: var(--hero-w);
-  margin: 2.6rem 0 2.6rem calc(50% - var(--hero-w) / 2);
+  --fig-w: min(1120px, calc(100vw - 3rem));
+  width: var(--fig-w);
+  margin: 2.6rem 0 2.6rem calc(50% - var(--fig-w) / 2);
 }
-.figure--hero > .figure__img {
+/* Wider again, for a diagram that is short and very wide. The state-space
+   graphs are 1210px of artwork across 420px of height, so at hero width they
+   set their node labels smaller than the body text around them. */
+.figure--wide { --fig-w: min(1360px, calc(100vw - 3rem)); }
+
+.figure--hero > .figure__img,
+.figure--wide > .figure__img {
   border: 1px solid var(--line);
   border-radius: 0;
 }
-.figure--hero > .figure__img.is-portrait {
+.figure--hero > .figure__img.is-portrait,
+.figure--wide > .figure__img.is-portrait {
   max-width: min(100%, 480px);
   margin: 0 auto;
 }
 /* Centred, not flush left: a hero figure overhangs the beat card, and a
    left-aligned caption would start outside it and be crossed by the card's
    open-state accent border. */
-.figure--hero > figcaption {
+.figure--hero > figcaption,
+.figure--wide > figcaption {
   margin: 0.7rem auto 0;
   padding: 0 1.1rem;
   max-width: var(--measure);
@@ -495,14 +527,18 @@ figcaption a { color: var(--muted); }
 @media (max-width: 620px) {
   /* The beat card has less padding here, and 80% of a phone screen is not a
      usable diagram, so both levels fall back to the full column. */
-  .figure--hero { width: auto; margin: 1.8rem -0.9rem; }
-  .figure--hero > figcaption { padding: 0 0.9rem; }
+  .figure--hero,
+  .figure--wide { width: auto; margin: 1.8rem -0.9rem; }
+  .figure--hero > figcaption,
+  .figure--wide > figcaption { padding: 0 0.9rem; }
   .figure--secondary { max-width: 100%; }
 }
 
 @media print {
-  .figure--hero { width: auto; margin-left: 0; margin-right: 0; }
-  .figure--hero > figcaption { padding: 0; }
+  .figure--hero,
+  .figure--wide { width: auto; margin-left: 0; margin-right: 0; }
+  .figure--hero > figcaption,
+  .figure--wide > figcaption { padding: 0; }
 }
 
 .table-scroll { overflow-x: auto; margin: 1.3rem 0; }
