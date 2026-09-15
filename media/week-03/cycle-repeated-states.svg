@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="350" viewBox="0 0 960 350" role="img" aria-labelledby="title desc">
+  <title id="title">A cycle produces repeated states</title>
+  <desc id="desc">States A, B and C form a loop, and C also leads to the goal. A search with no memory of reached states can follow A to B to C and back to A forever, never taking the edge to the goal.</desc>
+
+  <style>
+    :root {
+      --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --card:#ffffff;
+      --frontier:#8250df; --frontierbg:#f5eeff;
+      --current:#9a6700;  --currentbg:#fff8c5;
+      --done:#57606a;     --donebg:#eaeef2;
+      --goal:#1a7f37;     --goalbg:#dafbe1;
+      --bad:#cf222e;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --card:#0d1117;
+        --frontier:#a371f7; --frontierbg:#1d162b;
+        --current:#d29922;  --currentbg:#2b2413;
+        --done:#8b949e;     --donebg:#161b22;
+        --goal:#3fb950;     --goalbg:#0f2916;
+        --bad:#f85149; }
+    }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .note { font-size:14px; fill:var(--muted); }
+    .cap  { font-size:12.5px; fill:var(--muted); }
+    .node { font-size:17px; font-weight:700; }
+    .ord  { font-size:12px; font-weight:700; fill:var(--muted); }
+    .circ { fill:var(--card); stroke:var(--line); stroke-width:2.2; }
+    .circG{ fill:var(--goalbg); stroke:var(--goal); stroke-width:2.8; }
+    .circS{ fill:var(--panel); stroke:var(--accent); stroke-width:2.8; }
+    .edge { stroke:var(--muted); stroke-width:2.2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .edgeBad { stroke:var(--bad); stroke-width:2.4; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .box  { fill:var(--card); stroke:var(--line); stroke-width:1.8; }
+    .boxA { fill:var(--panel); stroke:var(--accent); stroke-width:2.2; }
+    .mono { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px; }
+  </style>
+
+  <rect width="960" height="350" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="38">A CYCLE THE SEARCH CAN FALL INTO FOREVER</text>
+  <path class="edgeBad" d="M284 110 L406 110"/>
+  <path class="edgeBad" d="M393 102 L406 110 L393 118"/>
+  <path class="edgeBad" d="M423 139 L387 203"/>
+  <path class="edgeBad" d="M400 195 L387 203 L386 188"/>
+  <path class="edgeBad" d="M346 208 L274 134"/>
+  <path class="edgeBad" d="M277 149 L274 134 L288 138"/>
+  <path class="edge" d="M404 232 L632 232"/>
+  <path class="edge" d="M619 224 L632 232 L619 240"/>
+  <circle class="circ" cx="250" cy="110" r="34"/>
+  <text class="node" x="250" y="116" text-anchor="middle" style="font-size:17px">A</text>
+  <circle class="circ" cx="440" cy="110" r="34"/>
+  <text class="node" x="440" y="116" text-anchor="middle" style="font-size:17px">B</text>
+  <circle class="circ" cx="370" cy="232" r="34"/>
+  <text class="node" x="370" y="238" text-anchor="middle" style="font-size:17px">C</text>
+  <circle class="circG" cx="672" cy="232" r="40"/>
+  <text class="node" x="672" y="238" text-anchor="middle" style="font-size:15px">Goal</text>
+  <text class="cap" x="345" y="88" text-anchor="middle" style="fill:var(--bad)">A &#8594; B &#8594; C &#8594; A</text>
+  <text class="note" x="527" y="220" text-anchor="middle">the way out</text>
+  <text class="note" x="30" y="302">Without a record of what has already been reached, the search can ride the red loop indefinitely</text>
+  <text class="note" x="30" y="324">and never take the edge that leads to the goal.</text>
+</svg>

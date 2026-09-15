@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440" role="img" aria-labelledby="title desc">
+  <title id="title">The life of a state during search</title>
+  <desc id="desc">Three panels show the frontier of waiting states, the single current state being examined, and the states already expanded. The strategy chooses one waiting state to become current; calling neighbours on the current state generates new states, which join the frontier; the current state then joins the expanded set.</desc>
+
+  <style>
+    :root {
+      --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --card:#ffffff;
+      --frontier:#8250df; --frontierbg:#f5eeff;
+      --current:#9a6700;  --currentbg:#fff8c5;
+      --done:#57606a;     --donebg:#eaeef2;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --card:#0d1117;
+        --frontier:#a371f7; --frontierbg:#1d162b;
+        --current:#d29922;  --currentbg:#2b2413;
+        --done:#8b949e;     --donebg:#161b22; }
+    }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab   { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .head  { font-size:13px; font-weight:700; letter-spacing:1.3px; }
+    .sub   { font-size:13px; fill:var(--muted); }
+    .note  { font-size:14px; fill:var(--muted); }
+    .mono  { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:14px; font-weight:700; }
+    .arrowlab { font-size:12.5px; fill:var(--muted); }
+    .panel { fill:var(--panel); stroke:var(--line); stroke-width:1.8; }
+    .flow  { stroke:var(--muted); stroke-width:2; fill:none; stroke-linecap:round; }
+    .gen   { stroke:var(--frontier); stroke-width:2; fill:none; stroke-linecap:round; stroke-dasharray:6 4; }
+  </style>
+
+  <defs>
+    <marker id="a-grey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/>
+    </marker>
+    <marker id="a-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--frontier)"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="440" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="36">ONE STATE, THREE PLACES IT CAN BE</text>
+
+  <!-- ============ FRONTIER ============ -->
+  <rect class="panel" x="30" y="62" width="270" height="188" rx="14"/>
+  <text class="head" x="52" y="90" fill="var(--frontier)">FRONTIER</text>
+  <text class="sub"  x="52" y="112">generated, not yet expanded</text>
+
+  <rect x="52" y="130" width="92" height="40" rx="9" fill="var(--frontierbg)" stroke="var(--frontier)" stroke-width="2"/>
+  <text class="mono" x="98" y="156" text-anchor="middle" fill="var(--frontier)">(2,0)</text>
+  <rect x="156" y="130" width="92" height="40" rx="9" fill="var(--frontierbg)" stroke="var(--frontier)" stroke-width="2"/>
+  <text class="mono" x="202" y="156" text-anchor="middle" fill="var(--frontier)">(2,2)</text>
+
+  <text class="sub" x="52" y="200">the search knows these exist.</text>
+  <text class="sub" x="52" y="220">It has not yet asked what</text>
+  <text class="sub" x="52" y="240">follows from either of them.</text>
+
+  <!-- ============ CURRENT ============ -->
+  <rect class="panel" x="345" y="62" width="270" height="188" rx="14"/>
+  <text class="head" x="367" y="90" fill="var(--current)">CURRENT</text>
+  <text class="sub"  x="367" y="112">selected, being expanded</text>
+
+  <rect x="367" y="130" width="92" height="40" rx="9" fill="var(--currentbg)" stroke="var(--current)" stroke-width="2.5"/>
+  <text class="mono" x="413" y="156" text-anchor="middle" fill="var(--current)">(2,1)</text>
+
+  <text class="sub" x="367" y="200">the strategy picked this one.</text>
+  <text class="sub" x="367" y="220">Expanding it means calling</text>
+  <text class="sub" x="367" y="240">neighbours((2,1)).</text>
+
+  <!-- ============ EXPANDED ============ -->
+  <rect class="panel" x="660" y="62" width="270" height="188" rx="14"/>
+  <text class="head" x="682" y="90" fill="var(--done)">EXPANDED</text>
+  <text class="sub"  x="682" y="112">successors already generated</text>
+
+  <rect x="682" y="130" width="70" height="40" rx="9" fill="var(--donebg)" stroke="var(--done)" stroke-width="1.8"/>
+  <text class="mono" x="717" y="156" text-anchor="middle" fill="var(--done)">(0,0)</text>
+  <rect x="762" y="130" width="70" height="40" rx="9" fill="var(--donebg)" stroke="var(--done)" stroke-width="1.8"/>
+  <text class="mono" x="797" y="156" text-anchor="middle" fill="var(--done)">(0,1)</text>
+  <rect x="842" y="130" width="70" height="40" rx="9" fill="var(--donebg)" stroke="var(--done)" stroke-width="1.8"/>
+  <text class="mono" x="877" y="156" text-anchor="middle" fill="var(--done)">(1,1)</text>
+
+  <text class="sub" x="682" y="200">nothing more is owed to these.</text>
+  <text class="sub" x="682" y="220">Their legal successors have</text>
+  <text class="sub" x="682" y="240">all been accounted for.</text>
+
+  <!-- ============ FLOW ARROWS ============ -->
+  <line class="flow" x1="304" y1="150" x2="341" y2="150" marker-end="url(#a-grey)"/>
+  <text class="arrowlab" x="322" y="138" text-anchor="middle">the strategy</text>
+  <text class="arrowlab" x="322" y="176" text-anchor="middle">chooses one</text>
+
+  <line class="flow" x1="619" y1="150" x2="656" y2="150" marker-end="url(#a-grey)"/>
+  <text class="arrowlab" x="637" y="138" text-anchor="middle">once</text>
+  <text class="arrowlab" x="637" y="176" text-anchor="middle">expanded</text>
+
+  <!-- generated states loop back into the frontier -->
+  <path class="gen" d="M413 262 L413 330 L165 330 L165 258" marker-end="url(#a-purple)"/>
+  <text class="arrowlab" x="470" y="352" text-anchor="middle" fill="var(--frontier)">neighbours((2,1)) generates (2,0) and (2,2) — newly generated states join the frontier</text>
+
+  <text class="note" x="30" y="410">A state is not solved or unsolved. It is waiting, being examined, or finished — and only the middle column is ever one state wide.</text>
+</svg>

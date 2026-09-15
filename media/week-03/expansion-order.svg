@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440" role="img" aria-labelledby="title desc">
+  <title id="title">The same tree under two frontier rules</title>
+  <desc id="desc">One search tree is drawn twice. On the left the frontier removes the oldest waiting state and the expansion order is S, A, B, C, D, E, F, G, H. On the right the frontier removes the newest waiting state and, with successors generated in the order A then B then C, the expansion order is S, C, H, B, G, F, A, E, D. The tree is identical; only the removal rule differs.</desc>
+
+  <style>
+    :root {
+      --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --panel:#f6f8fa; --card:#ffffff;
+      --bfs:#0969da; --dfs:#8250df; --edge:#8c959f;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --panel:#161b22; --card:#0d1117;
+        --bfs:#58a6ff; --dfs:#a371f7; --edge:#6e7681; }
+    }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab   { font-size:14px; font-weight:700; letter-spacing:1.4px; }
+    .rule  { font-size:13px; fill:var(--muted); }
+    .node  { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:17px; font-weight:700; }
+    .num   { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:12px; font-weight:700; fill:#ffffff; }
+    .order { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:14px; font-weight:700; }
+    .note  { font-size:14px; fill:var(--muted); }
+    .panel { fill:var(--panel); stroke:var(--line); stroke-width:1.8; }
+    .c     { fill:var(--card); stroke:var(--fg); stroke-width:2; }
+    .e     { stroke:var(--edge); stroke-width:2; }
+  </style>
+
+  <rect width="960" height="440" rx="18" fill="var(--bg)"/>
+
+  <!-- ================= LEFT : BFS ================= -->
+  <rect class="panel" x="30" y="30" width="440" height="330" rx="14"/>
+  <text class="lab"  x="52" y="60" fill="var(--bfs)">BFS &#183; REMOVE OLDEST</text>
+  <text class="rule" x="52" y="82">shallowest waiting state first</text>
+
+  <line class="e" x1="250" y1="131" x2="120" y2="179"/>
+  <line class="e" x1="250" y1="131" x2="250" y2="179"/>
+  <line class="e" x1="250" y1="131" x2="380" y2="179"/>
+  <line class="e" x1="120" y1="221" x2="80"  y2="269"/>
+  <line class="e" x1="120" y1="221" x2="160" y2="269"/>
+  <line class="e" x1="250" y1="221" x2="215" y2="269"/>
+  <line class="e" x1="250" y1="221" x2="285" y2="269"/>
+  <line class="e" x1="380" y1="221" x2="380" y2="269"/>
+
+  <circle class="c" cx="250" cy="110" r="21"/><text class="node" x="250" y="117" text-anchor="middle">S</text>
+  <circle cx="268" cy="92" r="11" fill="var(--bfs)"/><text class="num" x="268" y="96" text-anchor="middle">1</text>
+  <circle class="c" cx="120" cy="200" r="21"/><text class="node" x="120" y="207" text-anchor="middle">A</text>
+  <circle cx="138" cy="182" r="11" fill="var(--bfs)"/><text class="num" x="138" y="186" text-anchor="middle">2</text>
+  <circle class="c" cx="250" cy="200" r="21"/><text class="node" x="250" y="207" text-anchor="middle">B</text>
+  <circle cx="268" cy="182" r="11" fill="var(--bfs)"/><text class="num" x="268" y="186" text-anchor="middle">3</text>
+  <circle class="c" cx="380" cy="200" r="21"/><text class="node" x="380" y="207" text-anchor="middle">C</text>
+  <circle cx="398" cy="182" r="11" fill="var(--bfs)"/><text class="num" x="398" y="186" text-anchor="middle">4</text>
+  <circle class="c" cx="80"  cy="290" r="21"/><text class="node" x="80"  y="297" text-anchor="middle">D</text>
+  <circle cx="98"  cy="272" r="11" fill="var(--bfs)"/><text class="num" x="98"  y="276" text-anchor="middle">5</text>
+  <circle class="c" cx="160" cy="290" r="21"/><text class="node" x="160" y="297" text-anchor="middle">E</text>
+  <circle cx="178" cy="272" r="11" fill="var(--bfs)"/><text class="num" x="178" y="276" text-anchor="middle">6</text>
+  <circle class="c" cx="215" cy="290" r="21"/><text class="node" x="215" y="297" text-anchor="middle">F</text>
+  <circle cx="233" cy="272" r="11" fill="var(--bfs)"/><text class="num" x="233" y="276" text-anchor="middle">7</text>
+  <circle class="c" cx="285" cy="290" r="21"/><text class="node" x="285" y="297" text-anchor="middle">G</text>
+  <circle cx="303" cy="272" r="11" fill="var(--bfs)"/><text class="num" x="303" y="276" text-anchor="middle">8</text>
+  <circle class="c" cx="380" cy="290" r="21"/><text class="node" x="380" y="297" text-anchor="middle">H</text>
+  <circle cx="398" cy="272" r="11" fill="var(--bfs)"/><text class="num" x="398" y="276" text-anchor="middle">9</text>
+
+  <text class="order" x="52" y="340" fill="var(--bfs)">S A B C D E F G H</text>
+
+  <!-- ================= RIGHT : DFS ================= -->
+  <rect class="panel" x="490" y="30" width="440" height="330" rx="14"/>
+  <text class="lab"  x="512" y="60" fill="var(--dfs)">DFS &#183; REMOVE NEWEST</text>
+  <text class="rule" x="512" y="82">newest waiting state first</text>
+
+  <line class="e" x1="710" y1="131" x2="580" y2="179"/>
+  <line class="e" x1="710" y1="131" x2="710" y2="179"/>
+  <line class="e" x1="710" y1="131" x2="840" y2="179"/>
+  <line class="e" x1="580" y1="221" x2="540" y2="269"/>
+  <line class="e" x1="580" y1="221" x2="620" y2="269"/>
+  <line class="e" x1="710" y1="221" x2="675" y2="269"/>
+  <line class="e" x1="710" y1="221" x2="745" y2="269"/>
+  <line class="e" x1="840" y1="221" x2="840" y2="269"/>
+
+  <circle class="c" cx="710" cy="110" r="21"/><text class="node" x="710" y="117" text-anchor="middle">S</text>
+  <circle cx="728" cy="92" r="11" fill="var(--dfs)"/><text class="num" x="728" y="96" text-anchor="middle">1</text>
+  <circle class="c" cx="580" cy="200" r="21"/><text class="node" x="580" y="207" text-anchor="middle">A</text>
+  <circle cx="598" cy="182" r="11" fill="var(--dfs)"/><text class="num" x="598" y="186" text-anchor="middle">7</text>
+  <circle class="c" cx="710" cy="200" r="21"/><text class="node" x="710" y="207" text-anchor="middle">B</text>
+  <circle cx="728" cy="182" r="11" fill="var(--dfs)"/><text class="num" x="728" y="186" text-anchor="middle">4</text>
+  <circle class="c" cx="840" cy="200" r="21"/><text class="node" x="840" y="207" text-anchor="middle">C</text>
+  <circle cx="858" cy="182" r="11" fill="var(--dfs)"/><text class="num" x="858" y="186" text-anchor="middle">2</text>
+  <circle class="c" cx="540" cy="290" r="21"/><text class="node" x="540" y="297" text-anchor="middle">D</text>
+  <circle cx="558" cy="272" r="11" fill="var(--dfs)"/><text class="num" x="558" y="276" text-anchor="middle">9</text>
+  <circle class="c" cx="620" cy="290" r="21"/><text class="node" x="620" y="297" text-anchor="middle">E</text>
+  <circle cx="638" cy="272" r="11" fill="var(--dfs)"/><text class="num" x="638" y="276" text-anchor="middle">8</text>
+  <circle class="c" cx="675" cy="290" r="21"/><text class="node" x="675" y="297" text-anchor="middle">F</text>
+  <circle cx="693" cy="272" r="11" fill="var(--dfs)"/><text class="num" x="693" y="276" text-anchor="middle">6</text>
+  <circle class="c" cx="745" cy="290" r="21"/><text class="node" x="745" y="297" text-anchor="middle">G</text>
+  <circle cx="763" cy="272" r="11" fill="var(--dfs)"/><text class="num" x="763" y="276" text-anchor="middle">5</text>
+  <circle class="c" cx="840" cy="290" r="21"/><text class="node" x="840" y="297" text-anchor="middle">H</text>
+  <circle cx="858" cy="272" r="11" fill="var(--dfs)"/><text class="num" x="858" y="276" text-anchor="middle">3</text>
+
+  <text class="order" x="512" y="340" fill="var(--dfs)">S C H B G F A E D</text>
+
+  <text class="note" x="30" y="392">Numbers give the order in which each state was expanded. Successors are generated A, then B, then C in both panels.</text>
+  <text class="note" x="30" y="416">Same tree, same successor order, same goal test. The only difference is which waiting state the frontier hands over next.</text>
+</svg>
