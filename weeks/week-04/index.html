@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 4 — Heuristics — CT319</title>
+<meta name="description" content="CT319 Week 4. Heuristics, evaluation functions and strict hill climbing on the same maze, and what happens when a useful hint still walks the search into a dead end.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230969da'/%3E%3Cpath d='M8 8h7v4h-3v8h3v4H8zm9 0h7v16h-7v-4h3v-8h-3z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/ct319.css">
+</head>
+<body>
+<a class="skip-link" href="#beats">Skip to the teaching sections</a>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">CT319 Artificial Intelligence · Week 4 · Heuristics</p>
+    <h1>Week 4 — Heuristics</h1>
+    <p class="week-question">Can a useful guess save us from searching everything?</p>
+  </header>
+
+  <div class="lede">
+<p>Week 3 gave the machine two systematic ways to organise ignorance: BFS preferred the oldest frontier state; DFS preferred the newest. Neither could say which waiting state <strong>looked more promising</strong>.</p>
+<p>Week 4 adds that missing hint. It provides guidance, not a guarantee.</p>
+<p>We work through four things.</p>
+<ul><li>We begin with <a href="#a-hint--what-blind-search-was-missing"><strong>heuristic information</strong></a>. A heuristic gives the machine a cheap way to judge how promising a state appears, without already knowing the real answer.</li><li>We then return to <a href="#the-same-maze-now-with-a-hint"><strong>the same maze</strong></a> from Weeks 2 and 3. The walls, start, goal and transitions stay unchanged. We add one number, <code>h(state)</code>, and watch the problem acquire direction.</li><li><a href="#hill-climbing--always-take-the-better-neighbour"><strong>Hill climbing</strong></a> turns that evaluation into a strict decision rule: inspect the legal neighbours, select one with a strictly lower <code>h</code>, break an equal-best tie by successor order, and stop when no improving neighbour exists.</li><li>Finally we deliberately <a href="#a-useful-hint-can-still-mislead"><strong>let the heuristic fail</strong></a>. The same maze contains a state only two rows from the goal where hill climbing can stop even though a valid route still exists.</li></ul>
+<p>Three ideas carry the page, and it is worth keeping them apart:</p>
+<div class="focus-block">
+<div class="lenses">
+<div class="lens"><span class="lens__key">Heuristic</span><span class="lens__gloss">problem-specific information estimating how promising a state appears</span></div>
+<div class="lens"><span class="lens__key">Evaluation</span><span class="lens__gloss">the score used to compare candidates — here <code>h(state)</code>, lower preferred</span></div>
+<div class="lens"><span class="lens__key">Local</span><span class="lens__gloss">hill climbing compares the current candidate only with its neighbours</span></div>
+</div>
+</div>
+<p>The important change from Week 3 is small:</p>
+<pre data-lang="text"><code class="language-text">Week 3
+Which waiting state should be explored next?
+
+Week 4
+Which available state looks more promising?</code></pre>
+<p>That word — <strong>looks</strong> — matters.</p>
+  </div>
+
+  <div class="beat-bar" data-beat-bar hidden>
+    <span class="beat-bar__label">Week 4 · Sections</span>
+    <button type="button" data-expand-all>Expand all</button>
+    <button type="button" data-collapse-all>Collapse all</button>
+  </div>
+
+  <main class="beats" id="beats">
+<details class="beat" id="a-hint--what-blind-search-was-missing"><summary><h2 class="beat__title">A hint — what blind search was missing</h2></summary><div class="beat__body"><p>Suppose the search frontier contains three states: <code>A</code>, <code>B</code> and <code>C</code>.</p>
+<p>Breadth-first search may choose the oldest.</p>
+<p>Depth-first search may choose the newest.</p>
+<p>Neither asks whether <code>A</code>, <code>B</code> or <code>C</code> appears to be closer to the goal.</p>
+<p>That is what made them <strong>uninformed</strong>, or <strong>blind</strong>, search strategies.</p>
+<h3 id="what-does-blind-search-already-know">What does blind search already know?</h3>
+<p>Blind does not mean random.</p>
+<p>BFS and DFS follow exact rules.</p>
+<p>They know:</p>
+<ul><li>the initial state</li><li>the goal test</li><li>the legal actions</li><li>the transition model</li><li>the states already reached</li><li>the states waiting on the frontier</li></ul>
+<p>What they do not have is <strong>problem-specific information that ranks non-goal states by how promising they seem</strong>.</p>
+<p>That is the gap Week 4 fills.</p></div></details>
+<details class="beat" id="what-changes-when-the-frontier-has-scores"><summary><h2 class="beat__title">What changes when the frontier has scores</h2></summary><div class="beat__body"><p>Suppose we attach a number, <code>h(state)</code>, to every state and interpret smaller values as:</p>
+<blockquote><p><strong>this state appears closer to the goal</strong></p></blockquote>
+<p>Then instead of seeing three undifferentiated states, the machine may see:</p>
+<ul><li><code>A</code>, with <code>h = 9</code></li><li><code>B</code>, with <code>h = 4</code></li><li><code>C</code>, with <code>h = 7</code></li></ul>
+<p>Now there is a reason to prefer <code>B</code>.</p>
+<p>The number did not come from BFS or DFS.</p>
+<p>It came from knowledge about the particular problem.</p>
+<p>A strategy becomes <strong>informed</strong> when that information influences its choice. Merely calculating the numbers is not enough.</p>
+<p>The lecture notes describe the same move as adding specific information in advance and using an evaluation function to guide the search.</p>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-04/frontier-hint.svg" alt="The same frontier: Week 3 chooses by waiting order; Week 4 can compare h values" loading="lazy" decoding="async"><figcaption>Figure 1. The same waiting states now have heuristic values. BFS still selects the oldest and DFS the newest; the new information says B looks most promising. This comparison adds guidance, not a new frontier algorithm. Diagram created for these pages; no external image licence is used.</figcaption></figure></div></details>
+<details class="beat" id="what-a-heuristic-is"><summary><h2 class="beat__title">What a heuristic is</h2></summary><div class="beat__body"><p>For our maze, <strong><code>h(state)</code> is a cheap estimate of remaining distance or cost to the goal</strong>. Computing it should take much less work than solving the remaining route. It need not equal the real cost, and it guides search only if the decision rule uses it.</p>
+<h3 id="are-the-estimate-true-cost-and-goal-test-the-same">Are the estimate, true cost and goal test the same?</h3>
+<p>Keep three ideas separate:</p>
+<ul><li><strong>goal test</strong> — the exact question, “have we finished?”</li><li><strong>true remaining cost</strong> — what it will actually take to reach the goal</li><li><strong>heuristic estimate <code>h(state)</code></strong> — how much work we cheaply estimate is left</li></ul>
+<p>The goal test can be exact while the heuristic is imperfect.</p>
+<p>For example:</p>
+<pre data-lang="python"><code class="language-python">def is_goal(state):
+    return state == GOAL</code></pre>
+<p>tells us with certainty whether the maze is solved.</p>
+<p>A heuristic such as distance-to-goal is trying to answer a different question:</p>
+<div class="focus-block">
+<blockquote><p><strong>How good does this unfinished state look?</strong></p></blockquote>
+</div>
+<p>That answer may be wrong.</p></div></details>
+<details class="beat" id="where-this-maze-gets-its-hint"><summary><h2 class="beat__title">Where this maze gets its hint</h2></summary><div class="beat__body"><p>The maze already records the current cell and the goal cell. Their row and column differences give us a distance estimate without searching any route. We will calculate it next.</p>
+<p>That estimate depends on the problem. BFS's queue and DFS's stack work without geometric information; a maze-distance heuristic uses it explicitly.</p>
+<p>The lecture notes make the broader point through the Galway hospital route example: additional information can delimit the search area. Canvas carries that example; here we make the information a number and watch whether the machine uses it.</p>
+<div class="callout callout--important"><span class="callout__label">Important</span><p><strong>A heuristic is not hidden knowledge of the correct solution.</strong> It may help direct search effort, but the goal test still decides whether the maze is solved.</p></div>
+<div class="focus-block">
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Week 2 defined what a problem looks like to the machine.</p>
+<p>Week 3 defined systematic ways to explore it without guidance.</p>
+<p>Week 4 introduces information that can distinguish one legal state from another.</p>
+<p>The question is no longer only:</p>
+<blockquote><p><strong>Which state is waiting next?</strong></p></blockquote>
+<p>It becomes:</p>
+<blockquote><p><strong>Which state looks worth trying?</strong></p></blockquote>
+<p>Now we need a heuristic simple enough to see.</p>
+</div></div></details>
+<details class="beat" id="the-same-maze-now-with-a-hint"><summary><h2 class="beat__title">The same maze, now with a hint</h2></summary><div class="beat__body"><p>We keep the exact maze from Weeks 2 and 3.</p>
+<pre data-lang="text"><code class="language-text">    0 1 2 3 4 5 6 7 8
+
+0   S . # . . . . . .
+1   # . # . # # # . #
+2   . . . . . . # . .
+3   . # # # # . # # .
+4   . . . . # . . . .
+5   # # # . # # # . #
+6   . . . . . . . . G</code></pre>
+<p>Nothing in the problem definition changes:</p>
+<ul><li><code>START = (0, 0)</code></li><li><code>GOAL = (6, 8)</code></li><li>the same walls</li><li>the same legal moves</li><li>the same <code>neighbours(state)</code> and <code>is_goal(state)</code> functions</li></ul>
+<p>The only addition to the problem information is <code>heuristic(state)</code>; the hill-climbing controller follows in Highlight 3.</p>
+<h3 id="why-count-horizontal-and-vertical-moves">Why count horizontal and vertical moves?</h3>
+<p>Our agent can move only <code>UP</code>, <code>DOWN</code>, <code>LEFT</code> or <code>RIGHT</code>, with <strong>one unit of cost per move</strong>.</p>
+<p>Suppose we temporarily ignore the walls and ask:</p>
+<div class="focus-block">
+<blockquote><p><strong>How many horizontal and vertical moves separate this cell from the goal?</strong></p></blockquote>
+</div>
+<p>For a state <code>(row, column)</code> and goal <code>(goal_row, goal_column)</code>, <code>h(state) = |row - goal_row| + |column - goal_column|</code>.</p>
+<p>This is <strong>Manhattan distance</strong>. Each move can change only one coordinate by one. Without walls, we must cover the row difference and the column difference, and doing exactly those moves reaches the goal. Their sum is therefore the exact cost in the wall-free grid.</p>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-04/manhattan-grid.svg" alt="A crop of the maze: two rows plus one column gives h of 3; a wall blocks one direct route" loading="lazy" decoding="async"><figcaption>Figure 2. Rows 4–6 and columns 6–8 of the unchanged maze. From (4,7), two vertical moves plus one horizontal move give h = 3. The dashed geometric route crosses the wall at (5,8): the formula counts coordinate differences without checking that route's legality. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<p>With walls, the real route may require a detour. Manhattan distance remains <strong>cheap</strong> to calculate and <strong>informative</strong> about separation, but <strong>imperfect</strong> about the work actually left.</p>
+<p>In Python:</p>
+<pre data-lang="python"><code class="language-python">def heuristic(state):
+    row, col = state
+    goal_row, goal_col = GOAL
+
+    return abs(row - goal_row) + abs(col - goal_col)</code></pre>
+<p>For our goal <code>(6,8)</code>:</p>
+<div class="table-scroll"><table><thead><tr><th>State</th><th class="num"><code>h(state)</code></th></tr></thead><tbody><tr><td><code>(6,8)</code></td><td class="num">0</td></tr><tr><td><code>(6,7)</code></td><td class="num">1</td></tr><tr><td><code>(4,8)</code></td><td class="num">2</td></tr><tr><td><code>(4,7)</code></td><td class="num">3</td></tr><tr><td><code>(2,3)</code></td><td class="num">9</td></tr><tr><td><code>(0,0)</code></td><td class="num">14</td></tr></tbody></table></div>
+<p>Smaller means:</p>
+<blockquote><p><strong>closer according to this estimate</strong></p></blockquote></div></details>
+<details class="beat" id="what-the-heuristic-ignores"><summary><h2 class="beat__title">What the heuristic ignores</h2></summary><div class="beat__body"><p>Manhattan distance uses only the current and goal coordinates. It ignores walls, dead ends and corridors, so it cannot tell whether a direct route is legal.</p>
+<p>The wall still matters to <code>neighbours(state)</code>: it blocks movement. It contributes nothing to <code>heuristic(state)</code>. These functions read different parts of the same problem definition.</p>
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-04/heuristic-overlay.png" alt="The maze with Manhattan h values overlaid on every open cell" loading="lazy" decoding="async"><figcaption>Figure 3. The Search Lab overlays Manhattan <code>h</code> on the unchanged maze. The start is <code>h = 14</code>, the goal is <code>h = 0</code>, and walls receive no value. Screenshot created from the Search Lab for these pages; no external image licence is used.</figcaption></figure>
+<h3 id="which-neighbour-looks-better-at-23">Which neighbour looks better at <code>(2,3)</code>?</h3>
+<p>Return to the Week 2 example state <code>(2,3)</code> and evaluate its legal neighbours:</p>
+<div class="table-scroll"><table><thead><tr><th>Action</th><th>Neighbour</th><th class="num"><code>h</code></th></tr></thead><tbody><tr><td><code>UP</code></td><td><code>(1,3)</code></td><td class="num">10</td></tr><tr><td><code>LEFT</code></td><td><code>(2,2)</code></td><td class="num">10</td></tr><tr><td><code>RIGHT</code></td><td><code>(2,4)</code></td><td class="num">8</td></tr></tbody></table></div>
+<p>Week 2 could tell us all three were legal.</p>
+<p>Week 3 could put all three on a frontier.</p>
+<p>Week 4 can say:</p>
+<div class="focus-block">
+<blockquote><p><strong>RIGHT looks better under this heuristic.</strong></p></blockquote>
+</div>
+<p>That is the new information.</p></div></details>
+<details class="beat" id="showing-h-does-not-change-a-blind-search"><summary><h2 class="beat__title">Showing h does not change a blind search</h2></summary><div class="beat__body"><p>There is a useful experiment here.</p>
+<p>Run BFS on the maze with the heuristic numbers displayed.</p>
+<p>Nothing changes.</p>
+<p>Run DFS with the same display.</p>
+<p>Nothing changes.</p>
+<p>Why?</p>
+<p>Because neither algorithm reads <code>h(state)</code>.</p>
+<p>The information exists, but the strategy ignores it.</p>
+<div class="callout callout--note"><span class="callout__label">Note</span><p><strong>Adding information to the screen does not make an algorithm informed.</strong></p>
+<p>The information must actually influence the decision rule.</p></div>
+<h3 id="how-do-we-run-the-controlled-experiment">How do we run the controlled experiment?</h3>
+<p>Open the <a href="../../search-lab/">Search Lab</a> and keep the default maze and successor order selected.</p>
+<ol><li>Turn <strong>Show Manhattan h</strong> on. Inspect <code>(2,3)</code> and predict which neighbour the score favours.</li><li>Select <strong>BFS</strong>, reset and run. Compare with its Week 3 traversal.</li><li>Select <strong>DFS</strong>, reset and run. Again, the overlay changes no decisions.</li><li>Switch to <strong>Hill climb</strong> and step through the legal-neighbour evaluations. Now the displayed score determines the move.</li></ol>
+<p>The representation and transitions remain fixed. Week 2 supplied legal options, Week 3 organised waiting states, and Week 4 adds information a decision rule can use. We finish this experiment in Highlight 4 by changing only successor order.</p>
+<h3 id="does-a-lower-h-guarantee-a-better-route">Does a lower h guarantee a better route?</h3>
+<p>The start has <code>h = 14</code> and the goal has <code>h = 0</code>. Reducing the number seems like progress, but the calculation ignores walls. A cell can be close to the goal and still require a detour. The trap at <code>(4,8)</code> will expose that difference.</p>
+<div class="focus-block">
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>The machine can now say “this neighbour looks better”, but a score alone is not a search method. We need a rule that acts on it:</p>
+<blockquote><p><strong>if one neighbour looks better, move there</strong></p></blockquote>
+<p>That is hill climbing.</p>
+</div></div></details>
+<details class="beat" id="hill-climbing--always-take-the-better-neighbour"><summary><h2 class="beat__title">Hill climbing — always take the better neighbour</h2></summary><div class="beat__body"><p>Hill climbing is a <strong>local-search rule</strong>: repeatedly compare the current candidate with its neighbours and move to an improvement.</p>
+<div class="callout callout--important"><span class="callout__label">Important</span><p><strong>This week we use a deliberately strict best-improvement version of hill climbing.</strong> Other variants need not use these acceptance and tie rules.</p></div>
+<p>At each step:</p>
+<ol><li>inspect all legal neighbours</li><li>evaluate them — for our maze, lower <code>h</code> is better</li><li>choose the neighbour with the best strictly improving value</li><li>use successor order to break an equal-best tie</li><li>stop if no neighbour is strictly better; otherwise move and repeat until the goal</li></ol>
+<p>This version accepts no equal or worse value, makes no fresh start, and keeps no alternative routes for later.</p>
+<p>The lecture notes describe the same process using three ingredients:</p>
+<ul><li>a representation of the solution</li><li>an evaluation function</li><li>a neighbourhood around the current solution</li></ul>
+<p>Those three pieces should now look familiar.</p>
+<h3 id="how-little-code-does-the-rule-need">How little code does the rule need?</h3>
+<p>From Week 2 we already have <code>neighbours(state)</code>. From this week we now have <code>heuristic(state)</code>.</p>
+<p>So the basic hill-climbing decision is:</p>
+<pre data-lang="python"><code class="language-python">def best_improving_neighbour(state):
+    options = neighbours(state)
+
+    better = [
+        next_state
+        for _, next_state in options
+        if heuristic(next_state) &lt; heuristic(state)
+    ]
+
+    if not better:
+        return None
+
+    return min(better, key=heuristic)</code></pre>
+<p>Then:</p>
+<pre data-lang="python"><code class="language-python">current = START
+
+while not is_goal(current):
+    next_state = best_improving_neighbour(current)
+
+    if next_state is None:
+        break
+
+    current = next_state</code></pre>
+<p>Python’s <code>min</code> returns the first minimum it encounters, so the order supplied by <code>neighbours(state)</code> breaks an equal-best tie. The <code>&lt;</code> comparison filters out equal and worse values before selection.</p>
+<p>The important word is <strong>improving</strong>: the evaluation must say the move is better.</p></div></details>
+<details class="beat" id="why-hill-climbing-when-the-number-gets-smaller"><summary><h2 class="beat__title">Why "hill climbing" when the number gets smaller</h2></summary><div class="beat__body"><p>Hill climbing means repeated local improvement. In the classic analogy, higher is better. In our maze, lower <code>h</code> is better, so improvement means descending the heuristic value. The evaluation function determines which direction counts as better.</p>
+<h3 id="which-information-decides-the-next-move">Which information decides the next move?</h3>
+<p>Hill climbing keeps no broad frontier or alternative routes for later. Its decision uses the current neighbourhood:</p>
+<blockquote><p><strong>Which neighbour looks best now?</strong></p></blockquote>
+<p>It does not ask:</p>
+<blockquote><p><strong>Which complete path will eventually be best?</strong></p></blockquote>
+<p>Those are different questions.</p>
+<h3 id="what-does-the-rule-do-at-23">What does the rule do at <code>(2,3)</code>?</h3>
+<p>From <code>(2,3)</code>, where <code>h = 9</code>:</p>
+<div class="table-scroll"><table><thead><tr><th>Action</th><th class="num">Neighbour <code>h</code></th><th>Decision</th></tr></thead><tbody><tr><td><code>UP</code></td><td class="num">10</td><td>reject</td></tr><tr><td><code>LEFT</code></td><td class="num">10</td><td>reject</td></tr><tr><td><code>RIGHT</code></td><td class="num">8</td><td>select <code>(2,4)</code></td></tr></tbody></table></div>
+<p>From <code>(2,4)</code>, where <code>h = 8</code>, <code>LEFT</code> returns to <code>h = 9</code> while <code>RIGHT</code> reaches <code>(2,5)</code> with <code>h = 7</code>. Hill climbing selects <code>RIGHT</code> again.</p>
+<p>The apparent purpose comes entirely from the score. The machine has not discovered the maze's corridor structure.</p></div></details>
+<details class="beat" id="what-counts-as-a-neighbour"><summary><h2 class="beat__title">What counts as a neighbour</h2></summary><div class="beat__body"><p>The formal lecture's knapsack example makes one useful generalisation. A candidate <code>00101</code> records which of five items are selected; flipping one bit produces a neighbour, such as <code>01101</code>. Its evaluation might measure total value while respecting capacity. Canvas carries the fuller treatment.</p>
+<p>The same three ingredients now describe two different problems:</p>
+<div class="table-scroll"><table><thead><tr><th>Ingredient</th><th>Maze</th><th>Knapsack</th></tr></thead><tbody><tr><td><strong>REPRESENTATION</strong></td><td>location <code>(row, column)</code></td><td>bit string such as <code>00101</code></td></tr><tr><td><strong>NEIGHBOURHOOD</strong></td><td>legal adjacent cells</td><td>one-bit changes</td></tr><tr><td><strong>EVALUATION</strong></td><td><code>h(state)</code>; lower is better</td><td>candidate quality; higher may be better</td></tr></tbody></table></div>
+<div class="callout callout--note"><span class="callout__label">Note</span><p><strong>Heuristic estimate and evaluation function are not universal synonyms.</strong> An evaluation function supplies the score used to compare candidates. Here we choose the remaining-cost estimate <code>h(state)</code> as that score. Knapsack instead scores the candidate's quality; it need not estimate remaining distance at all.</p></div>
+<p>The representation says what can change, the neighbourhood says what one change means, and the evaluation says whether it helps. Changing any of these can change hill-climbing behaviour.</p>
+<h3 id="what-does-this-local-rule-buy-us">What does this local rule buy us?</h3>
+<p>Hill climbing can use very little search memory, avoid exploring much of the state space, and move quickly towards apparently good states. It keeps a current candidate and compares nearby alternatives instead of maintaining a broad frontier.</p>
+<p>The trade-off is that <strong>local improvement does not imply global success</strong>. Our maze lets us test that immediately.</p>
+<div class="focus-block">
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Hill climbing turns a heuristic estimate into behaviour.</p>
+<p>Week 4 has now moved from “this state looks better” to “move to the better-looking state.”</p>
+<p>That can save enormous amounts of search.</p>
+<p>But it also introduces a new failure mode:</p>
+<blockquote><p><strong>what if every nearby move looks worse, even though a real solution still exists?</strong></p></blockquote>
+<p>We do not need a new example to answer that.</p>
+<p>The maze is already waiting.</p>
+</div></div></details>
+<details class="beat" id="a-useful-hint-can-still-mislead"><summary><h2 class="beat__title">A useful hint can still mislead</h2></summary><div class="beat__body"><p>Move through the maze until we reach <code>(4,7)</code>. The goal is <code>(6,8)</code>, so Manhattan distance gives <code>h(4,7) = 3</code>.</p>
+<p>Two legal moves improve the score equally:</p>
+<ul><li><code>DOWN → (5,7)</code>, with <code>h = 2</code></li><li><code>RIGHT → (4,8)</code>, with <code>h = 2</code></li></ul>
+<p>Both are legal, improving and allowed by the strict rule. <strong>Both satisfy the rule. Only one leads this run to the goal.</strong></p>
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-04/hill-decision-4-7.png" alt="Strict hill climbing at state 4,7, showing DOWN and RIGHT tied at h equals 2" loading="lazy" decoding="async"><figcaption>Figure 4. At <code>(4,7)</code>, the Search Lab shows <code>DOWN</code> and <code>RIGHT</code> as equal-best improving neighbours. The default successor order lists <code>DOWN</code> first. Screenshot created from the Search Lab for these pages; no external image licence is used.</figcaption></figure>
+<h3 id="what-happens-when-down-or-right-wins-the-tie">What happens when DOWN or RIGHT wins the tie?</h3>
+<p>Choose <code>DOWN</code> first and the run succeeds: <code>(4,7) → (5,7) → (6,7) → (6,8)</code>, with <code>h</code> falling <code>3 → 2 → 1 → 0</code>.</p>
+<p>Choose <code>RIGHT</code> first and the run enters <code>(4,8)</code>, with <code>h</code> falling from <code>3</code> to <code>2</code>.</p>
+<p>Now inspect the legal neighbours of <code>(4,8)</code>.</p>
+<p>The cell below, <code>(5,8)</code>, is a wall.</p>
+<p>The remaining legal moves are <code>UP → (3,8), h = 3</code> and <code>LEFT → (4,7), h = 3</code>.</p>
+<p>Every legal move makes the heuristic worse.</p>
+<p>Strict hill climbing refuses them.</p>
+<p>So it stops with <strong><code>NO IMPROVING NEIGHBOUR</code></strong>.</p>
+<div class="table-scroll"><table><thead><tr><th><code>DOWN</code> first — successful run</th><th><code>RIGHT</code> first — trapped run</th></tr></thead><tbody><tr><td><img src="../../media/week-04/hill-success.png" alt="Hill climbing reaches the goal when DOWN wins the tie"></td><td><img src="../../media/week-04/hill-trapped.png" alt="Hill climbing stops at 4,8 when RIGHT wins the tie"></td></tr></tbody></table></div>
+<p class="standalone-caption"><sub><em>Figure 5. Two Search Lab runs differ only in successor order at the equal-best tie. <code>DOWN</code> first reaches the goal; <code>RIGHT</code> first stops at <code>(4,8)</code> with legal neighbours still available. Screenshots created from the Search Lab for these pages; no external image licence is used.</em></sub></p></div></details>
+<details class="beat" id="how-much-work-is-actually-left"><summary><h2 class="beat__title">How much work is actually left</h2></summary><div class="beat__body"><p>At <code>(4,8)</code>, the goal test is false and the heuristic says <strong>2 moves</strong>. But the wall at <code>(5,8)</code> blocks the direct descent. The actual shortest remaining route is:</p>
+<pre data-lang="text"><code class="language-text">(4,8) → (4,7) → (5,7) → (6,7) → (6,8)
+  h=2      h=3      h=2      h=1      h=0</code></pre>
+<p>That costs <strong>4 moves</strong>. The first move increases <code>h</code>, so strict hill climbing rejects it even though it belongs to a shortest route from this state.</p>
+<p>This is Highlight 1's distinction made concrete:</p>
+<ul><li><strong>Goal test:</strong> false — we have not finished.</li><li><strong>Heuristic estimate:</strong> <code>h(4,8) = 2</code>.</li><li><strong>True remaining cost:</strong> <code>4</code>.</li></ul>
+<p>Both <code>UP</code> and <code>LEFT</code> remain legal, with <code>h = 3</code>. The problem definition permits them; the evaluation and acceptance rule reject them.</p>
+<div class="callout callout--important"><span class="callout__label">Important</span><p><strong>Hill climbing has not run out of legal moves.</strong></p>
+<p><strong>It has run out of moves it is willing to accept.</strong></p></div>
+<p>To reach the goal from this position, the algorithm would first have to make a move that looks worse according to its heuristic.</p>
+<p>Strict hill climbing refuses to do that.</p>
+<h3 id="was-the-hint-useless-because-the-run-failed">Was the hint useless because the run failed?</h3>
+<p>No. Manhattan distance cheaply guided the run towards the goal for most of the route. At the trap, it ignores a wall the route must respect. <strong>Useful guidance can still mislead</strong>; the failure comes from combining that estimate with a rule that accepts only immediate improvement.</p>
+<h3 id="what-changed-between-the-two-runs">What changed between the two runs?</h3>
+<p>At <code>(4,7)</code>, the evaluation cannot distinguish <code>DOWN</code> from <code>RIGHT</code>. Successor order resolves the tie, changing success into failure while the maze, start, goal, heuristic and strict hill-climbing rule remain identical.</p>
+<p>This connects directly to Week 3, where successor order altered DFS. <strong>Algorithm names do not uniquely determine every observed traversal when ties remain unresolved.</strong></p></div></details>
+<details class="beat" id="one-good-run-proves-nothing"><summary><h2 class="beat__title">One good run proves nothing</h2></summary><div class="beat__body"><p>With the default successor order, hill climbing reaches the goal in <strong>14 moves</strong>, also a shortest path for this maze. Does that observed result establish a guarantee?</p>
+<p>No. This particular run, on this maze, with this tie-breaking order, happened to return a shortest path. The alternate order fails completely despite a reachable goal. This counterexample disproves a guarantee of finding a solution. The successful run supplies no general shortest-path guarantee either.</p>
+<p>This is the Week 3 comparison discipline again: <strong>an observed result is not an algorithmic guarantee</strong>. A successful demonstration tells us what happened under its conditions; it does not establish what must happen on other runs.</p>
+<h3 id="what-is-local-about-this-minimum">What is local about this minimum?</h3>
+<p>At <code>(4,8)</code>, <code>h = 2</code> and every legal neighbour has a larger value. It is therefore a <strong>local minimum of <code>h</code> under the chosen neighbourhood</strong>.</p>
+<p>This is the same structural failure the lecture notes describe as hill climbing becoming trapped in a <strong>local optimum</strong>. The term describes the evaluation relative to nearby candidates. It does not mean <code>(4,8)</code> solves the maze or is a globally optimal solution.</p>
+<p>The goal with <code>h = 0</code> is reachable, but the route above begins <code>2 → 3</code>. Our strict rule cannot take that first step.</p></div></details>
+<details class="beat" id="reproducing-the-comparison"><summary><h2 class="beat__title">Reproducing the comparison</h2></summary><div class="beat__body"><p>Continue the Search Lab experiment from Highlight 2:</p>
+<ol><li>With <strong>Hill climb</strong> and <code>UP → DOWN → LEFT → RIGHT</code>, step to <code>(4,7)</code> and inspect the equal-best tie.</li><li>Finish the run. <code>DOWN</code> wins and the goal is reached in 14 moves.</li><li>Change <strong>neighbours() order</strong> to <code>UP → RIGHT → DOWN → LEFT</code>, reset and re-run.</li><li>At <code>(4,8)</code>, inspect both rejected legal neighbours and the <strong>NO IMPROVING NEIGHBOUR</strong> message.</li><li>Compare the displayed <code>h = 2</code> with the four-move route back through <code>(4,7)</code>. Identify the first move the strict rule will not accept.</li></ol>
+<p>Keep the maze, heuristic and starting state fixed throughout. Successor order is the experimental change; success or failure is the observed consequence.</p>
+<div class="focus-block">
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Week 4 began by asking whether a useful guess could save us from searching everything.</p>
+<p>The answer is:</p>
+<blockquote><p><strong>yes — but guidance changes the trade-off rather than removing it</strong></p></blockquote>
+<p>The heuristic supplies an estimate; the evaluation lets the rule compare candidates; hill climbing acts on that comparison locally. It can save search effort, but its refusal to accept a temporary worsening can leave a reachable goal unfound.</p>
+<p>The same maze has shown both the benefit and the cost. We end with that failure still visible.</p>
+</div></div></details>
+  </main>
+
+  <div class="tail">
+<h2 id="before-week-5">Before Week 5</h2>
+<p>At <code>(4,8)</code> the machine is stuck:</p>
+<pre data-lang="text"><code class="language-text">Current state: (4,8)
+Heuristic: 2
+
+Goal: (6,8)
+
+Legal neighbours:
+  UP    h = 3
+  LEFT  h = 3
+
+No improving move.
+Hill climbing stops.</code></pre>
+<p>A route exists, but every legal move initially looks worse:</p>
+<div class="focus-block">
+<blockquote><p><strong>What if reaching a better solution sometimes requires making a worse move first?</strong></p></blockquote>
+</div>
+<p>Week 5 broadens local search beyond strict hill climbing, asking how local-search methods can escape when strict improvement is not enough.</p>
+<hr>
+<h2 id="quick-revision">Quick revision</h2>
+<p>If you can answer these without reopening the page, you have the core of Week 4.</p>
+<ol><li><strong>[WK-04-01]</strong> What makes a search strategy informed rather than blind?</li><li>What is the difference between <code>h(state)</code> and the true remaining cost?</li><li><strong>[WK-04-02]</strong> Why does Manhattan distance make sense for four-direction, unit-cost movement?</li><li>What important information does Manhattan distance ignore?</li><li>Why does displaying <code>h(state)</code> not change BFS or DFS?</li><li><strong>[WK-04-03]</strong> What exact rule does our strict hill climber use, including equal-best ties and stopping?</li><li><strong>[WK-04-04]</strong> Why can <code>(4,8)</code> trap hill climbing even though legal moves and a route to the goal remain?</li><li>Why does one successful 14-move run not prove hill climbing is optimal?</li></ol>
+<hr>
+<h2 id="sources-and-licensing-notes">Sources and licensing notes</h2>
+<h3 id="lecture-material">Lecture material</h3>
+<p>The Week 4 terminology and formal progression follow the existing <em>Informed (Heuristic) Search</em> lecture material on Canvas.</p>
+<p>This page develops heuristic estimates, evaluation and strict hill climbing on the recurring maze, using <strong>representation, neighbourhood and evaluation</strong> to connect with the formal terminology. The trap makes local improvement and its limits observable.</p>
+<p>The Galway hospital route example, travelling-salesman example and fuller knapsack treatment remain on Canvas. These pages support the live experiment rather than reproducing the complete lecture.</p>
+<h3 id="continuity-from-weeks-2-and-3">Continuity from Weeks 2 and 3</h3>
+<p>The maze problem definition is unchanged:</p>
+<ul><li><code>7 × 9</code> grid</li><li><code>START = (0,0)</code></li><li><code>GOAL = (6,8)</code></li><li>the same walls and moves</li><li>the same <code>neighbours(state)</code> and <code>is_goal(state)</code> functions</li></ul>
+<p>Week 4 adds only the heuristic:</p>
+<pre data-lang="python"><code class="language-python">def heuristic(state):
+    row, col = state
+    goal_row, goal_col = GOAL
+    return abs(row - goal_row) + abs(col - goal_col)</code></pre>
+<p>The hill-climbing trap at <code>(4,7)</code> / <code>(4,8)</code> is derived from the same maze rather than introduced as a separate artificial example.</p>
+<h3 id="figures">Figures</h3>
+<p>Figures 1–5 were <strong>created for these pages</strong>. They use no external image licence.</p>
+<p>Figures 3, 4 and 5 are Search Lab screenshots rendered from the exact maze and the Manhattan-distance calculation described on this page.</p>
+<p>No external images, videos or papers are required for this page.</p>
+<h3 id="software">Software</h3>
+<p>The <a href="../../search-lab/">Search Lab</a> is the same classroom artefact used in Week 3, extended with:</p>
+<ul><li>a show/hide control for Manhattan values on open maze cells</li><li>strict hill-climbing mode</li><li>visible legal-neighbour evaluation and successor-order tie-breaking</li><li>successful and trapped runs on the unchanged default maze</li></ul>
+<p>The problem definition remains separate from BFS, DFS and strict hill climbing.</p>
+  </div>
+
+  <footer class="page-footer">
+    <p>
+      CT319 Artificial Intelligence · University of Galway ·
+      <a href="../../">Module pages</a> ·
+      <a href="https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/weeks/week-04.md">Markdown source</a> ·
+      <a href="?open=all">Open every section</a>
+    </p>
+    <p>Formal slides and notes are on Canvas. These pages are the companion material.</p>
+  </footer>
+
+</div>
+
+<script src="../../assets/ct319.js" defer></script>
+</body>
+</html>
