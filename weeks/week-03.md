@@ -678,7 +678,7 @@ The slides describe a search strategy as the rule deciding which **node** is exp
 
 The maze problem definition is inherited unchanged: a 7 × 9 grid, `START = (0,0)`, `GOAL = (6,8)`, and the same `WALLS`, `MOVES`, `neighbours(state)` and `is_goal(state)`. Week 3 changes the controller, not the representation.
 
-The Search Lab preserves the same separation: `problems.js` holds the maze, legal moves, `neighbours()` and goal test; `search.js` supplies the shared graph-search process and the FIFO/LIFO policy; `app.js` handles only controls and presentation. No Week 4 search logic is included.
+The Search Lab preserves the same separation: `problems.js` holds the maze, legal moves, `neighbours()` and goal test; `search.js` supplies the shared graph-search process and the FIFO/LIFO policy; `app.js` handles only controls and presentation. The lab also carries a **hill-climbing** mode, which belongs to Week 4 rather than here: it needs a heuristic to decide which neighbour looks better, and nothing on this page has one.
 
 ### Figures
 
