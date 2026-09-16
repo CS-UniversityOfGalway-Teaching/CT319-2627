@@ -250,6 +250,21 @@ legend,
   width: 100%;
 }
 
+.field-control input[type="number"] {
+  width: 100%;
+  min-height: 2.45rem;
+  padding: 0.45rem 0.65rem;
+  color: var(--text);
+  background: var(--page);
+  border: 1px solid var(--line-strong);
+  border-radius: 0.4rem;
+  font: inherit;
+}
+
+.strict-rule sup {
+  font-size: 0.72em;
+}
+
 select,
 .button,
 .segmented-control button {
@@ -635,6 +650,25 @@ select {
 
 .neighbour-action {
   font-weight: 800;
+}
+
+.reading-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.4rem 0.55rem;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0.35rem;
+  font-size: 0.75rem;
+}
+
+.reading-row strong {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .strict-rule {

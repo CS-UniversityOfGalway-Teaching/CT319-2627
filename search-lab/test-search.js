@@ -5,6 +5,7 @@ const assert = require("node:assert/strict");
 require("./problems.js");
 require("./search.js");
 require("./hill-climbing.js");
+require("./annealing.js");
 
 const lab = globalThis.CT319;
 const defaultProblem = lab.PROBLEMS.find((problem) => problem.id === "ct319");
@@ -172,8 +173,64 @@ for (const session of [successfulHill, trappedHill]) {
   });
 }
 
+// --- Simulated annealing -----------------------------------------------------
+
+assert.equal(lab.ANNEAL_DEFAULTS.seed, 743);
+assert.equal(lab.acceptanceProbability(-1, 5), 1);
+assert.ok(lab.acceptanceProbability(1, 5) > lab.acceptanceProbability(1, 0.5));
+assert.ok(lab.acceptanceProbability(1, 0.5) > lab.acceptanceProbability(3, 0.5));
+
+const annealRun = lab.solveAnneal(defaultProblem, lab.DEFAULT_ORDER);
+const annealReplay = lab.solveAnneal(defaultProblem, lab.DEFAULT_ORDER);
+assert.deepEqual(annealRun.path, annealReplay.path, "The same seed must replay the same run.");
+assert.notDeepEqual(
+  annealRun.path,
+  lab.solveAnneal(defaultProblem, lab.DEFAULT_ORDER, { seed: 12 }).path,
+  "A different seed should give a different run.",
+);
+
+assert.equal(annealRun.status, lab.FOUND);
+assert.equal(annealRun.current, "6,8");
+assert.equal(lab.annealPathIsLegal(annealRun), true);
+assert.equal(annealRun.movesMade, 16);
+assert.equal(annealRun.worseMovesAccepted, 1);
+
+// Every Manhattan neighbour in a four-direction grid differs by exactly one,
+// so temperature alone controls the willingness to accept a worse move here.
+annealRun.path.slice(1).forEach((stateKey, index) => {
+  const previous = lab.manhattan(defaultProblem, lab.stateOf(annealRun.path[index]));
+  const current = lab.manhattan(defaultProblem, lab.stateOf(stateKey));
+  assert.equal(Math.abs(current - previous), 1);
+});
+
+// The default run reaches the Week 4 trap and leaves it by the move strict
+// hill climbing refused.
+const trapIndex = annealRun.path.indexOf("4,8");
+assert.ok(trapIndex > 0, "The default annealing run should reach (4,8).");
+assert.equal(annealRun.path[trapIndex + 1], "4,7");
+assert.deepEqual(annealRun.path.slice(trapIndex, trapIndex + 5), ["4,8", "4,7", "5,7", "6,7", "6,8"]);
+
+// Temperature falls monotonically and never below the floor.
+const cooling = lab.createAnnealSession(defaultProblem, lab.DEFAULT_ORDER);
+let previousTemperature = cooling.temperature;
+while (cooling.status === lab.SEARCHING) {
+  lab.stepAnnealSession(cooling);
+  assert.ok(cooling.temperature <= previousTemperature);
+  assert.ok(cooling.temperature >= lab.ANNEAL_DEFAULTS.minimumTemperature);
+  previousTemperature = cooling.temperature;
+}
+
+// A cold search behaves like strict hill climbing: it never accepts a worse move.
+const frozen = lab.solveAnneal(defaultProblem, lab.DEFAULT_ORDER, {
+  initialTemperature: 1e-6,
+  minimumTemperature: 1e-6,
+  maximumSteps: 60,
+});
+assert.equal(frozen.worseMovesAccepted, 0, "A cold schedule must never accept a worse move.");
+
 console.log("CT319 Search Lab checks passed.");
 console.log(`Default BFS: ${defaultBfs.statesExpanded} expanded, frontier max ${defaultBfs.maximumFrontier}, path ${defaultBfs.finalPath.length - 1}.`);
 console.log(`Default DFS: ${defaultDfs.statesExpanded} expanded, frontier max ${defaultDfs.maximumFrontier}, path ${defaultDfs.finalPath.length - 1}.`);
 console.log(`Checked BFS and DFS across ${allOrders.length} successor orders.`);
 console.log(`Strict hill climbing: default order reaches the goal; RIGHT-before-DOWN stops at (${trappedHill.current}).`);
+console.log(`Simulated annealing (seed ${lab.ANNEAL_DEFAULTS.seed}): ${annealRun.stepsTaken} steps, ${annealRun.movesMade} moves, ${annealRun.worseMovesAccepted} worse move accepted, ${annealRun.worseMovesRejected} rejected.`);

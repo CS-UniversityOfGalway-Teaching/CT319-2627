@@ -11,6 +11,8 @@
   const speedControl = document.querySelector("#speed-control");
   const speedOutput = document.querySelector("#speed-output");
   const heuristicToggle = document.querySelector("#heuristic-toggle");
+  const seedControl = document.querySelector("#seed-control");
+  const seedField = document.querySelector("#seed-field");
   const stepButton = document.querySelector("#step-button");
   const runButton = document.querySelector("#run-button");
   const pauseButton = document.querySelector("#pause-button");
@@ -55,6 +57,8 @@
       sessions = [lab.createSession(problem, "BFS", successorOrder), lab.createSession(problem, "DFS", successorOrder)];
     } else if (mode === "HILL") {
       sessions = [lab.createHillSession(problem, successorOrder)];
+    } else if (mode === "ANNEAL") {
+      sessions = [lab.createAnnealSession(problem, successorOrder, { seed: Number(seedControl.value) })];
     } else {
       sessions = [lab.createSession(problem, mode, successorOrder)];
     }
@@ -72,7 +76,17 @@
     if (session.status === lab.STUCK) {
       return `${lab.NO_IMPROVING_NEIGHBOUR}. Stopped at (${session.current}), h=${lab.manhattan(session.problem, lab.stateOf(session.current))}.`;
     }
+    if (session.status === lab.COOLED) {
+      return `${lab.COOLED_WITHOUT_GOAL}. Stopped at (${session.current}), h=${lab.manhattan(session.problem, lab.stateOf(session.current))}.`;
+    }
     if (session.status === lab.EXHAUSTED) return "Frontier empty. No goal found.";
+    if (session.strategy === "ANNEAL") {
+      const currentH = lab.manhattan(session.problem, lab.stateOf(session.current));
+      if (session.proposal === null) return `Ready: current (${session.current}), h=${currentH}, T=${session.temperature.toFixed(2)}.`;
+      const { action, key, delta, accepted } = session.proposal;
+      const verdict = accepted ? "accepted" : "rejected";
+      return `Proposed ${action} → (${key}), Δ=${delta > 0 ? "+" : ""}${delta}: ${verdict}. Current (${session.current}), h=${currentH}, T=${session.temperature.toFixed(2)}.`;
+    }
     if (session.strategy === "HILL") {
       const prefix = session.lastAction === null ? "Ready" : `Moved ${session.lastAction}`;
       return `${prefix}: current (${session.current}), h=${lab.manhattan(session.problem, lab.stateOf(session.current))}.`;
@@ -84,6 +98,7 @@
   function modeDescription(strategy) {
     if (strategy === "BFS") return "FIFO · remove oldest";
     if (strategy === "DFS") return "LIFO · remove newest";
+    if (strategy === "ANNEAL") return "controlled acceptance · temperature";
     return "strict improvement · local choice";
   }
 
@@ -92,7 +107,7 @@
     if (session.problem.walls.has(stateKey)) names.push("is-wall");
     if (session.explored.includes(stateKey)) names.push("is-explored");
     if (session.frontier.includes(stateKey)) names.push("is-frontier");
-    const displayedPath = session.strategy === "HILL" ? session.path : session.finalPath;
+    const displayedPath = session.strategy === "BFS" || session.strategy === "DFS" ? session.finalPath : session.path;
     if (displayedPath.includes(stateKey)) names.push("is-path");
     if (session.current === stateKey) names.push("is-current");
     if (stateKey === lab.keyOf(session.problem.start)) names.push("is-start");
@@ -108,7 +123,7 @@
     if (session.current === stateKey) labels.push("current state");
     else if (session.frontier.includes(stateKey)) labels.push("on frontier");
     else if (session.explored.includes(stateKey)) labels.push("explored");
-    const displayedPath = session.strategy === "HILL" ? session.path : session.finalPath;
+    const displayedPath = session.strategy === "BFS" || session.strategy === "DFS" ? session.finalPath : session.path;
     if (displayedPath.includes(stateKey)) labels.push(session.status === lab.FOUND ? "on final path" : "on current path");
     if (heuristicToggle.checked && !session.problem.walls.has(stateKey)) {
       labels.push(`Manhattan h ${lab.manhattan(session.problem, lab.stateOf(stateKey))}`);
@@ -153,6 +168,7 @@
 
   function renderStatePanel(session) {
     if (session.strategy === "HILL") return renderHillStatePanel(session);
+    if (session.strategy === "ANNEAL") return renderAnnealStatePanel(session);
 
     const frontier = lab.frontierInRemovalOrder(session);
     const current = session.current === null ? "None yet" : `(${session.current})`;
@@ -216,6 +232,46 @@
       </aside>`;
   }
 
+  function renderAnnealStatePanel(session) {
+    const currentH = lab.manhattan(session.problem, lab.stateOf(session.current));
+    const proposal = session.proposal;
+    const rows = proposal === null
+      ? '<li class="empty-state">Step once to propose a neighbour.</li>'
+      : [
+        ["Candidate", `${proposal.action} → (${proposal.key})`],
+        ["Candidate h", String(proposal.heuristic)],
+        ["Δ", `${proposal.delta > 0 ? "+" : ""}${proposal.delta}`],
+        ["Temperature", proposal.temperature.toFixed(2)],
+        ["P(accept)", proposal.delta < 0 ? "1 (an improvement)" : proposal.probability.toFixed(3)],
+        ["Random draw", proposal.draw === null ? "not needed" : proposal.draw.toFixed(3)],
+        ["Result", proposal.accepted ? "ACCEPT" : "REJECT"],
+      ].map(([label, value]) => `<li class="reading-row"><span>${label}</span><strong>${value}</strong></li>`).join("");
+
+    const verdict = proposal === null
+      ? "No proposal yet."
+      : proposal.delta < 0
+        ? "Better — accepted without a draw."
+        : proposal.accepted
+          ? "Worse — accepted anyway."
+          : "Worse — rejected, the current state stays.";
+
+    return `
+      <aside class="state-panel hill-panel" aria-label="Simulated-annealing state">
+        <div class="state-group">
+          <div class="state-group__heading"><h4>Current</h4><span>the only active state</span></div>
+          <p class="current-state-value">(${session.current}) · h=${currentH}</p>
+        </div>
+        <div class="state-group">
+          <div class="state-group__heading"><h4>This proposal</h4><span>one legal neighbour · step ${session.stepsTaken}</span></div>
+          <ol class="neighbour-list">${rows}</ol>
+        </div>
+        <div class="strict-rule">
+          <strong>Acceptance rule</strong>
+          <span>Better is always accepted. Worse is accepted only if the draw falls under P = e<sup>−Δ/T</sup>. ${verdict}</span>
+        </div>
+      </aside>`;
+  }
+
   function metric(label, value) {
     return `<div class="metric"><dt>${label}</dt><dd>${value}</dd></div>`;
   }
@@ -224,10 +280,17 @@
     const pathLength = session.status === lab.FOUND ? session.finalPath.length - 1 : "—";
     const goalFound = session.status === lab.FOUND
       ? "Yes"
-      : session.status === lab.EXHAUSTED || session.status === lab.STUCK
+      : session.status === lab.EXHAUSTED || session.status === lab.STUCK || session.status === lab.COOLED
         ? "No"
         : "Not yet";
-    const metrics = session.strategy === "HILL"
+    const metrics = session.strategy === "ANNEAL"
+      ? [
+        metric("Temperature", session.temperature.toFixed(2)),
+        metric("Current h", lab.manhattan(session.problem, lab.stateOf(session.current))),
+        metric("Worse moves accepted", session.worseMovesAccepted),
+        metric("Goal found", goalFound),
+      ].join("")
+      : session.strategy === "HILL"
       ? [
         metric("Moves made", session.movesMade),
         metric("Current h", lab.manhattan(session.problem, lab.stateOf(session.current))),
@@ -261,7 +324,9 @@
     const descriptions = sessions.map((session) => `${session.strategy}: ${statusText(session)}`);
     runStatus.textContent = descriptions.join(" ");
     presetDescription.textContent = problem.description;
-    orderExplanation.textContent = mode === "HILL"
+    orderExplanation.textContent = mode === "ANNEAL"
+      ? `Annealing proposes one legal neighbour at random; seed ${seedControl.value} and this successor order replay the same run every time.`
+      : mode === "HILL"
       ? `Strict hill climbing chooses the lowest improving h; the first generated state wins an equal-best tie.`
       : mode === "DFS"
       ? `DFS uses the rightmost legal generated state next because a stack removes the newest entry.`
@@ -284,6 +349,7 @@
     sessions.forEach((session) => {
       if (session.status !== lab.SEARCHING) return;
       if (session.strategy === "HILL") lab.stepHillSession(session);
+      else if (session.strategy === "ANNEAL") lab.stepAnnealSession(session);
       else lab.stepSession(session);
     });
     render();
@@ -318,7 +384,8 @@
   modeButtons.forEach((button) => {
     button.addEventListener("click", () => {
       mode = button.dataset.mode;
-      if (mode === "HILL") heuristicToggle.checked = true;
+      if (mode === "HILL" || mode === "ANNEAL") heuristicToggle.checked = true;
+      seedField.hidden = mode !== "ANNEAL";
       modeButtons.forEach((candidate) => {
         candidate.setAttribute("aria-pressed", String(candidate === button));
       });
@@ -341,6 +408,10 @@
   });
 
   heuristicToggle.addEventListener("change", render);
+
+  seedControl.addEventListener("change", () => {
+    if (mode === "ANNEAL") reset();
+  });
 
   stepButton.addEventListener("click", () => {
     if (timer !== null) pause();

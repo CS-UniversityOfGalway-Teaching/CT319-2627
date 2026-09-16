@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Compare blind search and strict hill climbing on the CT319 maze.">
-  <title>CT319 Search Lab — Blind and heuristic search</title>
+  <meta name="description" content="Compare blind search, strict hill climbing and simulated annealing on the CT319 maze.">
+  <title>CT319 Search Lab — Blind, heuristic and local search</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230969da'/%3E%3Cpath d='M8 8h7v4h-3v8h3v4H8zm9 0h7v16h-7v-4h3v-8h-3z' fill='white'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -13,7 +13,7 @@
 
   <header class="page-header">
     <div>
-      <p class="eyebrow">CT319 · Weeks 2–4 teaching artefact</p>
+      <p class="eyebrow">CT319 · Weeks 2–5 teaching artefact</p>
       <h1>Search Lab</h1>
       <p class="lede">Same maze. Same <code>neighbours(state)</code>. Blind search or a local heuristic choice.</p>
     </div>
@@ -21,6 +21,7 @@
       <span>BFS removes the <strong>oldest</strong></span>
       <span>DFS removes the <strong>newest</strong></span>
       <span>Hill climbing takes a strictly <strong>lower h</strong></span>
+      <span>Annealing may accept a <strong>worse h</strong></span>
     </div>
   </header>
 
@@ -42,6 +43,7 @@
             <button type="button" data-mode="DFS" aria-pressed="false">DFS</button>
             <button type="button" data-mode="RACE" aria-pressed="false">Race</button>
             <button type="button" data-mode="HILL" aria-pressed="false">Hill climb</button>
+            <button type="button" data-mode="ANNEAL" aria-pressed="false">Anneal</button>
           </div>
         </fieldset>
 
@@ -58,6 +60,11 @@
         <label class="field-control speed-control" for="speed-control">
           <span>Run speed <output id="speed-output" for="speed-control">500 ms</output></span>
           <input id="speed-control" type="range" min="100" max="1200" step="100" value="500">
+        </label>
+
+        <label class="field-control seed-control" for="seed-control" id="seed-field" hidden>
+          <span>Anneal seed <small>same seed → same run</small></span>
+          <input id="seed-control" type="number" min="1" max="999999" step="1" value="743">
         </label>
 
         <label class="heuristic-control" for="heuristic-toggle">
@@ -96,7 +103,7 @@
         <li><span class="legend-swatch explored"></span>Explored</li>
         <li><span class="legend-swatch path"></span>Final path</li>
       </ul>
-      <p class="legend-note">Race advances BFS and DFS together. Hill climbing inspects every legal neighbour, chooses a strictly lower <code>h</code>, and uses successor order only to break a tie.</p>
+      <p class="legend-note">Race advances BFS and DFS together. Hill climbing inspects every legal neighbour, chooses a strictly lower <code>h</code>, and uses successor order only to break a tie. Annealing proposes one legal neighbour per step and accepts a worse <code>h</code> only with probability <code>e<sup>−Δ/T</sup></code>; the seed makes the run repeatable.</p>
     </section>
   </main>
 
@@ -107,6 +114,7 @@
   <script src="problems.js"></script>
   <script src="search.js"></script>
   <script src="hill-climbing.js"></script>
+  <script src="annealing.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
