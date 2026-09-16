@@ -41,22 +41,22 @@
   <text class="lab" x="30" y="38">A CYCLE THE SEARCH CAN FALL INTO FOREVER</text>
   <path class="edgeBad" d="M284 110 L406 110"/>
   <path class="edgeBad" d="M393 102 L406 110 L393 118"/>
-  <path class="edgeBad" d="M423 139 L387 203"/>
-  <path class="edgeBad" d="M400 195 L387 203 L386 188"/>
-  <path class="edgeBad" d="M346 208 L274 134"/>
-  <path class="edgeBad" d="M277 149 L274 134 L288 138"/>
-  <path class="edge" d="M404 232 L632 232"/>
+  <path class="edgeBad" d="M419 137 L366 205"/>
+  <path class="edgeBad" d="M370 189 L366 205 L381 198"/>
+  <path class="edgeBad" d="M324 205 L271 137"/>
+  <path class="edgeBad" d="M286 144 L271 137 L275 153"/>
+  <path class="edge" d="M379 232 L632 232"/>
   <path class="edge" d="M619 224 L632 232 L619 240"/>
   <circle class="circ" cx="250" cy="110" r="34"/>
   <text class="node" x="250" y="116" text-anchor="middle" style="font-size:17px">A</text>
   <circle class="circ" cx="440" cy="110" r="34"/>
   <text class="node" x="440" y="116" text-anchor="middle" style="font-size:17px">B</text>
-  <circle class="circ" cx="370" cy="232" r="34"/>
-  <text class="node" x="370" y="238" text-anchor="middle" style="font-size:17px">C</text>
+  <circle class="circ" cx="345" cy="232" r="34"/>
+  <text class="node" x="345" y="238" text-anchor="middle" style="font-size:17px">C</text>
   <circle class="circG" cx="672" cy="232" r="40"/>
   <text class="node" x="672" y="238" text-anchor="middle" style="font-size:15px">Goal</text>
   <text class="cap" x="345" y="88" text-anchor="middle" style="fill:var(--bad)">A &#8594; B &#8594; C &#8594; A</text>
-  <text class="note" x="527" y="220" text-anchor="middle">the way out</text>
+  <text class="note" x="506" y="220" text-anchor="middle">the way out</text>
   <text class="note" x="30" y="302">Without a record of what has already been reached, the search can ride the red loop indefinitely</text>
   <text class="note" x="30" y="324">and never take the edge that leads to the goal.</text>
 </svg>
