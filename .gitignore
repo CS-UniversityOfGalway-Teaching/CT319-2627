@@ -3,3 +3,6 @@
 __pycache__/
 *.pyc
 ct319_turing_results.csv
+
+# Playwright CLI scratch output (screenshots, page snapshots)
+.playwright-cli/
