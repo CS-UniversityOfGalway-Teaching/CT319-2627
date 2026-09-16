@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Watch a genetic algorithm and an ant colony search the CT319 knapsack and route problems.">
+  <title>CT319 Population Lab — Evolution and colony search</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230969da'/%3E%3Cpath d='M8 8h7v4h-3v8h3v4H8zm9 0h7v16h-7v-4h3v-8h-3z' fill='white'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#lab">Skip to the Population Lab</a>
+
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">CT319 · Week 6 teaching artefact</p>
+      <h1>Population Lab</h1>
+      <p class="lede">Many candidates at once. The same five-bit knapsack, plus a route graph searched by a colony.</p>
+    </div>
+    <div class="policy-summary" aria-label="Mechanism summary">
+      <span>Evolution reuses <strong>selection · crossover · mutation</strong></span>
+      <span>Colony reuses <strong>reinforcement · evaporation</strong></span>
+    </div>
+  </header>
+
+  <main id="lab">
+    <section class="control-panel" aria-labelledby="controls-heading">
+      <div class="control-panel__heading">
+        <div>
+          <p class="section-label">Set up the run</p>
+          <h2 id="controls-heading">Lab controls</h2>
+        </div>
+        <p id="run-status" class="run-status" role="status" aria-live="polite">Ready.</p>
+      </div>
+
+      <div class="controls-grid">
+        <fieldset class="mode-control">
+          <legend>View</legend>
+          <div class="segmented-control" id="view-buttons">
+            <button type="button" data-view="EVOLUTION" aria-pressed="true">Evolution</button>
+            <button type="button" data-view="COLONY" aria-pressed="false">Colony</button>
+          </div>
+        </fieldset>
+
+        <label class="field-control rate-control" for="mutation-control" id="mutation-field">
+          <span>Mutation rate <output id="mutation-output" for="mutation-control">0.06</output></span>
+          <input id="mutation-control" type="range" min="0" max="0.3" step="0.01" value="0.06">
+        </label>
+
+        <label class="field-control rate-control" for="evaporation-control" id="evaporation-field" hidden>
+          <span>Evaporation <output id="evaporation-output" for="evaporation-control">0.30</output></span>
+          <input id="evaporation-control" type="range" min="0" max="0.9" step="0.05" value="0.3">
+        </label>
+
+        <label class="field-control" for="seed-control">
+          <span>Seed <small>same seed → same run</small></span>
+          <input id="seed-control" type="number" min="1" max="999999" step="1" value="39">
+        </label>
+
+        <label class="field-control rate-control" for="speed-control">
+          <span>Run speed <output id="speed-output" for="speed-control">450 ms</output></span>
+          <input id="speed-control" type="range" min="100" max="1200" step="50" value="450">
+        </label>
+      </div>
+
+      <div class="control-footer">
+        <div class="transport-controls" aria-label="Run controls">
+          <button type="button" id="step-button" class="button button--primary">Step</button>
+          <button type="button" id="run-button" class="button">Run</button>
+          <button type="button" id="pause-button" class="button" disabled>Pause</button>
+          <button type="button" id="reset-button" class="button">Reset</button>
+        </div>
+        <div class="experiment-note">
+          <strong id="view-title">Evolution — a genetic algorithm on the CT319 knapsack.</strong>
+          <span id="view-explanation">Set the mutation rate to 0, reset and run. Then try 0.06 from the same seed.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="stage" class="stage" aria-label="Population Lab visualisation"></section>
+
+    <section class="legend-panel" aria-labelledby="legend-heading">
+      <div>
+        <p class="section-label">Read the lab</p>
+        <h2 id="legend-heading">How to read it</h2>
+      </div>
+      <p class="legend-note" id="legend-text"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Built for CT319. No framework, backend, API or build step. The knapsack problem definition, the genetic algorithm and the colony are separate files.</p>
+  </footer>
+
+  <script src="knapsack.js"></script>
+  <script src="evolution.js"></script>
+  <script src="colony.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
