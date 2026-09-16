@@ -47,9 +47,9 @@
   <rect class="boxA" x="370" y="180" width="220" height="60" rx="12"/>
   <text class="node" x="480" y="217" text-anchor="middle" style="font-size:16px">Frontier</text>
   <path class="edge" d="M430 240 L250 292"/>
-  <path class="edge" d="M262 282 L242 295 L264 301"/>
+  <path class="edge" d="M258 283 L250 292 L261 295"/>
   <path class="edge" d="M530 240 L710 292"/>
-  <path class="edge" d="M696 282 L718 295 L698 301"/>
+  <path class="edge" d="M699 295 L710 292 L702 283"/>
   <rect class="box" x="120" y="298" width="260" height="72" rx="10"/>
   <text class="node" x="250" y="326" text-anchor="middle" style="font-size:16px">BFS</text>
   <text class="mono" x="250" y="350" text-anchor="middle" style="fill:var(--muted)">remove the oldest</text>
