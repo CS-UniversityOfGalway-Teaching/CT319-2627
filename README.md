@@ -17,7 +17,8 @@ Published at **https://cs-universityofgalway-teaching.github.io/CT319-2627/**
 | `tools/templates/week.html` | Page template. |
 | `media/week-NN/` | Diagrams and screenshots for that week. |
 | `experiments/week-NN/` | Code students download and run. |
-| `search-lab/` | The Weeks 2–4 search visualiser. |
+| `search-lab/` | The Weeks 2–5 search visualiser. |
+| `population-lab/` | The Week 6 genetic-algorithm and ant-colony visualiser. |
 | `index.html` | Module landing page. |
 
 ## Building
