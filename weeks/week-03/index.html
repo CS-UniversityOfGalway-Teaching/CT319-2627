@@ -309,13 +309,13 @@ parent[next_state] = state</code></pre>
 <hr>
 <h2 id="quick-revision">Quick revision</h2>
 <p>If you can answer these without reopening the page, you have the core of Week 3.</p>
-<ol><li><strong>[WK-03-01]</strong> What is the frontier?</li><li>What is the difference between a <strong>generated</strong> state and an <strong>expanded</strong> state?</li><li>Why does the maze need a <code>reached</code> set, and why is it separate from the frontier?</li><li><strong>[WK-03-02]</strong> Why does a FIFO queue produce breadth-first behaviour?</li><li>Under what condition does BFS guarantee a minimum-move solution?</li><li><strong>[WK-03-03]</strong> Why does a LIFO stack produce depth-first behaviour, and why does backtracking emerge from it without any extra machinery?</li><li>Why can changing successor order alter a DFS run when the algorithm has not changed?</li><li><strong>[WK-03-04]</strong> Why does one good DFS result not prove that DFS is optimal?</li></ol>
+<ol><li>What is the frontier?</li><li>What is the difference between a <strong>generated</strong> state and an <strong>expanded</strong> state?</li><li>Why does the maze need a <code>reached</code> set, and why is it separate from the frontier?</li><li>Why does a FIFO queue produce breadth-first behaviour?</li><li>Under what condition does BFS guarantee a minimum-move solution?</li><li>Why does a LIFO stack produce depth-first behaviour, and why does backtracking emerge from it without any extra machinery?</li><li>Why can changing successor order alter a DFS run when the algorithm has not changed?</li><li>Why does one good DFS result not prove that DFS is optimal?</li></ol>
 <hr>
 <h2 id="sources-and-licensing-notes">Sources and licensing notes</h2>
 <h3 id="lecture-material">Lecture material</h3>
 <p>The Week 3 terminology and comparison follow the existing <em>Problem Solving using Search</em> lecture material on Canvas, in particular its treatment of:</p>
 <ul><li>search as finding a path from an initial state to a goal state</li><li>search strategy as the rule deciding which node is expanded next</li><li>search cost and solution cost</li><li>time and space complexity</li><li>completeness and optimality</li><li>uninformed versus informed search</li><li>breadth-first and depth-first search, and the memory trade-off between them</li></ul>
-<p>These pages develop only <strong>BFS and DFS</strong>. The slides list further uninformed methods — depth-limited, iterative-deepening, uniform-cost and bidirectional search — which are not highlighted here because the live teaching story is the direct comparison between breadth and depth.</p>
+<p>These pages develop only <strong>BFS and DFS</strong>. The slides list further uninformed methods — depth-limited, iterative-deepening, uniform-cost and bidirectional search — which are not developed here, because this page builds the direct comparison between breadth and depth instead.</p>
 <p>Three statements are made more explicit here than in the slides:</p>
 <ul><li>BFS's guarantee is stated as <strong>minimum depth when action costs are equal</strong>, not as a claim about the cheapest route.</li><li>The weighted graph in the notes carries a clarification that standard BFS does not minimise unequal edge weights.</li><li>DFS completeness is stated with its assumptions: unrestricted infinite-depth tree search and finite graph search with reached-state checking are different cases.</li></ul>
 <h3 id="where-the-vocabulary-comes-from">Where the vocabulary comes from</h3>
@@ -332,7 +332,7 @@ parent[next_state] = state</code></pre>
 <h3 id="software">Software</h3>
 <ul><li>🧪 <a href="../../search-lab/"><strong>Search Lab</strong></a> — written for this module in HTML, CSS and vanilla JavaScript. No framework, backend, API or build step. The default preset reproduces the Week 2 maze exactly.</li></ul>
 <h3 id="formal-source">Formal source</h3>
-<p>The broader Week 3 lecture remains on Canvas. These pages focus on the one question we spend live time on:</p>
+<p>The broader Week 3 lecture remains on Canvas. These pages focus on the one question we spend time on in class:</p>
 <blockquote><p><strong>When several possibilities are waiting and the machine has no guidance, what rule should decide which one gets explored next?</strong></p></blockquote>
   </div>
 

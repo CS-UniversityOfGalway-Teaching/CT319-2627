@@ -636,13 +636,13 @@ Week 5 broadens local search beyond strict hill climbing, asking how local-searc
 
 If you can answer these without reopening the page, you have the core of Week 4.
 
-1. **[WK-04-01]** What makes a search strategy informed rather than blind?
+1. What makes a search strategy informed rather than blind?
 2. What is the difference between `h(state)` and the true remaining cost?
-3. **[WK-04-02]** Why does Manhattan distance make sense for four-direction, unit-cost movement?
+3. Why does Manhattan distance make sense for four-direction, unit-cost movement?
 4. What important information does Manhattan distance ignore?
 5. Why does displaying `h(state)` not change BFS or DFS?
-6. **[WK-04-03]** What exact rule does our strict hill climber use, including equal-best ties and stopping?
-7. **[WK-04-04]** Why can `(4,8)` trap hill climbing even though legal moves and a route to the goal remain?
+6. What exact rule does our strict hill climber use, including equal-best ties and stopping?
+7. Why can `(4,8)` trap hill climbing even though legal moves and a route to the goal remain?
 8. Why does one successful 14-move run not prove hill climbing is optimal?
 
 ---

@@ -633,14 +633,14 @@ That is where **heuristics** begin.
 
 If you can answer these without reopening the page, you have the core of Week 3.
 
-1. **[WK-03-01]** What is the frontier?
+1. What is the frontier?
 2. What is the difference between a **generated** state and an **expanded** state?
 3. Why does the maze need a `reached` set, and why is it separate from the frontier?
-4. **[WK-03-02]** Why does a FIFO queue produce breadth-first behaviour?
+4. Why does a FIFO queue produce breadth-first behaviour?
 5. Under what condition does BFS guarantee a minimum-move solution?
-6. **[WK-03-03]** Why does a LIFO stack produce depth-first behaviour, and why does backtracking emerge from it without any extra machinery?
+6. Why does a LIFO stack produce depth-first behaviour, and why does backtracking emerge from it without any extra machinery?
 7. Why can changing successor order alter a DFS run when the algorithm has not changed?
-8. **[WK-03-04]** Why does one good DFS result not prove that DFS is optimal?
+8. Why does one good DFS result not prove that DFS is optimal?
 
 ---
 
@@ -658,7 +658,7 @@ The Week 3 terminology and comparison follow the existing *Problem Solving using
 - uninformed versus informed search
 - breadth-first and depth-first search, and the memory trade-off between them
 
-These pages develop only **BFS and DFS**. The slides list further uninformed methods — depth-limited, iterative-deepening, uniform-cost and bidirectional search — which are not highlighted here because the live teaching story is the direct comparison between breadth and depth.
+These pages develop only **BFS and DFS**. The slides list further uninformed methods — depth-limited, iterative-deepening, uniform-cost and bidirectional search — which are not developed here, because this page builds the direct comparison between breadth and depth instead.
 
 Three statements are made more explicit here than in the slides:
 
@@ -697,6 +697,6 @@ No external images, videos or interactives are used. Generic BFS/DFS visualisers
 
 ### Formal source
 
-The broader Week 3 lecture remains on Canvas. These pages focus on the one question we spend live time on:
+The broader Week 3 lecture remains on Canvas. These pages focus on the one question we spend time on in class:
 
 > **When several possibilities are waiting and the machine has no guidance, what rule should decide which one gets explored next?**
