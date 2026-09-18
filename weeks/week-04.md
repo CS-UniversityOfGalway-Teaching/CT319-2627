@@ -185,17 +185,9 @@ Now we need a heuristic simple enough to see.
 
 We keep the exact maze from Weeks 2 and 3.
 
-```text
-    0 1 2 3 4 5 6 7 8
+![The unchanged maze from Weeks 2 and 3, every cell addressed by row and column](../../media/week-02/maze-grid.svg "hero")
 
-0   S . # . . . . . .
-1   # . # . # # # . #
-2   . . . . . . # . .
-3   . # # # # . # # .
-4   . . . . # . . . .
-5   # # # . # # # . #
-6   . . . . . . . . G
-```
+<sub><em>Figure 2. The same maze as Weeks 2 and 3, unchanged: same grid, same walls, same start at `(0,0)` and same goal at `(6,8)`. Every cell is addressed by `(row, column)`. This week adds one number to each open cell and nothing else. Diagram created for these pages; no external image licence is used.</em></sub>
 
 Nothing in the problem definition changes:
 
@@ -225,7 +217,7 @@ This is **Manhattan distance**. Each move can change only one coordinate by one.
 
 ![A crop of the maze: two rows plus one column gives h of 3; a wall blocks one direct route](../../media/week-04/manhattan-grid.svg "hero")
 
-<sub><em>Figure 2. Rows 4–6 and columns 6–8 of the unchanged maze. From (4,7), two vertical moves plus one horizontal move give h = 3. The dashed geometric route crosses the wall at (5,8): the formula counts coordinate differences without checking that route's legality. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 3. Rows 4–6 and columns 6–8 of the unchanged maze. From (4,7), two vertical moves plus one horizontal move give h = 3. The dashed geometric route crosses the wall at (5,8): the formula counts coordinate differences without checking that route's legality. Diagram created for these pages; no external image licence is used.</em></sub>
 
 With walls, the real route may require a detour. Manhattan distance remains **cheap** to calculate and **informative** about separation, but **imperfect** about the work actually left.
 
@@ -267,7 +259,7 @@ The wall still matters to `neighbours(state)`: it blocks movement. It contribute
 
 ![The maze with Manhattan h values overlaid on every open cell](../../media/week-04/heuristic-overlay.png "wide")
 
-<sub><em>Figure 3. The Search Lab overlays Manhattan `h` on the unchanged maze. The start is `h = 14`, the goal is `h = 0`, and walls receive no value. Screenshot created from the Search Lab for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 4. The Search Lab overlays Manhattan `h` on the unchanged maze. The start is `h = 14`, the goal is `h = 0`, and walls receive no value. Screenshot created from the Search Lab for these pages; no external image licence is used.</em></sub>
 
 ### Which neighbour looks better at `(2,3)`?
 
@@ -511,7 +503,7 @@ Both are legal, improving and allowed by the strict rule. **Both satisfy the rul
 
 ![Strict hill climbing at state 4,7, showing DOWN and RIGHT tied at h equals 2](../../media/week-04/hill-decision-4-7.png "wide")
 
-<sub><em>Figure 4. At `(4,7)`, the Search Lab shows `DOWN` and `RIGHT` as equal-best improving neighbours. The default successor order lists `DOWN` first. Screenshot created from the Search Lab for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 5. At `(4,7)`, the Search Lab shows `DOWN` and `RIGHT` as equal-best improving neighbours. The default successor order lists `DOWN` first. Screenshot created from the Search Lab for these pages; no external image licence is used.</em></sub>
 
 ### What happens when DOWN or RIGHT wins the tie?
 
@@ -535,7 +527,7 @@ So it stops with **`NO IMPROVING NEIGHBOUR`**.
 |---|---|
 | ![Hill climbing reaches the goal when DOWN wins the tie](../../media/week-04/hill-success.png) | ![Hill climbing stops at 4,8 when RIGHT wins the tie](../../media/week-04/hill-trapped.png) |
 
-<sub><em>Figure 5. Two Search Lab runs differ only in successor order at the equal-best tie. `DOWN` first reaches the goal; `RIGHT` first stops at `(4,8)` with legal neighbours still available. Screenshots created from the Search Lab for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 6. Two Search Lab runs differ only in successor order at the equal-best tie. `DOWN` first reaches the goal; `RIGHT` first stops at `(4,8)` with legal neighbours still available. Screenshots created from the Search Lab for these pages; no external image licence is used.</em></sub>
 
 <!-- ct319:beat -->
 ## How much work is actually left
@@ -706,9 +698,9 @@ The hill-climbing trap at `(4,7)` / `(4,8)` is derived from the same maze rather
 
 ### Figures
 
-Figures 1–5 were **created for these pages**. They use no external image licence.
+Figures 1–6 were **created for these pages**. They use no external image licence.
 
-Figures 3, 4 and 5 are Search Lab screenshots rendered from the exact maze and the Manhattan-distance calculation described on this page.
+Figures 4, 5 and 6 are Search Lab screenshots rendered from the exact maze and the Manhattan-distance calculation described on this page.
 
 No external images, videos or papers are required for this page.
 

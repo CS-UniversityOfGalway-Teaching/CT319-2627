@@ -102,15 +102,7 @@
 <p>Now we need a heuristic simple enough to see.</p>
 </div></div></details>
 <details class="beat" id="the-same-maze-now-with-a-hint"><summary><h2 class="beat__title">The same maze, now with a hint</h2></summary><div class="beat__body"><p>We keep the exact maze from Weeks 2 and 3.</p>
-<pre data-lang="text"><code class="language-text">    0 1 2 3 4 5 6 7 8
-
-0   S . # . . . . . .
-1   # . # . # # # . #
-2   . . . . . . # . .
-3   . # # # # . # # .
-4   . . . . # . . . .
-5   # # # . # # # . #
-6   . . . . . . . . G</code></pre>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-02/maze-grid.svg" alt="The unchanged maze from Weeks 2 and 3, every cell addressed by row and column" loading="lazy" decoding="async"><figcaption>Figure 2. The same maze as Weeks 2 and 3, unchanged: same grid, same walls, same start at <code>(0,0)</code> and same goal at <code>(6,8)</code>. Every cell is addressed by <code>(row, column)</code>. This week adds one number to each open cell and nothing else. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <p>Nothing in the problem definition changes:</p>
 <ul><li><code>START = (0, 0)</code></li><li><code>GOAL = (6, 8)</code></li><li>the same walls</li><li>the same legal moves</li><li>the same <code>neighbours(state)</code> and <code>is_goal(state)</code> functions</li></ul>
 <p>The only addition to the problem information is <code>heuristic(state)</code>; the hill-climbing controller follows in Highlight 3.</p>
@@ -122,7 +114,7 @@
 </div>
 <p>For a state <code>(row, column)</code> and goal <code>(goal_row, goal_column)</code>, <code>h(state) = |row - goal_row| + |column - goal_column|</code>.</p>
 <p>This is <strong>Manhattan distance</strong>. Each move can change only one coordinate by one. Without walls, we must cover the row difference and the column difference, and doing exactly those moves reaches the goal. Their sum is therefore the exact cost in the wall-free grid.</p>
-<figure class="figure--hero"><img class="figure__img" src="../../media/week-04/manhattan-grid.svg" alt="A crop of the maze: two rows plus one column gives h of 3; a wall blocks one direct route" loading="lazy" decoding="async"><figcaption>Figure 2. Rows 4–6 and columns 6–8 of the unchanged maze. From (4,7), two vertical moves plus one horizontal move give h = 3. The dashed geometric route crosses the wall at (5,8): the formula counts coordinate differences without checking that route's legality. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-04/manhattan-grid.svg" alt="A crop of the maze: two rows plus one column gives h of 3; a wall blocks one direct route" loading="lazy" decoding="async"><figcaption>Figure 3. Rows 4–6 and columns 6–8 of the unchanged maze. From (4,7), two vertical moves plus one horizontal move give h = 3. The dashed geometric route crosses the wall at (5,8): the formula counts coordinate differences without checking that route's legality. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <p>With walls, the real route may require a detour. Manhattan distance remains <strong>cheap</strong> to calculate and <strong>informative</strong> about separation, but <strong>imperfect</strong> about the work actually left.</p>
 <p>In Python:</p>
 <div class="focus-block">
@@ -138,7 +130,7 @@
 <blockquote><p><strong>closer according to this estimate</strong></p></blockquote></div></details>
 <details class="beat" id="what-the-heuristic-ignores"><summary><h2 class="beat__title">What the heuristic ignores</h2></summary><div class="beat__body"><p>Manhattan distance uses only the current and goal coordinates. It ignores walls, dead ends and corridors, so it cannot tell whether a direct route is legal.</p>
 <p>The wall still matters to <code>neighbours(state)</code>: it blocks movement. It contributes nothing to <code>heuristic(state)</code>. These functions read different parts of the same problem definition.</p>
-<figure class="figure--wide"><img class="figure__img" src="../../media/week-04/heuristic-overlay.png" alt="The maze with Manhattan h values overlaid on every open cell" loading="lazy" decoding="async"><figcaption>Figure 3. The Search Lab overlays Manhattan <code>h</code> on the unchanged maze. The start is <code>h = 14</code>, the goal is <code>h = 0</code>, and walls receive no value. Screenshot created from the Search Lab for these pages; no external image licence is used.</figcaption></figure>
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-04/heuristic-overlay.png" alt="The maze with Manhattan h values overlaid on every open cell" loading="lazy" decoding="async"><figcaption>Figure 4. The Search Lab overlays Manhattan <code>h</code> on the unchanged maze. The start is <code>h = 14</code>, the goal is <code>h = 0</code>, and walls receive no value. Screenshot created from the Search Lab for these pages; no external image licence is used.</figcaption></figure>
 <h3 id="which-neighbour-looks-better-at-23">Which neighbour looks better at <code>(2,3)</code>?</h3>
 <p>Return to the Week 2 example state <code>(2,3)</code> and evaluate its legal neighbours:</p>
 <div class="table-scroll"><table><thead><tr><th>Action</th><th>Neighbour</th><th class="num"><code>h</code></th></tr></thead><tbody><tr><td><code>UP</code></td><td><code>(1,3)</code></td><td class="num">10</td></tr><tr><td><code>LEFT</code></td><td><code>(2,2)</code></td><td class="num">10</td></tr><tr><td><code>RIGHT</code></td><td><code>(2,4)</code></td><td class="num">8</td></tr></tbody></table></div>
@@ -247,7 +239,7 @@ while not is_goal(current):
 <div class="focus-block">
 <p>Both are legal, improving and allowed by the strict rule. <strong>Both satisfy the rule. Only one leads this run to the goal.</strong></p>
 </div>
-<figure class="figure--wide"><img class="figure__img" src="../../media/week-04/hill-decision-4-7.png" alt="Strict hill climbing at state 4,7, showing DOWN and RIGHT tied at h equals 2" loading="lazy" decoding="async"><figcaption>Figure 4. At <code>(4,7)</code>, the Search Lab shows <code>DOWN</code> and <code>RIGHT</code> as equal-best improving neighbours. The default successor order lists <code>DOWN</code> first. Screenshot created from the Search Lab for these pages; no external image licence is used.</figcaption></figure>
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-04/hill-decision-4-7.png" alt="Strict hill climbing at state 4,7, showing DOWN and RIGHT tied at h equals 2" loading="lazy" decoding="async"><figcaption>Figure 5. At <code>(4,7)</code>, the Search Lab shows <code>DOWN</code> and <code>RIGHT</code> as equal-best improving neighbours. The default successor order lists <code>DOWN</code> first. Screenshot created from the Search Lab for these pages; no external image licence is used.</figcaption></figure>
 <h3 id="what-happens-when-down-or-right-wins-the-tie">What happens when DOWN or RIGHT wins the tie?</h3>
 <p>Choose <code>DOWN</code> first and the run succeeds: <code>(4,7) → (5,7) → (6,7) → (6,8)</code>, with <code>h</code> falling <code>3 → 2 → 1 → 0</code>.</p>
 <p>Choose <code>RIGHT</code> first and the run enters <code>(4,8)</code>, with <code>h</code> falling from <code>3</code> to <code>2</code>.</p>
@@ -258,7 +250,7 @@ while not is_goal(current):
 <p>Strict hill climbing refuses them.</p>
 <p>So it stops with <strong><code>NO IMPROVING NEIGHBOUR</code></strong>.</p>
 <div class="table-scroll"><table><thead><tr><th><code>DOWN</code> first — successful run</th><th><code>RIGHT</code> first — trapped run</th></tr></thead><tbody><tr><td><img src="../../media/week-04/hill-success.png" alt="Hill climbing reaches the goal when DOWN wins the tie"></td><td><img src="../../media/week-04/hill-trapped.png" alt="Hill climbing stops at 4,8 when RIGHT wins the tie"></td></tr></tbody></table></div>
-<p class="standalone-caption"><sub><em>Figure 5. Two Search Lab runs differ only in successor order at the equal-best tie. <code>DOWN</code> first reaches the goal; <code>RIGHT</code> first stops at <code>(4,8)</code> with legal neighbours still available. Screenshots created from the Search Lab for these pages; no external image licence is used.</em></sub></p></div></details>
+<p class="standalone-caption"><sub><em>Figure 6. Two Search Lab runs differ only in successor order at the equal-best tie. <code>DOWN</code> first reaches the goal; <code>RIGHT</code> first stops at <code>(4,8)</code> with legal neighbours still available. Screenshots created from the Search Lab for these pages; no external image licence is used.</em></sub></p></div></details>
 <details class="beat" id="how-much-work-is-actually-left"><summary><h2 class="beat__title">How much work is actually left</h2></summary><div class="beat__body"><p>At <code>(4,8)</code>, the goal test is false and the heuristic says <strong>2 moves</strong>. But the wall at <code>(5,8)</code> blocks the direct descent. The actual shortest remaining route is:</p>
 <pre data-lang="text"><code class="language-text">(4,8) → (4,7) → (5,7) → (6,7) → (6,8)
   h=2      h=3      h=2      h=1      h=0</code></pre>
@@ -336,8 +328,8 @@ Hill climbing stops.</code></pre>
     return abs(row - goal_row) + abs(col - goal_col)</code></pre>
 <p>The hill-climbing trap at <code>(4,7)</code> / <code>(4,8)</code> is derived from the same maze rather than introduced as a separate artificial example.</p>
 <h3 id="figures">Figures</h3>
-<p>Figures 1–5 were <strong>created for these pages</strong>. They use no external image licence.</p>
-<p>Figures 3, 4 and 5 are Search Lab screenshots rendered from the exact maze and the Manhattan-distance calculation described on this page.</p>
+<p>Figures 1–6 were <strong>created for these pages</strong>. They use no external image licence.</p>
+<p>Figures 4, 5 and 6 are Search Lab screenshots rendered from the exact maze and the Manhattan-distance calculation described on this page.</p>
 <p>No external images, videos or papers are required for this page.</p>
 <h3 id="software">Software</h3>
 <p>The <a href="../../search-lab/">Search Lab</a> is the same classroom artefact used in Week 3, extended with:</p>
