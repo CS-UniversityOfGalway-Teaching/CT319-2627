@@ -89,7 +89,6 @@
 <p>That answer may be wrong.</p></div></details>
 <details class="beat" id="where-this-maze-gets-its-hint"><summary><h2 class="beat__title">Where this maze gets its hint</h2></summary><div class="beat__body"><p>The maze already records the current cell and the goal cell. Their row and column differences give us a distance estimate without searching any route. We will calculate it next.</p>
 <p>That estimate depends on the problem. BFS's queue and DFS's stack work without geometric information; a maze-distance heuristic uses it explicitly.</p>
-<p>The lecture notes make the broader point through the Galway hospital route example: additional information can delimit the search area. Canvas carries that example; here we make the information a number and watch whether the machine uses it.</p>
 <div class="callout callout--important"><span class="callout__label">Important</span><p><strong>A heuristic is not hidden knowledge of the correct solution.</strong> It may help direct search effort, but the goal test still decides whether the maze is solved.</p></div>
 <div class="focus-block">
 <h3 id="why-this-matters-this-week">Why this matters this week</h3>

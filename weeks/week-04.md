@@ -155,8 +155,6 @@ The maze already records the current cell and the goal cell. Their row and colum
 
 That estimate depends on the problem. BFS's queue and DFS's stack work without geometric information; a maze-distance heuristic uses it explicitly.
 
-The lecture notes make the broader point through the Galway hospital route example: additional information can delimit the search area. Canvas carries that example; here we make the information a number and watch whether the machine uses it.
-
 > [!IMPORTANT]
 > **A heuristic is not hidden knowledge of the correct solution.** It may help direct search effort, but the goal test still decides whether the maze is solved.
 
