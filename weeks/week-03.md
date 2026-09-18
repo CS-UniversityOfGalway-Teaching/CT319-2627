@@ -354,6 +354,14 @@ frontier.append(next_state)     # add at the same end
 
 <sub><em>Figure 7. The same frontier drawn the same way as Figure 5, with one difference: both arrows point at the same end. The bottom row is a dead end. Diagram created for these pages; no external image licence is used.</em></sub>
 
+Figure 4 numbered this tree by the order a FIFO frontier expands it. Swap in the LIFO rule and change nothing else:
+
+![Depth-first expansion order on the same small tree](../../media/week-03/dfs-expansion-tree.svg "hero")
+
+<sub><em>Figure 8. The tree from Figure 4, renumbered by the order depth-first search expands it. The stack hands back the newest waiting state, so the search is three levels down at `H` before it has looked at `B` at all. Diagram created for these pages; no external image licence is used.</em></sub>
+
+Set the two numberings side by side. BFS clears `A`, `B` and `C` before touching any grandchild; DFS reaches a leaf and only then unwinds to the alternatives left waiting. The tree never changed — only which end of the frontier was read.
+
 ### Backtracking is not a separate intelligence
 
 DFS often looks as though it is reasoning:
@@ -367,7 +375,7 @@ There is no such step. In the bottom row of Figure 7, nothing new is pushed at t
 
 ![The same search tree expanded by BFS and by DFS, numbered by expansion order](../../media/week-03/expansion-order.svg "hero")
 
-<sub><em>Figure 8. One tree, two frontier rules. The numbers give expansion order. BFS finishes an entire level before starting the next; DFS drives to a leaf and unwinds. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 9. One tree, two frontier rules. The numbers give expansion order. BFS finishes an entire level before starting the next; DFS drives to a leaf and unwinds. Diagram created for these pages; no external image licence is used.</em></sub>
 
 Both panels use the same tree, goal test and successor order. Only the removal rule differs, and the two traversals are barely recognisable as the same search.
 
@@ -377,9 +385,9 @@ Note which branch DFS opened first. Successors were generated `A`, `B`, `C`, so 
 
 ![Depth-first search part-way through the Week 2 maze](../../media/week-03/dfs-search-path.png "wide")
 
-<sub><em>Figure 9. DFS after 18 expansions in the Search Lab — same problem, same number of expansions, same colour coding as Figure 6. Screenshot created from the Search Lab for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 10. DFS after 18 expansions in the Search Lab — same problem, same number of expansions, same colour coding as Figure 6. Screenshot created from the Search Lab for these pages; no external image licence is used.</em></sub>
 
-Set Figure 9 beside Figure 6. Instead of a region spreading outwards there is a narrow trail, and the frontier holds a few alternatives from earlier turnings, waiting to be backtracked into.
+Set Figure 10 beside Figure 6. Instead of a region spreading outwards there is a narrow trail, and the frontier holds a few alternatives from earlier turnings, waiting to be backtracked into.
 
 <!-- ct319:beat -->
 ## Deep does not mean promising
@@ -388,7 +396,7 @@ DFS can walk straight past the answer. Suppose the goal is one move from the sta
 
 ![A shallow goal that depth-first search does not reach](../../media/week-03/dfs-shallow-goal.svg "hero")
 
-<sub><em>Figure 10. A shallow goal can sit untouched while DFS follows a deeper branch, depending on which successor was generated last. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 11. A shallow goal can sit untouched while DFS follows a deeper branch, depending on which successor was generated last. Diagram created for these pages; no external image licence is used.</em></sub>
 
 If DFS commits to `A` first, it may explore `A → B → C → D → E` before returning to a goal that was one step from the start. Nothing has gone wrong: DFS is doing exactly what its frontier rule says.
 
@@ -491,7 +499,7 @@ That is the executable version of the whole argument. Everything else in this se
 
 ![Breadth-first and depth-first search share everything but the frontier policy](../../media/week-03/bfs-dfs-shared-machinery.svg "hero")
 
-<sub><em>Figure 11. BFS and DFS share the problem representation and nearly all of the search machinery. The one difference is frontier policy. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 12. BFS and DFS share the problem representation and nearly all of the search machinery. The one difference is frontier policy. Diagram created for these pages; no external image licence is used.</em></sub>
 
 This is why the Week 2 separation between **problem definition** and **controller** was worth insisting on: we replace the controller without touching the maze.
 
@@ -515,7 +523,7 @@ The answer to the last one is no. The frontier policy is still LIFO. What change
 
 ![BFS and DFS completed side by side in the Search Lab](../../media/week-03/search-lab-race.png "wide")
 
-<sub><em>Figure 12. Race mode on the default maze with the Week 2 successor order. Screenshot created from the Search Lab for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 13. Race mode on the default maze with the Week 2 successor order. Screenshot created from the Search Lab for these pages; no external image licence is used.</em></sub>
 
 | | States expanded | Maximum frontier | Path length |
 | --- | ---: | ---: | ---: |
@@ -708,12 +716,13 @@ The Search Lab preserves the same separation: `problems.js` holds the maze, lega
 
 ### Figures
 
-Figures 1–12 were **created for these pages**. They use no external image licence.
+Figures 1–13 were **created for these pages**. They use no external image licence.
 
 - Figure 1 reuses the Week 2 maze diagram unchanged, so the recurring problem is visibly the same object, and Figure 2 is read against it.
 - Figures 5 and 7 are a deliberate pair: one frontier, one visual language, differing only in where states are added and removed.
-- Figure 8 draws one tree twice instead of repeating it as separate diagrams. Its expansion numbers were verified against a `deque` implementation using `popleft()` and `pop()` on identical successor order: `S A B C D E F G H` for BFS, `S C H B G F A E D` for DFS.
-- Figures 6, 9 and 12 are Search Lab screenshots of the default maze and the Week 2 successor order.
+- Figures 4 and 8 are the same pairing for the tree: one layout, one visual language, differing only in the expansion numbers. Figure 9 then sets the two orders side by side. All three use the order verified below.
+- Figure 9 draws one tree twice instead of repeating it as separate diagrams. Its expansion numbers were verified against a `deque` implementation using `popleft()` and `pop()` on identical successor order: `S A B C D E F G H` for BFS, `S C H B G F A E D` for DFS.
+- Figures 6, 10 and 13 are Search Lab screenshots of the default maze and the Week 2 successor order.
 
 No external images, videos or interactives are used. Generic BFS/DFS visualisers and explainer videos were reviewed and rejected: the Search Lab runs the exact Week 2 problem and allows stepping, resetting, racing and reordering successors, while external tools typically drag in weighted algorithms and other later-week material.
 
