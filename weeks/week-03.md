@@ -99,13 +99,13 @@ This distinction is small, and everything else this week rests on it.
 
 A large search may know about thousands of possibilities while actively examining exactly one.
 
-Both ideas are easier to hold if the maze itself is in front of you, because the next diagram is not an abstraction — it uses six real cells from this grid.
+Both ideas are easier to hold if the maze itself is in front of you. The next diagram is not an abstraction — it sorts six real cells of this grid, so here they are in place first, coloured the way that diagram colours its three columns.
 
-![The Week 2 maze](../../media/week-02/maze-grid.svg "hero")
+![The Week 2 maze with the six lifecycle cells marked](../../media/week-03/maze-lifecycle-cells.svg "hero")
 
-<sub><em>Figure 1. The recurring Week 2 maze: seven rows, nine columns, start at (0,0), goal at (6,8). Every cell the search can stand on is labelled with its (row, column) address. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 1. The recurring Week 2 maze, with the six cells of Figure 2 marked where they actually sit. Grey: `(0,0)`, `(0,1)` and `(1,1)`, already expanded. Amber: `(2,1)`, the one being expanded right now. Purple: `(2,0)` and `(2,2)`, the two waiting on the frontier. Every other open cell has not been discovered yet. Diagram created for these pages; no external image licence is used.</em></sub>
 
-Now find those six cells on the grid as you read the next diagram: `(0,0)`, `(0,1)` and `(1,1)` have already been expanded, `(2,1)` is the one being expanded right now, and `(2,0)` and `(2,2)` are the two waiting on the frontier.
+Now the same six states again, lifted off the map and sorted by what the search has done with them rather than by where they sit:
 
 ![The life of a state during search: frontier, current, expanded](../../media/week-03/frontier-lifecycle.svg "hero")
 
