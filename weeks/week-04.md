@@ -9,7 +9,7 @@ source: week-04.md
 
 Week 3 gave the machine two systematic ways to organise ignorance: BFS preferred the oldest frontier state; DFS preferred the newest. Neither could say which waiting state **looked more promising**.
 
-Week 4 adds that missing hint. It provides guidance, not a guarantee.
+This week we add that missing hint. It provides guidance, not a guarantee.
 
 We work through four things.
 
@@ -77,7 +77,7 @@ They know:
 
 What they do not have is **problem-specific information that ranks non-goal states by how promising they seem**.
 
-That is the gap Week 4 fills.
+That is the gap we fill this week.
 
 <!-- ct319:beat -->
 ## What changes when the frontier has scores
@@ -168,7 +168,7 @@ Week 2 defined what a problem looks like to the machine.
 
 Week 3 defined systematic ways to explore it without guidance.
 
-Week 4 introduces information that can distinguish one legal state from another.
+This week we introduce information that can distinguish one legal state from another.
 
 The question is no longer only:
 
@@ -285,7 +285,7 @@ Week 2 could tell us all three were legal.
 
 Week 3 could put all three on a frontier.
 
-Week 4 can say:
+Now we can say:
 
 <!-- ct319:focus -->
 
@@ -328,7 +328,7 @@ Open the [Search Lab](../../search-lab/) and keep the default maze and successor
 3. Select **DFS**, reset and run. Again, the overlay changes no decisions.
 4. Switch to **Hill climb** and step through the legal-neighbour evaluations. Now the displayed score determines the move.
 
-The representation and transitions remain fixed. Week 2 supplied legal options, Week 3 organised waiting states, and Week 4 adds information a decision rule can use. We finish this experiment in Highlight 4 by changing only successor order.
+The representation and transitions remain fixed. Week 2 supplied legal options, Week 3 organised waiting states, and this week adds information a decision rule can use. We finish this experiment in Highlight 4 by changing only successor order.
 
 ### Does a lower h guarantee a better route?
 
@@ -481,7 +481,7 @@ The trade-off is that **local improvement does not imply global success**. Our m
 
 Hill climbing turns a heuristic estimate into behaviour.
 
-Week 4 has now moved from “this state looks better” to “move to the better-looking state.”
+We have now moved from “this state looks better” to “move to the better-looking state.”
 
 That can save enormous amounts of search.
 
@@ -616,7 +616,7 @@ Keep the maze, heuristic and starting state fixed throughout. Successor order is
 
 ### Why this matters this week
 
-Week 4 began by asking whether a useful guess could save us from searching everything.
+We began by asking whether a useful guess could save us from searching everything.
 
 The answer is:
 
