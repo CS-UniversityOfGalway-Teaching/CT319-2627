@@ -195,11 +195,13 @@ The two collections differ. Everything on the frontier has been reached; not eve
 
 Search strategies divide into two families. An **uninformed** — or **blind** — strategy has no problem-specific information saying that one non-goal state looks more promising than another.
 
+<!-- ct319:focus -->
+
 Blind is not ignorant. The search still knows `START`, `GOAL`, `WALLS`, `MOVES`, `neighbours(state)` and `is_goal(state)`. What it lacks is **guidance**: nothing tells it that one waiting state is closer to the goal than another.
 
-So the frontier has to be organised by a rule that makes no estimate of progress at all. Two very simple rules produce very different behaviour.
+<!-- ct319:endfocus -->
 
-<!-- ct319:focus -->
+So the frontier has to be organised by a rule that makes no estimate of progress at all. Two very simple rules produce very different behaviour.
 
 ### Why this matters this week
 
@@ -208,8 +210,6 @@ Week 2 gave us a state space. The frontier turns that static structure into a pr
 > **Which waiting state should be expanded next?**
 
 Breadth-first search gives us one answer.
-
-<!-- ct319:endfocus -->
 
 <!-- ct319:beat -->
 ## Breadth-first search — everything nearby first

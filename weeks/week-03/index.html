@@ -112,14 +112,14 @@ RIGHT  -&gt; (2,2)   is_legal  ✓</code></pre>
 <div class="callout callout--note"><span class="callout__label">Note</span><p><strong>Tree search</strong> treats every newly generated path as a new branch, even when two branches arrive at the same state. <strong>Graph search</strong> notices the state has already been reached.</p>
 <p>Because our maze is a graph, reached-state checking stops the search processing the same state over and over. It is not an optimisation added for cleverness.</p></div></div></details>
 <details class="beat" id="what-makes-a-search-blind"><summary><h2 class="beat__title">What makes a search blind</h2></summary><div class="beat__body"><p>Search strategies divide into two families. An <strong>uninformed</strong> — or <strong>blind</strong> — strategy has no problem-specific information saying that one non-goal state looks more promising than another.</p>
-<p>Blind is not ignorant. The search still knows <code>START</code>, <code>GOAL</code>, <code>WALLS</code>, <code>MOVES</code>, <code>neighbours(state)</code> and <code>is_goal(state)</code>. What it lacks is <strong>guidance</strong>: nothing tells it that one waiting state is closer to the goal than another.</p>
-<p>So the frontier has to be organised by a rule that makes no estimate of progress at all. Two very simple rules produce very different behaviour.</p>
 <div class="focus-block">
+<p>Blind is not ignorant. The search still knows <code>START</code>, <code>GOAL</code>, <code>WALLS</code>, <code>MOVES</code>, <code>neighbours(state)</code> and <code>is_goal(state)</code>. What it lacks is <strong>guidance</strong>: nothing tells it that one waiting state is closer to the goal than another.</p>
+</div>
+<p>So the frontier has to be organised by a rule that makes no estimate of progress at all. Two very simple rules produce very different behaviour.</p>
 <h3 id="why-this-matters-this-week">Why this matters this week</h3>
 <p>Week 2 gave us a state space. The frontier turns that static structure into a process: at any moment there are states already expanded, one being examined, and a set still waiting. That makes the central Week 3 decision precise:</p>
 <blockquote><p><strong>Which waiting state should be expanded next?</strong></p></blockquote>
-<p>Breadth-first search gives us one answer.</p>
-</div></div></details>
+<p>Breadth-first search gives us one answer.</p></div></details>
 <details class="beat" id="breadth-first-search--everything-nearby-first"><summary><h2 class="beat__title">Breadth-first search — everything nearby first</h2></summary><div class="beat__body"><p>Breadth-first search makes one commitment, and it is about behaviour, not data structures:</p>
 <div class="focus-block">
 <blockquote><p><strong>Do not explore a deeper state while a shallower one is still waiting.</strong></p></blockquote>
