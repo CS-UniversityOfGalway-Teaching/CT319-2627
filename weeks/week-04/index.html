@@ -70,10 +70,14 @@ Which available state looks more promising?</code></pre>
 <p>A strategy becomes <strong>informed</strong> when that information influences its choice. Merely calculating the numbers is not enough.</p>
 <p>The lecture notes describe the same move as adding specific information in advance and using an evaluation function to guide the search.</p>
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-04/frontier-hint.svg" alt="The same frontier: Week 3 chooses by waiting order; Week 4 can compare h values" loading="lazy" decoding="async"><figcaption>Figure 1. The same waiting states now have heuristic values. BFS still selects the oldest and DFS the newest; the new information says B looks most promising. This comparison adds guidance, not a new frontier algorithm. Diagram created for these pages; no external image licence is used.</figcaption></figure></div></details>
-<details class="beat" id="what-a-heuristic-is"><summary><h2 class="beat__title">What a heuristic is</h2></summary><div class="beat__body"><p>For our maze, <strong><code>h(state)</code> is a cheap estimate of remaining distance or cost to the goal</strong>. Computing it should take much less work than solving the remaining route. It need not equal the real cost, and it guides search only if the decision rule uses it.</p>
+<details class="beat" id="what-a-heuristic-is"><summary><h2 class="beat__title">What a heuristic is</h2></summary><div class="beat__body"><div class="focus-block">
+<p>For our maze, <strong><code>h(state)</code> is a cheap estimate of remaining distance or cost to the goal</strong>. Computing it should take much less work than solving the remaining route. It need not equal the real cost, and it guides search only if the decision rule uses it.</p>
+</div>
 <h3 id="are-the-estimate-true-cost-and-goal-test-the-same">Are the estimate, true cost and goal test the same?</h3>
 <p>Keep three ideas separate:</p>
+<div class="focus-block">
 <ul><li><strong>goal test</strong> — the exact question, “have we finished?”</li><li><strong>true remaining cost</strong> — what it will actually take to reach the goal</li><li><strong>heuristic estimate <code>h(state)</code></strong> — how much work we cheaply estimate is left</li></ul>
+</div>
 <p>The goal test can be exact while the heuristic is imperfect.</p>
 <p>For example:</p>
 <pre data-lang="python"><code class="language-python">def is_goal(state):
@@ -123,11 +127,13 @@ Which available state looks more promising?</code></pre>
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-04/manhattan-grid.svg" alt="A crop of the maze: two rows plus one column gives h of 3; a wall blocks one direct route" loading="lazy" decoding="async"><figcaption>Figure 2. Rows 4–6 and columns 6–8 of the unchanged maze. From (4,7), two vertical moves plus one horizontal move give h = 3. The dashed geometric route crosses the wall at (5,8): the formula counts coordinate differences without checking that route's legality. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <p>With walls, the real route may require a detour. Manhattan distance remains <strong>cheap</strong> to calculate and <strong>informative</strong> about separation, but <strong>imperfect</strong> about the work actually left.</p>
 <p>In Python:</p>
+<div class="focus-block">
 <pre data-lang="python"><code class="language-python">def heuristic(state):
     row, col = state
     goal_row, goal_col = GOAL
 
     return abs(row - goal_row) + abs(col - goal_col)</code></pre>
+</div>
 <p>For our goal <code>(6,8)</code>:</p>
 <div class="table-scroll"><table><thead><tr><th>State</th><th class="num"><code>h(state)</code></th></tr></thead><tbody><tr><td><code>(6,8)</code></td><td class="num">0</td></tr><tr><td><code>(6,7)</code></td><td class="num">1</td></tr><tr><td><code>(4,8)</code></td><td class="num">2</td></tr><tr><td><code>(4,7)</code></td><td class="num">3</td></tr><tr><td><code>(2,3)</code></td><td class="num">9</td></tr><tr><td><code>(0,0)</code></td><td class="num">14</td></tr></tbody></table></div>
 <p>Smaller means:</p>
@@ -169,8 +175,10 @@ Which available state looks more promising?</code></pre>
 </div></div></details>
 <details class="beat" id="hill-climbing--always-take-the-better-neighbour"><summary><h2 class="beat__title">Hill climbing — always take the better neighbour</h2></summary><div class="beat__body"><p>Hill climbing is a <strong>local-search rule</strong>: repeatedly compare the current candidate with its neighbours and move to an improvement.</p>
 <div class="callout callout--important"><span class="callout__label">Important</span><p><strong>This week we use a deliberately strict best-improvement version of hill climbing.</strong> Other variants need not use these acceptance and tie rules.</p></div>
+<div class="focus-block">
 <p>At each step:</p>
 <ol><li>inspect all legal neighbours</li><li>evaluate them — for our maze, lower <code>h</code> is better</li><li>choose the neighbour with the best strictly improving value</li><li>use successor order to break an equal-best tie</li><li>stop if no neighbour is strictly better; otherwise move and repeat until the goal</li></ol>
+</div>
 <p>This version accepts no equal or worse value, makes no fresh start, and keeps no alternative routes for later.</p>
 <p>The lecture notes describe the same process using three ingredients:</p>
 <ul><li>a representation of the solution</li><li>an evaluation function</li><li>a neighbourhood around the current solution</li></ul>
@@ -178,6 +186,7 @@ Which available state looks more promising?</code></pre>
 <h3 id="how-little-code-does-the-rule-need">How little code does the rule need?</h3>
 <p>From Week 2 we already have <code>neighbours(state)</code>. From this week we now have <code>heuristic(state)</code>.</p>
 <p>So the basic hill-climbing decision is:</p>
+<div class="focus-block">
 <pre data-lang="python"><code class="language-python">def best_improving_neighbour(state):
     options = neighbours(state)
 
@@ -191,6 +200,7 @@ Which available state looks more promising?</code></pre>
         return None
 
     return min(better, key=heuristic)</code></pre>
+</div>
 <p>Then:</p>
 <pre data-lang="python"><code class="language-python">current = START
 
@@ -236,7 +246,9 @@ while not is_goal(current):
 <details class="beat" id="a-useful-hint-can-still-mislead"><summary><h2 class="beat__title">A useful hint can still mislead</h2></summary><div class="beat__body"><p>Move through the maze until we reach <code>(4,7)</code>. The goal is <code>(6,8)</code>, so Manhattan distance gives <code>h(4,7) = 3</code>.</p>
 <p>Two legal moves improve the score equally:</p>
 <ul><li><code>DOWN → (5,7)</code>, with <code>h = 2</code></li><li><code>RIGHT → (4,8)</code>, with <code>h = 2</code></li></ul>
+<div class="focus-block">
 <p>Both are legal, improving and allowed by the strict rule. <strong>Both satisfy the rule. Only one leads this run to the goal.</strong></p>
+</div>
 <figure class="figure--wide"><img class="figure__img" src="../../media/week-04/hill-decision-4-7.png" alt="Strict hill climbing at state 4,7, showing DOWN and RIGHT tied at h equals 2" loading="lazy" decoding="async"><figcaption>Figure 4. At <code>(4,7)</code>, the Search Lab shows <code>DOWN</code> and <code>RIGHT</code> as equal-best improving neighbours. The default successor order lists <code>DOWN</code> first. Screenshot created from the Search Lab for these pages; no external image licence is used.</figcaption></figure>
 <h3 id="what-happens-when-down-or-right-wins-the-tie">What happens when DOWN or RIGHT wins the tie?</h3>
 <p>Choose <code>DOWN</code> first and the run succeeds: <code>(4,7) → (5,7) → (6,7) → (6,8)</code>, with <code>h</code> falling <code>3 → 2 → 1 → 0</code>.</p>
@@ -254,7 +266,9 @@ while not is_goal(current):
   h=2      h=3      h=2      h=1      h=0</code></pre>
 <p>That costs <strong>4 moves</strong>. The first move increases <code>h</code>, so strict hill climbing rejects it even though it belongs to a shortest route from this state.</p>
 <p>This is Highlight 1's distinction made concrete:</p>
+<div class="focus-block">
 <ul><li><strong>Goal test:</strong> false — we have not finished.</li><li><strong>Heuristic estimate:</strong> <code>h(4,8) = 2</code>.</li><li><strong>True remaining cost:</strong> <code>4</code>.</li></ul>
+</div>
 <p>Both <code>UP</code> and <code>LEFT</code> remain legal, with <code>h = 3</code>. The problem definition permits them; the evaluation and acceptance rule reject them.</p>
 <div class="callout callout--important"><span class="callout__label">Important</span><p><strong>Hill climbing has not run out of legal moves.</strong></p>
 <p><strong>It has run out of moves it is willing to accept.</strong></p></div>

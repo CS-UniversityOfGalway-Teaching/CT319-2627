@@ -109,15 +109,23 @@ The lecture notes describe the same move as adding specific information in advan
 <!-- ct319:beat -->
 ## What a heuristic is
 
+<!-- ct319:focus -->
+
 For our maze, **`h(state)` is a cheap estimate of remaining distance or cost to the goal**. Computing it should take much less work than solving the remaining route. It need not equal the real cost, and it guides search only if the decision rule uses it.
+
+<!-- ct319:endfocus -->
 
 ### Are the estimate, true cost and goal test the same?
 
 Keep three ideas separate:
 
+<!-- ct319:focus -->
+
 - **goal test** — the exact question, “have we finished?”
 - **true remaining cost** — what it will actually take to reach the goal
 - **heuristic estimate `h(state)`** — how much work we cheaply estimate is left
+
+<!-- ct319:endfocus -->
 
 The goal test can be exact while the heuristic is imperfect.
 
@@ -225,6 +233,8 @@ With walls, the real route may require a detour. Manhattan distance remains **ch
 
 In Python:
 
+<!-- ct319:focus -->
+
 ```python
 def heuristic(state):
     row, col = state
@@ -232,6 +242,8 @@ def heuristic(state):
 
     return abs(row - goal_row) + abs(col - goal_col)
 ```
+
+<!-- ct319:endfocus -->
 
 For our goal `(6,8)`:
 
@@ -342,6 +354,8 @@ Hill climbing is a **local-search rule**: repeatedly compare the current candida
 > [!IMPORTANT]
 > **This week we use a deliberately strict best-improvement version of hill climbing.** Other variants need not use these acceptance and tie rules.
 
+<!-- ct319:focus -->
+
 At each step:
 
 1. inspect all legal neighbours
@@ -349,6 +363,8 @@ At each step:
 3. choose the neighbour with the best strictly improving value
 4. use successor order to break an equal-best tie
 5. stop if no neighbour is strictly better; otherwise move and repeat until the goal
+
+<!-- ct319:endfocus -->
 
 This version accepts no equal or worse value, makes no fresh start, and keeps no alternative routes for later.
 
@@ -366,6 +382,8 @@ From Week 2 we already have `neighbours(state)`. From this week we now have `heu
 
 So the basic hill-climbing decision is:
 
+<!-- ct319:focus -->
+
 ```python
 def best_improving_neighbour(state):
     options = neighbours(state)
@@ -381,6 +399,8 @@ def best_improving_neighbour(state):
 
     return min(better, key=heuristic)
 ```
+
+<!-- ct319:endfocus -->
 
 Then:
 
@@ -485,7 +505,11 @@ Two legal moves improve the score equally:
 - `DOWN → (5,7)`, with `h = 2`
 - `RIGHT → (4,8)`, with `h = 2`
 
+<!-- ct319:focus -->
+
 Both are legal, improving and allowed by the strict rule. **Both satisfy the rule. Only one leads this run to the goal.**
+
+<!-- ct319:endfocus -->
 
 ![Strict hill climbing at state 4,7, showing DOWN and RIGHT tied at h equals 2](../../media/week-04/hill-decision-4-7.png "wide")
 
@@ -529,9 +553,13 @@ That costs **4 moves**. The first move increases `h`, so strict hill climbing re
 
 This is Highlight 1's distinction made concrete:
 
+<!-- ct319:focus -->
+
 - **Goal test:** false — we have not finished.
 - **Heuristic estimate:** `h(4,8) = 2`.
 - **True remaining cost:** `4`.
+
+<!-- ct319:endfocus -->
 
 Both `UP` and `LEFT` remain legal, with `h = 3`. The problem definition permits them; the evaluation and acceptance rule reject them.
 
