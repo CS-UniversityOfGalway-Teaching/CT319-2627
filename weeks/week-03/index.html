@@ -74,23 +74,9 @@ Legal next states:
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-03/maze-lifecycle-cells.svg" alt="The Week 2 maze with the six lifecycle cells marked" loading="lazy" decoding="async"><figcaption>Figure 1. The recurring Week 2 maze, with the six cells of Figure 2 marked where they actually sit. Grey: <code>(0,0)</code>, <code>(0,1)</code> and <code>(1,1)</code>, already expanded. Amber: <code>(2,1)</code>, the one being expanded right now. Purple: <code>(2,0)</code> and <code>(2,2)</code>, the two waiting on the frontier. Every other open cell has not been discovered yet. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <p>Now the same six states again, lifted off the map and sorted by what the search has done with them rather than by where they sit:</p>
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-03/frontier-lifecycle.svg" alt="The life of a state during search: frontier, current, expanded" loading="lazy" decoding="async"><figcaption>Figure 2. The three places a state can be during a search, using the real Week 2 maze states marked in Figure 1. The strategy moves one state into the middle column; expanding it generates new states, which join the frontier. Diagram created for these pages; no external image licence is used.</figcaption></figure>
-<p>To <strong>expand</strong> a state is to select it, ask the problem for its legal successors, and put the new ones on the frontier. Week 2 already built that middle step, and it is worth seeing in full rather than as a name:</p>
-<pre data-lang="python"><code class="language-python"># Week 2, unchanged. ROWS, COLS and WALLS are the grid in Figure 1.
-ROWS, COLS = 7, 9
-
-MOVES = {
-    "UP":    (-1, 0),
-    "DOWN":  (+1, 0),
-    "LEFT":  (0, -1),
-    "RIGHT": (0, +1),
-}
-
-def is_legal(state):
-    row, col = state
-    inside_grid = 0 &lt;= row &lt; ROWS and 0 &lt;= col &lt; COLS
-    return inside_grid and state not in WALLS
-
-def neighbours(state):
+<p>To <strong>expand</strong> a state is to select it, ask the problem for its legal successors, and put the new ones on the frontier. Week 2 already built that middle step:</p>
+<div class="focus-block">
+<pre data-lang="python"><code class="language-python">def neighbours(state):
     row, col = state
     result = []
 
@@ -100,6 +86,7 @@ def neighbours(state):
             result.append((action, candidate))
 
     return result</code></pre>
+</div>
 <p>Run it on the state in the middle column of Figure 2. <code>neighbours((2,1))</code> tries all four moves in turn:</p>
 <pre data-lang="text"><code class="language-text">UP     -&gt; (1,1)   is_legal  ✓
 DOWN   -&gt; (3,1)   wall      ✗

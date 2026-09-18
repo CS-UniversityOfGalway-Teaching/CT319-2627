@@ -111,24 +111,11 @@ Now the same six states again, lifted off the map and sorted by what the search 
 
 <sub><em>Figure 2. The three places a state can be during a search, using the real Week 2 maze states marked in Figure 1. The strategy moves one state into the middle column; expanding it generates new states, which join the frontier. Diagram created for these pages; no external image licence is used.</em></sub>
 
-To **expand** a state is to select it, ask the problem for its legal successors, and put the new ones on the frontier. Week 2 already built that middle step, and it is worth seeing in full rather than as a name:
+To **expand** a state is to select it, ask the problem for its legal successors, and put the new ones on the frontier. Week 2 already built that middle step:
+
+<!-- ct319:focus -->
 
 ```python
-# Week 2, unchanged. ROWS, COLS and WALLS are the grid in Figure 1.
-ROWS, COLS = 7, 9
-
-MOVES = {
-    "UP":    (-1, 0),
-    "DOWN":  (+1, 0),
-    "LEFT":  (0, -1),
-    "RIGHT": (0, +1),
-}
-
-def is_legal(state):
-    row, col = state
-    inside_grid = 0 <= row < ROWS and 0 <= col < COLS
-    return inside_grid and state not in WALLS
-
 def neighbours(state):
     row, col = state
     result = []
@@ -140,6 +127,8 @@ def neighbours(state):
 
     return result
 ```
+
+<!-- ct319:endfocus -->
 
 Run it on the state in the middle column of Figure 2. `neighbours((2,1))` tries all four moves in turn:
 
