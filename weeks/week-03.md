@@ -48,18 +48,6 @@ Three words carry the whole page, and it is worth keeping them apart:
 
 <!-- ct319:endfocus -->
 
-Nothing about the problem changes this week:
-
-```text
-same maze
-same start
-same goal
-same walls
-same neighbours(state)
-```
-
-Only the rule for handling unexplored possibilities changes. That is what makes the comparison worth anything.
-
 <!-- ct319:beats -->
 
 <!-- ct319:beat -->
@@ -90,9 +78,17 @@ The note is the frontier, and the name describes its shape. It is the edge of th
 
 <!-- ct319:endfocus -->
 
-As the search runs, that edge is pushed outwards. This is worth holding on to, because it is literally what you will see later: the wave in Figure 6 is a frontier expanding evenly in every direction, and the thread in Figure 9 is the same frontier racing out along a single branch.
+As the search runs, that edge is pushed outwards — and the *shape* it takes is the whole of this week. Push it evenly in every direction and the frontier spreads like a wave, a broad band of open doors at an even distance from the start. Push it along one branch at a time and the same frontier stretches out as a thread, a thin line reaching deep with almost nothing held to either side.
 
-The reason a machine needs one at all is that Week 2's program did not have one. It offered a human three moves, took the answer and forgot the alternatives. An algorithm has no instinct to choose with, so it cannot afford to forget: it keeps every state it has discovered but not examined, precisely so that it can come back. Without a frontier there is nothing to come back to.
+Same collection, same definition. Only the rule for choosing which door to open next is different, and that rule is what the rest of this page is about.
+
+The reason a machine needs one at all is that Week 2's program did not have one. It offered a human three moves, took the answer and forgot the alternatives.
+
+<!-- ct319:focus -->
+
+An algorithm has no instinct to choose with, so it cannot afford to forget: it keeps every state it has discovered but not examined, precisely so that it can come back. Without a frontier there is nothing to come back to.
+
+<!-- ct319:endfocus -->
 
 ### Generated is not the same as expanded
 
@@ -103,24 +99,67 @@ This distinction is small, and everything else this week rests on it.
 
 A large search may know about thousands of possibilities while actively examining exactly one.
 
+Both ideas are easier to hold if the maze itself is in front of you, because the next diagram is not an abstraction — it uses six real cells from this grid.
+
+![The Week 2 maze](../../media/week-02/maze-grid.svg "hero")
+
+<sub><em>Figure 1. The recurring Week 2 maze: seven rows, nine columns, start at (0,0), goal at (6,8). Every cell the search can stand on is labelled with its (row, column) address. Diagram created for these pages; no external image licence is used.</em></sub>
+
+Now find those six cells on the grid as you read the next diagram: `(0,0)`, `(0,1)` and `(1,1)` have already been expanded, `(2,1)` is the one being expanded right now, and `(2,0)` and `(2,2)` are the two waiting on the frontier.
+
 ![The life of a state during search: frontier, current, expanded](../../media/week-03/frontier-lifecycle.svg "hero")
 
-<sub><em>Figure 1. The three places a state can be during a search, using real Week 2 maze states. The strategy moves one state into the middle column; expanding it generates new states, which join the frontier. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 2. The three places a state can be during a search, using the real Week 2 maze states marked in Figure 1. The strategy moves one state into the middle column; expanding it generates new states, which join the frontier. Diagram created for these pages; no external image licence is used.</em></sub>
 
-To **expand** a state is to select it, ask the problem for its legal successors, and put the new ones on the frontier. Week 2 already built the middle step:
+To **expand** a state is to select it, ask the problem for its legal successors, and put the new ones on the frontier. Week 2 already built that middle step, and it is worth seeing in full rather than as a name:
 
 ```python
-neighbours(state)
+# Week 2, unchanged. ROWS, COLS and WALLS are the grid in Figure 1.
+ROWS, COLS = 7, 9
+
+MOVES = {
+    "UP":    (-1, 0),
+    "DOWN":  (+1, 0),
+    "LEFT":  (0, -1),
+    "RIGHT": (0, +1),
+}
+
+def is_legal(state):
+    row, col = state
+    inside_grid = 0 <= row < ROWS and 0 <= col < COLS
+    return inside_grid and state not in WALLS
+
+def neighbours(state):
+    row, col = state
+    result = []
+
+    for action, (d_row, d_col) in MOVES.items():
+        candidate = (row + d_row, col + d_col)
+        if is_legal(candidate):
+            result.append((action, candidate))
+
+    return result
 ```
+
+Run it on the state in the middle column of Figure 2. `neighbours((2,1))` tries all four moves in turn:
+
+```text
+UP     -> (1,1)   is_legal  ✓
+DOWN   -> (3,1)   wall      ✗
+LEFT   -> (2,0)   is_legal  ✓
+RIGHT  -> (2,2)   is_legal  ✓
+```
+
+Three survive, and yet only **two** of them arrive on the frontier in Figure 2. The missing one is `(1,1)`, which is sitting in the expanded column already — the search has been there and has no reason to queue it a second time. That second check is not part of `neighbours()` at all; it belongs to a `reached` set the search keeps alongside the frontier, which is the next beat but one.
+
+Notice what these lines do **not** do. They never rank the three survivors, never mention the goal, and never say which of `(2,0)` and `(2,2)` should be examined first. They answer only *what follows from the state already chosen*.
 
 So Week 3 needs no new problem definition — only a rule for choosing which frontier state gets passed to `neighbours()` next.
 
 <!-- ct319:beat -->
 ## The problem we are searching
 
-![The Week 2 maze](../../media/week-02/maze-grid.svg "hero")
-
-<sub><em>Figure 2. The recurring Week 2 maze: seven rows, nine columns, start at (0,0), goal at (6,8). Week 3 keeps this definition unchanged and adds a frontier policy. Diagram created for these pages; no external image licence is used.</em></sub>
+The maze in Figure 1 is the Week 2 definition, inherited without a single change: same grid, same start, same goal, same walls, same `neighbours(state)`. Week 3 adds a frontier policy on top of it and nothing else, and that is exactly what makes the comparison later on worth anything — every difference we see has only one possible cause.
 
 When the search expands `(2,3)` it calls the same `neighbours((2,3))` written in Week 2, and three legal states join the frontier. Which one is removed later is the only thing Week 3 adds.
 
@@ -684,7 +723,7 @@ The Search Lab preserves the same separation: `problems.js` holds the maze, lega
 
 Figures 1–12 were **created for these pages**. They use no external image licence.
 
-- Figure 2 reuses the Week 2 maze diagram unchanged, so the recurring problem is visibly the same object.
+- Figure 1 reuses the Week 2 maze diagram unchanged, so the recurring problem is visibly the same object, and Figure 2 is read against it.
 - Figures 5 and 7 are a deliberate pair: one frontier, one visual language, differing only in where states are added and removed.
 - Figure 8 draws one tree twice instead of repeating it as separate diagrams. Its expansion numbers were verified against a `deque` implementation using `popleft()` and `pop()` on identical successor order: `S A B C D E F G H` for BFS, `S C H B G F A E D` for DFS.
 - Figures 6, 9 and 12 are Search Lab screenshots of the default maze and the Week 2 successor order.
