@@ -547,12 +547,16 @@ An observed result and an algorithmic guarantee are different kinds of claim. Th
 >
 > A few milliseconds mostly measure the browser, the machine and the animation. Count the search work directly instead.
 
+<!-- ct319:focus -->
+
 ### Search cost is not solution cost
 
 The Race panel shows both at once, which is why they separate most easily here.
 
 - **Search cost** — how much work was needed to find a solution: `states expanded` and `maximum frontier size`.
 - **Solution cost** — how expensive the returned solution is. On this equal-cost maze, the number of moves in the path.
+
+<!-- ct319:endfocus -->
 
 They move independently: BFS did more search work for a guaranteed-minimum path, DFS less work for an equally short path with no guarantee behind it. An algorithm can have a high search cost and a low solution cost, or the reverse.
 

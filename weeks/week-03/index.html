@@ -272,9 +272,11 @@ else:
 <p>An observed result and an algorithmic guarantee are different kinds of claim. The two optional open-grid presets make that testable: one hands DFS a lucky first branch, the other puts a shallow goal where the same ordering reaches it late.</p>
 <div class="callout callout--warning"><span class="callout__label">Warning</span><p><strong>Do not use wall-clock time as the headline measure on a maze this small.</strong></p>
 <p>A few milliseconds mostly measure the browser, the machine and the animation. Count the search work directly instead.</p></div>
+<div class="focus-block">
 <h3 id="search-cost-is-not-solution-cost">Search cost is not solution cost</h3>
 <p>The Race panel shows both at once, which is why they separate most easily here.</p>
 <ul><li><strong>Search cost</strong> — how much work was needed to find a solution: <code>states expanded</code> and <code>maximum frontier size</code>.</li><li><strong>Solution cost</strong> — how expensive the returned solution is. On this equal-cost maze, the number of moves in the path.</li></ul>
+</div>
 <p>They move independently: BFS did more search work for a guaranteed-minimum path, DFS less work for an equally short path with no guarantee behind it. An algorithm can have a high search cost and a low solution cost, or the reverse.</p></div></details>
 <details class="beat" id="comparing-the-two-strategies"><summary><h2 class="beat__title">Comparing the two strategies</h2></summary><div class="beat__body"><p>Strategies are compared on four concerns:</p>
 <ul><li><strong>Time — search work.</strong> Measured here as <code>states expanded</code>.</li><li><strong>Space — memory.</strong> Measured here as <code>maximum frontier size</code>.</li><li><strong>Completeness.</strong> Under the stated conditions, will a solution be found if one exists?</li><li><strong>Optimality.</strong> Does the returned solution minimise the cost we care about?</li></ul>
