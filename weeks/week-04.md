@@ -446,9 +446,13 @@ The apparent purpose comes entirely from the score. The machine has not discover
 
 The three ingredients are not really about mazes. Any problem a local-search rule can attack has to supply all three:
 
+<!-- ct319:focus -->
+
 - **Representation** — what a candidate is. Here, a location `(row, column)`.
 - **Neighbourhood** — what counts as one step away. Here, the legal adjacent cells.
 - **Evaluation** — the score that compares candidates. Here, `h(state)`, lower preferred.
+
+<!-- ct319:endfocus -->
 
 The representation says what can change, the neighbourhood says what one change means, and the evaluation says whether it helps. Changing any of these can change hill-climbing behaviour.
 
@@ -529,10 +533,9 @@ So it stops with **`NO IMPROVING NEIGHBOUR`**.
 
 At `(4,8)`, the goal test is false and the heuristic says **2 moves**. But the wall at `(5,8)` blocks the direct descent. The actual shortest remaining route is:
 
-```text
-(4,8) → (4,7) → (5,7) → (6,7) → (6,8)
-  h=2      h=3      h=2      h=1      h=0
-```
+![h along the route out of 4,8: it rises from 2 to 3 on the first move, then falls 2, 1, 0](../../media/week-04/escape-route-profile.svg "hero")
+
+<sub><em>Figure 7. `h` along the shortest remaining route from `(4,8)`. The first move to `(4,7)` raises `h` from 2 to 3; the three that follow lower it to 0. Strict hill climbing accepts only strictly improving moves, so it refuses the first step and never reaches the rest. Diagram created for these pages; no external image licence is used.</em></sub>
 
 That costs **4 moves**. The first move increases `h`, so strict hill climbing rejects it even though it belongs to a shortest route from this state.
 
@@ -693,7 +696,7 @@ The hill-climbing trap at `(4,7)` / `(4,8)` is derived from the same maze rather
 
 ### Figures
 
-Figures 1–6 were **created for these pages**. They use no external image licence.
+Figures 1–7 were **created for these pages**. They use no external image licence.
 
 Figures 4, 5 and 6 are Search Lab screenshots rendered from the exact maze and the Manhattan-distance calculation described on this page.
 

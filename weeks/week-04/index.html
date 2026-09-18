@@ -216,7 +216,9 @@ while not is_goal(current):
 <p>From <code>(2,4)</code>, where <code>h = 8</code>, <code>LEFT</code> returns to <code>h = 9</code> while <code>RIGHT</code> reaches <code>(2,5)</code> with <code>h = 7</code>. Hill climbing selects <code>RIGHT</code> again.</p>
 <p>The apparent purpose comes entirely from the score. The machine has not discovered the maze's corridor structure.</p></div></details>
 <details class="beat" id="what-counts-as-a-neighbour"><summary><h2 class="beat__title">What counts as a neighbour</h2></summary><div class="beat__body"><p>The three ingredients are not really about mazes. Any problem a local-search rule can attack has to supply all three:</p>
+<div class="focus-block">
 <ul><li><strong>Representation</strong> — what a candidate is. Here, a location <code>(row, column)</code>.</li><li><strong>Neighbourhood</strong> — what counts as one step away. Here, the legal adjacent cells.</li><li><strong>Evaluation</strong> — the score that compares candidates. Here, <code>h(state)</code>, lower preferred.</li></ul>
+</div>
 <p>The representation says what can change, the neighbourhood says what one change means, and the evaluation says whether it helps. Changing any of these can change hill-climbing behaviour.</p>
 <p>Next week we put the same three to work on a problem with no grid, no coordinates and no remaining distance to estimate — and the evaluation there will not be a heuristic estimate at all.</p>
 <h3 id="what-does-this-local-rule-buy-us">What does this local rule buy us?</h3>
@@ -251,8 +253,7 @@ while not is_goal(current):
 <div class="table-scroll"><table><thead><tr><th><code>DOWN</code> first — successful run</th><th><code>RIGHT</code> first — trapped run</th></tr></thead><tbody><tr><td><img src="../../media/week-04/hill-success.png" alt="Hill climbing reaches the goal when DOWN wins the tie"></td><td><img src="../../media/week-04/hill-trapped.png" alt="Hill climbing stops at 4,8 when RIGHT wins the tie"></td></tr></tbody></table></div>
 <p class="standalone-caption"><sub><em>Figure 6. Two Search Lab runs differ only in successor order at the equal-best tie. <code>DOWN</code> first reaches the goal; <code>RIGHT</code> first stops at <code>(4,8)</code> with legal neighbours still available. Screenshots created from the Search Lab for these pages; no external image licence is used.</em></sub></p></div></details>
 <details class="beat" id="how-much-work-is-actually-left"><summary><h2 class="beat__title">How much work is actually left</h2></summary><div class="beat__body"><p>At <code>(4,8)</code>, the goal test is false and the heuristic says <strong>2 moves</strong>. But the wall at <code>(5,8)</code> blocks the direct descent. The actual shortest remaining route is:</p>
-<pre data-lang="text"><code class="language-text">(4,8) → (4,7) → (5,7) → (6,7) → (6,8)
-  h=2      h=3      h=2      h=1      h=0</code></pre>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-04/escape-route-profile.svg" alt="h along the route out of 4,8: it rises from 2 to 3 on the first move, then falls 2, 1, 0" loading="lazy" decoding="async"><figcaption>Figure 7. <code>h</code> along the shortest remaining route from <code>(4,8)</code>. The first move to <code>(4,7)</code> raises <code>h</code> from 2 to 3; the three that follow lower it to 0. Strict hill climbing accepts only strictly improving moves, so it refuses the first step and never reaches the rest. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <p>That costs <strong>4 moves</strong>. The first move increases <code>h</code>, so strict hill climbing rejects it even though it belongs to a shortest route from this state.</p>
 <p>This is Highlight 1's distinction made concrete:</p>
 <div class="focus-block">
@@ -327,7 +328,7 @@ Hill climbing stops.</code></pre>
     return abs(row - goal_row) + abs(col - goal_col)</code></pre>
 <p>The hill-climbing trap at <code>(4,7)</code> / <code>(4,8)</code> is derived from the same maze rather than introduced as a separate artificial example.</p>
 <h3 id="figures">Figures</h3>
-<p>Figures 1–6 were <strong>created for these pages</strong>. They use no external image licence.</p>
+<p>Figures 1–7 were <strong>created for these pages</strong>. They use no external image licence.</p>
 <p>Figures 4, 5 and 6 are Search Lab screenshots rendered from the exact maze and the Manhattan-distance calculation described on this page.</p>
 <p>No external images, videos or papers are required for this page.</p>
 <h3 id="software">Software</h3>
