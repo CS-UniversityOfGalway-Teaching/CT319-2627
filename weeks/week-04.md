@@ -209,9 +209,9 @@ Suppose we temporarily ignore the walls and ask:
 
 > **How many horizontal and vertical moves separate this cell from the goal?**
 
-<!-- ct319:endfocus -->
-
 For a state `(row, column)` and goal `(goal_row, goal_column)`, `h(state) = |row - goal_row| + |column - goal_column|`.
+
+<!-- ct319:endfocus -->
 
 This is **Manhattan distance**. Each move can change only one coordinate by one. Without walls, we must cover the row difference and the column difference, and doing exactly those moves reaches the goal. Their sum is therefore the exact cost in the wall-free grid.
 

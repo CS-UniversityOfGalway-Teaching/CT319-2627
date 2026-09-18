@@ -111,8 +111,8 @@
 <p>Suppose we temporarily ignore the walls and ask:</p>
 <div class="focus-block">
 <blockquote><p><strong>How many horizontal and vertical moves separate this cell from the goal?</strong></p></blockquote>
-</div>
 <p>For a state <code>(row, column)</code> and goal <code>(goal_row, goal_column)</code>, <code>h(state) = |row - goal_row| + |column - goal_column|</code>.</p>
+</div>
 <p>This is <strong>Manhattan distance</strong>. Each move can change only one coordinate by one. Without walls, we must cover the row difference and the column difference, and doing exactly those moves reaches the goal. Their sum is therefore the exact cost in the wall-free grid.</p>
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-04/manhattan-grid.svg" alt="A crop of the maze: two rows plus one column gives h of 3; a wall blocks one direct route" loading="lazy" decoding="async"><figcaption>Figure 3. Rows 4–6 and columns 6–8 of the unchanged maze. From (4,7), two vertical moves plus one horizontal move give h = 3. The dashed geometric route crosses the wall at (5,8): the formula counts coordinate differences without checking that route's legality. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <p>With walls, the real route may require a detour. Manhattan distance remains <strong>cheap</strong> to calculate and <strong>informative</strong> about separation, but <strong>imperfect</strong> about the work actually left.</p>
