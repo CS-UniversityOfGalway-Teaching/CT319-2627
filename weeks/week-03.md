@@ -24,7 +24,7 @@ It knew the state, the goal, the legal actions and the transitions. Then it stop
 choice = input("\nMove: ")
 ```
 
-Week 3 removes that line. The question is no longer *what moves are possible?* — Week 2 answered that completely. It is **if the machine has no clue which direction is better, what should it try first?**
+This week we remove that line. The question is no longer *what moves are possible?* — Week 2 answered that completely. It is **if the machine has no clue which direction is better, what should it try first?**
 
 We work through four things.
 
@@ -143,14 +143,12 @@ Three survive, and yet only **two** of them arrive on the frontier in Figure 2. 
 
 Notice what these lines do **not** do. They never rank the three survivors, never mention the goal, and never say which of `(2,0)` and `(2,2)` should be examined first. They answer only *what follows from the state already chosen*.
 
-So Week 3 needs no new problem definition — only a rule for choosing which frontier state gets passed to `neighbours()` next.
-
 <!-- ct319:beat -->
 ## The problem we are searching
 
-The maze in Figure 1 is the Week 2 definition, inherited without a single change: same grid, same start, same goal, same walls, same `neighbours(state)`. Week 3 adds a frontier policy on top of it and nothing else, and that is exactly what makes the comparison later on worth anything — every difference we see has only one possible cause.
+This week we add a frontier policy on top of it and nothing else, and that is exactly what makes the comparison later on worth anything — every difference we see has only one possible cause.
 
-When the search expands `(2,3)` it calls the same `neighbours((2,3))` written in Week 2, and three legal states join the frontier. Which one is removed later is the only thing Week 3 adds.
+When the search expands `(2,3)` it calls the same `neighbours((2,3))` written in Week 2, and three legal states join the frontier. Which one is removed later is the only thing we add.
 
 ### The state belongs to the problem; the bookkeeping does not
 
