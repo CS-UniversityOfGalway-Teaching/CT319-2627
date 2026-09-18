@@ -572,6 +572,8 @@ Strategies are compared on four concerns:
 
 The important words are *under the stated conditions*. The assumptions travel with the claims.
 
+<!-- ct319:focus -->
+
 **Breadth-first search**
 
 - systematic shallow exploration
@@ -586,6 +588,8 @@ The important words are *under the stated conditions*. The assumptions travel wi
 - strongly dependent on successor order
 - no minimum-depth guarantee
 - no general completeness guarantee for unrestricted infinite-depth tree search; terminates on a finite graph with proper reached-state checking
+
+<!-- ct319:endfocus -->
 
 The conclusion is not that one wins. The choice is a **trade-off**, and which side you want is a property of the problem, not of the algorithm:
 

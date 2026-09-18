@@ -281,10 +281,12 @@ else:
 <details class="beat" id="comparing-the-two-strategies"><summary><h2 class="beat__title">Comparing the two strategies</h2></summary><div class="beat__body"><p>Strategies are compared on four concerns:</p>
 <ul><li><strong>Time — search work.</strong> Measured here as <code>states expanded</code>.</li><li><strong>Space — memory.</strong> Measured here as <code>maximum frontier size</code>.</li><li><strong>Completeness.</strong> Under the stated conditions, will a solution be found if one exists?</li><li><strong>Optimality.</strong> Does the returned solution minimise the cost we care about?</li></ul>
 <p>The important words are <em>under the stated conditions</em>. The assumptions travel with the claims.</p>
+<div class="focus-block">
 <p><strong>Breadth-first search</strong></p>
 <ul><li>systematic shallow exploration</li><li>complete for our finite, reachable setting</li><li>a minimum-depth solution <strong>when action costs are equal</strong></li><li>a potentially wide frontier</li></ul>
 <p><strong>Depth-first search</strong></p>
 <ul><li>systematic deep exploration</li><li>often a much narrower frontier</li><li>strongly dependent on successor order</li><li>no minimum-depth guarantee</li><li>no general completeness guarantee for unrestricted infinite-depth tree search; terminates on a finite graph with proper reached-state checking</li></ul>
+</div>
 <p>The conclusion is not that one wins. The choice is a <strong>trade-off</strong>, and which side you want is a property of the problem, not of the algorithm:</p>
 <ul><li>a shallow solution matters and memory is available → BFS is attractive</li><li>memory is tight and any solution will do → DFS is attractive</li><li>the first DFS branch happens to be a good one → DFS looks spectacular</li></ul>
 <p>But “happens to be good” is not knowledge available to a blind strategy.</p>
