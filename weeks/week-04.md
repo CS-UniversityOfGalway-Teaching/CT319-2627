@@ -100,7 +100,7 @@ It came from knowledge about the particular problem.
 
 A strategy becomes **informed** when that information influences its choice. Merely calculating the numbers is not enough.
 
-The lecture notes describe the same move as adding specific information in advance and using an evaluation function to guide the search.
+In the formal vocabulary: the information is supplied in advance, and an **evaluation function** is what puts it to work.
 
 ![The same frontier: Week 3 chooses by waiting order; Week 4 can compare h values](../../media/week-04/frontier-hint.svg "hero")
 
@@ -358,7 +358,7 @@ At each step:
 
 This version accepts no equal or worse value, makes no fresh start, and keeps no alternative routes for later.
 
-The lecture notes describe the same process using three ingredients:
+The same process has three ingredients:
 
 - a representation of the solution
 - an evaluation function
@@ -444,7 +444,7 @@ The apparent purpose comes entirely from the score. The machine has not discover
 <!-- ct319:beat -->
 ## What counts as a neighbour
 
-The formal lecture's knapsack example makes one useful generalisation. A candidate `00101` records which of five items are selected; flipping one bit produces a neighbour, such as `01101`. Its evaluation might measure total value while respecting capacity. Canvas carries the fuller treatment.
+The **knapsack problem** shows the same three ingredients on a completely different problem. A candidate `00101` records which of five items are selected; flipping one bit produces a neighbour, such as `01101`. Its evaluation might measure total value while respecting capacity.
 
 The same three ingredients now describe two different problems:
 
@@ -585,7 +585,7 @@ This is the Week 3 comparison discipline again: **an observed result is not an a
 
 At `(4,8)`, `h = 2` and every legal neighbour has a larger value. It is therefore a **local minimum of `h` under the chosen neighbourhood**.
 
-This is the same structural failure the lecture notes describe as hill climbing becoming trapped in a **local optimum**. The term describes the evaluation relative to nearby candidates. It does not mean `(4,8)` solves the maze or is a globally optimal solution.
+This is the structural failure called becoming trapped in a **local optimum**. The term describes the evaluation relative to nearby candidates. It does not mean `(4,8)` solves the maze or is a globally optimal solution.
 
 The goal with `h = 0` is reachable, but the route above begins `2 → 3`. Our strict rule cannot take that first step.
 
