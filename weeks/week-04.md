@@ -35,13 +35,13 @@ Three ideas carry the page, and it is worth keeping them apart:
 
 The important change from Week 3 is small:
 
-```text
-Week 3
-Which waiting state should be explored next?
+<!-- ct319:focus -->
 
-Week 4
-Which available state looks more promising?
-```
+**Week 3** — Which waiting state should be explored next?
+
+**Week 4** — Which available state looks more promising?
+
+<!-- ct319:endfocus -->
 
 That word — **looks** — matters.
 
