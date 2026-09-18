@@ -444,20 +444,15 @@ The apparent purpose comes entirely from the score. The machine has not discover
 <!-- ct319:beat -->
 ## What counts as a neighbour
 
-The **knapsack problem** shows the same three ingredients on a completely different problem. A candidate `00101` records which of five items are selected; flipping one bit produces a neighbour, such as `01101`. Its evaluation might measure total value while respecting capacity.
+The three ingredients are not really about mazes. Any problem a local-search rule can attack has to supply all three:
 
-The same three ingredients now describe two different problems:
-
-| Ingredient | Maze | Knapsack |
-|---|---|---|
-| **REPRESENTATION** | location `(row, column)` | bit string such as `00101` |
-| **NEIGHBOURHOOD** | legal adjacent cells | one-bit changes |
-| **EVALUATION** | `h(state)`; lower is better | candidate quality; higher may be better |
-
-> [!NOTE]
-> **Heuristic estimate and evaluation function are not universal synonyms.** An evaluation function supplies the score used to compare candidates. Here we choose the remaining-cost estimate `h(state)` as that score. Knapsack instead scores the candidate's quality; it need not estimate remaining distance at all.
+- **Representation** — what a candidate is. Here, a location `(row, column)`.
+- **Neighbourhood** — what counts as one step away. Here, the legal adjacent cells.
+- **Evaluation** — the score that compares candidates. Here, `h(state)`, lower preferred.
 
 The representation says what can change, the neighbourhood says what one change means, and the evaluation says whether it helps. Changing any of these can change hill-climbing behaviour.
+
+Next week we put the same three to work on a problem with no grid, no coordinates and no remaining distance to estimate — and the evaluation there will not be a heuristic estimate at all.
 
 ### What does this local rule buy us?
 
