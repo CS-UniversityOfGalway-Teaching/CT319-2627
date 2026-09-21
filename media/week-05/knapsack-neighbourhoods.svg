@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="670" viewBox="0 0 960 670" role="img" aria-labelledby="title desc">
+  <title id="title">One-bit and two-bit knapsack neighbourhoods around the same candidate</title>
+  <desc id="desc">The candidate 00000 sits at the centre. An inner ring holds the five candidates reachable by changing one bit: 10000, 01000, 00100, 00010 and 00001. An outer ring holds the ten candidates reachable by changing two bits: 11000, 10100, 10010, 10001, 01100, 01010, 01001, 00110, 00101 and 00011. Enlarging the neighbourhood makes more candidate solutions visible from the same current solution.</desc>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2328; }
+    .title { font-size: 27px; font-weight: 700; }
+    .label { font-size: 17px; font-weight: 700; }
+    .small { font-size: 15px; fill: #57606a; }
+    .bits { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 18px; font-weight: 700; letter-spacing: 1px; }
+    .tag { font-size: 12px; font-weight: 700; fill: #57606a; letter-spacing: 1px; }
+    .cur { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 26px; font-weight: 700; letter-spacing: 2px; }
+  </style>
+  <rect width="100%" height="100%" fill="#fff"/>
+
+  <text x="30" y="42" class="title">“NEARBY” IS SOMETHING WE DEFINE</text>
+
+  <circle cx="390" cy="360" r="250" fill="none" stroke="#d0d7de" stroke-width="1.5" stroke-dasharray="6 7"/>
+  <circle cx="390" cy="360" r="140" fill="none" stroke="#d0d7de" stroke-width="1.5" stroke-dasharray="6 7"/>
+
+  <rect x="420.3" y="99.2" width="94" height="46" rx="8" fill="#f6f8fa" stroke="#8c959f" stroke-width="2"/>
+  <text x="467.3" y="120.2" class="bits" text-anchor="middle">11000</text>
+  <text x="467.3" y="137.2" class="tag" text-anchor="middle">A B</text>
+  <rect x="545.3" y="190.1" width="94" height="46" rx="8" fill="#f6f8fa" stroke="#8c959f" stroke-width="2"/>
+  <text x="592.3" y="211.1" class="bits" text-anchor="middle">10100</text>
+  <text x="592.3" y="228.1" class="tag" text-anchor="middle">A C</text>
+  <rect x="593.0" y="337.0" width="94" height="46" rx="8" fill="#f6f8fa" stroke="#8c959f" stroke-width="2"/>
+  <text x="640.0" y="358.0" class="bits" text-anchor="middle">10010</text>
+  <text x="640.0" y="375.0" class="tag" text-anchor="middle">A D</text>
+  <rect x="545.3" y="483.9" width="94" height="46" rx="8" fill="#f6f8fa" stroke="#8c959f" stroke-width="2"/>
+  <text x="592.3" y="504.9" class="bits" text-anchor="middle">10001</text>
+  <text x="592.3" y="521.9" class="tag" text-anchor="middle">A E</text>
+  <rect x="420.3" y="574.8" width="94" height="46" rx="8" fill="#f6f8fa" stroke="#8c959f" stroke-width="2"/>
+  <text x="467.3" y="595.8" class="bits" text-anchor="middle">01100</text>
+  <text x="467.3" y="612.8" class="tag" text-anchor="middle">B C</text>
+  <rect x="265.7" y="574.8" width="94" height="46" rx="8" fill="#f6f8fa" stroke="#8c959f" stroke-width="2"/>
+  <text x="312.7" y="595.8" class="bits" text-anchor="middle">01010</text>
+  <text x="312.7" y="612.8" class="tag" text-anchor="middle">B D</text>
+  <rect x="140.7" y="483.9" width="94" height="46" rx="8" fill="#f6f8fa" stroke="#8c959f" stroke-width="2"/>
+  <text x="187.7" y="504.9" class="bits" text-anchor="middle">01001</text>
+  <text x="187.7" y="521.9" class="tag" text-anchor="middle">B E</text>
+  <rect x="93.0" y="337.0" width="94" height="46" rx="8" fill="#f6f8fa" stroke="#8c959f" stroke-width="2"/>
+  <text x="140.0" y="358.0" class="bits" text-anchor="middle">00110</text>
+  <text x="140.0" y="375.0" class="tag" text-anchor="middle">C D</text>
+  <rect x="140.7" y="190.1" width="94" height="46" rx="8" fill="#f6f8fa" stroke="#8c959f" stroke-width="2"/>
+  <text x="187.7" y="211.1" class="bits" text-anchor="middle">00101</text>
+  <text x="187.7" y="228.1" class="tag" text-anchor="middle">C E</text>
+  <rect x="265.7" y="99.2" width="94" height="46" rx="8" fill="#f6f8fa" stroke="#8c959f" stroke-width="2"/>
+  <text x="312.7" y="120.2" class="bits" text-anchor="middle">00011</text>
+  <text x="312.7" y="137.2" class="tag" text-anchor="middle">D E</text>
+
+  <rect x="343.0" y="197.0" width="94" height="46" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="390.0" y="218.0" class="bits" text-anchor="middle">10000</text>
+  <text x="390.0" y="235.0" class="tag" text-anchor="middle">A</text>
+  <rect x="476.1" y="293.7" width="94" height="46" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="523.1" y="314.7" class="bits" text-anchor="middle">01000</text>
+  <text x="523.1" y="331.7" class="tag" text-anchor="middle">B</text>
+  <rect x="425.3" y="450.3" width="94" height="46" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="472.3" y="471.3" class="bits" text-anchor="middle">00100</text>
+  <text x="472.3" y="488.3" class="tag" text-anchor="middle">C</text>
+  <rect x="260.7" y="450.3" width="94" height="46" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="307.7" y="471.3" class="bits" text-anchor="middle">00010</text>
+  <text x="307.7" y="488.3" class="tag" text-anchor="middle">D</text>
+  <rect x="209.9" y="293.7" width="94" height="46" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="256.9" y="314.7" class="bits" text-anchor="middle">00001</text>
+  <text x="256.9" y="331.7" class="tag" text-anchor="middle">E</text>
+
+  <rect x="308" y="320" width="164" height="80" rx="10" fill="#fff8c5" stroke="#9a6700" stroke-width="2.5"/>
+  <text x="390" y="350" class="label" text-anchor="middle">CURRENT</text>
+  <text x="390" y="384" class="cur" text-anchor="middle">00000</text>
+
+  <text x="712" y="126" class="label">CURRENT SOLUTION</text>
+  <text x="712" y="150" class="small">Five items A B C D E.</text>
+  <text x="712" y="172" class="small">0 = not selected, 1 = selected.</text>
+
+  <rect x="712" y="212" width="26" height="18" rx="4" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="748" y="227" class="label">INNER RING</text>
+  <text x="712" y="254" class="small">Change 1 bit.</text>
+  <text x="712" y="276" class="small">5 candidates.</text>
+  <text x="712" y="298" class="small">Cheap to inspect.</text>
+
+  <rect x="712" y="342" width="26" height="18" rx="4" fill="#f6f8fa" stroke="#8c959f" stroke-width="2"/>
+  <text x="748" y="357" class="label">OUTER RING</text>
+  <text x="712" y="384" class="small">Change 2 bits.</text>
+  <text x="712" y="406" class="small">C(5,2) = 10 candidates.</text>
+  <text x="712" y="428" class="small">More work per iteration.</text>
+
+  <text x="712" y="492" class="small">Same current solution.</text>
+  <text x="712" y="514" class="small">Same evaluation function.</text>
+  <text x="712" y="536" class="small">Only the definition of</text>
+  <text x="712" y="558" class="small">“nearby” changed.</text>
+
+  <text x="30" y="646" class="small">The knapsack capacity decides which of these candidates are feasible. The neighbourhood decides which are visible from here.</text>
+</svg>

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="430" viewBox="0 0 960 430" role="img" aria-labelledby="title desc">
+  <title id="title">Variable Neighbourhood Search moves to a larger neighbourhood only when the small one fails</title>
+  <desc id="desc">The search inspects the small one-bit neighbourhood first. While it keeps finding improvements it stays there. When the small neighbourhood offers no improvement it inspects the larger two-bit neighbourhood. If that finds an improvement the search moves and returns to the small neighbourhood. If neither offers an improvement the search stops.</desc>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2328; }
+    .title { font-size: 27px; font-weight: 700; }
+    .label { font-size: 20px; font-weight: 700; }
+    .small { font-size: 16px; fill: #57606a; }
+    .edge { font-size: 16px; font-weight: 700; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 16px; font-weight: 700; fill: #57606a; }
+  </style>
+  <rect width="100%" height="100%" fill="#fff"/>
+  <defs>
+    <marker id="g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#57606a"/>
+    </marker>
+    <marker id="b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0969da"/>
+    </marker>
+  </defs>
+
+  <text x="30" y="40" class="title">CHANGE NEIGHBOURHOOD WHEN THE CURRENT ONE FAILS</text>
+
+  <!-- return arc: larger neighbourhood back to the small one -->
+  <path d="M520 184 V90 H36 V236 H64" fill="none" stroke="#0969da" stroke-width="3" marker-end="url(#b)"/>
+  <text x="546" y="80" class="edge" text-anchor="middle" fill="#0969da">improvement → move, then go back to the small neighbourhood</text>
+
+  <!-- self loop on the small neighbourhood -->
+  <path d="M124 184 V148 H288 V178" fill="none" stroke="#0969da" stroke-width="2.5" marker-end="url(#b)"/>
+  <text x="200" y="136" class="edge" text-anchor="middle" fill="#0969da">improvement → move and stay here</text>
+
+  <!-- small neighbourhood -->
+  <rect x="70" y="184" width="248" height="104" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2.5"/>
+  <text x="194" y="222" class="label" text-anchor="middle">SMALL</text>
+  <text x="194" y="248" class="small" text-anchor="middle">neighbourhood · change 1 bit</text>
+  <text x="194" y="272" class="mono" text-anchor="middle">5 candidates</text>
+
+  <!-- larger neighbourhood -->
+  <rect x="396" y="184" width="248" height="104" rx="10" fill="#f6f8fa" stroke="#8c959f" stroke-width="2.5"/>
+  <text x="520" y="222" class="label" text-anchor="middle">LARGER</text>
+  <text x="520" y="248" class="small" text-anchor="middle">neighbourhood · change 2 bits</text>
+  <text x="520" y="272" class="mono" text-anchor="middle">10 candidates</text>
+
+  <!-- stop -->
+  <rect x="712" y="184" width="216" height="104" rx="10" fill="#f6f8fa" stroke="#cf222e" stroke-width="2.5"/>
+  <text x="820" y="226" class="label" text-anchor="middle">STOP</text>
+  <text x="820" y="254" class="small" text-anchor="middle">no improvement under</text>
+  <text x="820" y="276" class="small" text-anchor="middle">either neighbourhood</text>
+
+  <!-- transitions -->
+  <path d="M318 236 H386" fill="none" stroke="#57606a" stroke-width="2.5" marker-end="url(#g)"/>
+  <text x="352" y="222" class="edge" text-anchor="middle" fill="#cf222e">no</text>
+  <text x="352" y="326" class="small" text-anchor="middle">no improvement</text>
+  <text x="352" y="348" class="small" text-anchor="middle">in the small set</text>
+
+  <path d="M644 236 H702" fill="none" stroke="#57606a" stroke-width="2.5" marker-end="url(#g)"/>
+  <text x="673" y="222" class="edge" text-anchor="middle" fill="#cf222e">no</text>
+
+  <text x="30" y="404" class="small">The larger neighbourhood is an escape route, not a permanent setting: small neighbourhoods stay cheaper to inspect.</text>
+</svg>
