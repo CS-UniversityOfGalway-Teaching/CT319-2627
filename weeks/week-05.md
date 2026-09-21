@@ -9,16 +9,9 @@ source: week-05.md
 
 Week 4 ended with a machine that had not run out of legal moves.
 
-At `(4,8)` in the CT319 maze:
+![Stuck at (4,8): every legal move makes h worse](../../media/week-05/trap-at-4-8.svg "hero")
 
-```text
-Current state: (4,8)
-h = 2
-
-Legal neighbours:
-UP   -> h = 3
-LEFT -> h = 3
-```
+<sub><em>Figure 1. At `(4,8)` the heuristic reads `h = 2`, and both legal neighbours read `h = 3`. `DOWN` is a wall and there is no column 9, so the strict rule has nothing it is willing to move to — with the goal four moves away. Diagram created for these pages; no external image licence is used.</em></sub>
 
 Strict hill climbing stops.
 
@@ -49,8 +42,6 @@ Three design choices carry the page, and it is worth keeping them apart:
 
 <!-- ct319:endfocus -->
 
-The formal CT319 material groups the methods that vary these choices as **local search**, or sometimes **trajectory methods**. The problem never changes this week. Only these three choices do.
-
 <!-- ct319:beats -->
 
 <!-- ct319:beat -->
@@ -62,13 +53,17 @@ Strict hill climbing has one rule:
 
 When no such neighbour exists, it stops. That tells us something exact about the **neighbourhood around the current candidate**. It tells us nothing about the rest of the search space.
 
-A **local optimum** is a candidate better than everything immediately around it. A **global optimum** is the best candidate in the whole search space. These are different claims, and the first does not imply the second:
-
 <!-- ct319:focus -->
+
+A **local optimum** is a candidate better than everything immediately around it. A **global optimum** is the best candidate in the whole search space. These are different claims, and the first does not imply the second:
 
 > **“No better neighbour exists” is not the same statement as “no better solution exists.”**
 
 <!-- ct319:endfocus -->
+
+![A local optimum is not a global optimum](../../media/week-05/local-vs-global.svg "hero")
+
+<sub><em>Figure 2. The same profile Week 4 used, drawn as a valley because lower `h` is better. The search sits on the floor of a shallow basin at `(4,8)`, where both neighbours stand at `h = 3`. The red span is the whole of what “no better neighbour” describes; the deeper valley beyond it is untouched by that claim. Diagram created for these pages; no external image licence is used.</em></sub>
 
 ### The maze makes the gap concrete
 
@@ -76,10 +71,9 @@ At `(4,8)`, `h = 2`, and both legal neighbours have `h = 3`. Under our rule — 
 
 Yet the goal is reachable. Week 4 traced the route:
 
-```text
-(4,8) → (4,7) → (5,7) → (6,7) → (6,8)
-  h=2     h=3     h=2     h=1     h=0
-```
+![The escape route from (4,8) to the goal](../../media/week-05/escape-route.svg "hero")
+
+<sub><em>Figure 3. The four-move route to the goal, with `h` running `2 → 3 → 2 → 1 → 0`. Only the first step is uphill, and it is exactly the step a strictly improving rule refuses — which is why this route is invisible to it. Diagram created for these pages; no external image licence is used.</em></sub>
 
 The search space contains a better state. The algorithm simply cannot reach it while obeying its own acceptance rule, because the first move on that route makes the heuristic worse.
 
@@ -109,7 +103,7 @@ There are exactly three answers, and the rest of this page is each one in turn:
 
 ![Strict hill climbing stops at (4,8); three panels name what can change: START, NEIGHBOURHOOD, ACCEPTANCE](../../media/week-05/trap-three-choices.svg "hero")
 
-<sub><em>Figure 1. At `(4,8)` both legal moves score `h = 3` and the strict rule rejects both, so the search stops with legal moves still available. The three panels name the design choices Week 5 can vary. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 4. At `(4,8)` both legal moves score `h = 3` and the strict rule rejects both, so the search stops with legal moves still available. The three panels name the design choices Week 5 can vary. Diagram created for these pages; no external image licence is used.</em></sub>
 
 Notice what is *not* on that list. We are not changing the maze, and we are not changing Manhattan distance. A different heuristic is a different experiment; these three are changes to the **search**, not to the problem.
 
@@ -140,7 +134,7 @@ Nothing about the climbing rule changes. The starting candidate decides which re
 
 ![A landscape with two peaks: Start A climbs to a local optimum, Start B climbs to the global optimum](../../media/week-05/different-starts.svg "hero")
 
-<sub><em>Figure 2. The same deterministic rule, neighbourhood and evaluation function, run twice. Start A reaches a local optimum; Start B reaches a better one. Only the initial candidate differs. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 5. The same deterministic rule, neighbourhood and evaluation function, run twice. Start A reaches a local optimum; Start B reaches a better one. Only the initial candidate differs. Diagram created for these pages; no external image licence is used.</em></sub>
 
 Repeating the search from randomly chosen initial candidates and keeping the best result is commonly called **random-restart hill climbing**. The name matters less than the change it makes:
 
@@ -229,7 +223,7 @@ two-item combinations, so the larger neighbourhood exposes ten candidates from t
 
 ![Concentric rings around the candidate 00000: an inner ring of five one-bit neighbours and an outer ring of ten two-bit neighbours](../../media/week-05/knapsack-neighbourhoods.svg "hero")
 
-<sub><em>Figure 3. The same current solution under two neighbourhood definitions. The inner ring holds the five candidates one bit away; the outer ring holds the ten candidates two bits away. Nothing about the problem changed — only the operator that decides which candidates count as neighbours. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 6. The same current solution under two neighbourhood definitions. The inner ring holds the five candidates one bit away; the outer ring holds the ten candidates two bits away. Nothing about the problem changed — only the operator that decides which candidates count as neighbours. Diagram created for these pages; no external image licence is used.</em></sub>
 
 The comparison the formal notes draw is exactly this trade-off:
 
@@ -283,7 +277,7 @@ while True:
 
 ![The VNS loop: stay in the small neighbourhood while it improves, escape through the larger one, then return](../../media/week-05/vns-behaviour.svg "hero")
 
-<sub><em>Figure 4. VNS inspects the small neighbourhood first and only reaches for the larger one when the small one offers no improvement. After a successful larger move it returns to the small neighbourhood. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 7. VNS inspects the small neighbourhood first and only reaches for the larger one when the small one offers no improvement. After a successful larger move it returns to the small neighbourhood. Diagram created for these pages; no external image licence is used.</em></sub>
 
 ### Why return to the small neighbourhood?
 
@@ -398,13 +392,13 @@ With the default seed `743` and the Week 2 successor order, the run descends to 
 | ![At (4,8) the lab proposes UP to (3,8), delta plus one, and rejects it](../../media/week-05/anneal-reject-4-8.png) | ![At (4,8) the lab proposes LEFT to (4,7), delta plus one, and accepts it](../../media/week-05/anneal-accept-4-8.png) |
 | `UP → (3,8)`, `Δ = +1`, `T = 2.10`, `P = 0.622`, draw `0.831` → **reject** | `LEFT → (4,7)`, `Δ = +1`, `T = 1.98`, `P = 0.603`, draw `0.198` → **accept** |
 
-<sub><em>Figure 5. Two consecutive steps at the same state, under almost the same temperature and almost the same probability. The rule is not “accept worse moves”; it is “accept a worse move with a controlled probability”. Screenshots created for these pages from the Search Lab; no external image licence is used.</em></sub>
+<sub><em>Figure 8. Two consecutive steps at the same state, under almost the same temperature and almost the same probability. The rule is not “accept worse moves”; it is “accept a worse move with a controlled probability”. Screenshots created for these pages from the Search Lab; no external image licence is used.</em></sub>
 
 The accepted move is `LEFT → (4,7)` — precisely the move Week 4's strict rule rejected. From there the run continues `(5,7) → (6,7) → (6,8)` and finishes.
 
 ![The completed annealing run: goal reached in 16 moves with one worse move accepted](../../media/week-05/anneal-complete.png "wide")
 
-<sub><em>Figure 6. The same seeded run reaches `(6,8)` in 16 moves, having accepted exactly one worse move and rejected seven others along the way. On the same maze, the strict rule that enters `(4,8)` stops there permanently. Screenshot created for these pages from the Search Lab; no external image licence is used.</em></sub>
+<sub><em>Figure 9. The same seeded run reaches `(6,8)` in 16 moves, having accepted exactly one worse move and rejected seven others along the way. On the same maze, the strict rule that enters `(4,8)` stops there permanently. Screenshot created for these pages from the Search Lab; no external image licence is used.</em></sub>
 
 > [!IMPORTANT]
 > **In this maze every legal move changes `h` by exactly one.**
@@ -442,7 +436,7 @@ All three methods this week attack the same failure, and each changes exactly on
 
 ![From a stuck hill climber, three routes: START to random restart, NEIGHBOURHOOD to VNS, ACCEPTANCE to simulated annealing](../../media/week-05/three-escapes.svg "hero")
 
-<sub><em>Figure 7. Each method changes one of the three design choices and leaves the other two alone. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 10. Each method changes one of the three design choices and leaves the other two alone. Diagram created for these pages; no external image licence is used.</em></sub>
 
 **`START`** — begin from a different initial candidate, and keep the best result across runs. The rule that climbs is untouched. This is *random-restart hill climbing*.
 
