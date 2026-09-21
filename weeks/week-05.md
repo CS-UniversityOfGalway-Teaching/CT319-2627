@@ -21,7 +21,7 @@ Strict hill climbing stops.
 
 <!-- ct319:endfocus -->
 
-Hill climbing is already a **local-search** method: it keeps one current candidate, inspects nearby alternatives and decides where to move. Week 4 used the simplest and strictest version of that rule. Week 5 asks what else a local search can do when strict improvement runs out.
+Hill climbing is already a **local-search** method: it keeps one current candidate, inspects nearby alternatives and decides where to move. Week 4 used the simplest and strictest version of that rule. This week asks what else a local search can do when strict improvement runs out.
 
 We work through four things.
 
@@ -83,7 +83,7 @@ The search space contains a better state. The algorithm simply cannot reach it w
 > It can act only on the candidates it is willing to inspect and the moves it is willing to accept.
 
 <!-- ct319:beat -->
-## What can actually change
+## What can actually change?
 
 The maze, the walls, the goal, the legal moves and Manhattan distance are all fixed. Being stuck is not evidence that the problem is unsolvable, so it is worth asking precisely:
 
@@ -103,7 +103,7 @@ There are exactly three answers, and the rest of this page is each one in turn:
 
 ![Strict hill climbing stops at (4,8); three panels name what can change: START, NEIGHBOURHOOD, ACCEPTANCE](../../media/week-05/trap-three-choices.svg "hero")
 
-<sub><em>Figure 4. At `(4,8)` both legal moves score `h = 3` and the strict rule rejects both, so the search stops with legal moves still available. The three panels name the design choices Week 5 can vary. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 4. At `(4,8)` both legal moves score `h = 3` and the strict rule rejects both, so the search stops with legal moves still available. The three panels name the design choices this week can vary. Diagram created for these pages; no external image licence is used.</em></sub>
 
 Notice what is *not* on that list. We are not changing the maze, and we are not changing Manhattan distance. A different heuristic is a different experiment; these three are changes to the **search**, not to the problem.
 
@@ -111,7 +111,7 @@ Notice what is *not* on that list. We are not changing the maze, and we are not 
 
 ### Why this matters this week
 
-Week 4 showed a heuristic-guided method getting trapped. Week 5 explains why, and the answer is not “hill climbing is bad”:
+Week 4 showed a heuristic-guided method getting trapped. This week explains why, and the answer is not “hill climbing is bad”:
 
 > **a local method can only act on the possibilities and acceptance rules we give it**
 
@@ -156,8 +156,9 @@ start 4 -> better optimum C
 
 We keep the best result seen. But we still cannot say it is globally optimal — only that four starts found nothing better.
 
-<!-- ct319:beat -->
-## Why not restart from everywhere
+### Why not restart from everywhere?
+
+<!-- ct319:focus -->
 
 Because that is exhaustive search again, and avoiding exhaustive search was the point. The trade-off is direct:
 
@@ -166,6 +167,8 @@ more restarts
 → more regions sampled
 → more computation
 ```
+
+<!-- ct319:endfocus -->
 
 <!-- ct319:beat -->
 ## Random does not mean careless
@@ -483,7 +486,7 @@ That is where Week 6 begins.
 
 ## Quick revision
 
-If you can answer these without reopening the page, you have the core of Week 5.
+If you can answer these without reopening the page, you have the core of this week.
 
 1. **[WK-05-01]** Why does “no better neighbour exists” not prove that the current candidate is globally optimal?
 2. What three design choices can we change when strict hill climbing gets stuck, and which of them changes the problem itself?
@@ -500,7 +503,7 @@ If you can answer these without reopening the page, you have the core of Week 5.
 
 ### CT319 source material
 
-The Week 5 progression follows the existing CT319 *Lecture 4: Local Search* material on Canvas, in particular its treatment of:
+This week's progression follows the existing CT319 *Lecture 4: Local Search* material on Canvas, in particular its treatment of:
 
 - hill climbing's tendency to become stuck in local optima
 - Idea 1 — running hill climbing from different initial solutions
@@ -536,7 +539,7 @@ No external images, videos, papers or interactives are used: the recurring maze,
 
 ### Software
 
-- 🧪 [**Search Lab**](../../search-lab/) — the same artefact used in Weeks 3 and 4, extended for Week 5 with an **Anneal** mode:
+- 🧪 [**Search Lab**](../../search-lab/) — the same artefact used in Weeks 3 and 4, extended this week with an **Anneal** mode:
   - one legal neighbour proposed per step, with the current state, current `h`, candidate state, candidate `h`, `Δ`, temperature, `P(accept)`, the random draw and the accept/reject result all displayed
   - a seeded generator and a fixed cooling schedule, so a given seed replays the same run for a classroom demonstration; the seed is editable on the page
   - a `COOLED WITHOUT REACHING THE GOAL` outcome when a run exhausts its step budget
