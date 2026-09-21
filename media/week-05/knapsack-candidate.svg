@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="352" viewBox="0 0 960 352" role="img" aria-labelledby="t d">
+  <title id="t">A knapsack candidate is a bit string over five items</title>
+  <desc id="d">Five items A to E, each with one slot. A zero means the item is left out and a one means it is taken. The example 01101 therefore means take B, take C and take E, and leave A and D behind.</desc>
+
+  <style>
+    :root {
+      --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --card:#ffffff;
+      --good:#1a7f37; --goodbg:#dafbe1;
+      --bad:#cf222e;  --badbg:#ffebe9;
+      --purple:#8250df; --purplebg:#f5eeff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --card:#0d1117;
+        --good:#3fb950; --goodbg:#0f2916;
+        --bad:#f85149;  --badbg:#2b1113;
+        --purple:#a371f7; --purplebg:#1d162b; }
+    }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab   { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .node  { font-size:14px; font-weight:700; }
+    .role  { font-size:12.5px; fill:var(--muted); }
+    .note  { font-size:13.5px; fill:var(--muted); }
+    .warn  { font-size:13.5px; font-weight:700; fill:var(--bad); }
+    .okt   { font-size:13.5px; font-weight:700; fill:var(--good); }
+    .mono  { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:15px; font-weight:700; }
+    .monos { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px; }
+    .start { fill:var(--panel); stroke:var(--accent); stroke-width:2; }
+    .optA  { fill:var(--badbg);  stroke:var(--bad);  stroke-width:2.6; }
+    .optC  { fill:var(--goodbg); stroke:var(--good); stroke-width:2.6; }
+    .edge  { stroke:var(--muted); stroke-width:2.2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .dup   { stroke:var(--bad); stroke-width:2.4; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .okedge{ stroke:var(--good); stroke-width:2.6; fill:none; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:6 4; }
+    .dot   { fill:var(--panel); stroke:var(--accent); stroke-width:1.6; }
+    .funnel{ fill:var(--badbg); stroke:var(--bad); stroke-width:1.6; stroke-dasharray:5 4; }
+    .box   { fill:var(--card); stroke:var(--bad); stroke-width:2.6; }
+    .slot  { fill:var(--card); stroke:var(--line); stroke-width:1.8; }
+    .slotOn{ fill:var(--goodbg); stroke:var(--good); stroke-width:2.4; }
+    .cur   { fill:var(--panel); stroke:var(--accent); stroke-width:3; }
+    .panelbox { fill:var(--panel); stroke:var(--line); stroke-width:1.6; }
+    .rule  { stroke:var(--line); stroke-width:1.2; fill:none; }
+  </style>
+  <rect width="960" height="352" rx="18" fill="var(--bg)"/>
+
+  <text class="lab" x="30" y="40">A CANDIDATE IS ONE BIT PER ITEM</text>
+  <text class="node" x="206" y="88" text-anchor="middle" fill="var(--muted)">A</text>
+  <rect class="slot" x="150" y="100" width="112" height="76" rx="10"/>
+  <text class="mono" x="206" y="146" text-anchor="middle" style="font-size:28px" fill="var(--muted)">0</text>
+  <text class="role" x="206" y="196" text-anchor="middle">left out</text>
+  <text class="node" x="336" y="88" text-anchor="middle" fill="var(--muted)">B</text>
+  <rect class="slotOn" x="280" y="100" width="112" height="76" rx="10"/>
+  <text class="mono" x="336" y="146" text-anchor="middle" style="font-size:28px" fill="var(--good)">1</text>
+  <text class="role" x="336" y="196" text-anchor="middle">taken</text>
+  <text class="node" x="466" y="88" text-anchor="middle" fill="var(--muted)">C</text>
+  <rect class="slotOn" x="410" y="100" width="112" height="76" rx="10"/>
+  <text class="mono" x="466" y="146" text-anchor="middle" style="font-size:28px" fill="var(--good)">1</text>
+  <text class="role" x="466" y="196" text-anchor="middle">taken</text>
+  <text class="node" x="596" y="88" text-anchor="middle" fill="var(--muted)">D</text>
+  <rect class="slot" x="540" y="100" width="112" height="76" rx="10"/>
+  <text class="mono" x="596" y="146" text-anchor="middle" style="font-size:28px" fill="var(--muted)">0</text>
+  <text class="role" x="596" y="196" text-anchor="middle">left out</text>
+  <text class="node" x="726" y="88" text-anchor="middle" fill="var(--muted)">E</text>
+  <rect class="slotOn" x="670" y="100" width="112" height="76" rx="10"/>
+  <text class="mono" x="726" y="146" text-anchor="middle" style="font-size:28px" fill="var(--good)">1</text>
+  <text class="role" x="726" y="196" text-anchor="middle">taken</text>
+  <text class="note" x="30" y="146">items</text>
+  <text class="mono" x="480" y="244" text-anchor="middle" style="font-size:20px">0 1 1 0 1</text>
+  <text class="note" x="480" y="270" text-anchor="middle">one candidate &#8212; take B, C and E; leave A and D</text>
+  <path class="rule" d="M30 298 H930"/>
+  <text class="note" x="30" y="324">0 = not selected, 1 = selected. Every candidate the search can ever hold is one of these strings &#8212; that is what the representation decides.</text>
+</svg>
