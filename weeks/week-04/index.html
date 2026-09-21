@@ -141,7 +141,7 @@
 <blockquote><p><strong>RIGHT looks better under this heuristic.</strong></p></blockquote>
 </div>
 <p>That is the new information.</p></div></details>
-<details class="beat" id="showing-h-does-not-change-a-blind-search"><summary><h2 class="beat__title">Showing h does not change a blind search</h2></summary><div class="beat__body"><p>There is a useful experiment here.</p>
+<details class="beat" id="showing-h-does-not-change-a-blind-search"><summary><h2 class="beat__title">Showing <code>h</code> does not change a blind search</h2></summary><div class="beat__body"><p>There is a useful experiment here.</p>
 <p>Run BFS on the maze with the heuristic numbers displayed.</p>
 <p>Nothing changes.</p>
 <p>Run DFS with the same display.</p>
@@ -155,7 +155,7 @@
 <p>Open the <a href="../../search-lab/">Search Lab</a> and keep the default maze and successor order selected.</p>
 <ol><li>Turn <strong>Show Manhattan h</strong> on. Inspect <code>(2,3)</code> and predict which neighbour the score favours.</li><li>Select <strong>BFS</strong>, reset and run. Compare with its Week 3 traversal.</li><li>Select <strong>DFS</strong>, reset and run. Again, the overlay changes no decisions.</li><li>Switch to <strong>Hill climb</strong> and step through the legal-neighbour evaluations. Now the displayed score determines the move.</li></ol>
 <p>The representation and transitions remain fixed. Week 2 supplied legal options, Week 3 organised waiting states, and this week adds information a decision rule can use. We finish this experiment in Highlight 4 by changing only successor order.</p>
-<h3 id="does-a-lower-h-guarantee-a-better-route">Does a lower h guarantee a better route?</h3>
+<h3 id="does-a-lower-h-guarantee-a-better-route">Does a lower <code>h</code> guarantee a better route?</h3>
 <p>The start has <code>h = 14</code> and the goal has <code>h = 0</code>. Reducing the number seems like progress, but the calculation ignores walls. A cell can be close to the goal and still require a detour. The trap at <code>(4,8)</code> will expose that difference.</p>
 <div class="focus-block">
 <h3 id="why-this-matters-this-week">Why this matters this week</h3>

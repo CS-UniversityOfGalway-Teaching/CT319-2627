@@ -286,7 +286,7 @@ Now we can say:
 That is the new information.
 
 <!-- ct319:beat -->
-## Showing h does not change a blind search
+## Showing `h` does not change a blind search
 
 There is a useful experiment here.
 
@@ -320,7 +320,7 @@ Open the [Search Lab](../../search-lab/) and keep the default maze and successor
 
 The representation and transitions remain fixed. Week 2 supplied legal options, Week 3 organised waiting states, and this week adds information a decision rule can use. We finish this experiment in Highlight 4 by changing only successor order.
 
-### Does a lower h guarantee a better route?
+### Does a lower `h` guarantee a better route?
 
 The start has `h = 14` and the goal has `h = 0`. Reducing the number seems like progress, but the calculation ignores walls. A cell can be close to the goal and still require a detour. The trap at `(4,8)` will expose that difference.
 
