@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 5 — Local search and getting stuck — CT319</title>
+<meta name="description" content="CT319 Week 5. Random restarts, variable neighbourhood search and simulated annealing — three escapes from a local optimum, each changing exactly one design choice.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230969da'/%3E%3Cpath d='M8 8h7v4h-3v8h3v4H8zm9 0h7v16h-7v-4h3v-8h-3z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/ct319.css">
+</head>
+<body>
+<a class="skip-link" href="#beats">Skip to the teaching sections</a>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">CT319 Artificial Intelligence · Week 5 · Local search and getting stuck</p>
+    <h1>Week 5 — Local search and getting stuck</h1>
+    <p class="week-question">How can a local search escape when immediate improvement is not enough?</p>
+  </header>
+
+  <div class="lede">
+<p>Week 4 ended with a machine that had not run out of legal moves.</p>
+<p>At <code>(4,8)</code> in the CT319 maze:</p>
+<pre data-lang="text"><code class="language-text">Current state: (4,8)
+h = 2
+
+Legal neighbours:
+UP   -&gt; h = 3
+LEFT -&gt; h = 3</code></pre>
+<p>Strict hill climbing stops.</p>
+<div class="focus-block">
+<blockquote><p><strong>It has not run out of legal moves. It has run out of moves its current rule is willing to accept.</strong></p></blockquote>
+</div>
+<p>Hill climbing is already a <strong>local-search</strong> method: it keeps one current candidate, inspects nearby alternatives and decides where to move. Week 4 used the simplest and strictest version of that rule. Week 5 asks what else a local search can do when strict improvement runs out.</p>
+<p>We work through four things.</p>
+<ul><li>We begin with <a href="#getting-stuck--local-best-is-not-global-best"><strong>getting stuck</strong></a>, and separate “no better neighbour exists” from “no better solution exists”. That separation exposes the three things a local search can change.</li><li><a href="#try-somewhere-else--does-the-start-decide-the-finish"><strong>Try somewhere else</strong></a> keeps the rule identical and moves the starting candidate instead.</li><li><a href="#change-what-nearby-means"><strong>Change what nearby means</strong></a> keeps the starting point and enlarges the set of candidates the search is allowed to inspect.</li><li><a href="#sometimes-go-the-wrong-way--simulated-annealing"><strong>Sometimes go the wrong way</strong></a> keeps both, and changes which moves the search is willing to accept.</li></ul>
+<p>Three design choices carry the page, and it is worth keeping them apart:</p>
+<div class="focus-block">
+<div class="lenses">
+<div class="lens"><span class="lens__key">Start</span><span class="lens__gloss">where the search begins</span></div>
+<div class="lens"><span class="lens__key">Neighbourhood</span><span class="lens__gloss">which alternatives the search is willing to inspect</span></div>
+<div class="lens"><span class="lens__key">Acceptance</span><span class="lens__gloss">which of those candidates the search is willing to move to</span></div>
+</div>
+</div>
+<p>The formal CT319 material groups the methods that vary these choices as <strong>local search</strong>, or sometimes <strong>trajectory methods</strong>. The problem never changes this week. Only these three choices do.</p>
+  </div>
+
+  <div class="beat-bar" data-beat-bar hidden>
+    <span class="beat-bar__label">Week 5 · Sections</span>
+    <button type="button" data-expand-all>Expand all</button>
+    <button type="button" data-collapse-all>Collapse all</button>
+  </div>
+
+  <main class="beats" id="beats">
+<details class="beat" id="getting-stuck--local-best-is-not-global-best"><summary><h2 class="beat__title">Getting stuck — local best is not global best</h2></summary><div class="beat__body"><p>Strict hill climbing has one rule:</p>
+<blockquote><p>move only to a strictly better neighbour</p></blockquote>
+<p>When no such neighbour exists, it stops. That tells us something exact about the <strong>neighbourhood around the current candidate</strong>. It tells us nothing about the rest of the search space.</p>
+<p>A <strong>local optimum</strong> is a candidate better than everything immediately around it. A <strong>global optimum</strong> is the best candidate in the whole search space. These are different claims, and the first does not imply the second:</p>
+<div class="focus-block">
+<blockquote><p><strong>“No better neighbour exists” is not the same statement as “no better solution exists.”</strong></p></blockquote>
+</div>
+<h3 id="the-maze-makes-the-gap-concrete">The maze makes the gap concrete</h3>
+<p>At <code>(4,8)</code>, <code>h = 2</code>, and both legal neighbours have <code>h = 3</code>. Under our rule — smaller <code>h</code> is better — <code>(4,8)</code> is a <strong>local minimum of the heuristic function</strong> for this neighbourhood.</p>
+<p>Yet the goal is reachable. Week 4 traced the route:</p>
+<pre data-lang="text"><code class="language-text">(4,8) → (4,7) → (5,7) → (6,7) → (6,8)
+  h=2     h=3     h=2     h=1     h=0</code></pre>
+<p>The search space contains a better state. The algorithm simply cannot reach it while obeying its own acceptance rule, because the first move on that route makes the heuristic worse.</p>
+<div class="callout callout--important"><span class="callout__label">Important</span><p><strong>Local search gets stuck because its decisions are local.</strong></p>
+<p>It can act only on the candidates it is willing to inspect and the moves it is willing to accept.</p></div></div></details>
+<details class="beat" id="what-can-actually-change"><summary><h2 class="beat__title">What can actually change</h2></summary><div class="beat__body"><p>The maze, the walls, the goal, the legal moves and Manhattan distance are all fixed. Being stuck is not evidence that the problem is unsolvable, so it is worth asking precisely:</p>
+<div class="focus-block">
+<blockquote><p><strong>What can the algorithm change without changing the underlying optimisation problem?</strong></p></blockquote>
+</div>
+<p>There are exactly three answers, and the rest of this page is each one in turn:</p>
+<pre data-lang="text"><code class="language-text">1. START somewhere else
+2. inspect a different NEIGHBOURHOOD
+3. change the ACCEPTANCE rule</code></pre>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-05/trap-three-choices.svg" alt="Strict hill climbing stops at (4,8); three panels name what can change: START, NEIGHBOURHOOD, ACCEPTANCE" loading="lazy" decoding="async"><figcaption>Figure 1. At <code>(4,8)</code> both legal moves score <code>h = 3</code> and the strict rule rejects both, so the search stops with legal moves still available. The three panels name the design choices Week 5 can vary. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<p>Notice what is <em>not</em> on that list. We are not changing the maze, and we are not changing Manhattan distance. A different heuristic is a different experiment; these three are changes to the <strong>search</strong>, not to the problem.</p>
+<div class="focus-block">
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Week 4 showed a heuristic-guided method getting trapped. Week 5 explains why, and the answer is not “hill climbing is bad”:</p>
+<blockquote><p><strong>a local method can only act on the possibilities and acceptance rules we give it</strong></p></blockquote>
+<p>The cheapest of the three changes comes first. What if we simply start somewhere else?</p>
+</div></div></details>
+<details class="beat" id="try-somewhere-else--does-the-start-decide-the-finish"><summary><h2 class="beat__title">Try somewhere else — does the start decide the finish?</h2></summary><div class="beat__body"><p>The formal CT319 notes give this as the first idea for improving hill climbing:</p>
+<div class="focus-block">
+<blockquote><p><strong>run hill climbing several times, from different initial solutions</strong></p></blockquote>
+</div>
+<p>Nothing about the climbing rule changes. The starting candidate decides which region of the search space the algorithm meets first, and a strict climber can only improve from where it already is.</p>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-05/different-starts.svg" alt="A landscape with two peaks: Start A climbs to a local optimum, Start B climbs to the global optimum" loading="lazy" decoding="async"><figcaption>Figure 2. The same deterministic rule, neighbourhood and evaluation function, run twice. Start A reaches a local optimum; Start B reaches a better one. Only the initial candidate differs. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<p>Repeating the search from randomly chosen initial candidates and keeping the best result is commonly called <strong>random-restart hill climbing</strong>. The name matters less than the change it makes:</p>
+<pre data-lang="text"><code class="language-text">change START
+not the hill-climbing rule</code></pre>
+<h3 id="one-run-is-evidence-about-one-region">One run is evidence about one region</h3>
+<p>A single hill-climbing run tells us where the algorithm ends <em>from that starting point</em>. That is much weaker than a claim about the whole search space. Several starts give evidence from several regions:</p>
+<pre data-lang="text"><code class="language-text">start 1 -&gt; local optimum A
+start 2 -&gt; local optimum B
+start 3 -&gt; local optimum A
+start 4 -&gt; better optimum C</code></pre>
+<p>We keep the best result seen. But we still cannot say it is globally optimal — only that four starts found nothing better.</p></div></details>
+<details class="beat" id="why-not-restart-from-everywhere"><summary><h2 class="beat__title">Why not restart from everywhere</h2></summary><div class="beat__body"><p>Because that is exhaustive search again, and avoiding exhaustive search was the point. The trade-off is direct:</p>
+<pre data-lang="text"><code class="language-text">more restarts
+→ more regions sampled
+→ more computation</code></pre></div></details>
+<details class="beat" id="random-does-not-mean-careless"><summary><h2 class="beat__title">Random does not mean careless</h2></summary><div class="beat__body"><p>Initial candidates are often generated randomly, and that is worth reading carefully. Each individual run can still follow a completely deterministic improvement rule. The randomness changes:</p>
+<pre data-lang="text"><code class="language-text">where we begin</code></pre>
+<p>not:</p>
+<pre data-lang="text"><code class="language-text">how we climb</code></pre>
+<p>This is a general pattern worth carrying forward: <strong>randomness can be a mechanism for exploration</strong>. Highlight 4 uses randomness for a different job, in a different place.</p>
+<div class="focus-block">
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Restarting avoids trusting a single local optimum too much. But every run still uses the same neighbourhood, so every run is still blind to the same alternatives. If the better candidate lies just outside what our neighbourhood can see, restarting only re-samples the same blindness.</p>
+<p>That points at the second change: <strong>what counts as nearby?</strong></p>
+</div></div></details>
+<details class="beat" id="change-what-nearby-means"><summary><h2 class="beat__title">Change what "nearby" means</h2></summary><div class="beat__body"><p>We need a second problem here, and the <strong>knapsack problem</strong> is the right one: five items, each with a weight and a value, and a bag that can only carry so much. Choose the subset worth the most that still fits. Its representation makes “nearby” something we can literally count.</p>
+<p>A candidate is a bit string over five items:</p>
+<pre data-lang="text"><code class="language-text">A B C D E
+
+0 = item not selected
+1 = item selected</code></pre>
+<div class="callout callout--note"><span class="callout__label">Note</span><p><strong>Heuristic estimate and evaluation function are not universal synonyms.</strong> An evaluation function supplies the score used to compare candidates. In the maze we chose the remaining-cost estimate <code>h(state)</code> as that score. Knapsack instead scores the candidate's quality — total value within capacity — and estimates no remaining distance at all.</p></div>
+<p>Take a one-bit change as the neighbourhood operator. From <code>00000</code>, that gives exactly five candidates — take A, take B, take C, take D, take E.</p>
+<p>Now allow two bits to change at once. For five items there are</p>
+<pre data-lang="text"><code class="language-text">C(5,2) = 4 + 3 + 2 + 1 = 10</code></pre>
+<p>two-item combinations, so the larger neighbourhood exposes ten candidates from the same current solution.</p>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-05/knapsack-neighbourhoods.svg" alt="Concentric rings around the candidate 00000: an inner ring of five one-bit neighbours and an outer ring of ten two-bit neighbours" loading="lazy" decoding="async"><figcaption>Figure 3. The same current solution under two neighbourhood definitions. The inner ring holds the five candidates one bit away; the outer ring holds the ten candidates two bits away. Nothing about the problem changed — only the operator that decides which candidates count as neighbours. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<p>The comparison the formal notes draw is exactly this trade-off:</p>
+<div class="table-scroll"><table><thead><tr><th></th><th>Small neighbourhood</th><th>Larger neighbourhood</th></tr></thead><tbody><tr><td><strong>Operator</strong></td><td>change 1 item</td><td>change 2 items</td></tr><tr><td><strong>Candidates</strong></td><td>5</td><td>10</td></tr><tr><td><strong>Cost per iteration</strong></td><td>cheap</td><td>higher</td></tr><tr><td><strong>Chance of an escape</strong></td><td>lower</td><td>higher</td></tr></tbody></table></div></div></details>
+<details class="beat" id="the-escape-may-be-two-changes-away"><summary><h2 class="beat__title">The escape may be two changes away</h2></summary><div class="beat__body"><p>Suppose every one-bit neighbour of the current solution is worse. Strict hill climbing using that neighbourhood stops.</p>
+<p>Now suppose one two-bit neighbour has a better feasible evaluation. That candidate was always in the search space. The algorithm simply did not classify it as a neighbour.</p>
+<p>So the sentence:</p>
+<blockquote><p>this candidate is locally optimal</p></blockquote>
+<p>always means:</p>
+<blockquote><p>this candidate is locally optimal <strong>under this neighbourhood definition</strong></p></blockquote>
+<p>Change the definition and the conclusion can change with it. Sometimes the escape is not to accept a worse candidate — it is to redefine what counts as nearby.</p></div></details>
+<details class="beat" id="variable-neighbourhood-search"><summary><h2 class="beat__title">Variable neighbourhood search</h2></summary><div class="beat__body"><p>The formal notes call the resulting method <strong>Variable Neighbourhood Search (VNS)</strong>, described as hill climbing with two neighbourhoods defined instead of one:</p>
+<pre data-lang="python"><code class="language-python">current = initial_solution
+
+while True:
+    better = best_improvement(current, neighbourhood="small")
+
+    if better is not None:
+        current = better
+        continue                    # stay in the small neighbourhood
+
+    better = best_improvement(current, neighbourhood="large")
+
+    if better is not None:
+        current = better
+        continue                    # move, then go back to the small one
+
+    break</code></pre>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-05/vns-behaviour.svg" alt="The VNS loop: stay in the small neighbourhood while it improves, escape through the larger one, then return" loading="lazy" decoding="async"><figcaption>Figure 4. VNS inspects the small neighbourhood first and only reaches for the larger one when the small one offers no improvement. After a successful larger move it returns to the small neighbourhood. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<h3 id="why-return-to-the-small-neighbourhood">Why return to the small neighbourhood?</h3>
+<p>This is the part worth arguing about in class, because “bigger is better” is the tempting wrong answer.</p>
+<ul><li>Small neighbourhoods are <strong>cheaper</strong> to inspect, and most iterations are ordinary improving iterations.</li><li>After escaping into a new region, cheap improvements are often available again.</li><li>The larger neighbourhood is an <strong>escape mechanism</strong>, not a permanent setting.</li></ul>
+<p>VNS does not say <em>always use the largest neighbourhood</em>. It says <strong>change neighbourhood when the current one stops being useful</strong>, and change back when it becomes useful again.</p></div></details>
+<details class="beat" id="a-neighbourhood-is-a-design-decision"><summary><h2 class="beat__title">A neighbourhood is a design decision</h2></summary><div class="beat__body"><p>This connects straight back to Week 2:</p>
+<pre data-lang="text"><code class="language-text">REPRESENTATION   defines what a candidate looks like
+NEIGHBOURHOOD    defines what nearby alternatives look like
+EVALUATION       defines what better means</code></pre>
+<p>The one-bit/two-bit idea makes sense for a bit string and no sense at all for something else. In a route problem a neighbourhood might mean reversing part of a route; in scheduling, swapping two jobs; in the maze, moving to a legal adjacent cell.</p>
+<div class="callout callout--note"><span class="callout__label">Note</span><p><strong>“Neighbourhood” is a computational definition, not a physical fact.</strong></p>
+<p>The algorithm can inspect only what the representation and the neighbourhood operator make available.</p></div>
+<div class="focus-block">
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>VNS escapes by changing what the algorithm is allowed to <em>inspect</em>. But there is one more possibility, and the maze has been demonstrating it since Week 4.</p>
+<p>At <code>(4,8)</code> the useful move is already in the small neighbourhood. It is legal, it is one step away, and the rule refuses it — because it looks worse.</p>
+<p>What happens if we sometimes say yes?</p>
+</div></div></details>
+<details class="beat" id="sometimes-go-the-wrong-way--simulated-annealing"><summary><h2 class="beat__title">Sometimes go the wrong way — simulated annealing</h2></summary><div class="beat__body"><div class="focus-block">
+<blockquote><p><strong>What if escaping requires getting worse first?</strong></p></blockquote>
+</div>
+<p>At <code>(4,8)</code> the current heuristic is <code>2</code> and both legal exits score <code>3</code>. Strict hill climbing says <code>worse → reject</code>, and that single rule is the whole trap.</p>
+<p>Simulated annealing changes only the acceptance rule:</p>
+<pre data-lang="text"><code class="language-text">better move
+→ accept
+
+worse move
+→ maybe accept</code></pre>
+<p>The important word is <strong>maybe</strong>. Accepting <em>every</em> worse move would discard the heuristic and let the search wander; accepting none is exactly the behaviour that got stuck. Simulated annealing sits between the two, and controls where.</p></div></details>
+<details class="beat" id="temperature-controls-the-willingness"><summary><h2 class="beat__title">Temperature controls the willingness</h2></summary><div class="beat__body"><p>The formal notes motivate that control with the slow cooling of metal. The useful part for us is the behaviour it describes:</p>
+<pre data-lang="text"><code class="language-text">HIGH TEMPERATURE
+more exploratory · a worse move is often accepted
+
+        ↓
+
+MEDIUM TEMPERATURE
+some willingness to worsen remains
+
+        ↓
+
+LOW TEMPERATURE
+conservative · mostly prefers improvement</code></pre>
+<p>Early in the search a substantial decrease in value can be tolerated. Later, less. Near the end, almost none — and the method behaves much like strict hill climbing again.</p>
+<div class="callout callout--note"><span class="callout__label">Note</span><p><strong>What controls “maybe”?</strong></p>
+<p>A common simulated-annealing rule is</p>
+<p><code>P(accept a worse move) = exp(-Δ / T)</code></p>
+<p>where <code>Δ</code> is how much worse the candidate is and <code>T</code> is the current temperature. Larger worsening is less likely to be accepted; higher temperature makes worsening more likely to be accepted. You do not need to derive this expression to read the behaviour off the run.</p></div>
+<p>Two relationships are enough:</p>
+<pre data-lang="text"><code class="language-text">small penalty → easier to accept        large penalty → harder to accept
+high T        → easier to accept        low T         → harder to accept</code></pre></div></details>
+<details class="beat" id="watch-it-happen-at-48"><summary><h2 class="beat__title">Watch it happen at (4,8)</h2></summary><div class="beat__body"><p>The Search Lab has an <strong>Anneal</strong> mode that runs this rule on the unchanged maze. Because the acceptance draw is seeded, the same seed replays the same run every time, so the demonstration is reproducible rather than lucky.</p>
+<p>With the default seed <code>743</code> and the Week 2 successor order, the run descends to <code>(4,8)</code> in fourteen steps — arriving at the exact Week 4 trap — and then meets the same two worse-looking moves. It refuses one and takes the other.</p>
+<div class="table-scroll"><table><thead><tr><th>Step 15 — rejected</th><th>Step 16 — accepted</th></tr></thead><tbody><tr><td><img src="../../media/week-05/anneal-reject-4-8.png" alt="At (4,8) the lab proposes UP to (3,8), delta plus one, and rejects it"></td><td><img src="../../media/week-05/anneal-accept-4-8.png" alt="At (4,8) the lab proposes LEFT to (4,7), delta plus one, and accepts it"></td></tr><tr><td><code>UP → (3,8)</code>, <code>Δ = +1</code>, <code>T = 2.10</code>, <code>P = 0.622</code>, draw <code>0.831</code> → <strong>reject</strong></td><td><code>LEFT → (4,7)</code>, <code>Δ = +1</code>, <code>T = 1.98</code>, <code>P = 0.603</code>, draw <code>0.198</code> → <strong>accept</strong></td></tr></tbody></table></div>
+<p class="standalone-caption"><sub><em>Figure 5. Two consecutive steps at the same state, under almost the same temperature and almost the same probability. The rule is not “accept worse moves”; it is “accept a worse move with a controlled probability”. Screenshots created for these pages from the Search Lab; no external image licence is used.</em></sub></p>
+<p>The accepted move is <code>LEFT → (4,7)</code> — precisely the move Week 4's strict rule rejected. From there the run continues <code>(5,7) → (6,7) → (6,8)</code> and finishes.</p>
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-05/anneal-complete.png" alt="The completed annealing run: goal reached in 16 moves with one worse move accepted" loading="lazy" decoding="async"><figcaption>Figure 6. The same seeded run reaches <code>(6,8)</code> in 16 moves, having accepted exactly one worse move and rejected seven others along the way. On the same maze, the strict rule that enters <code>(4,8)</code> stops there permanently. Screenshot created for these pages from the Search Lab; no external image licence is used.</figcaption></figure>
+<div class="callout callout--important"><span class="callout__label">Important</span><p><strong>In this maze every legal move changes <code>h</code> by exactly one.</strong></p>
+<p>Four-direction movement changes one coordinate by one, so <code>Δ</code> is always <code>+1</code> or <code>−1</code>. That makes the maze a clean demonstration of the <strong>temperature</strong> half of the rule: with the penalty fixed, only <code>T</code> decides how willing the search is. A problem with varying penalties would exercise the other half.</p></div></div></details>
+<details class="beat" id="can-it-still-fail"><summary><h2 class="beat__title">Can it still fail?</h2></summary><div class="beat__body"><p>Yes, and it is worth saying so plainly.</p>
+<pre data-lang="text"><code class="language-text">cool too quickly → becomes greedy early → may still get stuck
+cool more slowly → explores longer      → costs more computation</code></pre>
+<p>The sequence of temperatures is the <strong>cooling schedule</strong>, and no single schedule is best for every problem. A run can also spend its budget in poor regions, or cool without ever reaching the goal — the Search Lab reports exactly that when it happens.</p>
+<p>The claim is not that simulated annealing solves local search. It is that:</p>
+<blockquote><p><strong>allowing occasional worse moves gives the search an escape mechanism that strict hill climbing does not have</strong></p></blockquote>
+<div class="focus-block">
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Week 4 ended with a reachable goal the algorithm could not reach. The obstacle was never the maze. It was one line of the acceptance rule, and changing that line is enough to reopen the route.</p>
+</div></div></details>
+<details class="beat" id="three-ways-to-escape"><summary><h2 class="beat__title">Three ways to escape</h2></summary><div class="beat__body"><p>All three methods this week attack the same failure, and each changes exactly one design choice.</p>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-05/three-escapes.svg" alt="From a stuck hill climber, three routes: START to random restart, NEIGHBOURHOOD to VNS, ACCEPTANCE to simulated annealing" loading="lazy" decoding="async"><figcaption>Figure 7. Each method changes one of the three design choices and leaves the other two alone. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<p><strong><code>START</code></strong> — begin from a different initial candidate, and keep the best result across runs. The rule that climbs is untouched. This is <em>random-restart hill climbing</em>.</p>
+<p><strong><code>NEIGHBOURHOOD</code></strong> — enlarge the set of candidates the search may inspect when the current set offers nothing, then return to the cheaper one. This is <em>Variable Neighbourhood Search</em>.</p>
+<p><strong><code>ACCEPTANCE</code></strong> — allow a temporarily worse move, with a probability that falls as the temperature falls. This is <em>simulated annealing</em>.</p>
+<p>The comparison worth holding on to is not a ranking. It is that one broad problem, one representation and one evaluation function can produce three genuinely different searches, because three different design choices were varied.</p></div></details>
+  </main>
+
+  <div class="tail">
+<h2 id="before-week-6">Before Week 6</h2>
+<p>Every method on this page keeps <strong>one current candidate</strong> at the centre of the search.</p>
+<pre data-lang="text"><code class="language-text">hill climbing         one current solution
+random restart        one current solution at a time, repeated
+VNS                   one current solution, two neighbourhoods
+simulated annealing   one current solution, a softer acceptance rule</code></pre>
+<p>That is what makes them trajectory methods: a single path through the search space, one candidate handed to the next.</p>
+<p>So there is an obvious question left:</p>
+<div class="focus-block">
+<blockquote><p><strong>What if we searched with many candidate solutions at the same time?</strong></p></blockquote>
+</div>
+<p>Instead of one trajectory:</p>
+<pre data-lang="text"><code class="language-text">solution → solution → solution → solution</code></pre>
+<p>we could maintain a <strong>population</strong>.</p>
+<p>That is where Week 6 begins.</p>
+<hr>
+<h2 id="quick-revision">Quick revision</h2>
+<p>If you can answer these without reopening the page, you have the core of Week 5.</p>
+<ol><li><strong>[WK-05-01]</strong> Why does “no better neighbour exists” not prove that the current candidate is globally optimal?</li><li>What three design choices can we change when strict hill climbing gets stuck, and which of them changes the problem itself?</li><li><strong>[WK-05-02]</strong> Why can the same deterministic rule return different results from different starting candidates?</li><li>What is the trade-off of using more restarts?</li><li><strong>[WK-05-03]</strong> Why can enlarging the neighbourhood expose an improvement that a smaller one cannot reach?</li><li>Why does VNS return to the small neighbourhood after a successful move in the larger one?</li><li><strong>[WK-05-04]</strong> Why can accepting a worse move help a local-search method, and why must that acceptance be controlled?</li><li>What roles do the size of the penalty and the temperature play in whether a worse move is accepted?</li></ol>
+<hr>
+<h2 id="sources-and-licensing-notes">Sources and licensing notes</h2>
+<h3 id="ct319-source-material">CT319 source material</h3>
+<p>The Week 5 progression follows the existing CT319 <em>Lecture 4: Local Search</em> material on Canvas, in particular its treatment of:</p>
+<ul><li>hill climbing's tendency to become stuck in local optima</li><li>Idea 1 — running hill climbing from different initial solutions</li><li>Idea 2a — performing a bigger jump, developed into Variable Neighbourhood Search</li><li>the one-item and two-item knapsack neighbourhoods, and the 5-versus-10 candidate comparison</li><li>small versus large neighbourhoods: few solutions and easy to compute, against many solutions and harder to compute</li><li>the VNS algorithm, including its return to the small neighbourhood after a successful larger move</li><li>Idea 2b — accepting a decrease in value for a short time, developed into Simulated Annealing, with the slow-cooling analogy</li><li>the grouping of these methods as <strong>local search</strong>, or <strong>trajectory methods</strong></li></ul>
+<p>Two things are more explicit here than in the slides. The three escape mechanisms are named as changes to <strong>START</strong>, <strong>NEIGHBOURHOOD</strong> and <strong>ACCEPTANCE</strong>, so the methods can be compared rather than listed. The acceptance probability <code>exp(-Δ/T)</code> is stated once as optional depth: the slides describe the cooling behaviour without requiring the expression, and the teaching spine here is the behaviour.</p>
+<h3 id="continuity-from-week-4">Continuity from Week 4</h3>
+<p>The maze problem definition is inherited unchanged: a 7 × 9 grid, <code>START = (0,0)</code>, <code>GOAL = (6,8)</code>, the same walls and moves, and the same <code>neighbours(state)</code>, <code>is_goal(state)</code> and Manhattan <code>heuristic(state)</code>.</p>
+<p>The Week 4 trap at <code>(4,8)</code> is both the opening anchor and the main simulated-annealing example, rather than a fresh artificial landscape, and the escape route <code>(4,8) → (4,7) → (5,7) → (6,7) → (6,8)</code> is the one Week 4 identified.</p>
+<h3 id="examples">Examples</h3>
+<p>The knapsack neighbourhood follows the binary representation used in the formal CT319 material — five items <code>A B C D E</code>, <code>0</code> for not selected and <code>1</code> for selected — and the neighbourhood sizes of 5 and 10 come directly from those slides.</p>
+<p>The two-bit escape is stated <strong>schematically</strong> rather than as a specific bit-string transition. The slides give item weights and values, but the capacity that decides feasibility stays in the lecture, so this page makes no numerical claim about a particular improving candidate.</p>
+<h3 id="figures">Figures</h3>
+<p>Figures 1–7 were <strong>created for these pages</strong>. They use no external image licence.</p>
+<ul><li>Figures 1, 2, 3, 4 and 7 are original diagrams.</li><li>Figures 5 and 6 are Search Lab screenshots of the unchanged default maze, the Week 2 successor order and annealing seed <code>743</code>. The values shown — <code>Δ</code>, temperature, <code>P</code> and the random draw — are the values the lab computes for those steps.</li></ul>
+<p>No external images, videos, papers or interactives are used: the recurring maze, the formal knapsack representation and the Search Lab already cover the week.</p>
+<h3 id="software">Software</h3>
+<ul><li>🧪 <a href="../../search-lab/"><strong>Search Lab</strong></a> — the same artefact used in Weeks 3 and 4, extended for Week 5 with an <strong>Anneal</strong> mode:</li><li>one legal neighbour proposed per step, with the current state, current <code>h</code>, candidate state, candidate <code>h</code>, <code>Δ</code>, temperature, <code>P(accept)</code>, the random draw and the accept/reject result all displayed</li><li>a seeded generator and a fixed cooling schedule, so a given seed replays the same run for a classroom demonstration; the seed is editable on the page</li><li>a <code>COOLED WITHOUT REACHING THE GOAL</code> outcome when a run exhausts its step budget</li></ul>
+<p>The lab remains a maze visualiser. Knapsack neighbourhoods and VNS are taught with Figures 3 and 4 rather than forced into the maze interface.</p>
+<h3 id="classroom-experiment">Classroom experiment</h3>
+<ol><li>Select <strong>Anneal</strong> and keep the default maze, the order <code>UP → DOWN → LEFT → RIGHT</code> and seed <code>743</code>.</li><li>Step fourteen times. The current state is <code>(4,8)</code>, <code>h = 2</code> — the Week 4 stopping point.</li><li>Step once for the rejected proposal, once more for the accepted one, then run to the goal.</li><li>Switch to <strong>Hill climb</strong> with the order <code>UP → RIGHT → DOWN → LEFT</code>: same maze, same heuristic, different acceptance rule, different outcome.</li><li>Change the seed and re-run, to show the mechanism is general and the particular run is not.</li></ol>
+  </div>
+
+  <footer class="page-footer">
+    <p>
+      CT319 Artificial Intelligence · University of Galway ·
+      <a href="../../">Module pages</a> ·
+      <a href="https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/weeks/week-05.md">Markdown source</a> ·
+      <a href="?open=all">Open every section</a>
+    </p>
+    <p>Formal slides and notes are on Canvas. These pages are the companion material.</p>
+  </footer>
+
+</div>
+
+<script src="../../assets/ct319.js" defer></script>
+</body>
+</html>

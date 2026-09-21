@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="480" viewBox="0 0 960 480" role="img" aria-labelledby="title desc">
+  <title id="title">Three escape mechanisms, each changing one design choice</title>
+  <desc id="desc">From a stuck strict hill climber, three routes lead outward. Changing START gives random-restart hill climbing. Changing NEIGHBOURHOOD gives Variable Neighbourhood Search. Changing ACCEPTANCE gives Simulated Annealing. The optimisation problem, the representation and the evaluation function stay the same in all three.</desc>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2328; }
+    .title { font-size: 27px; font-weight: 700; }
+    .label { font-size: 21px; font-weight: 700; }
+    .small { font-size: 16px; fill: #57606a; }
+    .method { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 17px; font-weight: 700; }
+    .body { font-size: 18px; }
+  </style>
+  <rect width="100%" height="100%" fill="#fff"/>
+  <defs>
+    <marker id="d" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#57606a"/>
+    </marker>
+  </defs>
+
+  <text x="30" y="42" class="title">ONE PROBLEM · THREE DESIGN CHOICES</text>
+
+  <rect x="280" y="70" width="400" height="66" rx="10" fill="#fff8c5" stroke="#9a6700" stroke-width="2.5"/>
+  <text x="480" y="112" class="label" text-anchor="middle">STRICT HILL CLIMBING IS STUCK</text>
+
+  <path d="M480 136 V166" fill="none" stroke="#57606a" stroke-width="2.5"/>
+  <path d="M174 166 H786" fill="none" stroke="#57606a" stroke-width="2.5"/>
+  <path d="M174 166 V196" fill="none" stroke="#57606a" stroke-width="2.5" marker-end="url(#d)"/>
+  <path d="M480 166 V196" fill="none" stroke="#57606a" stroke-width="2.5" marker-end="url(#d)"/>
+  <path d="M786 166 V196" fill="none" stroke="#57606a" stroke-width="2.5" marker-end="url(#d)"/>
+
+  <rect x="30" y="204" width="288" height="188" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2.5"/>
+  <text x="174" y="242" class="label" text-anchor="middle">START</text>
+  <text x="174" y="274" class="small" text-anchor="middle">Begin from a different</text>
+  <text x="174" y="296" class="small" text-anchor="middle">initial candidate.</text>
+  <line x1="62" y1="318" x2="286" y2="318" stroke="#0969da" stroke-width="1.5" stroke-dasharray="5 5"/>
+  <text x="174" y="348" class="method" text-anchor="middle">random-restart</text>
+  <text x="174" y="372" class="method" text-anchor="middle">hill climbing</text>
+
+  <rect x="336" y="204" width="288" height="188" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2.5"/>
+  <text x="480" y="242" class="label" text-anchor="middle">NEIGHBOURHOOD</text>
+  <text x="480" y="274" class="small" text-anchor="middle">Inspect a different set of</text>
+  <text x="480" y="296" class="small" text-anchor="middle">nearby candidates.</text>
+  <line x1="368" y1="318" x2="592" y2="318" stroke="#0969da" stroke-width="1.5" stroke-dasharray="5 5"/>
+  <text x="480" y="348" class="method" text-anchor="middle">variable neighbourhood</text>
+  <text x="480" y="372" class="method" text-anchor="middle">search</text>
+
+  <rect x="642" y="204" width="288" height="188" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2.5"/>
+  <text x="786" y="242" class="label" text-anchor="middle">ACCEPTANCE</text>
+  <text x="786" y="274" class="small" text-anchor="middle">Allow a temporarily worse</text>
+  <text x="786" y="296" class="small" text-anchor="middle">move to be taken.</text>
+  <line x1="674" y1="318" x2="898" y2="318" stroke="#0969da" stroke-width="1.5" stroke-dasharray="5 5"/>
+  <text x="786" y="348" class="method" text-anchor="middle">simulated</text>
+  <text x="786" y="372" class="method" text-anchor="middle">annealing</text>
+
+  <text x="480" y="440" class="body" text-anchor="middle">Same problem, same representation, same evaluation function.</text>
+</svg>
