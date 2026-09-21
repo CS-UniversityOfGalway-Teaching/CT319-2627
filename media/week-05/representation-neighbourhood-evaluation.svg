@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440" role="img" aria-labelledby="t d">
+  <title id="t">Three decisions define what a local search can see</title>
+  <desc id="d">Three rows. Representation defines what a candidate looks like: a row and column pair in the maze, one bit per item in knapsack. Neighbourhood defines what nearby alternatives look like: a legal adjacent cell in the maze, flipping one or two bits in knapsack. Evaluation defines what better means: lower h in the maze, higher value within capacity in knapsack. Together the three decide what the search is able to see at all.</desc>
+
+  <style>
+    :root {
+      --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --card:#ffffff;
+      --good:#1a7f37; --goodbg:#dafbe1;
+      --bad:#cf222e;  --badbg:#ffebe9;
+      --purple:#8250df; --purplebg:#f5eeff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --card:#0d1117;
+        --good:#3fb950; --goodbg:#0f2916;
+        --bad:#f85149;  --badbg:#2b1113;
+        --purple:#a371f7; --purplebg:#1d162b; }
+    }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab   { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .node  { font-size:14px; font-weight:700; }
+    .role  { font-size:12.5px; fill:var(--muted); }
+    .note  { font-size:13.5px; fill:var(--muted); }
+    .warn  { font-size:13.5px; font-weight:700; fill:var(--bad); }
+    .okt   { font-size:13.5px; font-weight:700; fill:var(--good); }
+    .mono  { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:15px; font-weight:700; }
+    .monos { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px; }
+    .start { fill:var(--panel); stroke:var(--accent); stroke-width:2; }
+    .optA  { fill:var(--badbg);  stroke:var(--bad);  stroke-width:2.6; }
+    .optC  { fill:var(--goodbg); stroke:var(--good); stroke-width:2.6; }
+    .edge  { stroke:var(--muted); stroke-width:2.2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .dup   { stroke:var(--bad); stroke-width:2.4; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .okedge{ stroke:var(--good); stroke-width:2.6; fill:none; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:6 4; }
+    .dot   { fill:var(--panel); stroke:var(--accent); stroke-width:1.6; }
+    .funnel{ fill:var(--badbg); stroke:var(--bad); stroke-width:1.6; stroke-dasharray:5 4; }
+    .box   { fill:var(--card); stroke:var(--bad); stroke-width:2.6; }
+    .slot  { fill:var(--card); stroke:var(--line); stroke-width:1.8; }
+    .slotOn{ fill:var(--goodbg); stroke:var(--good); stroke-width:2.4; }
+    .cur   { fill:var(--panel); stroke:var(--accent); stroke-width:3; }
+    .panelbox { fill:var(--panel); stroke:var(--line); stroke-width:1.6; }
+    .rule  { stroke:var(--line); stroke-width:1.2; fill:none; }
+  </style>
+  <rect width="960" height="440" rx="18" fill="var(--bg)"/>
+
+  <text class="lab" x="30" y="40">THREE DECISIONS, MADE BEFORE THE SEARCH RUNS</text>
+  <text class="node" x="566" y="82" text-anchor="middle" style="font-size:13px" fill="var(--muted)">MAZE</text>
+  <text class="node" x="806" y="82" text-anchor="middle" style="font-size:13px" fill="var(--muted)">KNAPSACK</text>
+  <path class="rule" d="M30 94 H930"/>
+  <rect class="panelbox" x="30" y="112" width="900" height="86" rx="12"/>
+  <text class="node" x="52" y="150" fill="var(--accent)" style="letter-spacing:1px">REPRESENTATION</text>
+  <text class="note" x="52" y="176">what a candidate looks like</text>
+  <path class="rule" d="M446 126 V184"/>
+  <path class="rule" d="M686 126 V184"/>
+  <text class="monos" x="566" y="160" text-anchor="middle">(row, column)</text>
+  <text class="monos" x="806" y="160" text-anchor="middle">one bit per item, e.g. 01101</text>
+  <rect class="panelbox" x="30" y="210" width="900" height="86" rx="12"/>
+  <text class="node" x="52" y="248" fill="var(--accent)" style="letter-spacing:1px">NEIGHBOURHOOD</text>
+  <text class="note" x="52" y="274">what nearby alternatives look like</text>
+  <path class="rule" d="M446 224 V282"/>
+  <path class="rule" d="M686 224 V282"/>
+  <text class="monos" x="566" y="258" text-anchor="middle">a legal adjacent cell</text>
+  <text class="monos" x="806" y="258" text-anchor="middle">flip one bit — or two</text>
+  <rect class="panelbox" x="30" y="308" width="900" height="86" rx="12"/>
+  <text class="node" x="52" y="346" fill="var(--accent)" style="letter-spacing:1px">EVALUATION</text>
+  <text class="note" x="52" y="372">what better means</text>
+  <path class="rule" d="M446 322 V380"/>
+  <path class="rule" d="M686 322 V380"/>
+  <text class="monos" x="566" y="356" text-anchor="middle">lower h</text>
+  <text class="monos" x="806" y="356" text-anchor="middle">higher value within capacity</text>
+  <path class="rule" d="M30 412 H930"/>
+  <text class="note" x="30" y="440">Fix all three and you have fixed what the search is able to see. Nothing outside them exists as far as the algorithm is concerned.</text>
+  <text class="note" x="30" y="464">Week 2 chose the first two for the maze. This week changes the second one and watches the conclusion change with it.</text>
+</svg>

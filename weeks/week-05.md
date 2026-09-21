@@ -138,18 +138,19 @@ Nothing about the climbing rule changes. The starting candidate decides which re
 
 Repeating the search from randomly chosen initial candidates and keeping the best result is commonly called **random-restart hill climbing**. The name matters less than the change it makes:
 
-```text
-change START
-not the hill-climbing rule
-```
+<!-- ct319:focus -->
+
+What changes is **`START`**. The hill-climbing rule itself is untouched.
+
+<!-- ct319:endfocus -->
 
 ### One run is evidence about one region
 
 A single hill-climbing run tells us where the algorithm ends *from that starting point*. That is much weaker than a claim about the whole search space. Several starts give evidence from several regions:
 
-![What restarting buys, and what restarting everywhere costs](../../media/week-05/restart-coverage.svg "hero")
+![Four starts, three outcomes](../../media/week-05/restart-outcomes.svg "hero")
 
-<sub><em>Figure 6. Four starts under the same rule reach three outcomes: `1` and `3` both end at `A`, so four runs sample only three regions. `C` is the best seen, which is not the same as the best there is. Taking the idea to its limit — every candidate as a start — visits the whole space, which is the exhaustive search restarts were meant to avoid. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 6. Four starts under the same rule reach three outcomes: `1` and `3` both end at `A`, so four runs sample only three regions. `C` is the best seen, which is not the same as the best there is. Diagram created for these pages; no external image licence is used.</em></sub>
 
 We keep the best result seen. But we still cannot say it is globally optimal — only that four starts found nothing better.
 
@@ -165,24 +166,17 @@ more restarts
 → more computation
 ```
 
+![Restarting from everywhere is exhaustive search](../../media/week-05/restart-everywhere.svg "hero")
+
+<sub><em>Figure 7. Taken to its limit, using every candidate as a start visits every candidate — the exhaustive search restarting was meant to avoid. The useful question is not whether to restart, but how many restarts are worth their cost. Diagram created for these pages; no external image licence is used.</em></sub>
+
 <!-- ct319:endfocus -->
 
-<!-- ct319:beat -->
-## Random does not mean careless
+### Random does not mean careless
 
-Initial candidates are often generated randomly, and that is worth reading carefully. Each individual run can still follow a completely deterministic improvement rule. The randomness changes:
+Initial candidates are often generated randomly, and that is worth reading carefully. Each individual run can still follow a completely deterministic improvement rule. The randomness changes **where we begin**, not **how we climb**.
 
-```text
-where we begin
-```
-
-not:
-
-```text
-how we climb
-```
-
-This is a general pattern worth carrying forward: **randomness can be a mechanism for exploration**. Highlight 4 uses randomness for a different job, in a different place.
+This is a general pattern worth carrying forward: **randomness can be a mechanism for exploration**. Simulated annealing, later this week, puts randomness to a different job in a different place — deciding which moves to accept rather than where to start.
 
 <!-- ct319:focus -->
 
@@ -201,12 +195,9 @@ We need a second problem here, and the **knapsack problem** is the right one: fi
 
 A candidate is a bit string over five items:
 
-```text
-A B C D E
+![A knapsack candidate is a bit string over five items](../../media/week-05/knapsack-candidate.svg "hero")
 
-0 = item not selected
-1 = item selected
-```
+<sub><em>Figure 8. One slot per item: `0` leaves the item out, `1` takes it. The example `01101` means take B, C and E. Every candidate the search can hold is one of the 32 strings this representation allows. Diagram created for these pages; no external image licence is used.</em></sub>
 
 > [!NOTE]
 > **Heuristic estimate and evaluation function are not universal synonyms.** An evaluation function supplies the score used to compare candidates. In the maze we chose the remaining-cost estimate `h(state)` as that score. Knapsack instead scores the candidate's quality — total value within capacity — and estimates no remaining distance at all.
@@ -223,7 +214,7 @@ two-item combinations, so the larger neighbourhood exposes ten candidates from t
 
 ![Concentric rings around the candidate 00000: an inner ring of five one-bit neighbours and an outer ring of ten two-bit neighbours](../../media/week-05/knapsack-neighbourhoods.svg "hero")
 
-<sub><em>Figure 7. The same current solution under two neighbourhood definitions. The inner ring holds the five candidates one bit away; the outer ring holds the ten candidates two bits away. Nothing about the problem changed — only the operator that decides which candidates count as neighbours. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 9. The same current solution under two neighbourhood definitions. The inner ring holds the five candidates one bit away; the outer ring holds the ten candidates two bits away. Nothing about the problem changed — only the operator that decides which candidates count as neighbours. Diagram created for these pages; no external image licence is used.</em></sub>
 
 The comparison the formal notes draw is exactly this trade-off:
 
@@ -240,6 +231,10 @@ The comparison the formal notes draw is exactly this trade-off:
 Suppose every one-bit neighbour of the current solution is worse. Strict hill climbing using that neighbourhood stops.
 
 Now suppose one two-bit neighbour has a better feasible evaluation. That candidate was always in the search space. The algorithm simply did not classify it as a neighbour.
+
+![An escape that only a larger neighbourhood can see](../../media/week-05/two-bit-escape.svg "hero")
+
+<sub><em>Figure 10. Every candidate on the inner ring is one bit away and worse, so the strict rule stops at the centre. One candidate on the outer ring is two bits away and better — always present in the search space, never offered by the one-bit operator. Drawn schematically, since which bits change depends on the item weights and values. Diagram created for these pages; no external image licence is used.</em></sub>
 
 So the sentence:
 
@@ -277,7 +272,7 @@ while True:
 
 ![The VNS loop: stay in the small neighbourhood while it improves, escape through the larger one, then return](../../media/week-05/vns-behaviour.svg "hero")
 
-<sub><em>Figure 8. VNS inspects the small neighbourhood first and only reaches for the larger one when the small one offers no improvement. After a successful larger move it returns to the small neighbourhood. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 11. VNS inspects the small neighbourhood first and only reaches for the larger one when the small one offers no improvement. After a successful larger move it returns to the small neighbourhood. Diagram created for these pages; no external image licence is used.</em></sub>
 
 ### Why return to the small neighbourhood?
 
@@ -294,11 +289,9 @@ VNS does not say *always use the largest neighbourhood*. It says **change neighb
 
 This connects straight back to Week 2:
 
-```text
-REPRESENTATION   defines what a candidate looks like
-NEIGHBOURHOOD    defines what nearby alternatives look like
-EVALUATION       defines what better means
-```
+![Three decisions define what a local search can see](../../media/week-05/representation-neighbourhood-evaluation.svg "hero")
+
+<sub><em>Figure 12. The three decisions made before the search runs, and what each looks like in the maze and in knapsack. Fix all three and you have fixed what the search is able to see; nothing outside them exists as far as the algorithm is concerned. Diagram created for these pages; no external image licence is used.</em></sub>
 
 The one-bit/two-bit idea makes sense for a bit string and no sense at all for something else. In a route problem a neighbourhood might mean reversing part of a route; in scheduling, swapping two jobs; in the maze, moving to a legal adjacent cell.
 
@@ -392,13 +385,13 @@ With the default seed `743` and the Week 2 successor order, the run descends to 
 | ![At (4,8) the lab proposes UP to (3,8), delta plus one, and rejects it](../../media/week-05/anneal-reject-4-8.png) | ![At (4,8) the lab proposes LEFT to (4,7), delta plus one, and accepts it](../../media/week-05/anneal-accept-4-8.png) |
 | `UP → (3,8)`, `Δ = +1`, `T = 2.10`, `P = 0.622`, draw `0.831` → **reject** | `LEFT → (4,7)`, `Δ = +1`, `T = 1.98`, `P = 0.603`, draw `0.198` → **accept** |
 
-<sub><em>Figure 9. Two consecutive steps at the same state, under almost the same temperature and almost the same probability. The rule is not “accept worse moves”; it is “accept a worse move with a controlled probability”. Screenshots created for these pages from the Search Lab; no external image licence is used.</em></sub>
+<sub><em>Figure 13. Two consecutive steps at the same state, under almost the same temperature and almost the same probability. The rule is not “accept worse moves”; it is “accept a worse move with a controlled probability”. Screenshots created for these pages from the Search Lab; no external image licence is used.</em></sub>
 
 The accepted move is `LEFT → (4,7)` — precisely the move Week 4's strict rule rejected. From there the run continues `(5,7) → (6,7) → (6,8)` and finishes.
 
 ![The completed annealing run: goal reached in 16 moves with one worse move accepted](../../media/week-05/anneal-complete.png "wide")
 
-<sub><em>Figure 10. The same seeded run reaches `(6,8)` in 16 moves, having accepted exactly one worse move and rejected seven others along the way. On the same maze, the strict rule that enters `(4,8)` stops there permanently. Screenshot created for these pages from the Search Lab; no external image licence is used.</em></sub>
+<sub><em>Figure 14. The same seeded run reaches `(6,8)` in 16 moves, having accepted exactly one worse move and rejected seven others along the way. On the same maze, the strict rule that enters `(4,8)` stops there permanently. Screenshot created for these pages from the Search Lab; no external image licence is used.</em></sub>
 
 > [!IMPORTANT]
 > **In this maze every legal move changes `h` by exactly one.**
@@ -436,7 +429,7 @@ All three methods this week attack the same failure, and each changes exactly on
 
 ![From a stuck hill climber, three routes: START to random restart, NEIGHBOURHOOD to VNS, ACCEPTANCE to simulated annealing](../../media/week-05/three-escapes.svg "hero")
 
-<sub><em>Figure 11. Each method changes one of the three design choices and leaves the other two alone. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 15. Each method changes one of the three design choices and leaves the other two alone. Diagram created for these pages; no external image licence is used.</em></sub>
 
 **`START`** — begin from a different initial candidate, and keep the best result across runs. The rule that climbs is untouched. This is *random-restart hill climbing*.
 

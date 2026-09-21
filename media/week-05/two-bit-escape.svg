@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="532" viewBox="0 0 960 532" role="img" aria-labelledby="t d">
+  <title id="t">An escape that only a larger neighbourhood can see</title>
+  <desc id="d">A current candidate sits at the centre of two rings. Every candidate on the inner ring is one bit away and worse, so a strict rule using the one-bit neighbourhood stops. One candidate on the outer ring is two bits away and better. It was always in the search space; the one-bit neighbourhood simply never classified it as a neighbour.</desc>
+
+  <style>
+    :root {
+      --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --card:#ffffff;
+      --good:#1a7f37; --goodbg:#dafbe1;
+      --bad:#cf222e;  --badbg:#ffebe9;
+      --purple:#8250df; --purplebg:#f5eeff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --card:#0d1117;
+        --good:#3fb950; --goodbg:#0f2916;
+        --bad:#f85149;  --badbg:#2b1113;
+        --purple:#a371f7; --purplebg:#1d162b; }
+    }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab   { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .node  { font-size:14px; font-weight:700; }
+    .role  { font-size:12.5px; fill:var(--muted); }
+    .note  { font-size:13.5px; fill:var(--muted); }
+    .warn  { font-size:13.5px; font-weight:700; fill:var(--bad); }
+    .okt   { font-size:13.5px; font-weight:700; fill:var(--good); }
+    .mono  { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:15px; font-weight:700; }
+    .monos { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px; }
+    .start { fill:var(--panel); stroke:var(--accent); stroke-width:2; }
+    .optA  { fill:var(--badbg);  stroke:var(--bad);  stroke-width:2.6; }
+    .optC  { fill:var(--goodbg); stroke:var(--good); stroke-width:2.6; }
+    .edge  { stroke:var(--muted); stroke-width:2.2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .dup   { stroke:var(--bad); stroke-width:2.4; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .okedge{ stroke:var(--good); stroke-width:2.6; fill:none; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:6 4; }
+    .dot   { fill:var(--panel); stroke:var(--accent); stroke-width:1.6; }
+    .funnel{ fill:var(--badbg); stroke:var(--bad); stroke-width:1.6; stroke-dasharray:5 4; }
+    .box   { fill:var(--card); stroke:var(--bad); stroke-width:2.6; }
+    .slot  { fill:var(--card); stroke:var(--line); stroke-width:1.8; }
+    .slotOn{ fill:var(--goodbg); stroke:var(--good); stroke-width:2.4; }
+    .cur   { fill:var(--panel); stroke:var(--accent); stroke-width:3; }
+    .panelbox { fill:var(--panel); stroke:var(--line); stroke-width:1.6; }
+    .rule  { stroke:var(--line); stroke-width:1.2; fill:none; }
+  </style>
+  <rect width="960" height="532" rx="18" fill="var(--bg)"/>
+
+  <text class="lab" x="30" y="40">THE ESCAPE WAS ALWAYS THERE &#183; THE NEIGHBOURHOOD JUST DID NOT INCLUDE IT</text>
+  <circle cx="348" cy="246" r="112" fill="none" stroke="var(--line)" stroke-width="1.4" stroke-dasharray="4 6"/>
+  <circle cx="348" cy="246" r="188" fill="none" stroke="var(--line)" stroke-width="1.4" stroke-dasharray="4 6"/>
+  <circle class="optA" cx="348" cy="134" r="26"/>
+  <text class="monos" x="348" y="139" text-anchor="middle" fill="var(--bad)">worse</text>
+  <circle class="optA" cx="455" cy="211" r="26"/>
+  <text class="monos" x="455" y="216" text-anchor="middle" fill="var(--bad)">worse</text>
+  <circle class="optA" cx="414" cy="337" r="26"/>
+  <text class="monos" x="414" y="342" text-anchor="middle" fill="var(--bad)">worse</text>
+  <circle class="optA" cx="282" cy="337" r="26"/>
+  <text class="monos" x="282" y="342" text-anchor="middle" fill="var(--bad)">worse</text>
+  <circle class="optA" cx="241" cy="211" r="26"/>
+  <text class="monos" x="241" y="216" text-anchor="middle" fill="var(--bad)">worse</text>
+  <circle class="optC" cx="527" cy="304" r="30"/>
+  <text class="monos" x="527" y="309" text-anchor="middle" fill="var(--good)">better</text>
+  <path class="okedge" d="M382 260 Q438 277 495 294"/>
+  <path class="okedge" d="M486 285 L495 294 L482 297"/>
+
+  <circle class="cur" cx="348" cy="246" r="40"/>
+  <text class="node" x="348" y="244" text-anchor="middle" fill="var(--accent)">current</text>
+  <text class="role" x="348" y="262" text-anchor="middle">candidate</text>
+  <circle class="optA" cx="620" cy="122" r="13"/>
+  <text class="warn" x="648" y="118">inner ring &#8212; one bit away</text>
+  <text class="note" x="648" y="140">every one of them is worse, so the</text>
+  <text class="note" x="648" y="160">strict rule stops at the centre</text>
+  <circle class="optC" cx="620" cy="248" r="13"/>
+  <text class="okt" x="648" y="244">outer ring &#8212; two bits away</text>
+  <text class="note" x="648" y="266">one candidate here is better; it was</text>
+  <text class="note" x="648" y="286">always in the search space, and the</text>
+  <text class="note" x="648" y="306">one-bit operator never offered it</text>
+  <path class="rule" d="M30 452 H930"/>
+  <text class="note" x="30" y="478">&#8220;Locally optimal&#8221; always means &#8220;locally optimal <tspan font-style="italic">under this neighbourhood definition</tspan>&#8221;.</text>
+  <text class="note" x="30" y="502">Drawn schematically: which bits change depends on the item weights and values, which stay in the lecture notes.</text>
+</svg>
