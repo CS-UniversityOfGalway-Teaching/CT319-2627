@@ -147,12 +147,9 @@ not the hill-climbing rule
 
 A single hill-climbing run tells us where the algorithm ends *from that starting point*. That is much weaker than a claim about the whole search space. Several starts give evidence from several regions:
 
-```text
-start 1 -> local optimum A
-start 2 -> local optimum B
-start 3 -> local optimum A
-start 4 -> better optimum C
-```
+![What restarting buys, and what restarting everywhere costs](../../media/week-05/restart-coverage.svg "hero")
+
+<sub><em>Figure 6. Four starts under the same rule reach three outcomes: `1` and `3` both end at `A`, so four runs sample only three regions. `C` is the best seen, which is not the same as the best there is. Taking the idea to its limit — every candidate as a start — visits the whole space, which is the exhaustive search restarts were meant to avoid. Diagram created for these pages; no external image licence is used.</em></sub>
 
 We keep the best result seen. But we still cannot say it is globally optimal — only that four starts found nothing better.
 
@@ -226,7 +223,7 @@ two-item combinations, so the larger neighbourhood exposes ten candidates from t
 
 ![Concentric rings around the candidate 00000: an inner ring of five one-bit neighbours and an outer ring of ten two-bit neighbours](../../media/week-05/knapsack-neighbourhoods.svg "hero")
 
-<sub><em>Figure 6. The same current solution under two neighbourhood definitions. The inner ring holds the five candidates one bit away; the outer ring holds the ten candidates two bits away. Nothing about the problem changed — only the operator that decides which candidates count as neighbours. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 7. The same current solution under two neighbourhood definitions. The inner ring holds the five candidates one bit away; the outer ring holds the ten candidates two bits away. Nothing about the problem changed — only the operator that decides which candidates count as neighbours. Diagram created for these pages; no external image licence is used.</em></sub>
 
 The comparison the formal notes draw is exactly this trade-off:
 
@@ -280,7 +277,7 @@ while True:
 
 ![The VNS loop: stay in the small neighbourhood while it improves, escape through the larger one, then return](../../media/week-05/vns-behaviour.svg "hero")
 
-<sub><em>Figure 7. VNS inspects the small neighbourhood first and only reaches for the larger one when the small one offers no improvement. After a successful larger move it returns to the small neighbourhood. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 8. VNS inspects the small neighbourhood first and only reaches for the larger one when the small one offers no improvement. After a successful larger move it returns to the small neighbourhood. Diagram created for these pages; no external image licence is used.</em></sub>
 
 ### Why return to the small neighbourhood?
 
@@ -395,13 +392,13 @@ With the default seed `743` and the Week 2 successor order, the run descends to 
 | ![At (4,8) the lab proposes UP to (3,8), delta plus one, and rejects it](../../media/week-05/anneal-reject-4-8.png) | ![At (4,8) the lab proposes LEFT to (4,7), delta plus one, and accepts it](../../media/week-05/anneal-accept-4-8.png) |
 | `UP → (3,8)`, `Δ = +1`, `T = 2.10`, `P = 0.622`, draw `0.831` → **reject** | `LEFT → (4,7)`, `Δ = +1`, `T = 1.98`, `P = 0.603`, draw `0.198` → **accept** |
 
-<sub><em>Figure 8. Two consecutive steps at the same state, under almost the same temperature and almost the same probability. The rule is not “accept worse moves”; it is “accept a worse move with a controlled probability”. Screenshots created for these pages from the Search Lab; no external image licence is used.</em></sub>
+<sub><em>Figure 9. Two consecutive steps at the same state, under almost the same temperature and almost the same probability. The rule is not “accept worse moves”; it is “accept a worse move with a controlled probability”. Screenshots created for these pages from the Search Lab; no external image licence is used.</em></sub>
 
 The accepted move is `LEFT → (4,7)` — precisely the move Week 4's strict rule rejected. From there the run continues `(5,7) → (6,7) → (6,8)` and finishes.
 
 ![The completed annealing run: goal reached in 16 moves with one worse move accepted](../../media/week-05/anneal-complete.png "wide")
 
-<sub><em>Figure 9. The same seeded run reaches `(6,8)` in 16 moves, having accepted exactly one worse move and rejected seven others along the way. On the same maze, the strict rule that enters `(4,8)` stops there permanently. Screenshot created for these pages from the Search Lab; no external image licence is used.</em></sub>
+<sub><em>Figure 10. The same seeded run reaches `(6,8)` in 16 moves, having accepted exactly one worse move and rejected seven others along the way. On the same maze, the strict rule that enters `(4,8)` stops there permanently. Screenshot created for these pages from the Search Lab; no external image licence is used.</em></sub>
 
 > [!IMPORTANT]
 > **In this maze every legal move changes `h` by exactly one.**
@@ -439,7 +436,7 @@ All three methods this week attack the same failure, and each changes exactly on
 
 ![From a stuck hill climber, three routes: START to random restart, NEIGHBOURHOOD to VNS, ACCEPTANCE to simulated annealing](../../media/week-05/three-escapes.svg "hero")
 
-<sub><em>Figure 10. Each method changes one of the three design choices and leaves the other two alone. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 11. Each method changes one of the three design choices and leaves the other two alone. Diagram created for these pages; no external image licence is used.</em></sub>
 
 **`START`** — begin from a different initial candidate, and keep the best result across runs. The rule that climbs is untouched. This is *random-restart hill climbing*.
 
