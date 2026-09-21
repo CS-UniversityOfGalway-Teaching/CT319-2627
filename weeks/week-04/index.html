@@ -204,6 +204,7 @@ while not is_goal(current):
 <p>Python’s <code>min</code> returns the first minimum it encounters, so the order supplied by <code>neighbours(state)</code> breaks an equal-best tie. The <code>&lt;</code> comparison filters out equal and worse values before selection.</p>
 <p>The important word is <strong>improving</strong>: the evaluation must say the move is better.</p></div></details>
 <details class="beat" id="why-hill-climbing-when-the-number-gets-smaller"><summary><h2 class="beat__title">Why "hill climbing" when the number gets smaller</h2></summary><div class="beat__body"><p>Hill climbing means repeated local improvement. In the classic analogy, higher is better. In our maze, lower <code>h</code> is better, so improvement means descending the heuristic value. The evaluation function determines which direction counts as better.</p>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-04/hill-climbing-landscape.svg" alt="A profile of h: a descent into a shallow local minimum, a ridge, a flat plateau, then a descent to the global minimum at h = 0" loading="lazy" decoding="async"><figcaption>Figure 5. The hill-climbing landscape drawn for our problem, where lower <code>h</code> is better and so the classic picture turns over. The run descends, settles in a <strong>local minimum</strong> where no neighbour is better, and stops. The climb out and the flat <strong>plateau</strong> are marked in red: the strict rule accepts neither, because neither is strictly better. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <h3 id="which-information-decides-the-next-move">Which information decides the next move?</h3>
 <p>Hill climbing keeps no broad frontier or alternative routes for later. Its decision uses the current neighbourhood:</p>
 <blockquote><p><strong>Which neighbour looks best now?</strong></p></blockquote>
@@ -240,7 +241,7 @@ while not is_goal(current):
 <div class="focus-block">
 <p>Both are legal, improving and allowed by the strict rule. <strong>Both satisfy the rule. Only one leads this run to the goal.</strong></p>
 </div>
-<figure class="figure--wide"><img class="figure__img" src="../../media/week-04/hill-decision-4-7.png" alt="Strict hill climbing at state 4,7, showing DOWN and RIGHT tied at h equals 2" loading="lazy" decoding="async"><figcaption>Figure 5. At <code>(4,7)</code>, the Search Lab shows <code>DOWN</code> and <code>RIGHT</code> as equal-best improving neighbours. The default successor order lists <code>DOWN</code> first. Screenshot created from the Search Lab for these pages; no external image licence is used.</figcaption></figure>
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-04/hill-decision-4-7.png" alt="Strict hill climbing at state 4,7, showing DOWN and RIGHT tied at h equals 2" loading="lazy" decoding="async"><figcaption>Figure 6. At <code>(4,7)</code>, the Search Lab shows <code>DOWN</code> and <code>RIGHT</code> as equal-best improving neighbours. The default successor order lists <code>DOWN</code> first. Screenshot created from the Search Lab for these pages; no external image licence is used.</figcaption></figure>
 <h3 id="what-happens-when-down-or-right-wins-the-tie">What happens when DOWN or RIGHT wins the tie?</h3>
 <p>Choose <code>DOWN</code> first and the run succeeds: <code>(4,7) → (5,7) → (6,7) → (6,8)</code>, with <code>h</code> falling <code>3 → 2 → 1 → 0</code>.</p>
 <p>Choose <code>RIGHT</code> first and the run enters <code>(4,8)</code>, with <code>h</code> falling from <code>3</code> to <code>2</code>.</p>
@@ -251,9 +252,9 @@ while not is_goal(current):
 <p>Strict hill climbing refuses them.</p>
 <p>So it stops with <strong><code>NO IMPROVING NEIGHBOUR</code></strong>.</p>
 <div class="table-scroll"><table><thead><tr><th><code>DOWN</code> first — successful run</th><th><code>RIGHT</code> first — trapped run</th></tr></thead><tbody><tr><td><img src="../../media/week-04/hill-success.png" alt="Hill climbing reaches the goal when DOWN wins the tie"></td><td><img src="../../media/week-04/hill-trapped.png" alt="Hill climbing stops at 4,8 when RIGHT wins the tie"></td></tr></tbody></table></div>
-<p class="standalone-caption"><sub><em>Figure 6. Two Search Lab runs differ only in successor order at the equal-best tie. <code>DOWN</code> first reaches the goal; <code>RIGHT</code> first stops at <code>(4,8)</code> with legal neighbours still available. Screenshots created from the Search Lab for these pages; no external image licence is used.</em></sub></p></div></details>
+<p class="standalone-caption"><sub><em>Figure 7. Two Search Lab runs differ only in successor order at the equal-best tie. <code>DOWN</code> first reaches the goal; <code>RIGHT</code> first stops at <code>(4,8)</code> with legal neighbours still available. Screenshots created from the Search Lab for these pages; no external image licence is used.</em></sub></p></div></details>
 <details class="beat" id="how-much-work-is-actually-left"><summary><h2 class="beat__title">How much work is actually left</h2></summary><div class="beat__body"><p>At <code>(4,8)</code>, the goal test is false and the heuristic says <strong>2 moves</strong>. But the wall at <code>(5,8)</code> blocks the direct descent. The actual shortest remaining route is:</p>
-<figure class="figure--hero"><img class="figure__img" src="../../media/week-04/escape-route-profile.svg" alt="h along the route out of 4,8: it rises from 2 to 3 on the first move, then falls 2, 1, 0" loading="lazy" decoding="async"><figcaption>Figure 7. <code>h</code> along the shortest remaining route from <code>(4,8)</code>. The first move to <code>(4,7)</code> raises <code>h</code> from 2 to 3; the three that follow lower it to 0. Strict hill climbing accepts only strictly improving moves, so it refuses the first step and never reaches the rest. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-04/escape-route-profile.svg" alt="h along the route out of 4,8: it rises from 2 to 3 on the first move, then falls 2, 1, 0" loading="lazy" decoding="async"><figcaption>Figure 8. <code>h</code> along the shortest remaining route from <code>(4,8)</code>. The first move to <code>(4,7)</code> raises <code>h</code> from 2 to 3; the three that follow lower it to 0. Strict hill climbing accepts only strictly improving moves, so it refuses the first step and never reaches the rest. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <p>That costs <strong>4 moves</strong>. The first move increases <code>h</code>, so strict hill climbing rejects it even though it belongs to a shortest route from this state.</p>
 <p>This is Highlight 1's distinction made concrete:</p>
 <div class="focus-block">
@@ -328,8 +329,8 @@ Hill climbing stops.</code></pre>
     return abs(row - goal_row) + abs(col - goal_col)</code></pre>
 <p>The hill-climbing trap at <code>(4,7)</code> / <code>(4,8)</code> is derived from the same maze rather than introduced as a separate artificial example.</p>
 <h3 id="figures">Figures</h3>
-<p>Figures 1–7 were <strong>created for these pages</strong>. They use no external image licence.</p>
-<p>Figures 4, 5 and 6 are Search Lab screenshots rendered from the exact maze and the Manhattan-distance calculation described on this page.</p>
+<p>Figures 1–8 were <strong>created for these pages</strong>. They use no external image licence.</p>
+<p>Figures 4, 6 and 7 are Search Lab screenshots rendered from the exact maze and the Manhattan-distance calculation described on this page.</p>
 <p>No external images, videos or papers are required for this page.</p>
 <h3 id="software">Software</h3>
 <p>The <a href="../../search-lab/">Search Lab</a> is the same classroom artefact used in Week 3, extended with:</p>

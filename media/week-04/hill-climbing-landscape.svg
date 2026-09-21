@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="425" viewBox="0 0 960 425" role="img" aria-labelledby="t d">
+  <title id="t">The hill-climbing landscape, drawn for a problem where lower h is better</title>
+  <desc id="d">A profile of h across neighbouring candidates. The curve descends into a shallow local minimum, rises over a ridge, crosses a flat plateau and descends again to the global minimum at h equals zero. The climb out of the local minimum and the flat plateau are marked in red as the moves a strictly improving rule refuses.</desc>
+  <style>
+    :root {
+      --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --card:#ffffff;
+      --goal:#1a7f37; --goalbg:#dafbe1;
+      --bad:#cf222e;  --badbg:#ffebe9;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --card:#0d1117;
+        --goal:#3fb950; --goalbg:#0f2916;
+        --bad:#f85149;  --badbg:#2b1113; }
+    }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .axis { font-size:13px; font-weight:600; fill:var(--muted); }
+    .name { font-size:15px; font-weight:700; }
+    .role { font-size:13px; fill:var(--muted); }
+    .bad  { font-size:13px; font-weight:700; fill:var(--bad); }
+    .foot { font-size:14px; fill:var(--muted); }
+    .grid { stroke:var(--line); stroke-width:1.2; stroke-dasharray:3 7; fill:none; }
+    .lead { stroke:var(--line); stroke-width:1.4; fill:none; }
+    .leadBad { stroke:var(--bad); stroke-width:1.4; fill:none; stroke-dasharray:4 4; }
+    .curve   { stroke:var(--accent); stroke-width:3.4; fill:none; stroke-linecap:round; }
+    .refused { stroke:var(--bad);    stroke-width:4.2; fill:none; stroke-linecap:round; }
+    .mkBad { fill:var(--badbg);  stroke:var(--bad);  stroke-width:3; }
+    .mkG   { fill:var(--goalbg); stroke:var(--goal); stroke-width:3; }
+  </style>
+
+  <rect width="960" height="425" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="38">THE SAME SHAPE, TURNED OVER &#183; LOWER h MEANS IMPROVEMENT GOES DOWN</text>
+
+  <text class="axis" x="80" y="108">higher h</text>
+  <path class="grid" d="M70 341 H910"/>
+  <text class="axis" x="62" y="346" text-anchor="end">h = 0</text>
+
+  <path class="curve" d="M80 130 C130 180 175 224 220 246 C265 268 300 284 335 286"/>
+  <path class="refused" d="M335 286 C372 288 412 260 452 222 C472 203 486 195 505 198"/>
+  <path class="curve" d="M505 198 C532 202 564 232 600 260"/>
+  <path class="refused" d="M600 260 H700"/>
+  <path class="curve" d="M700 260 C742 266 782 302 818 326 C836 336 848 340 860 341"/>
+
+  <text class="bad" x="430" y="150" text-anchor="middle">the rule will not climb this</text>
+  <path class="leadBad" d="M452 160 L470 188"/>
+
+  <text class="bad" x="680" y="228" text-anchor="middle">nothing strictly better</text>
+  <text class="bad" x="680" y="246" text-anchor="middle">plateau</text>
+
+  <circle class="mkBad" cx="335" cy="286" r="12"/>
+  <circle class="mkG"   cx="860" cy="341" r="12"/>
+
+  <path class="lead" d="M335 272 V262"/>
+  <text class="name" x="335" y="252" text-anchor="middle">local minimum</text>
+  <text class="role" x="335" y="232" text-anchor="middle">no neighbour is better</text>
+
+  <path class="lead" d="M860 327 V308"/>
+  <text class="name" x="860" y="298" text-anchor="middle">global minimum</text>
+  <text class="role" x="860" y="278" text-anchor="middle">the goal</text>
+
+  <path d="M30 376 H930" stroke="var(--line)" stroke-width="1.2" fill="none"/>
+  <text class="foot" x="30" y="399">Lower h is better, so the classic picture is upside down: improvement means descending, and the trap is a valley floor.</text>
+</svg>

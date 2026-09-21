@@ -415,6 +415,10 @@ The important word is **improving**: the evaluation must say the move is better.
 
 Hill climbing means repeated local improvement. In the classic analogy, higher is better. In our maze, lower `h` is better, so improvement means descending the heuristic value. The evaluation function determines which direction counts as better.
 
+![A profile of h: a descent into a shallow local minimum, a ridge, a flat plateau, then a descent to the global minimum at h = 0](../../media/week-04/hill-climbing-landscape.svg "hero")
+
+<sub><em>Figure 5. The hill-climbing landscape drawn for our problem, where lower `h` is better and so the classic picture turns over. The run descends, settles in a **local minimum** where no neighbour is better, and stops. The climb out and the flat **plateau** are marked in red: the strict rule accepts neither, because neither is strictly better. Diagram created for these pages; no external image licence is used.</em></sub>
+
 ### Which information decides the next move?
 
 Hill climbing keeps no broad frontier or alternative routes for later. Its decision uses the current neighbourhood:
@@ -502,7 +506,7 @@ Both are legal, improving and allowed by the strict rule. **Both satisfy the rul
 
 ![Strict hill climbing at state 4,7, showing DOWN and RIGHT tied at h equals 2](../../media/week-04/hill-decision-4-7.png "wide")
 
-<sub><em>Figure 5. At `(4,7)`, the Search Lab shows `DOWN` and `RIGHT` as equal-best improving neighbours. The default successor order lists `DOWN` first. Screenshot created from the Search Lab for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 6. At `(4,7)`, the Search Lab shows `DOWN` and `RIGHT` as equal-best improving neighbours. The default successor order lists `DOWN` first. Screenshot created from the Search Lab for these pages; no external image licence is used.</em></sub>
 
 ### What happens when DOWN or RIGHT wins the tie?
 
@@ -526,7 +530,7 @@ So it stops with **`NO IMPROVING NEIGHBOUR`**.
 |---|---|
 | ![Hill climbing reaches the goal when DOWN wins the tie](../../media/week-04/hill-success.png) | ![Hill climbing stops at 4,8 when RIGHT wins the tie](../../media/week-04/hill-trapped.png) |
 
-<sub><em>Figure 6. Two Search Lab runs differ only in successor order at the equal-best tie. `DOWN` first reaches the goal; `RIGHT` first stops at `(4,8)` with legal neighbours still available. Screenshots created from the Search Lab for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 7. Two Search Lab runs differ only in successor order at the equal-best tie. `DOWN` first reaches the goal; `RIGHT` first stops at `(4,8)` with legal neighbours still available. Screenshots created from the Search Lab for these pages; no external image licence is used.</em></sub>
 
 <!-- ct319:beat -->
 ## How much work is actually left
@@ -535,7 +539,7 @@ At `(4,8)`, the goal test is false and the heuristic says **2 moves**. But the w
 
 ![h along the route out of 4,8: it rises from 2 to 3 on the first move, then falls 2, 1, 0](../../media/week-04/escape-route-profile.svg "hero")
 
-<sub><em>Figure 7. `h` along the shortest remaining route from `(4,8)`. The first move to `(4,7)` raises `h` from 2 to 3; the three that follow lower it to 0. Strict hill climbing accepts only strictly improving moves, so it refuses the first step and never reaches the rest. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 8. `h` along the shortest remaining route from `(4,8)`. The first move to `(4,7)` raises `h` from 2 to 3; the three that follow lower it to 0. Strict hill climbing accepts only strictly improving moves, so it refuses the first step and never reaches the rest. Diagram created for these pages; no external image licence is used.</em></sub>
 
 That costs **4 moves**. The first move increases `h`, so strict hill climbing rejects it even though it belongs to a shortest route from this state.
 
@@ -696,9 +700,9 @@ The hill-climbing trap at `(4,7)` / `(4,8)` is derived from the same maze rather
 
 ### Figures
 
-Figures 1–7 were **created for these pages**. They use no external image licence.
+Figures 1–8 were **created for these pages**. They use no external image licence.
 
-Figures 4, 5 and 6 are Search Lab screenshots rendered from the exact maze and the Manhattan-distance calculation described on this page.
+Figures 4, 6 and 7 are Search Lab screenshots rendered from the exact maze and the Manhattan-distance calculation described on this page.
 
 No external images, videos or papers are required for this page.
 
