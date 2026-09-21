@@ -276,7 +276,11 @@ while True:
 
 ### Why return to the small neighbourhood?
 
-This is the part worth arguing about in class, because “bigger is better” is the tempting wrong answer.
+<!-- ct319:focus -->
+
+This is the trade-off worth arguing about, because **bigger is better** is the tempting wrong answer.
+
+<!-- ct319:endfocus -->
 
 - Small neighbourhoods are **cheaper** to inspect, and most iterations are ordinary improving iterations.
 - After escaping into a new region, cheap improvements are often available again.
@@ -333,7 +337,26 @@ worse move
 → maybe accept
 ```
 
+<!-- ct319:focus -->
+
 The important word is **maybe**. Accepting *every* worse move would discard the heuristic and let the search wander; accepting none is exactly the behaviour that got stuck. Simulated annealing sits between the two, and controls where.
+
+<!-- ct319:endfocus -->
+
+### So what is simulated annealing?
+
+The name comes from metallurgy: heat a metal and its atoms move freely; cool it slowly and they settle into a low-energy arrangement. Cool it too fast and they freeze into a bad one.
+
+The search borrows the schedule, not the physics. A **temperature** starts high and falls as the run goes on, and it controls one thing only — how willing the search is to accept a move that makes the evaluation worse:
+
+- a **better** move is always accepted
+- a **worse** move is accepted with a probability that falls as the temperature falls
+
+Early, while the temperature is high, that willingness buys escape from whatever basin the search happens to be in. Late, when it is low, the willingness is gone and the run settles instead of wandering forever.
+
+![What simulated annealing does](../../media/week-05/annealing-explained.svg "hero")
+
+<sub><em>Figure 13. The same rugged profile, with one run drawn across it. A strictly improving rule stops in the first basin. Annealing accepts the worse moves in red, climbs out while the temperature is high, and settles into the deepest basin once it has cooled. Diagram created for these pages; no external image licence is used.</em></sub>
 
 <!-- ct319:beat -->
 ## Temperature controls the willingness
@@ -376,7 +399,9 @@ high T        → easier to accept        low T         → harder to accept
 <!-- ct319:beat -->
 ## Watch it happen at (4,8)
 
-The Search Lab has an **Anneal** mode that runs this rule on the unchanged maze. Because the acceptance draw is seeded, the same seed replays the same run every time, so the demonstration is reproducible rather than lucky.
+The Search Lab has an **Anneal** mode that runs this rule on the unchanged maze.
+
+**Seeded** is worth a reminder from Week 2. The accept-or-reject draw is random, but the randomness comes from a generator started at a fixed number — the *seed*. The same seed always produces the same sequence of draws, and therefore the same run, move for move. Change the seed and you get a different run of the same algorithm. So a seeded run is reproducible rather than lucky: what you see again is the mechanism, not one fortunate outcome.
 
 With the default seed `743` and the Week 2 successor order, the run descends to `(4,8)` in fourteen steps — arriving at the exact Week 4 trap — and then meets the same two worse-looking moves. It refuses one and takes the other.
 
@@ -385,13 +410,13 @@ With the default seed `743` and the Week 2 successor order, the run descends to 
 | ![At (4,8) the lab proposes UP to (3,8), delta plus one, and rejects it](../../media/week-05/anneal-reject-4-8.png) | ![At (4,8) the lab proposes LEFT to (4,7), delta plus one, and accepts it](../../media/week-05/anneal-accept-4-8.png) |
 | `UP → (3,8)`, `Δ = +1`, `T = 2.10`, `P = 0.622`, draw `0.831` → **reject** | `LEFT → (4,7)`, `Δ = +1`, `T = 1.98`, `P = 0.603`, draw `0.198` → **accept** |
 
-<sub><em>Figure 13. Two consecutive steps at the same state, under almost the same temperature and almost the same probability. The rule is not “accept worse moves”; it is “accept a worse move with a controlled probability”. Screenshots created for these pages from the Search Lab; no external image licence is used.</em></sub>
+<sub><em>Figure 14. Two consecutive steps at the same state, under almost the same temperature and almost the same probability. The rule is not “accept worse moves”; it is “accept a worse move with a controlled probability”. Screenshots created for these pages from the Search Lab; no external image licence is used.</em></sub>
 
 The accepted move is `LEFT → (4,7)` — precisely the move Week 4's strict rule rejected. From there the run continues `(5,7) → (6,7) → (6,8)` and finishes.
 
 ![The completed annealing run: goal reached in 16 moves with one worse move accepted](../../media/week-05/anneal-complete.png "wide")
 
-<sub><em>Figure 14. The same seeded run reaches `(6,8)` in 16 moves, having accepted exactly one worse move and rejected seven others along the way. On the same maze, the strict rule that enters `(4,8)` stops there permanently. Screenshot created for these pages from the Search Lab; no external image licence is used.</em></sub>
+<sub><em>Figure 15. The same seeded run reaches `(6,8)` in 16 moves, having accepted exactly one worse move and rejected seven others along the way. On the same maze, the strict rule that enters `(4,8)` stops there permanently. Screenshot created for these pages from the Search Lab; no external image licence is used.</em></sub>
 
 > [!IMPORTANT]
 > **In this maze every legal move changes `h` by exactly one.**
@@ -429,7 +454,7 @@ All three methods this week attack the same failure, and each changes exactly on
 
 ![From a stuck hill climber, three routes: START to random restart, NEIGHBOURHOOD to VNS, ACCEPTANCE to simulated annealing](../../media/week-05/three-escapes.svg "hero")
 
-<sub><em>Figure 15. Each method changes one of the three design choices and leaves the other two alone. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 16. Each method changes one of the three design choices and leaves the other two alone. Diagram created for these pages; no external image licence is used.</em></sub>
 
 **`START`** — begin from a different initial candidate, and keep the best result across runs. The rule that climbs is untouched. This is *random-restart hill climbing*.
 
@@ -445,12 +470,9 @@ The comparison worth holding on to is not a ranking. It is that one broad proble
 
 Every method on this page keeps **one current candidate** at the centre of the search.
 
-```text
-hill climbing         one current solution
-random restart        one current solution at a time, repeated
-VNS                   one current solution, two neighbourhoods
-simulated annealing   one current solution, a softer acceptance rule
-```
+![Four methods on the same rugged landscape](../../media/week-05/four-methods-landscape.svg "hero")
+
+<sub><em>Figure 17. The same profile four times. Hill climbing stops in the first basin; random restart runs the same rule from three starts and keeps the best; VNS reaches past the ridge from where it is stuck; annealing climbs out and settles as it cools. Each keeps exactly one current candidate. Diagram created for these pages; no external image licence is used.</em></sub>
 
 That is what makes them trajectory methods: a single path through the search space, one candidate handed to the next.
 
@@ -531,15 +553,15 @@ No external images, videos, papers or interactives are used: the recurring maze,
 
 - 🧪 [**Search Lab**](../../search-lab/) — the same artefact used in Weeks 3 and 4, extended this week with an **Anneal** mode:
   - one legal neighbour proposed per step, with the current state, current `h`, candidate state, candidate `h`, `Δ`, temperature, `P(accept)`, the random draw and the accept/reject result all displayed
-  - a seeded generator and a fixed cooling schedule, so a given seed replays the same run for a classroom demonstration; the seed is editable on the page
+  - a seeded generator and a fixed cooling schedule, so a given seed replays the same run exactly; the seed is editable on the page
   - a `COOLED WITHOUT REACHING THE GOAL` outcome when a run exhausts its step budget
 
   The lab remains a maze visualiser. Knapsack neighbourhoods and VNS are taught with Figures 3 and 4 rather than forced into the maze interface.
 
-### Classroom experiment
+### Try it yourself
 
 1. Select **Anneal** and keep the default maze, the order `UP → DOWN → LEFT → RIGHT` and seed `743`.
 2. Step fourteen times. The current state is `(4,8)`, `h = 2` — the Week 4 stopping point.
 3. Step once for the rejected proposal, once more for the accepted one, then run to the goal.
 4. Switch to **Hill climb** with the order `UP → RIGHT → DOWN → LEFT`: same maze, same heuristic, different acceptance rule, different outcome.
-5. Change the seed and re-run, to show the mechanism is general and the particular run is not.
+5. Change the seed and re-run: the mechanism is general, the particular run is not.
