@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="556" viewBox="0 0 960 556" role="img" aria-labelledby="t d">
+  <title id="t">What simulated annealing does</title>
+  <desc id="d">A rugged profile of h with three basins. A strictly improving run slides into the first basin and stops. Simulated annealing accepts some worse moves, so early on it climbs back out over the ridge while the temperature is high, wanders across the middle, and as the temperature falls it settles into the deepest basin on the right. The rule is: a better move is always accepted, a worse move is accepted with a probability that falls as the temperature falls.</desc>
+
+  <style>
+    :root {
+      --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --card:#ffffff;
+      --good:#1a7f37; --goodbg:#dafbe1;
+      --bad:#cf222e;  --badbg:#ffebe9;
+      --purple:#8250df; --purplebg:#f5eeff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --card:#0d1117;
+        --good:#3fb950; --goodbg:#0f2916;
+        --bad:#f85149;  --badbg:#2b1113;
+        --purple:#a371f7; --purplebg:#1d162b; }
+    }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab   { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .node  { font-size:14px; font-weight:700; }
+    .role  { font-size:12.5px; fill:var(--muted); }
+    .note  { font-size:13.5px; fill:var(--muted); }
+    .warn  { font-size:13.5px; font-weight:700; fill:var(--bad); }
+    .okt   { font-size:13.5px; font-weight:700; fill:var(--good); }
+    .mono  { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:15px; font-weight:700; }
+    .monos { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px; }
+    .start { fill:var(--panel); stroke:var(--accent); stroke-width:2; }
+    .optA  { fill:var(--badbg);  stroke:var(--bad);  stroke-width:2.6; }
+    .optC  { fill:var(--goodbg); stroke:var(--good); stroke-width:2.6; }
+    .edge  { stroke:var(--muted); stroke-width:2.2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .dup   { stroke:var(--bad); stroke-width:2.4; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .okedge{ stroke:var(--good); stroke-width:2.6; fill:none; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:6 4; }
+    .dot   { fill:var(--panel); stroke:var(--accent); stroke-width:1.6; }
+    .funnel{ fill:var(--badbg); stroke:var(--bad); stroke-width:1.6; stroke-dasharray:5 4; }
+    .box   { fill:var(--card); stroke:var(--bad); stroke-width:2.6; }
+    .slot  { fill:var(--card); stroke:var(--line); stroke-width:1.8; }
+    .slotOn{ fill:var(--goodbg); stroke:var(--good); stroke-width:2.4; }
+    .cur   { fill:var(--panel); stroke:var(--accent); stroke-width:3; }
+    .panelbox { fill:var(--panel); stroke:var(--line); stroke-width:1.6; }
+    .rule  { stroke:var(--line); stroke-width:1.2; fill:none; }
+  </style>
+  <rect width="960" height="556" rx="18" fill="var(--bg)"/>
+
+  <text class="lab" x="30" y="40">SIMULATED ANNEALING &#183; ACCEPT SOME WORSE MOVES, AND FEWER AS YOU GO</text>
+  <text class="role" x="30" y="112">higher h</text>
+  <path class="rule" d="M92 330 H900"/>
+  <text class="role" x="84" y="335" text-anchor="end">better</text>
+  <path d="M92.0 117.5 L94.7 116.9 L97.4 116.5 L100.1 116.2 L102.8 116.0 L105.5 116.0 L108.2 116.3 L110.9 116.7 L113.6 117.3 L116.3 118.1 L119.0 119.2 L121.7 120.5 L124.4 122.0 L127.1 123.6 L129.8 125.5 L132.5 127.6 L135.2 129.8 L137.9 132.2 L140.6 134.7 L143.3 137.3 L146.0 139.9 L148.7 142.7 L151.5 145.5 L154.2 148.3 L156.9 151.1 L159.6 153.9 L162.3 156.7 L165.0 159.4 L167.7 162.1 L170.4 164.7 L173.1 167.2 L175.8 169.7 L178.5 172.0 L181.2 174.3 L183.9 176.5 L186.6 178.6 L189.3 180.6 L192.0 182.6 L194.7 184.5 L197.4 186.4 L200.1 188.2 L202.8 190.0 L205.5 191.8 L208.2 193.6 L210.9 195.3 L213.6 197.1 L216.3 198.9 L219.0 200.7 L221.7 202.5 L224.4 204.3 L227.1 206.1 L229.8 207.8 L232.5 209.6 L235.2 211.4 L237.9 213.1 L240.6 214.7 L243.3 216.3 L246.0 217.8 L248.7 219.2 L251.4 220.4 L254.1 221.4 L256.8 222.3 L259.5 223.0 L262.2 223.4 L264.9 223.6 L267.7 223.6 L270.4 223.2 L273.1 222.6 L275.8 221.7 L278.5 220.5 L281.2 219.0 L283.9 217.2 L286.6 215.1 L289.3 212.7 L292.0 210.1 L294.7 207.2 L297.4 204.1 L300.1 200.8 L302.8 197.3 L305.5 193.6 L308.2 189.9 L310.9 186.1 L313.6 182.2 L316.3 178.3 L319.0 174.4 L321.7 170.6 L324.4 166.9 L327.1 163.3 L329.8 159.8 L332.5 156.5 L335.2 153.4 L337.9 150.6 L340.6 147.9 L343.3 145.5 L346.0 143.4 L348.7 141.5 L351.4 139.8 L354.1 138.5 L356.8 137.3 L359.5 136.4 L362.2 135.8 L364.9 135.3 L367.6 135.1 L370.3 135.0 L373.0 135.1 L375.7 135.3 L378.4 135.6 L381.2 136.0 L383.9 136.5 L386.6 137.0 L389.3 137.5 L392.0 138.1 L394.7 138.7 L397.4 139.3 L400.1 139.9 L402.8 140.4 L405.5 141.0 L408.2 141.5 L410.9 142.0 L413.6 142.5 L416.3 143.0 L419.0 143.6 L421.7 144.1 L424.4 144.8 L427.1 145.5 L429.8 146.2 L432.5 147.1 L435.2 148.1 L437.9 149.2 L440.6 150.5 L443.3 151.9 L446.0 153.5 L448.7 155.2 L451.4 157.2 L454.1 159.3 L456.8 161.6 L459.5 164.0 L462.2 166.6 L464.9 169.3 L467.6 172.2 L470.3 175.1 L473.0 178.1 L475.7 181.1 L478.4 184.2 L481.1 187.2 L483.8 190.2 L486.5 193.1 L489.2 195.8 L491.9 198.4 L494.6 200.8 L497.4 203.0 L500.1 204.9 L502.8 206.5 L505.5 207.8 L508.2 208.9 L510.9 209.5 L513.6 209.8 L516.3 209.8 L519.0 209.4 L521.7 208.7 L524.4 207.6 L527.1 206.2 L529.8 204.5 L532.5 202.5 L535.2 200.2 L537.9 197.7 L540.6 195.0 L543.3 192.1 L546.0 189.2 L548.7 186.1 L551.4 183.0 L554.1 179.8 L556.8 176.7 L559.5 173.6 L562.2 170.7 L564.9 167.9 L567.6 165.2 L570.3 162.7 L573.0 160.5 L575.7 158.4 L578.4 156.7 L581.1 155.1 L583.8 153.9 L586.5 152.9 L589.2 152.1 L591.9 151.7 L594.6 151.5 L597.3 151.5 L600.0 151.8 L602.7 152.4 L605.4 153.1 L608.1 154.0 L610.8 155.1 L613.6 156.4 L616.3 157.8 L619.0 159.3 L621.7 160.9 L624.4 162.7 L627.1 164.5 L629.8 166.4 L632.5 168.4 L635.2 170.4 L637.9 172.5 L640.6 174.7 L643.3 177.0 L646.0 179.4 L648.7 181.8 L651.4 184.3 L654.1 187.0 L656.8 189.8 L659.5 192.7 L662.2 195.8 L664.9 199.0 L667.6 202.4 L670.3 205.9 L673.0 209.7 L675.7 213.7 L678.4 217.8 L681.1 222.2 L683.8 226.7 L686.5 231.4 L689.2 236.3 L691.9 241.4 L694.6 246.6 L697.3 251.9 L700.0 257.3 L702.7 262.8 L705.4 268.3 L708.1 273.8 L710.8 279.3 L713.5 284.6 L716.2 289.9 L718.9 295.0 L721.6 299.8 L724.3 304.5 L727.1 308.8 L729.8 312.8 L732.5 316.5 L735.2 319.8 L737.9 322.6 L740.6 325.0 L743.3 327.0 L746.0 328.5 L748.7 329.5 L751.4 329.9 L754.1 329.9 L756.8 329.4 L759.5 328.5 L762.2 327.0 L764.9 325.1 L767.6 322.8 L770.3 320.0 L773.0 316.9 L775.7 313.5 L778.4 309.7 L781.1 305.7 L783.8 301.4 L786.5 296.9 L789.2 292.3 L791.9 287.5 L794.6 282.6 L797.3 277.7 L800.0 272.8 L802.7 267.9 L805.4 262.9 L808.1 258.1 L810.8 253.3 L813.5 248.6 L816.2 243.9 L818.9 239.4 L821.6 235.0 L824.3 230.7 L827.0 226.5 L829.7 222.4 L832.4 218.4 L835.1 214.5 L837.8 210.7 L840.5 206.9 L843.3 203.2 L846.0 199.6 L848.7 196.0 L851.4 192.4 L854.1 188.9 L856.8 185.3 L859.5 181.8 L862.2 178.2 L864.9 174.7 L867.6 171.2 L870.3 167.7 L873.0 164.1 L875.7 160.7 L878.4 157.2 L881.1 153.8 L883.8 150.4 L886.5 147.1 L889.2 143.9 L891.9 140.9 L894.6 137.9 L897.3 135.1 L900.0 132.4" fill="none" stroke="var(--line)" stroke-width="3"/>
+  <path d="M128.4 124.5 L172.8 167.0 L221.3 202.2 L265.7 223.6 L298.0 203.3 L276.2 221.5 L330.4 159.1 L370.0 135.0 L415.2 142.8 L471.8 176.7 L514.6 209.9 L552.6 181.6 L534.8 200.6 L576.8 157.7 L595.4 151.5 L657.6 190.6 L714.2 285.9 L752.1 330.0 L774.8 314.7 L752.1 330.0" fill="none" stroke="var(--accent)" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M265.7 223.6 L298.0 203.3 L276.2 221.5 L330.4 159.1 L370.0 135.0" fill="none" stroke="var(--bad)" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M514.6 209.9 L552.6 181.6 L534.8 200.6 L576.8 157.7 L595.4 151.5" fill="none" stroke="var(--bad)" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle class="cur" cx="128" cy="124" r="9"/>
+  <text class="role" x="128" y="106" text-anchor="middle">start</text>
+  <circle class="optA" cx="266" cy="224" r="10"/>
+  <text class="warn" x="266" y="256" text-anchor="middle">a strict rule stops here</text>
+  <text class="warn" x="370" y="119" text-anchor="middle">worse moves, accepted</text>
+  <circle class="optC" cx="752" cy="330" r="11"/>
+  <text class="okt" x="752" y="362" text-anchor="middle">settles here</text>
+  <defs><linearGradient id="temp" x1="0" x2="1"><stop offset="0" stop-color="var(--bad)"/><stop offset="1" stop-color="var(--accent)"/></linearGradient></defs>
+  <rect x="92" y="386" width="808" height="14" rx="7" fill="url(#temp)" opacity="0.85"/>
+  <text class="role" x="92" y="420">hot &#8212; worse moves accepted often</text>
+  <text class="role" x="900" y="420" text-anchor="end">cold &#8212; almost never</text>
+  <text class="note" x="496" y="376" text-anchor="middle">temperature falls as the run goes on</text>
+  <path class="rule" d="M30 448 H930"/>
+  <text class="note" x="30" y="474">A better move is always accepted. A worse move is accepted <tspan font-style="italic">sometimes</tspan> &#8212; with a probability that falls as the temperature falls.</text>
+  <text class="note" x="30" y="498">Early on that buys escape from a basin like the first one. Later it stops, so the run can settle instead of wandering forever.</text>
+  <text class="note" x="30" y="522">Accept every worse move and the heuristic is discarded; accept none and this is strict hill climbing again.</text>
+</svg>
