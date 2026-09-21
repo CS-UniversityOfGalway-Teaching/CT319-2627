@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="688" height="620" viewBox="0 0 688 620" role="img" aria-labelledby="t d">
+  <title id="t">Stuck at (4,8): every legal move makes h worse</title>
+  <desc id="d">The Week 2 maze with the Manhattan heuristic on every open cell. The current state (4,8) has h of 2. Its only two legal neighbours, (3,8) above and (4,7) to the left, both have h of 3. Below is a wall, so DOWN is not a legal move, and there is no column 9. Strict hill climbing therefore stops, even though the goal at (6,8) has h of 0.</desc>
+
+  <style>
+    :root {
+      --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --card:#ffffff;
+      --wall:#57606a; --good:#1a7f37; --bad:#cf222e;
+      --goodbg:#e8f5ec; --badbg:#fdeceb; --accbg:#ddeeff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --card:#0d1117;
+        --wall:#6e7681; --good:#3fb950; --bad:#f85149;
+        --goodbg:#10261a; --badbg:#2b1416; --accbg:#10263c; }
+    }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .axis { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:15px; font-weight:700; fill:var(--muted); }
+    .cell { fill:var(--card); stroke:var(--line); stroke-width:1.5; }
+    .wall { fill:var(--wall); stroke:var(--wall); stroke-width:1.5; }
+    .cur  { fill:var(--accbg); stroke:var(--accent); stroke-width:3; }
+    .okc  { fill:var(--goodbg); stroke:var(--good); stroke-width:3; }
+    .badc { fill:var(--badbg); stroke:var(--bad); stroke-width:3; }
+    .hval { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:15px; fill:var(--muted); }
+    .hbig { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:17px; font-weight:700; }
+    .mark { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px; font-weight:700; }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .legend { font-size:13px; fill:var(--muted); }
+    .route { stroke:var(--accent); stroke-width:3.4; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .routeBad { stroke:var(--bad); stroke-width:3.8; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  </style>
+
+  <rect width="688" height="620" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="40">STUCK AT (4,8) &#183; EVERY LEGAL MOVE MAKES h WORSE</text>
+  <text class="axis" x="115" y="64" text-anchor="middle">0</text>
+  <text class="axis" x="173" y="64" text-anchor="middle">1</text>
+  <text class="axis" x="231" y="64" text-anchor="middle">2</text>
+  <text class="axis" x="289" y="64" text-anchor="middle">3</text>
+  <text class="axis" x="347" y="64" text-anchor="middle">4</text>
+  <text class="axis" x="405" y="64" text-anchor="middle">5</text>
+  <text class="axis" x="463" y="64" text-anchor="middle">6</text>
+  <text class="axis" x="521" y="64" text-anchor="middle">7</text>
+  <text class="axis" x="579" y="64" text-anchor="middle">8</text>
+  <text class="axis" x="70" y="112" text-anchor="end">0</text>
+  <text class="axis" x="70" y="170" text-anchor="end">1</text>
+  <text class="axis" x="70" y="228" text-anchor="end">2</text>
+  <text class="axis" x="70" y="286" text-anchor="end">3</text>
+  <text class="axis" x="70" y="344" text-anchor="end">4</text>
+  <text class="axis" x="70" y="402" text-anchor="end">5</text>
+  <text class="axis" x="70" y="460" text-anchor="end">6</text>
+  <rect class="cell" x="86" y="78" width="58" height="58" rx="6"/>
+  <text class="hval" x="115" y="113" text-anchor="middle">14</text>
+  <rect class="cell" x="144" y="78" width="58" height="58" rx="6"/>
+  <text class="hval" x="173" y="113" text-anchor="middle">13</text>
+  <rect class="wall" x="202" y="78" width="58" height="58" rx="6"/>
+  <rect class="cell" x="260" y="78" width="58" height="58" rx="6"/>
+  <text class="hval" x="289" y="113" text-anchor="middle">11</text>
+  <rect class="cell" x="318" y="78" width="58" height="58" rx="6"/>
+  <text class="hval" x="347" y="113" text-anchor="middle">10</text>
+  <rect class="cell" x="376" y="78" width="58" height="58" rx="6"/>
+  <text class="hval" x="405" y="113" text-anchor="middle">9</text>
+  <rect class="cell" x="434" y="78" width="58" height="58" rx="6"/>
+  <text class="hval" x="463" y="113" text-anchor="middle">8</text>
+  <rect class="cell" x="492" y="78" width="58" height="58" rx="6"/>
+  <text class="hval" x="521" y="113" text-anchor="middle">7</text>
+  <rect class="cell" x="550" y="78" width="58" height="58" rx="6"/>
+  <text class="hval" x="579" y="113" text-anchor="middle">6</text>
+  <rect class="wall" x="86" y="136" width="58" height="58" rx="6"/>
+  <rect class="cell" x="144" y="136" width="58" height="58" rx="6"/>
+  <text class="hval" x="173" y="171" text-anchor="middle">12</text>
+  <rect class="wall" x="202" y="136" width="58" height="58" rx="6"/>
+  <rect class="cell" x="260" y="136" width="58" height="58" rx="6"/>
+  <text class="hval" x="289" y="171" text-anchor="middle">10</text>
+  <rect class="wall" x="318" y="136" width="58" height="58" rx="6"/>
+  <rect class="wall" x="376" y="136" width="58" height="58" rx="6"/>
+  <rect class="wall" x="434" y="136" width="58" height="58" rx="6"/>
+  <rect class="cell" x="492" y="136" width="58" height="58" rx="6"/>
+  <text class="hval" x="521" y="171" text-anchor="middle">6</text>
+  <rect class="wall" x="550" y="136" width="58" height="58" rx="6"/>
+  <rect class="cell" x="86" y="194" width="58" height="58" rx="6"/>
+  <text class="hval" x="115" y="229" text-anchor="middle">12</text>
+  <rect class="cell" x="144" y="194" width="58" height="58" rx="6"/>
+  <text class="hval" x="173" y="229" text-anchor="middle">11</text>
+  <rect class="cell" x="202" y="194" width="58" height="58" rx="6"/>
+  <text class="hval" x="231" y="229" text-anchor="middle">10</text>
+  <rect class="cell" x="260" y="194" width="58" height="58" rx="6"/>
+  <text class="hval" x="289" y="229" text-anchor="middle">9</text>
+  <rect class="cell" x="318" y="194" width="58" height="58" rx="6"/>
+  <text class="hval" x="347" y="229" text-anchor="middle">8</text>
+  <rect class="cell" x="376" y="194" width="58" height="58" rx="6"/>
+  <text class="hval" x="405" y="229" text-anchor="middle">7</text>
+  <rect class="wall" x="434" y="194" width="58" height="58" rx="6"/>
+  <rect class="cell" x="492" y="194" width="58" height="58" rx="6"/>
+  <text class="hval" x="521" y="229" text-anchor="middle">5</text>
+  <rect class="cell" x="550" y="194" width="58" height="58" rx="6"/>
+  <text class="hval" x="579" y="229" text-anchor="middle">4</text>
+  <rect class="cell" x="86" y="252" width="58" height="58" rx="6"/>
+  <text class="hval" x="115" y="287" text-anchor="middle">11</text>
+  <rect class="wall" x="144" y="252" width="58" height="58" rx="6"/>
+  <rect class="wall" x="202" y="252" width="58" height="58" rx="6"/>
+  <rect class="wall" x="260" y="252" width="58" height="58" rx="6"/>
+  <rect class="wall" x="318" y="252" width="58" height="58" rx="6"/>
+  <rect class="cell" x="376" y="252" width="58" height="58" rx="6"/>
+  <text class="hval" x="405" y="287" text-anchor="middle">6</text>
+  <rect class="wall" x="434" y="252" width="58" height="58" rx="6"/>
+  <rect class="wall" x="492" y="252" width="58" height="58" rx="6"/>
+  <rect class="badc" x="550" y="252" width="58" height="58" rx="6"/>
+  <text class="hbig" x="579" y="287" text-anchor="middle" fill="var(--bad)">3</text>
+  <rect class="cell" x="86" y="310" width="58" height="58" rx="6"/>
+  <text class="hval" x="115" y="345" text-anchor="middle">10</text>
+  <rect class="cell" x="144" y="310" width="58" height="58" rx="6"/>
+  <text class="hval" x="173" y="345" text-anchor="middle">9</text>
+  <rect class="cell" x="202" y="310" width="58" height="58" rx="6"/>
+  <text class="hval" x="231" y="345" text-anchor="middle">8</text>
+  <rect class="cell" x="260" y="310" width="58" height="58" rx="6"/>
+  <text class="hval" x="289" y="345" text-anchor="middle">7</text>
+  <rect class="wall" x="318" y="310" width="58" height="58" rx="6"/>
+  <rect class="cell" x="376" y="310" width="58" height="58" rx="6"/>
+  <text class="hval" x="405" y="345" text-anchor="middle">5</text>
+  <rect class="cell" x="434" y="310" width="58" height="58" rx="6"/>
+  <text class="hval" x="463" y="345" text-anchor="middle">4</text>
+  <rect class="badc" x="492" y="310" width="58" height="58" rx="6"/>
+  <text class="hbig" x="521" y="345" text-anchor="middle" fill="var(--bad)">3</text>
+  <rect class="cur" x="550" y="310" width="58" height="58" rx="6"/>
+  <text class="hbig" x="579" y="345" text-anchor="middle" fill="var(--accent)">2</text>
+  <rect class="wall" x="86" y="368" width="58" height="58" rx="6"/>
+  <rect class="wall" x="144" y="368" width="58" height="58" rx="6"/>
+  <rect class="wall" x="202" y="368" width="58" height="58" rx="6"/>
+  <rect class="cell" x="260" y="368" width="58" height="58" rx="6"/>
+  <text class="hval" x="289" y="403" text-anchor="middle">6</text>
+  <rect class="wall" x="318" y="368" width="58" height="58" rx="6"/>
+  <rect class="wall" x="376" y="368" width="58" height="58" rx="6"/>
+  <rect class="wall" x="434" y="368" width="58" height="58" rx="6"/>
+  <rect class="cell" x="492" y="368" width="58" height="58" rx="6"/>
+  <text class="hval" x="521" y="403" text-anchor="middle">2</text>
+  <rect class="wall" x="550" y="368" width="58" height="58" rx="6"/>
+  <rect class="cell" x="86" y="426" width="58" height="58" rx="6"/>
+  <text class="hval" x="115" y="461" text-anchor="middle">8</text>
+  <rect class="cell" x="144" y="426" width="58" height="58" rx="6"/>
+  <text class="hval" x="173" y="461" text-anchor="middle">7</text>
+  <rect class="cell" x="202" y="426" width="58" height="58" rx="6"/>
+  <text class="hval" x="231" y="461" text-anchor="middle">6</text>
+  <rect class="cell" x="260" y="426" width="58" height="58" rx="6"/>
+  <text class="hval" x="289" y="461" text-anchor="middle">5</text>
+  <rect class="cell" x="318" y="426" width="58" height="58" rx="6"/>
+  <text class="hval" x="347" y="461" text-anchor="middle">4</text>
+  <rect class="cell" x="376" y="426" width="58" height="58" rx="6"/>
+  <text class="hval" x="405" y="461" text-anchor="middle">3</text>
+  <rect class="cell" x="434" y="426" width="58" height="58" rx="6"/>
+  <text class="hval" x="463" y="461" text-anchor="middle">2</text>
+  <rect class="cell" x="492" y="426" width="58" height="58" rx="6"/>
+  <text class="hval" x="521" y="461" text-anchor="middle">1</text>
+  <rect class="okc" x="550" y="426" width="58" height="58" rx="6"/>
+  <text class="hbig" x="579" y="461" text-anchor="middle" fill="var(--good)">0</text>
+
+  <path class="routeBad" d="M579 315 V307"/>
+  <path class="routeBad" d="M572 317 L579 307 L586 317"/>
+  <path class="routeBad" d="M555 339 H547"/>
+  <path class="routeBad" d="M557 332 L547 339 L557 346"/>
+  <text class="mark" x="579" y="402" text-anchor="middle" fill="var(--bg)">wall</text>
+  <text class="mark" x="579" y="477" text-anchor="middle" fill="var(--good)">goal</text>
+
+  <text class="legend" x="30" y="518">Each open cell shows h, the Manhattan distance to the goal. Lower is better.</text>
+  <text class="legend" x="30" y="540">(4,8) has h = 2. Both legal neighbours have h = 3; DOWN is a wall and there is no column 9.</text>
+  <text class="legend" x="30" y="562">No neighbour is strictly better, so the strict rule stops here &#8212; with the goal four moves away.</text>
+</svg>

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="450" viewBox="0 0 960 450" role="img" aria-labelledby="t d">
+  <title id="t">A local optimum is not a global optimum</title>
+  <desc id="d">A profile of h across the search space, drawn as a valley because lower h is better. The search sits at the floor of a shallow basin at h equals 2, which is state (4,8): both of its neighbours stand at h equals 3, so nothing immediately around it is better. A deeper valley further along reaches h equals zero at the goal (6,8). Being the best point in the basin says nothing about the rest of the space.</desc>
+  <style>
+    :root {
+      --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --card:#ffffff;
+      --goal:#1a7f37; --goalbg:#dafbe1;
+      --bad:#cf222e;  --badbg:#ffebe9;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --card:#0d1117;
+        --goal:#3fb950; --goalbg:#0f2916;
+        --bad:#f85149;  --badbg:#2b1113; }
+    }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .axis { font-size:13px; font-weight:600; fill:var(--muted); }
+    .name { font-size:15px; font-weight:700; }
+    .role { font-size:13px; fill:var(--muted); }
+    .here { font-size:13px; font-weight:700; fill:var(--accent); }
+    .badt { font-size:13px; font-weight:700; fill:var(--bad); }
+    .foot { font-size:14px; fill:var(--muted); }
+    .mono { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px; font-weight:700; }
+    .grid { stroke:var(--line); stroke-width:1.2; stroke-dasharray:3 7; fill:none; }
+    .lead { stroke:var(--line); stroke-width:1.4; fill:none; }
+    .curve   { stroke:var(--accent); stroke-width:3.4; fill:none; stroke-linecap:round; }
+    .refused { stroke:var(--bad);    stroke-width:4.2; fill:none; stroke-linecap:round; }
+    .span  { stroke:var(--bad); stroke-width:1.6; fill:none; }
+    .mkCur { fill:var(--accent); stroke:var(--accent); stroke-width:3; }
+    .mkBad { fill:var(--badbg);  stroke:var(--bad);  stroke-width:3; }
+    .mkG   { fill:var(--goalbg); stroke:var(--goal); stroke-width:3; }
+  </style>
+
+  <rect width="960" height="450" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="38">BEST NEARBY IS NOT BEST OVERALL &#183; LOWER h IS BETTER, SO THE TRAP IS A VALLEY FLOOR</text>
+
+  <text class="axis" x="80" y="104">higher h</text>
+  <path class="grid" d="M70 336 H916"/>
+  <text class="axis" x="62" y="341" text-anchor="end">h = 0</text>
+  <path class="grid" d="M70 250 H916"/>
+  <text class="axis" x="62" y="255" text-anchor="end">h = 2</text>
+  <path class="grid" d="M70 207 H916"/>
+  <text class="axis" x="62" y="212" text-anchor="end">h = 3</text>
+
+  <path class="curve" d="M84 126 C140 168 186 196 232 207"/>
+  <path class="refused" d="M232 207 C268 216 296 238 320 250"/>
+  <path class="refused" d="M320 250 C344 238 372 216 408 207"/>
+  <path class="curve" d="M408 207 C452 196 486 172 518 150"/>
+  <path class="curve" d="M518 150 C566 186 604 246 648 290 C688 328 740 336 800 336 C840 336 872 336 900 336"/>
+
+  <path class="span" d="M232 188 V198"/>
+  <path class="span" d="M408 188 V198"/>
+  <path class="span" d="M232 193 H408"/>
+  <text class="badt" x="320" y="180" text-anchor="middle">both neighbours stand at h = 3</text>
+  <text class="badt" x="320" y="162" text-anchor="middle">nothing immediately around it is better</text>
+
+  <circle class="mkBad" cx="232" cy="207" r="10"/>
+  <circle class="mkBad" cx="408" cy="207" r="10"/>
+  <circle class="mkCur" cx="320" cy="250" r="12"/>
+  <circle class="mkG"   cx="800" cy="336" r="12"/>
+
+  <text class="here" x="320" y="288" text-anchor="middle">you are here</text>
+  <text class="name" x="320" y="310" text-anchor="middle">local minimum</text>
+  <text class="mono" x="320" y="330" text-anchor="middle" fill="var(--accent)">(4,8) &#183; h = 2</text>
+
+  <path class="lead" d="M800 322 V300"/>
+  <text class="name" x="800" y="290" text-anchor="middle">global minimum</text>
+  <text class="role" x="800" y="270" text-anchor="middle">best in the whole search space</text>
+  <text class="mono" x="800" y="250" text-anchor="middle" fill="var(--goal)">(6,8) &#183; h = 0</text>
+
+  <path d="M30 396 H930" stroke="var(--line)" stroke-width="1.2" fill="none"/>
+  <text class="foot" x="30" y="419">&#8220;No better neighbour exists&#8221; is a claim about the red span only. It says nothing about the valley further along.</text>
+</svg>
