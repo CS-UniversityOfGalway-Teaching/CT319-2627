@@ -23,7 +23,7 @@ We work through six things.
 
 * We then leave the maze for [**a second problem**](#a-second-problem-and-a-decision-to-make) — a route between two Galway hospitals — and choose an algorithm for it together.
 
-* Finally we meet the rule none of our algorithms use: [**choosing by cost**](#choosing-by-cost-instead-of-by-depth), why it returns the cheapest route, and what it pays for that.
+* Finally we meet [**uniform-cost search**](#uniform-cost-search--choosing-by-cost-instead-of-by-depth), the rule none of our algorithms use — why it returns the cheapest route, and what it pays for that.
 
 Three ideas carry the page, and it is worth keeping them apart:
 
@@ -716,13 +716,13 @@ We spent the week building a rule that follows an estimate downhill. This proble
 The question worth settling is not which algorithm is best in general. It is what a problem has to give you before the question can be asked at all.
 
 <!-- ct319:beat -->
-## Choosing by cost instead of by depth
+## Uniform-cost search — choosing by cost instead of by depth
 
 Week 3 left us with one idea and three words for it: the **frontier** holds the paths that have been discovered but not yet examined, and a **strategy** is the rule that decides which of them gets attention next.
 
 Breadth-first search takes the oldest waiting path. Depth-first search takes the newest. Neither rule ever looks at what a path costs — which is why neither returns the cheapest route on a graph where the roads are not all the same.
 
-There is a third rule, and it takes one line to say:
+**Uniform-cost search** uses a third rule, and the whole of it fits on one line:
 
 <!-- ct319:focus -->
 
@@ -730,7 +730,7 @@ There is a third rule, and it takes one line to say:
 
 <!-- ct319:endfocus -->
 
-That is **uniform-cost search**. It appeared in the Week 3 list of blind-search methods we did not develop, and it is the same algorithm published by Edsger Dijkstra in 1959 for exactly this problem.
+It appeared in the Week 3 list of blind-search methods we did not develop, and it is the same algorithm published by Edsger Dijkstra in 1959 for exactly this problem.
 
 ![One search loop with three different rules for what comes off the frontier](../../media/week-04/one-loop-three-rules.svg "hero")
 
