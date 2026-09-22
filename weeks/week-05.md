@@ -361,22 +361,11 @@ Early, while the temperature is high, that willingness buys escape from whatever
 <!-- ct319:beat -->
 ## Temperature controls the willingness
 
-The formal notes motivate that control with the slow cooling of metal. The useful part for us is the behaviour it describes:
+The formal notes motivate that control with the slow cooling of metal. The useful part for us is the behaviour it describes — the same problem, searched with three different willingnesses:
 
-```text
-HIGH TEMPERATURE
-more exploratory · a worse move is often accepted
+![What the temperature controls](../../media/week-05/temperature-controls.svg "hero")
 
-        ↓
-
-MEDIUM TEMPERATURE
-some willingness to worsen remains
-
-        ↓
-
-LOW TEMPERATURE
-conservative · mostly prefers improvement
-```
+<sub><em>Figure 14. One profile, three temperatures. Hot, the search accepts worse moves and climbs out of two basins in turn. Cooler, it will still cross a small ridge but refuses a large one. Cold, it refuses to worsen at all and settles where it stands. Nothing about the problem changes between the panels. Diagram created for these pages; no external image licence is used.</em></sub>
 
 Early in the search a substantial decrease in value can be tolerated. Later, less. Near the end, almost none — and the method behaves much like strict hill climbing again.
 
@@ -389,12 +378,16 @@ Early in the search a substantial decrease in value can be tolerated. Later, les
 >
 > where `Δ` is how much worse the candidate is and `T` is the current temperature. Larger worsening is less likely to be accepted; higher temperature makes worsening more likely to be accepted. You do not need to derive this expression to read the behaviour off the run.
 
-Two relationships are enough:
+<!-- ct319:focus -->
 
-```text
-small penalty → easier to accept        large penalty → harder to accept
-high T        → easier to accept        low T         → harder to accept
-```
+Two relationships are enough, and both knobs push the same way.
+
+<div class="lenses lenses--pair">
+<div class="lens"><span class="lens__key">Easier to accept a worse move</span><span class="lens__gloss">a <strong>small</strong> penalty — the candidate is only a little worse<br>a <strong>high</strong> temperature — early in the run</span></div>
+<div class="lens"><span class="lens__key">Harder to accept a worse move</span><span class="lens__gloss">a <strong>large</strong> penalty — the candidate is much worse<br>a <strong>low</strong> temperature — late in the run</span></div>
+</div>
+
+<!-- ct319:endfocus -->
 
 <!-- ct319:beat -->
 ## Watch it happen at (4,8)
@@ -410,13 +403,13 @@ With the default seed `743` and the Week 2 successor order, the run descends to 
 | ![At (4,8) the lab proposes UP to (3,8), delta plus one, and rejects it](../../media/week-05/anneal-reject-4-8.png) | ![At (4,8) the lab proposes LEFT to (4,7), delta plus one, and accepts it](../../media/week-05/anneal-accept-4-8.png) |
 | `UP → (3,8)`, `Δ = +1`, `T = 2.10`, `P = 0.622`, draw `0.831` → **reject** | `LEFT → (4,7)`, `Δ = +1`, `T = 1.98`, `P = 0.603`, draw `0.198` → **accept** |
 
-<sub><em>Figure 14. Two consecutive steps at the same state, under almost the same temperature and almost the same probability. The rule is not “accept worse moves”; it is “accept a worse move with a controlled probability”. Screenshots created for these pages from the Search Lab; no external image licence is used.</em></sub>
+<sub><em>Figure 15. Two consecutive steps at the same state, under almost the same temperature and almost the same probability. The rule is not “accept worse moves”; it is “accept a worse move with a controlled probability”. Screenshots created for these pages from the Search Lab; no external image licence is used.</em></sub>
 
 The accepted move is `LEFT → (4,7)` — precisely the move Week 4's strict rule rejected. From there the run continues `(5,7) → (6,7) → (6,8)` and finishes.
 
 ![The completed annealing run: goal reached in 16 moves with one worse move accepted](../../media/week-05/anneal-complete.png "wide")
 
-<sub><em>Figure 15. The same seeded run reaches `(6,8)` in 16 moves, having accepted exactly one worse move and rejected seven others along the way. On the same maze, the strict rule that enters `(4,8)` stops there permanently. Screenshot created for these pages from the Search Lab; no external image licence is used.</em></sub>
+<sub><em>Figure 16. The same seeded run reaches `(6,8)` in 16 moves, having accepted exactly one worse move and rejected seven others along the way. On the same maze, the strict rule that enters `(4,8)` stops there permanently. Screenshot created for these pages from the Search Lab; no external image licence is used.</em></sub>
 
 > [!IMPORTANT]
 > **In this maze every legal move changes `h` by exactly one.**
@@ -426,14 +419,20 @@ The accepted move is `LEFT → (4,7)` — precisely the move Week 4's strict rul
 <!-- ct319:beat -->
 ## Can it still fail?
 
-Yes, and it is worth saying so plainly.
+Yes, and it is worth saying so plainly. The sequence of temperatures is the **cooling schedule**, and choosing one is itself a trade-off.
 
-```text
-cool too quickly → becomes greedy early → may still get stuck
-cool more slowly → explores longer      → costs more computation
-```
+<!-- ct319:focus -->
 
-The sequence of temperatures is the **cooling schedule**, and no single schedule is best for every problem. A run can also spend its budget in poor regions, or cool without ever reaching the goal — the Search Lab reports exactly that when it happens.
+There is no setting that avoids both costs.
+
+<div class="lenses lenses--pair">
+<div class="lens"><span class="lens__key">Cool too quickly</span><span class="lens__gloss">the search becomes greedy early, and may still get stuck</span></div>
+<div class="lens"><span class="lens__key">Cool more slowly</span><span class="lens__gloss">the search explores for longer, and costs more computation</span></div>
+</div>
+
+<!-- ct319:endfocus -->
+
+No single schedule is best for every problem. A run can also spend its budget in poor regions, or cool without ever reaching the goal — the Search Lab reports exactly that when it happens.
 
 The claim is not that simulated annealing solves local search. It is that:
 
@@ -454,7 +453,7 @@ All three methods this week attack the same failure, and each changes exactly on
 
 ![From a stuck hill climber, three routes: START to random restart, NEIGHBOURHOOD to VNS, ACCEPTANCE to simulated annealing](../../media/week-05/three-escapes.svg "hero")
 
-<sub><em>Figure 16. Each method changes one of the three design choices and leaves the other two alone. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 17. Each method changes one of the three design choices and leaves the other two alone. Diagram created for these pages; no external image licence is used.</em></sub>
 
 **`START`** — begin from a different initial candidate, and keep the best result across runs. The rule that climbs is untouched. This is *random-restart hill climbing*.
 
@@ -472,7 +471,7 @@ Every method on this page keeps **one current candidate** at the centre of the s
 
 ![Four methods on the same rugged landscape](../../media/week-05/four-methods-landscape.svg "hero")
 
-<sub><em>Figure 17. The same profile four times. Hill climbing stops in the first basin; random restart runs the same rule from three starts and keeps the best; VNS reaches past the ridge from where it is stuck; annealing climbs out and settles as it cools. Each keeps exactly one current candidate. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 18. The same profile four times. Hill climbing stops in the first basin; random restart runs the same rule from three starts and keeps the best; VNS reaches past the ridge from where it is stuck; annealing climbs out and settles as it cools. Each keeps exactly one current candidate. Diagram created for these pages; no external image licence is used.</em></sub>
 
 That is what makes them trajectory methods: a single path through the search space, one candidate handed to the next.
 
