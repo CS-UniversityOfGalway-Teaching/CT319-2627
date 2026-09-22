@@ -11,7 +11,7 @@ Week 3 gave the machine two systematic ways to organise ignorance: BFS preferred
 
 This week we add that missing hint. It provides guidance, not a guarantee.
 
-We work through five things.
+We work through six things.
 
 * We begin with [**heuristic information**](#a-hint--what-blind-search-was-missing). A heuristic gives the machine a cheap way to judge how promising a state appears, without already knowing the real answer.
 
@@ -21,7 +21,9 @@ We work through five things.
 
 * We then deliberately [**let the heuristic fail**](#a-useful-hint-can-still-mislead). The same maze contains a state only two rows from the goal where hill climbing can stop even though a valid route still exists.
 
-* Finally we leave the maze for [**a second problem**](#a-second-problem-and-a-decision-to-make) — a route between two Galway hospitals — and choose an algorithm for it together.
+* We then leave the maze for [**a second problem**](#a-second-problem-and-a-decision-to-make) — a route between two Galway hospitals — and choose an algorithm for it together.
+
+* Finally we meet the rule none of our algorithms use: [**choosing by cost**](#choosing-by-cost-instead-of-by-depth), why it returns the cheapest route, and what it pays for that.
 
 Three ideas carry the page, and it is worth keeping them apart:
 
@@ -713,6 +715,94 @@ We spent the week building a rule that follows an estimate downhill. This proble
 
 The question worth settling is not which algorithm is best in general. It is what a problem has to give you before the question can be asked at all.
 
+<!-- ct319:beat -->
+## Choosing by cost instead of by depth
+
+Week 3 left us with one idea and three words for it: the **frontier** holds the paths that have been discovered but not yet examined, and a **strategy** is the rule that decides which of them gets attention next.
+
+Breadth-first search takes the oldest waiting path. Depth-first search takes the newest. Neither rule ever looks at what a path costs — which is why neither returns the cheapest route on a graph where the roads are not all the same.
+
+There is a third rule, and it takes one line to say:
+
+<!-- ct319:focus -->
+
+> **Take the cheapest waiting path.**
+
+<!-- ct319:endfocus -->
+
+That is **uniform-cost search**. It appeared in the Week 3 list of blind-search methods we did not develop, and it is the same algorithm published by Edsger Dijkstra in 1959 for exactly this problem.
+
+![One search loop with three different rules for what comes off the frontier](../../media/week-04/one-loop-three-rules.svg "hero")
+
+<sub><em>Figure 10. The loop is the one Week 3 built: take a path off the frontier, test it, expand it, repeat. Breadth-first, depth-first and uniform-cost search differ only in the first step. Diagram created for these pages; no external image licence is used.</em></sub>
+
+### The change, in code
+
+Week 3 wrote breadth-first search with a queue that gives back the oldest entry:
+
+```python
+from collections import deque
+
+frontier = deque([START])
+state = frontier.popleft()      # remove the oldest waiting state
+```
+
+and depth-first search with a list that gives back the newest:
+
+```python
+frontier = [START]
+state = frontier.pop()          # remove the newest waiting state
+```
+
+Uniform-cost search stores the cost alongside the path, and uses a queue that gives back the cheapest entry:
+
+```python
+import heapq
+
+frontier = [(0, [START])]                 # (cost so far, path)
+cost, path = heapq.heappop(frontier)      # remove the cheapest waiting path
+
+for neighbour, road in roads_from(path[-1]):
+    heapq.heappush(frontier, (cost + road, path + [neighbour]))
+```
+
+Nothing else changes. The same frontier, the same expansion, the same goal test.
+
+> [!IMPORTANT]
+> **Test the goal when a path comes off the frontier, not when it goes on.**
+>
+> A path reaching the goal can be discovered long before the cheapest one is. If we stop the moment the goal appears, we return whichever route happened to be found first. Uniform-cost search only becomes correct because it waits until that path is the cheapest thing left waiting.
+
+### Why it works
+
+The argument is short enough to hold in your head.
+
+<!-- ct319:focus -->
+
+When a path comes off the frontier, it is the cheapest one waiting. Every other path still on the frontier already costs at least as much — and extending any of them only adds more road, so none of them can become cheaper later.
+
+> **So the first time a path ending at the goal is removed, no cheaper path to the goal can still be coming.**
+
+<!-- ct319:endfocus -->
+
+That argument leans on one assumption, and it is worth naming: **no road may have a negative cost**. If adding a road could reduce a total, a path waiting on the frontier could get cheaper after we had already committed, and the reasoning collapses. Distances, times and fuel are never negative, so the assumption holds here — but it is an assumption, not a law.
+
+### What it costs
+
+Uniform-cost search examines more of the graph than breadth-first search does. It has to: to know that a route is the cheapest, it must rule out the ones that looked promising and were not.
+
+That is Week 3's trade-off again, in its plainest form — **search cost** against **solution cost**. Paying more of the first is how you lower the second.
+
+<!-- ct319:focus -->
+
+### Why this matters this week
+
+Uniform-cost search uses the cost **already spent**. Our heuristic estimates the cost **still to come**. Each is half of the same question, and neither algorithm this week uses both.
+
+An algorithm that adds them together — the road behind plus the estimate ahead — is where informed search goes next. That is beyond this module, but it is worth knowing the shape of the idea: this week you have built both halves.
+
+<!-- ct319:endfocus -->
+
 <!-- ct319:endbeats -->
 
 ## Before Week 5
@@ -772,6 +862,8 @@ The **Galway hospital route example** is the worked example for both formal sear
 
 The formal treatment runs breadth-first and depth-first search over it and then delimits the search area to cut the work. This page asks a different question of the same graph — which algorithm to choose, and what the representation makes possible — so that the three algorithms built this week can be tested against a problem the maze cannot pose.
 
+**Uniform-cost search** is developed here and not in the slides, which name it once in a list of blind-search methods and move on. The route example makes the gap impossible to ignore — breadth-first search returns a route that is not the cheapest — so the rule that closes it is stated, along with the argument for why it works and the non-negative-cost assumption that argument needs. Its equivalence to Dijkstra's algorithm is noted; the priority-queue complexity is not.
+
 The travelling-salesman example and fuller knapsack treatment remain on Canvas. These pages support the live experiment rather than reproducing the complete lecture.
 
 ### Continuity from Weeks 2 and 3
@@ -797,11 +889,11 @@ The hill-climbing trap at `(4,7)` / `(4,8)` is derived from the same maze rather
 
 ### Figures
 
-Figures 1–9 were **created for these pages**. They use no external image licence.
+Figures 1–10 were **created for these pages**. They use no external image licence.
 
 Figures 4, 6 and 7 are Search Lab screenshots rendered from the exact maze and the Manhattan-distance calculation described on this page.
 
-Figure 9 redraws the formal route graph in the palette used across these pages. The junctions, roads and costs are the ones the lecture prints.
+Figure 9 redraws the formal route graph in the palette used across these pages. The junctions, roads and costs are the ones the lecture prints. Figure 10 is an original diagram.
 
 No external images, videos or papers are required for this page.
 
