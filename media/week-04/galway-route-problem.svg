@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="492" viewBox="0 0 1120 492" role="img" aria-labelledby="t d">
+  <title id="t">The UHG to Merlin Park route problem</title>
+  <desc id="d">A weighted graph of fifteen junctions labelled A to S. The start O is University Hospital Galway and the goal D is Merlin Park University Hospital. Seventeen roads carry a cost each: A-B 3, A-C 1, B-C 3, C-O 1, O-E 2, O-F 2, F-G 1, G-I 5, G-L 2, I-J 4, J-N 5, L-N 5, N-Q 4, N-S 15, Q-R 1, R-S 6, S-D 7. Four routes reach D. Nothing in the diagram says which search algorithm should be used to find one.</desc>
+  <style>
+    :root {
+      --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --card:#ffffff;
+      --good:#1a7f37; --goodbg:#dafbe1; --bad:#cf222e;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --card:#0d1117;
+        --good:#3fb950; --goodbg:#0f2916; --bad:#f85149; }
+    }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .note { font-size:13.5px; fill:var(--muted); }
+    .nd   { font-size:14px; font-weight:700; text-anchor:middle; }
+    .place{ font-size:12.5px; font-weight:700; }
+    .wt   { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px; font-weight:700; fill:var(--fg); text-anchor:middle; }
+    .road { stroke:var(--muted); stroke-width:2.4; fill:none; stroke-linecap:round; }
+    .node { fill:var(--panel); stroke:var(--line); stroke-width:2; }
+    .start{ fill:var(--panel); stroke:var(--accent); stroke-width:3.2; }
+    .goal { fill:var(--goodbg); stroke:var(--good); stroke-width:3.2; }
+    .chip { fill:var(--bg); }
+  </style>
+  <rect width="1120" height="492" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="40">TRANSFER A PATIENT FROM UHG TO MERLIN PARK &#183; WHICH ALGORITHM WOULD YOU CHOOSE?</text>
+  <text class="note" x="30" y="63">Every road carries a cost. Start at O. Reach D.</text>
+  <path class="road" d="M120 252 L150 132"/>
+  <path class="road" d="M120 252 L235 214"/>
+  <path class="road" d="M150 132 L235 214"/>
+  <path class="road" d="M235 214 L235 302"/>
+  <path class="road" d="M235 302 L170 412"/>
+  <path class="road" d="M235 302 L350 330"/>
+  <path class="road" d="M350 330 L432 330"/>
+  <path class="road" d="M432 330 L455 402"/>
+  <path class="road" d="M432 330 L520 196"/>
+  <path class="road" d="M455 402 L556 386"/>
+  <path class="road" d="M556 386 L680 214"/>
+  <path class="road" d="M520 196 L680 214"/>
+  <path class="road" d="M680 214 L830 112"/>
+  <path class="road" d="M680 214 L960 320"/>
+  <path class="road" d="M830 112 L936 146"/>
+  <path class="road" d="M936 146 L960 320"/>
+  <path class="road" d="M960 320 L1060 400"/>
+  <rect class="chip" x="142.1" y="186.6" width="15" height="18" rx="5"/>
+  <text class="wt" x="149.6" y="200.6">3</text>
+  <rect class="chip" x="165.3" y="209.8" width="15" height="18" rx="5"/>
+  <text class="wt" x="172.8" y="223.8">1</text>
+  <rect class="chip" x="195.4" y="153.2" width="15" height="18" rx="5"/>
+  <text class="wt" x="202.9" y="167.2">3</text>
+  <rect class="chip" x="212.5" y="249.0" width="15" height="18" rx="5"/>
+  <text class="wt" x="220.0" y="263.0">1</text>
+  <rect class="chip" x="182.1" y="340.4" width="15" height="18" rx="5"/>
+  <text class="wt" x="189.6" y="354.4">2</text>
+  <rect class="chip" x="288.5" y="292.4" width="15" height="18" rx="5"/>
+  <text class="wt" x="296.0" y="306.4">2</text>
+  <rect class="chip" x="383.5" y="306.0" width="15" height="18" rx="5"/>
+  <text class="wt" x="391.0" y="320.0">1</text>
+  <rect class="chip" x="450.3" y="352.4" width="15" height="18" rx="5"/>
+  <text class="wt" x="457.8" y="366.4">5</text>
+  <rect class="chip" x="456.0" y="245.8" width="15" height="18" rx="5"/>
+  <text class="wt" x="463.5" y="259.8">2</text>
+  <rect class="chip" x="500.3" y="399.8" width="15" height="18" rx="5"/>
+  <text class="wt" x="507.8" y="413.8">4</text>
+  <rect class="chip" x="598.3" y="282.2" width="15" height="18" rx="5"/>
+  <text class="wt" x="605.8" y="296.2">5</text>
+  <rect class="chip" x="594.2" y="181.1" width="15" height="18" rx="5"/>
+  <text class="wt" x="601.7" y="195.1">5</text>
+  <rect class="chip" x="739.1" y="141.6" width="15" height="18" rx="5"/>
+  <text class="wt" x="746.6" y="155.6">4</text>
+  <rect class="chip" x="803.7" y="272.0" width="22" height="18" rx="5"/>
+  <text class="wt" x="814.7" y="286.0">15</text>
+  <rect class="chip" x="880.1" y="105.7" width="15" height="18" rx="5"/>
+  <text class="wt" x="887.6" y="119.7">1</text>
+  <rect class="chip" x="925.6" y="226.0" width="15" height="18" rx="5"/>
+  <text class="wt" x="933.1" y="240.0">6</text>
+  <rect class="chip" x="993.1" y="362.7" width="15" height="18" rx="5"/>
+  <text class="wt" x="1000.6" y="376.7">7</text>
+  <circle class="node" cx="150" cy="132" r="16"/>
+  <text class="nd" x="150" y="137">B</text>
+  <circle class="node" cx="120" cy="252" r="16"/>
+  <text class="nd" x="120" y="257">A</text>
+  <circle class="node" cx="235" cy="214" r="16"/>
+  <text class="nd" x="235" y="219">C</text>
+  <circle class="start" cx="235" cy="302" r="16"/>
+  <text class="nd" x="235" y="307">O</text>
+  <circle class="node" cx="170" cy="412" r="16"/>
+  <text class="nd" x="170" y="417">E</text>
+  <circle class="node" cx="350" cy="330" r="16"/>
+  <text class="nd" x="350" y="335">F</text>
+  <circle class="node" cx="432" cy="330" r="16"/>
+  <text class="nd" x="432" y="335">G</text>
+  <circle class="node" cx="455" cy="402" r="16"/>
+  <text class="nd" x="455" y="407">I</text>
+  <circle class="node" cx="556" cy="386" r="16"/>
+  <text class="nd" x="556" y="391">J</text>
+  <circle class="node" cx="520" cy="196" r="16"/>
+  <text class="nd" x="520" y="201">L</text>
+  <circle class="node" cx="680" cy="214" r="16"/>
+  <text class="nd" x="680" y="219">N</text>
+  <circle class="node" cx="830" cy="112" r="16"/>
+  <text class="nd" x="830" y="117">Q</text>
+  <circle class="node" cx="936" cy="146" r="16"/>
+  <text class="nd" x="936" y="151">R</text>
+  <circle class="node" cx="960" cy="320" r="16"/>
+  <text class="nd" x="960" y="325">S</text>
+  <circle class="goal" cx="1060" cy="400" r="16"/>
+  <text class="nd" x="1060" y="405">D</text>
+  <text class="place" x="211" y="308" text-anchor="end" fill="var(--accent)">UHG &#183; start</text>
+  <text class="place" x="1060" y="438" text-anchor="middle" fill="var(--good)">Merlin Park &#183; goal</text>
+  <text class="note" x="30" y="474">Fifteen junctions, seventeen roads, four routes that reach D. Nothing in the diagram tells you which algorithm to use.</text>
+</svg>
