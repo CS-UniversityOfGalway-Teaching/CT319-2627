@@ -625,7 +625,7 @@ The same maze has shown both the benefit and the cost. We end with that failure 
 <!-- ct319:beat -->
 ## A second problem, and a decision to make
 
-Every algorithm so far has run on the same maze. The formal notes run a different problem, and it is worth meeting before the week closes: **transferring a patient from University Hospital Galway to Merlin Park**.
+Every algorithm this week has run on the same maze. The formal notes use a different problem: **transferring a patient from University Hospital Galway to Merlin Park**.
 
 ![The UHG to Merlin Park route graph: fifteen junctions, seventeen roads, each with a cost](../../media/week-04/galway-route-problem.svg "hero")
 
@@ -646,17 +646,17 @@ Start: O        Goal: D
 
 ### What we have to choose from
 
-Three algorithms are available to us: **breadth-first search**, **depth-first search** and **hill climbing**. Nothing on this page says which one suits this problem, and that is the point.
+We have three algorithms: **breadth-first search**, **depth-first search** and **hill climbing**. Nothing in the problem says which of them suits it.
 
 <!-- ct319:focus -->
 
-> **Choosing the algorithm is part of the work. It is not a step that happens after the real thinking.**
+> **Choosing the algorithm is part of the work, not a step that happens after the real thinking.**
 
 <!-- ct319:endfocus -->
 
-Hill climbing needs one more thing before it can run at all: an **evaluation function**. The maze handed us one for free — `(row, col)` for the current cell and for the goal, so Manhattan distance fell straight out of the representation. This graph has no coordinates. What it does have is a cost on every road, and a cost is a perfectly good thing to judge a move by.
+Hill climbing needs one more thing before it can run at all: an **evaluation function**. The maze handed us one for free — `(row, col)` for the current cell and for the goal, so Manhattan distance fell straight out of the representation. This graph has no coordinates. What it does have is a cost on every road, and a cost is a reasonable thing to judge a move by.
 
-So there are at least three evaluation functions we could build:
+So there are at least three evaluation functions available:
 
 <div class="lenses">
 <div class="lens"><span class="lens__key">Cheapest road</span><span class="lens__gloss">prefer the least expensive road out of the current junction</span></div>
@@ -664,57 +664,54 @@ So there are at least three evaluation functions we could build:
 <div class="lens"><span class="lens__key">Cost so far</span><span class="lens__gloss">judge a junction by the total spent reaching it, and prefer lower</span></div>
 </div>
 
-Each is computable from the seventeen numbers above. Each gives a different algorithm. None of them is obviously wrong before you run it.
+Each one is computable from the seventeen numbers above. Each one produces a different algorithm. None of them is obviously wrong before you run it.
 
-### Writing the code in front of you
+### Asking a model to write the code
 
-We will not write these by hand. We will describe each algorithm to a coding model and read what comes back — which is its own lesson, because a capable model will try to improve on the algorithm you asked for.
+We will not write these by hand. We will describe each algorithm to a coding model and read what comes back.
 
-So each request names the mechanism, forbids the substitution, and demands the evidence:
+That takes some care. A capable model will often notice a better algorithm than the one it was asked for and quietly write that instead. So each request names the mechanism, rules out the substitution, and asks for evidence.
 
-> Write Python for the graph above. Use **breadth-first search** exactly as defined: a FIFO queue, expand by depth, return the first path that reaches `D`. Do not use the road costs to order the queue. Do not substitute a different algorithm.
->
+Every request ends with the same two instructions:
+
 > Before the code, state in one sentence which algorithm you implemented and which you deliberately did not use. After the code, print the route, its total cost, and the number of junctions expanded.
 
-That last paragraph is the one that matters. It turns adherence into something printed on screen rather than something we assume.
+Those two lines are what let us check a program instead of trusting it.
 
-<!-- ct319:beat -->
-## What actually happened
+**Breadth-first search**
 
-Four rules, one unchanged graph.
+> Write Python for the graph above. Use breadth-first search exactly as defined: a FIFO queue, expand by depth, return the first path that reaches `D`. Do not use the road costs to order the queue. Do not substitute a different algorithm.
 
-![Four panels: BFS returns cost 32, cheapest-road hill climbing gets stuck, dearest-road returns 39, uniform-cost returns 28](../../media/week-04/galway-route-results.svg "hero")
+**Depth-first search**
 
-<sub><em>Figure 10. The same junctions, roads and costs in every panel. Only the rule for choosing changes. Breadth-first search returns the route with the fewest roads; two hill-climbing rules fail in different ways; the last rule returns the cheapest route and does the most work getting there. Diagram created for these pages; no external image licence is used.</em></sub>
+> Write Python for the graph above. Use depth-first search exactly as defined: a LIFO stack, follow one branch as far as it goes before backtracking, return the first path that reaches `D`. Take neighbours in alphabetical order. Do not use the road costs. Do not substitute a different algorithm.
 
-| Rule | Route | Cost |
-|---|---|---:|
-| Breadth-first search | `O-F-G-L-N-S-D` | 32 |
-| Hill climbing — cheapest road | `O-C-A-B`, stuck | — |
-| Hill climbing — dearest road | `O-F-G-I-J-N-S-D` | 39 |
-| Hill climbing — cost so far | never leaves `O` | — |
+**Hill climbing**
 
-The four routes that reach `D` cost **28, 32, 35 and 39**. Breadth-first search returned 32 — the route with the fewest roads, which is not the cheapest one. That is Week 3's guarantee stated exactly: *minimum depth when action costs are equal*. The costs here are not equal.
+> Write Python for the graph above. Use hill climbing: from the current junction, move to the best neighbour under the evaluation function below, and stop when no neighbour is better. Do not look further ahead than one road. Do not substitute a different algorithm.
+>
+> Evaluation function: *(whichever of the three we settle on)*
+
+### What to look for when it runs
 
 <!-- ct319:focus -->
 
-The hill-climbing failures are more interesting than the success, because all three evaluation functions were reasonable and all three describe the same missing thing.
+Four questions, for every run:
 
-> **The graph tells us the cost we have already spent. It tells us nothing about the cost still to come.**
+- Which route came back, and what does it cost?
+- Is that the cheapest route that reaches `D`?
+- How many junctions did it expand to find it?
+- Did it implement the algorithm it was asked for?
+
+The last one is not a formality.
 
 <!-- ct319:endfocus -->
-
-That is why cheap roads led into a cul-de-sac: the rule could see that `O → C` cost 1 and could not see that nothing lies beyond `C` except `A` and `B`. To estimate the distance still to go you would need coordinates, or straight-line distances — information that is not in those seventeen numbers.
-
-In the maze, that information came free with the representation. Here it does not exist.
-
-<!-- ct319:focus -->
 
 ### Why this matters this week
 
-The algorithm was never the first decision. **What the representation carries decides which algorithms are available at all** — and on this graph, that rules out the one we spent the week building.
+We spent the week building a rule that follows an estimate downhill. This problem does not obviously supply that estimate, and we have three algorithms with nothing telling us which to use.
 
-<!-- ct319:endfocus -->
+The question worth settling is not which algorithm is best in general. It is what a problem has to give you before the question can be asked at all.
 
 <!-- ct319:endbeats -->
 
@@ -800,11 +797,11 @@ The hill-climbing trap at `(4,7)` / `(4,8)` is derived from the same maze rather
 
 ### Figures
 
-Figures 1–10 were **created for these pages**. They use no external image licence.
+Figures 1–9 were **created for these pages**. They use no external image licence.
 
 Figures 4, 6 and 7 are Search Lab screenshots rendered from the exact maze and the Manhattan-distance calculation described on this page.
 
-Figures 9 and 10 redraw the formal route graph in the palette used across these pages. The junctions, roads and costs are the ones the lecture prints; the route each algorithm returns in Figure 10 was computed from that graph.
+Figure 9 redraws the formal route graph in the palette used across these pages. The junctions, roads and costs are the ones the lecture prints.
 
 No external images, videos or papers are required for this page.
 

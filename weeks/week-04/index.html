@@ -288,7 +288,7 @@ while not is_goal(current):
 <p>The heuristic supplies an estimate; the evaluation lets the rule compare candidates; hill climbing acts on that comparison locally. It can save search effort, but its refusal to accept a temporary worsening can leave a reachable goal unfound.</p>
 <p>The same maze has shown both the benefit and the cost. We end with that failure still visible.</p>
 </div></div></details>
-<details class="beat" id="a-second-problem-and-a-decision-to-make"><summary><h2 class="beat__title">A second problem, and a decision to make</h2></summary><div class="beat__body"><p>Every algorithm so far has run on the same maze. The formal notes run a different problem, and it is worth meeting before the week closes: <strong>transferring a patient from University Hospital Galway to Merlin Park</strong>.</p>
+<details class="beat" id="a-second-problem-and-a-decision-to-make"><summary><h2 class="beat__title">A second problem, and a decision to make</h2></summary><div class="beat__body"><p>Every algorithm this week has run on the same maze. The formal notes use a different problem: <strong>transferring a patient from University Hospital Galway to Merlin Park</strong>.</p>
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-04/galway-route-problem.svg" alt="The UHG to Merlin Park route graph: fifteen junctions, seventeen roads, each with a cost" loading="lazy" decoding="async"><figcaption>Figure 9. Fifteen junctions and seventeen roads, transcribed from the formal notes without change. The start <code>O</code> is UHG, the goal <code>D</code> is Merlin Park, and each road carries a cost. Four routes reach <code>D</code>. Nothing in the diagram says which algorithm should find one. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <p>Here is the whole problem, in a form a program can read:</p>
 <pre data-lang="text"><code class="language-text">Junctions: A B C D E F G I J L N O Q R S
@@ -300,38 +300,40 @@ Roads (undirected, with cost):
 
 Start: O        Goal: D</code></pre>
 <h3 id="what-we-have-to-choose-from">What we have to choose from</h3>
-<p>Three algorithms are available to us: <strong>breadth-first search</strong>, <strong>depth-first search</strong> and <strong>hill climbing</strong>. Nothing on this page says which one suits this problem, and that is the point.</p>
+<p>We have three algorithms: <strong>breadth-first search</strong>, <strong>depth-first search</strong> and <strong>hill climbing</strong>. Nothing in the problem says which of them suits it.</p>
 <div class="focus-block">
-<blockquote><p><strong>Choosing the algorithm is part of the work. It is not a step that happens after the real thinking.</strong></p></blockquote>
+<blockquote><p><strong>Choosing the algorithm is part of the work, not a step that happens after the real thinking.</strong></p></blockquote>
 </div>
-<p>Hill climbing needs one more thing before it can run at all: an <strong>evaluation function</strong>. The maze handed us one for free — <code>(row, col)</code> for the current cell and for the goal, so Manhattan distance fell straight out of the representation. This graph has no coordinates. What it does have is a cost on every road, and a cost is a perfectly good thing to judge a move by.</p>
-<p>So there are at least three evaluation functions we could build:</p>
+<p>Hill climbing needs one more thing before it can run at all: an <strong>evaluation function</strong>. The maze handed us one for free — <code>(row, col)</code> for the current cell and for the goal, so Manhattan distance fell straight out of the representation. This graph has no coordinates. What it does have is a cost on every road, and a cost is a reasonable thing to judge a move by.</p>
+<p>So there are at least three evaluation functions available:</p>
 <div class="lenses">
 <div class="lens"><span class="lens__key">Cheapest road</span><span class="lens__gloss">prefer the least expensive road out of the current junction</span></div>
 <div class="lens"><span class="lens__key">Dearest road</span><span class="lens__gloss">prefer the most expensive road out of the current junction</span></div>
 <div class="lens"><span class="lens__key">Cost so far</span><span class="lens__gloss">judge a junction by the total spent reaching it, and prefer lower</span></div>
 </div>
-<p>Each is computable from the seventeen numbers above. Each gives a different algorithm. None of them is obviously wrong before you run it.</p>
-<h3 id="writing-the-code-in-front-of-you">Writing the code in front of you</h3>
-<p>We will not write these by hand. We will describe each algorithm to a coding model and read what comes back — which is its own lesson, because a capable model will try to improve on the algorithm you asked for.</p>
-<p>So each request names the mechanism, forbids the substitution, and demands the evidence:</p>
-<blockquote><p>Write Python for the graph above. Use <strong>breadth-first search</strong> exactly as defined: a FIFO queue, expand by depth, return the first path that reaches <code>D</code>. Do not use the road costs to order the queue. Do not substitute a different algorithm.</p>
-<p>Before the code, state in one sentence which algorithm you implemented and which you deliberately did not use. After the code, print the route, its total cost, and the number of junctions expanded.</p></blockquote>
-<p>That last paragraph is the one that matters. It turns adherence into something printed on screen rather than something we assume.</p></div></details>
-<details class="beat" id="what-actually-happened"><summary><h2 class="beat__title">What actually happened</h2></summary><div class="beat__body"><p>Four rules, one unchanged graph.</p>
-<figure class="figure--hero"><img class="figure__img" src="../../media/week-04/galway-route-results.svg" alt="Four panels: BFS returns cost 32, cheapest-road hill climbing gets stuck, dearest-road returns 39, uniform-cost returns 28" loading="lazy" decoding="async"><figcaption>Figure 10. The same junctions, roads and costs in every panel. Only the rule for choosing changes. Breadth-first search returns the route with the fewest roads; two hill-climbing rules fail in different ways; the last rule returns the cheapest route and does the most work getting there. Diagram created for these pages; no external image licence is used.</figcaption></figure>
-<div class="table-scroll"><table><thead><tr><th>Rule</th><th>Route</th><th class="num">Cost</th></tr></thead><tbody><tr><td>Breadth-first search</td><td><code>O-F-G-L-N-S-D</code></td><td class="num">32</td></tr><tr><td>Hill climbing — cheapest road</td><td><code>O-C-A-B</code>, stuck</td><td class="num">—</td></tr><tr><td>Hill climbing — dearest road</td><td><code>O-F-G-I-J-N-S-D</code></td><td class="num">39</td></tr><tr><td>Hill climbing — cost so far</td><td>never leaves <code>O</code></td><td class="num">—</td></tr></tbody></table></div>
-<p>The four routes that reach <code>D</code> cost <strong>28, 32, 35 and 39</strong>. Breadth-first search returned 32 — the route with the fewest roads, which is not the cheapest one. That is Week 3's guarantee stated exactly: <em>minimum depth when action costs are equal</em>. The costs here are not equal.</p>
+<p>Each one is computable from the seventeen numbers above. Each one produces a different algorithm. None of them is obviously wrong before you run it.</p>
+<h3 id="asking-a-model-to-write-the-code">Asking a model to write the code</h3>
+<p>We will not write these by hand. We will describe each algorithm to a coding model and read what comes back.</p>
+<p>That takes some care. A capable model will often notice a better algorithm than the one it was asked for and quietly write that instead. So each request names the mechanism, rules out the substitution, and asks for evidence.</p>
+<p>Every request ends with the same two instructions:</p>
+<blockquote><p>Before the code, state in one sentence which algorithm you implemented and which you deliberately did not use. After the code, print the route, its total cost, and the number of junctions expanded.</p></blockquote>
+<p>Those two lines are what let us check a program instead of trusting it.</p>
+<p><strong>Breadth-first search</strong></p>
+<blockquote><p>Write Python for the graph above. Use breadth-first search exactly as defined: a FIFO queue, expand by depth, return the first path that reaches <code>D</code>. Do not use the road costs to order the queue. Do not substitute a different algorithm.</p></blockquote>
+<p><strong>Depth-first search</strong></p>
+<blockquote><p>Write Python for the graph above. Use depth-first search exactly as defined: a LIFO stack, follow one branch as far as it goes before backtracking, return the first path that reaches <code>D</code>. Take neighbours in alphabetical order. Do not use the road costs. Do not substitute a different algorithm.</p></blockquote>
+<p><strong>Hill climbing</strong></p>
+<blockquote><p>Write Python for the graph above. Use hill climbing: from the current junction, move to the best neighbour under the evaluation function below, and stop when no neighbour is better. Do not look further ahead than one road. Do not substitute a different algorithm.</p>
+<p>Evaluation function: <em>(whichever of the three we settle on)</em></p></blockquote>
+<h3 id="what-to-look-for-when-it-runs">What to look for when it runs</h3>
 <div class="focus-block">
-<p>The hill-climbing failures are more interesting than the success, because all three evaluation functions were reasonable and all three describe the same missing thing.</p>
-<blockquote><p><strong>The graph tells us the cost we have already spent. It tells us nothing about the cost still to come.</strong></p></blockquote>
+<p>Four questions, for every run:</p>
+<ul><li>Which route came back, and what does it cost?</li><li>Is that the cheapest route that reaches <code>D</code>?</li><li>How many junctions did it expand to find it?</li><li>Did it implement the algorithm it was asked for?</li></ul>
+<p>The last one is not a formality.</p>
 </div>
-<p>That is why cheap roads led into a cul-de-sac: the rule could see that <code>O → C</code> cost 1 and could not see that nothing lies beyond <code>C</code> except <code>A</code> and <code>B</code>. To estimate the distance still to go you would need coordinates, or straight-line distances — information that is not in those seventeen numbers.</p>
-<p>In the maze, that information came free with the representation. Here it does not exist.</p>
-<div class="focus-block">
 <h3 id="why-this-matters-this-week">Why this matters this week</h3>
-<p>The algorithm was never the first decision. <strong>What the representation carries decides which algorithms are available at all</strong> — and on this graph, that rules out the one we spent the week building.</p>
-</div></div></details>
+<p>We spent the week building a rule that follows an estimate downhill. This problem does not obviously supply that estimate, and we have three algorithms with nothing telling us which to use.</p>
+<p>The question worth settling is not which algorithm is best in general. It is what a problem has to give you before the question can be asked at all.</p></div></details>
   </main>
 
   <div class="tail">
@@ -375,9 +377,9 @@ Hill climbing stops.</code></pre>
     return abs(row - goal_row) + abs(col - goal_col)</code></pre>
 <p>The hill-climbing trap at <code>(4,7)</code> / <code>(4,8)</code> is derived from the same maze rather than introduced as a separate artificial example.</p>
 <h3 id="figures">Figures</h3>
-<p>Figures 1–10 were <strong>created for these pages</strong>. They use no external image licence.</p>
+<p>Figures 1–9 were <strong>created for these pages</strong>. They use no external image licence.</p>
 <p>Figures 4, 6 and 7 are Search Lab screenshots rendered from the exact maze and the Manhattan-distance calculation described on this page.</p>
-<p>Figures 9 and 10 redraw the formal route graph in the palette used across these pages. The junctions, roads and costs are the ones the lecture prints; the route each algorithm returns in Figure 10 was computed from that graph.</p>
+<p>Figure 9 redraws the formal route graph in the palette used across these pages. The junctions, roads and costs are the ones the lecture prints.</p>
 <p>No external images, videos or papers are required for this page.</p>
 <h3 id="software">Software</h3>
 <p>The <a href="../../search-lab/">Search Lab</a> is the same classroom artefact used in Week 3, extended with:</p>

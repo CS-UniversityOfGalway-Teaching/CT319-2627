@@ -158,3 +158,16 @@ so it will come up twice.
 4. Name what is missing: cost so far, no estimate of cost remaining.
 5. Run 3 — prepared. Reveal the name from the Week 3 slide.
 6. Close: the algorithm was never the first decision. The representation was.
+
+---
+
+## The results figure
+
+`galway-route-results.svg`, beside this file, draws all four outcomes on the
+same graph — breadth-first search, both hill-climbing variants that move, and
+uniform-cost search.
+
+It is deliberately **not** on the student page. The outcomes go on the
+whiteboard as each run finishes, so the room reads them off the program rather
+than off a figure that already knew. Keep it for your own reference, or show it
+afterwards as a summary.
