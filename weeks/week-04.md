@@ -11,7 +11,7 @@ Week 3 gave the machine two systematic ways to organise ignorance: BFS preferred
 
 This week we add that missing hint. It provides guidance, not a guarantee.
 
-We work through four things.
+We work through five things.
 
 * We begin with [**heuristic information**](#a-hint--what-blind-search-was-missing). A heuristic gives the machine a cheap way to judge how promising a state appears, without already knowing the real answer.
 
@@ -19,7 +19,9 @@ We work through four things.
 
 * [**Hill climbing**](#hill-climbing--always-take-the-better-neighbour) turns that evaluation into a strict decision rule: inspect the legal neighbours, select one with a strictly lower `h`, break an equal-best tie by successor order, and stop when no improving neighbour exists.
 
-* Finally we deliberately [**let the heuristic fail**](#a-useful-hint-can-still-mislead). The same maze contains a state only two rows from the goal where hill climbing can stop even though a valid route still exists.
+* We then deliberately [**let the heuristic fail**](#a-useful-hint-can-still-mislead). The same maze contains a state only two rows from the goal where hill climbing can stop even though a valid route still exists.
+
+* Finally we leave the maze for [**a second problem**](#a-second-problem-and-a-decision-to-make) — a route between two Galway hospitals — and choose an algorithm for it together.
 
 Three ideas carry the page, and it is worth keeping them apart:
 
@@ -620,6 +622,100 @@ The same maze has shown both the benefit and the cost. We end with that failure 
 
 <!-- ct319:endfocus -->
 
+<!-- ct319:beat -->
+## A second problem, and a decision to make
+
+Every algorithm so far has run on the same maze. The formal notes run a different problem, and it is worth meeting before the week closes: **transferring a patient from University Hospital Galway to Merlin Park**.
+
+![The UHG to Merlin Park route graph: fifteen junctions, seventeen roads, each with a cost](../../media/week-04/galway-route-problem.svg "hero")
+
+<sub><em>Figure 9. Fifteen junctions and seventeen roads, transcribed from the formal notes without change. The start `O` is UHG, the goal `D` is Merlin Park, and each road carries a cost. Four routes reach `D`. Nothing in the diagram says which algorithm should find one. Diagram created for these pages; no external image licence is used.</em></sub>
+
+Here is the whole problem, in a form a program can read:
+
+```text
+Junctions: A B C D E F G I J L N O Q R S
+
+Roads (undirected, with cost):
+  A-B 3   A-C 1   B-C 3   C-O 1   O-E 2   O-F 2
+  F-G 1   G-I 5   G-L 2   I-J 4   J-N 5   L-N 5
+  N-Q 4   N-S 15  Q-R 1   R-S 6   S-D 7
+
+Start: O        Goal: D
+```
+
+### What we have to choose from
+
+Three algorithms are available to us: **breadth-first search**, **depth-first search** and **hill climbing**. Nothing on this page says which one suits this problem, and that is the point.
+
+<!-- ct319:focus -->
+
+> **Choosing the algorithm is part of the work. It is not a step that happens after the real thinking.**
+
+<!-- ct319:endfocus -->
+
+Hill climbing needs one more thing before it can run at all: an **evaluation function**. The maze handed us one for free — `(row, col)` for the current cell and for the goal, so Manhattan distance fell straight out of the representation. This graph has no coordinates. What it does have is a cost on every road, and a cost is a perfectly good thing to judge a move by.
+
+So there are at least three evaluation functions we could build:
+
+<div class="lenses">
+<div class="lens"><span class="lens__key">Cheapest road</span><span class="lens__gloss">prefer the least expensive road out of the current junction</span></div>
+<div class="lens"><span class="lens__key">Dearest road</span><span class="lens__gloss">prefer the most expensive road out of the current junction</span></div>
+<div class="lens"><span class="lens__key">Cost so far</span><span class="lens__gloss">judge a junction by the total spent reaching it, and prefer lower</span></div>
+</div>
+
+Each is computable from the seventeen numbers above. Each gives a different algorithm. None of them is obviously wrong before you run it.
+
+### Writing the code in front of you
+
+We will not write these by hand. We will describe each algorithm to a coding model and read what comes back — which is its own lesson, because a capable model will try to improve on the algorithm you asked for.
+
+So each request names the mechanism, forbids the substitution, and demands the evidence:
+
+> Write Python for the graph above. Use **breadth-first search** exactly as defined: a FIFO queue, expand by depth, return the first path that reaches `D`. Do not use the road costs to order the queue. Do not substitute a different algorithm.
+>
+> Before the code, state in one sentence which algorithm you implemented and which you deliberately did not use. After the code, print the route, its total cost, and the number of junctions expanded.
+
+That last paragraph is the one that matters. It turns adherence into something printed on screen rather than something we assume.
+
+<!-- ct319:beat -->
+## What actually happened
+
+Four rules, one unchanged graph.
+
+![Four panels: BFS returns cost 32, cheapest-road hill climbing gets stuck, dearest-road returns 39, uniform-cost returns 28](../../media/week-04/galway-route-results.svg "hero")
+
+<sub><em>Figure 10. The same junctions, roads and costs in every panel. Only the rule for choosing changes. Breadth-first search returns the route with the fewest roads; two hill-climbing rules fail in different ways; the last rule returns the cheapest route and does the most work getting there. Diagram created for these pages; no external image licence is used.</em></sub>
+
+| Rule | Route | Cost |
+|---|---|---:|
+| Breadth-first search | `O-F-G-L-N-S-D` | 32 |
+| Hill climbing — cheapest road | `O-C-A-B`, stuck | — |
+| Hill climbing — dearest road | `O-F-G-I-J-N-S-D` | 39 |
+| Hill climbing — cost so far | never leaves `O` | — |
+
+The four routes that reach `D` cost **28, 32, 35 and 39**. Breadth-first search returned 32 — the route with the fewest roads, which is not the cheapest one. That is Week 3's guarantee stated exactly: *minimum depth when action costs are equal*. The costs here are not equal.
+
+<!-- ct319:focus -->
+
+The hill-climbing failures are more interesting than the success, because all three evaluation functions were reasonable and all three describe the same missing thing.
+
+> **The graph tells us the cost we have already spent. It tells us nothing about the cost still to come.**
+
+<!-- ct319:endfocus -->
+
+That is why cheap roads led into a cul-de-sac: the rule could see that `O → C` cost 1 and could not see that nothing lies beyond `C` except `A` and `B`. To estimate the distance still to go you would need coordinates, or straight-line distances — information that is not in those seventeen numbers.
+
+In the maze, that information came free with the representation. Here it does not exist.
+
+<!-- ct319:focus -->
+
+### Why this matters this week
+
+The algorithm was never the first decision. **What the representation carries decides which algorithms are available at all** — and on this graph, that rules out the one we spent the week building.
+
+<!-- ct319:endfocus -->
+
 <!-- ct319:endbeats -->
 
 ## Before Week 5
@@ -675,7 +771,11 @@ The Week 4 terminology and formal progression follow the existing *Informed (Heu
 
 This page develops heuristic estimates, evaluation and strict hill climbing on the recurring maze, using **representation, neighbourhood and evaluation** to connect with the formal terminology. The trap makes local improvement and its limits observable.
 
-The Galway hospital route example, travelling-salesman example and fuller knapsack treatment remain on Canvas. These pages support the live experiment rather than reproducing the complete lecture.
+The **Galway hospital route example** is the worked example for both formal search lectures, and it closes this page. The graph is reproduced exactly: fifteen junctions, seventeen roads and the costs as printed.
+
+The formal treatment runs breadth-first and depth-first search over it and then delimits the search area to cut the work. This page asks a different question of the same graph — which algorithm to choose, and what the representation makes possible — so that the three algorithms built this week can be tested against a problem the maze cannot pose.
+
+The travelling-salesman example and fuller knapsack treatment remain on Canvas. These pages support the live experiment rather than reproducing the complete lecture.
 
 ### Continuity from Weeks 2 and 3
 
@@ -700,9 +800,11 @@ The hill-climbing trap at `(4,7)` / `(4,8)` is derived from the same maze rather
 
 ### Figures
 
-Figures 1–8 were **created for these pages**. They use no external image licence.
+Figures 1–10 were **created for these pages**. They use no external image licence.
 
 Figures 4, 6 and 7 are Search Lab screenshots rendered from the exact maze and the Manhattan-distance calculation described on this page.
+
+Figures 9 and 10 redraw the formal route graph in the palette used across these pages. The junctions, roads and costs are the ones the lecture prints; the route each algorithm returns in Figure 10 was computed from that graph.
 
 No external images, videos or papers are required for this page.
 

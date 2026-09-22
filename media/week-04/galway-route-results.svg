@@ -1,0 +1,269 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="740" viewBox="0 0 1120 740" role="img" aria-labelledby="t d">
+  <title id="t">What each algorithm returns on the same graph</title>
+  <desc id="d">The UHG to Merlin Park graph drawn four times, once per algorithm. Breadth-first search returns O F G L N S D at cost 32, the route with the fewest roads rather than the cheapest. Hill climbing preferring the cheapest road walks O C A B and stops in the cul-de-sac at cost 5, never reaching the goal. Hill climbing preferring the most expensive road reaches the goal along O F G I J N S D at cost 39, the worst of the four routes. Uniform-cost search returns O F G L N Q R S D at cost 28, the cheapest route, having expanded twenty junctions against breadth-first search fifteen. Only uniform-cost search uses the accumulated cost of the whole path.</desc>
+  <style>
+    :root { --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --card:#ffffff;
+      --good:#1a7f37; --bad:#cf222e; --purple:#8250df; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --card:#0d1117;
+        --good:#3fb950; --bad:#f85149; --purple:#a371f7; } }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab   { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .note  { font-size:13.5px; fill:var(--muted); }
+    .head  { font-size:14.5px; font-weight:700; }
+    .sub   { font-size:12.5px; fill:var(--muted); }
+    .verd  { font-size:12.5px; fill:var(--muted); }
+    .mono  { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px; font-weight:700; }
+    .nd    { font-size:9.5px; font-weight:700; text-anchor:middle; fill:var(--muted); }
+    .pbox  { fill:var(--panel); stroke:var(--line); stroke-width:1.6; }
+    .base  { stroke:var(--line); stroke-width:1.6; fill:none; stroke-linecap:round; }
+    .dot   { fill:var(--card); stroke:var(--line); stroke-width:1.4; }
+  </style>
+  <rect width="1120" height="740" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="40">ONE GRAPH, FOUR ALGORITHMS &#183; THE ROUTE EACH ONE RETURNS</text>
+  <text class="note" x="30" y="62">Same junctions, same roads, same costs. Only the rule for choosing changes.</text>
+  <rect class="pbox" x="24" y="76" width="526" height="296" rx="12"/>
+  <circle cx="46" cy="103" r="5.5" fill="var(--accent)"/>
+  <text class="head" x="60" y="108">Breadth-first search</text>
+  <text class="sub" x="60" y="128">uses: counts roads, ignores their cost</text>
+  <path class="base" d="M46.0 238.0 L61.0 178.0"/>
+  <path class="base" d="M46.0 238.0 L103.5 219.0"/>
+  <path class="base" d="M61.0 178.0 L103.5 219.0"/>
+  <path class="base" d="M103.5 219.0 L103.5 263.0"/>
+  <path class="base" d="M103.5 263.0 L71.0 318.0"/>
+  <path class="base" d="M103.5 263.0 L161.0 277.0"/>
+  <path class="base" d="M161.0 277.0 L202.0 277.0"/>
+  <path class="base" d="M202.0 277.0 L213.5 313.0"/>
+  <path class="base" d="M202.0 277.0 L246.0 210.0"/>
+  <path class="base" d="M213.5 313.0 L264.0 305.0"/>
+  <path class="base" d="M264.0 305.0 L326.0 219.0"/>
+  <path class="base" d="M246.0 210.0 L326.0 219.0"/>
+  <path class="base" d="M326.0 219.0 L401.0 168.0"/>
+  <path class="base" d="M326.0 219.0 L466.0 272.0"/>
+  <path class="base" d="M401.0 168.0 L454.0 185.0"/>
+  <path class="base" d="M454.0 185.0 L466.0 272.0"/>
+  <path class="base" d="M466.0 272.0 L516.0 312.0"/>
+  <path d="M103.5 263.0 L161.0 277.0" stroke="var(--accent)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M161.0 277.0 L202.0 277.0" stroke="var(--accent)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M202.0 277.0 L246.0 210.0" stroke="var(--accent)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M246.0 210.0 L326.0 219.0" stroke="var(--accent)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M326.0 219.0 L466.0 272.0" stroke="var(--accent)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M466.0 272.0 L516.0 312.0" stroke="var(--accent)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <circle cx="61.0" cy="178.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="61.0" y="167.0">B</text>
+  <circle cx="46.0" cy="238.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="46.0" y="227.0">A</text>
+  <circle cx="103.5" cy="219.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="103.5" y="208.0">C</text>
+  <circle cx="103.5" cy="263.0" r="7" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text class="nd" x="103.5" y="252.0">O</text>
+  <circle cx="71.0" cy="318.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="71.0" y="307.0">E</text>
+  <circle cx="161.0" cy="277.0" r="7" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text class="nd" x="161.0" y="266.0">F</text>
+  <circle cx="202.0" cy="277.0" r="7" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text class="nd" x="202.0" y="266.0">G</text>
+  <circle cx="213.5" cy="313.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="213.5" y="302.0">I</text>
+  <circle cx="264.0" cy="305.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="264.0" y="294.0">J</text>
+  <circle cx="246.0" cy="210.0" r="7" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text class="nd" x="246.0" y="199.0">L</text>
+  <circle cx="326.0" cy="219.0" r="7" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text class="nd" x="326.0" y="208.0">N</text>
+  <circle cx="401.0" cy="168.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="401.0" y="157.0">Q</text>
+  <circle cx="454.0" cy="185.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="454.0" y="174.0">R</text>
+  <circle cx="466.0" cy="272.0" r="7" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text class="nd" x="466.0" y="261.0">S</text>
+  <circle cx="516.0" cy="312.0" r="7" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text class="nd" x="516.0" y="301.0">D</text>
+  <text class="mono" x="46" y="334" fill="var(--accent)">O → F → G → L → N → S → D</text>
+  <text class="mono" x="46" y="353">cost 32 · 6 roads · 15 expanded</text>
+  <text class="verd" x="46" y="370">the fewest roads, and not the cheapest route</text>
+  <rect class="pbox" x="570" y="76" width="526" height="296" rx="12"/>
+  <circle cx="592" cy="103" r="5.5" fill="var(--bad)"/>
+  <text class="head" x="606" y="108">Hill climbing · cheapest road</text>
+  <text class="sub" x="606" y="128">uses: one road ahead, nothing further</text>
+  <path class="base" d="M592.0 238.0 L607.0 178.0"/>
+  <path class="base" d="M592.0 238.0 L649.5 219.0"/>
+  <path class="base" d="M607.0 178.0 L649.5 219.0"/>
+  <path class="base" d="M649.5 219.0 L649.5 263.0"/>
+  <path class="base" d="M649.5 263.0 L617.0 318.0"/>
+  <path class="base" d="M649.5 263.0 L707.0 277.0"/>
+  <path class="base" d="M707.0 277.0 L748.0 277.0"/>
+  <path class="base" d="M748.0 277.0 L759.5 313.0"/>
+  <path class="base" d="M748.0 277.0 L792.0 210.0"/>
+  <path class="base" d="M759.5 313.0 L810.0 305.0"/>
+  <path class="base" d="M810.0 305.0 L872.0 219.0"/>
+  <path class="base" d="M792.0 210.0 L872.0 219.0"/>
+  <path class="base" d="M872.0 219.0 L947.0 168.0"/>
+  <path class="base" d="M872.0 219.0 L1012.0 272.0"/>
+  <path class="base" d="M947.0 168.0 L1000.0 185.0"/>
+  <path class="base" d="M1000.0 185.0 L1012.0 272.0"/>
+  <path class="base" d="M1012.0 272.0 L1062.0 312.0"/>
+  <path d="M649.5 263.0 L649.5 219.0" stroke="var(--bad)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M649.5 219.0 L592.0 238.0" stroke="var(--bad)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M592.0 238.0 L607.0 178.0" stroke="var(--bad)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <circle cx="607.0" cy="178.0" r="7" fill="var(--bad)" stroke="var(--bad)" stroke-width="1.6"/>
+  <text class="nd" x="607.0" y="167.0">B</text>
+  <circle cx="592.0" cy="238.0" r="7" fill="var(--bad)" stroke="var(--bad)" stroke-width="1.6"/>
+  <text class="nd" x="592.0" y="227.0">A</text>
+  <circle cx="649.5" cy="219.0" r="7" fill="var(--bad)" stroke="var(--bad)" stroke-width="1.6"/>
+  <text class="nd" x="649.5" y="208.0">C</text>
+  <circle cx="649.5" cy="263.0" r="7" fill="var(--bad)" stroke="var(--bad)" stroke-width="1.6"/>
+  <text class="nd" x="649.5" y="252.0">O</text>
+  <circle cx="617.0" cy="318.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="617.0" y="307.0">E</text>
+  <circle cx="707.0" cy="277.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="707.0" y="266.0">F</text>
+  <circle cx="748.0" cy="277.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="748.0" y="266.0">G</text>
+  <circle cx="759.5" cy="313.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="759.5" y="302.0">I</text>
+  <circle cx="810.0" cy="305.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="810.0" y="294.0">J</text>
+  <circle cx="792.0" cy="210.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="792.0" y="199.0">L</text>
+  <circle cx="872.0" cy="219.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="872.0" y="208.0">N</text>
+  <circle cx="947.0" cy="168.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="947.0" y="157.0">Q</text>
+  <circle cx="1000.0" cy="185.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="1000.0" y="174.0">R</text>
+  <circle cx="1012.0" cy="272.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="1012.0" y="261.0">S</text>
+  <circle cx="1062.0" cy="312.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="1062.0" y="301.0">D</text>
+  <path d="M593.0 186.0 L601.0 194.0 M601.0 186.0 L593.0 194.0" stroke="var(--bad)" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+  <text class="mono" x="592" y="334" fill="var(--bad)">O → C → A → B</text>
+  <text class="mono" x="592" y="353">stopped at B · cost 5</text>
+  <text class="verd" x="592" y="370">cheap roads led into the cul-de-sac</text>
+  <rect class="pbox" x="24" y="392" width="526" height="296" rx="12"/>
+  <circle cx="46" cy="419" r="5.5" fill="var(--purple)"/>
+  <text class="head" x="60" y="424">Hill climbing · dearest road</text>
+  <text class="sub" x="60" y="444">uses: one road ahead, nothing further</text>
+  <path class="base" d="M46.0 554.0 L61.0 494.0"/>
+  <path class="base" d="M46.0 554.0 L103.5 535.0"/>
+  <path class="base" d="M61.0 494.0 L103.5 535.0"/>
+  <path class="base" d="M103.5 535.0 L103.5 579.0"/>
+  <path class="base" d="M103.5 579.0 L71.0 634.0"/>
+  <path class="base" d="M103.5 579.0 L161.0 593.0"/>
+  <path class="base" d="M161.0 593.0 L202.0 593.0"/>
+  <path class="base" d="M202.0 593.0 L213.5 629.0"/>
+  <path class="base" d="M202.0 593.0 L246.0 526.0"/>
+  <path class="base" d="M213.5 629.0 L264.0 621.0"/>
+  <path class="base" d="M264.0 621.0 L326.0 535.0"/>
+  <path class="base" d="M246.0 526.0 L326.0 535.0"/>
+  <path class="base" d="M326.0 535.0 L401.0 484.0"/>
+  <path class="base" d="M326.0 535.0 L466.0 588.0"/>
+  <path class="base" d="M401.0 484.0 L454.0 501.0"/>
+  <path class="base" d="M454.0 501.0 L466.0 588.0"/>
+  <path class="base" d="M466.0 588.0 L516.0 628.0"/>
+  <path d="M103.5 579.0 L161.0 593.0" stroke="var(--purple)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M161.0 593.0 L202.0 593.0" stroke="var(--purple)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M202.0 593.0 L213.5 629.0" stroke="var(--purple)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M213.5 629.0 L264.0 621.0" stroke="var(--purple)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M264.0 621.0 L326.0 535.0" stroke="var(--purple)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M326.0 535.0 L466.0 588.0" stroke="var(--purple)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M466.0 588.0 L516.0 628.0" stroke="var(--purple)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <circle cx="61.0" cy="494.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="61.0" y="483.0">B</text>
+  <circle cx="46.0" cy="554.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="46.0" y="543.0">A</text>
+  <circle cx="103.5" cy="535.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="103.5" y="524.0">C</text>
+  <circle cx="103.5" cy="579.0" r="7" fill="var(--purple)" stroke="var(--purple)" stroke-width="1.6"/>
+  <text class="nd" x="103.5" y="568.0">O</text>
+  <circle cx="71.0" cy="634.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="71.0" y="623.0">E</text>
+  <circle cx="161.0" cy="593.0" r="7" fill="var(--purple)" stroke="var(--purple)" stroke-width="1.6"/>
+  <text class="nd" x="161.0" y="582.0">F</text>
+  <circle cx="202.0" cy="593.0" r="7" fill="var(--purple)" stroke="var(--purple)" stroke-width="1.6"/>
+  <text class="nd" x="202.0" y="582.0">G</text>
+  <circle cx="213.5" cy="629.0" r="7" fill="var(--purple)" stroke="var(--purple)" stroke-width="1.6"/>
+  <text class="nd" x="213.5" y="618.0">I</text>
+  <circle cx="264.0" cy="621.0" r="7" fill="var(--purple)" stroke="var(--purple)" stroke-width="1.6"/>
+  <text class="nd" x="264.0" y="610.0">J</text>
+  <circle cx="246.0" cy="526.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="246.0" y="515.0">L</text>
+  <circle cx="326.0" cy="535.0" r="7" fill="var(--purple)" stroke="var(--purple)" stroke-width="1.6"/>
+  <text class="nd" x="326.0" y="524.0">N</text>
+  <circle cx="401.0" cy="484.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="401.0" y="473.0">Q</text>
+  <circle cx="454.0" cy="501.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="454.0" y="490.0">R</text>
+  <circle cx="466.0" cy="588.0" r="7" fill="var(--purple)" stroke="var(--purple)" stroke-width="1.6"/>
+  <text class="nd" x="466.0" y="577.0">S</text>
+  <circle cx="516.0" cy="628.0" r="7" fill="var(--purple)" stroke="var(--purple)" stroke-width="1.6"/>
+  <text class="nd" x="516.0" y="617.0">D</text>
+  <text class="mono" x="46" y="650" fill="var(--purple)">O → F → G → I → J → N → S → D</text>
+  <text class="mono" x="46" y="669">cost 39 · 7 roads</text>
+  <text class="verd" x="46" y="686">reached the goal along the worst of the four routes</text>
+  <rect class="pbox" x="570" y="392" width="526" height="296" rx="12"/>
+  <circle cx="592" cy="419" r="5.5" fill="var(--good)"/>
+  <text class="head" x="606" y="424">Uniform-cost search</text>
+  <text class="sub" x="606" y="444">uses: the cost of the whole path so far</text>
+  <path class="base" d="M592.0 554.0 L607.0 494.0"/>
+  <path class="base" d="M592.0 554.0 L649.5 535.0"/>
+  <path class="base" d="M607.0 494.0 L649.5 535.0"/>
+  <path class="base" d="M649.5 535.0 L649.5 579.0"/>
+  <path class="base" d="M649.5 579.0 L617.0 634.0"/>
+  <path class="base" d="M649.5 579.0 L707.0 593.0"/>
+  <path class="base" d="M707.0 593.0 L748.0 593.0"/>
+  <path class="base" d="M748.0 593.0 L759.5 629.0"/>
+  <path class="base" d="M748.0 593.0 L792.0 526.0"/>
+  <path class="base" d="M759.5 629.0 L810.0 621.0"/>
+  <path class="base" d="M810.0 621.0 L872.0 535.0"/>
+  <path class="base" d="M792.0 526.0 L872.0 535.0"/>
+  <path class="base" d="M872.0 535.0 L947.0 484.0"/>
+  <path class="base" d="M872.0 535.0 L1012.0 588.0"/>
+  <path class="base" d="M947.0 484.0 L1000.0 501.0"/>
+  <path class="base" d="M1000.0 501.0 L1012.0 588.0"/>
+  <path class="base" d="M1012.0 588.0 L1062.0 628.0"/>
+  <path d="M649.5 579.0 L707.0 593.0" stroke="var(--good)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M707.0 593.0 L748.0 593.0" stroke="var(--good)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M748.0 593.0 L792.0 526.0" stroke="var(--good)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M792.0 526.0 L872.0 535.0" stroke="var(--good)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M872.0 535.0 L947.0 484.0" stroke="var(--good)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M947.0 484.0 L1000.0 501.0" stroke="var(--good)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M1000.0 501.0 L1012.0 588.0" stroke="var(--good)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M1012.0 588.0 L1062.0 628.0" stroke="var(--good)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <circle cx="607.0" cy="494.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="607.0" y="483.0">B</text>
+  <circle cx="592.0" cy="554.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="592.0" y="543.0">A</text>
+  <circle cx="649.5" cy="535.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="649.5" y="524.0">C</text>
+  <circle cx="649.5" cy="579.0" r="7" fill="var(--good)" stroke="var(--good)" stroke-width="1.6"/>
+  <text class="nd" x="649.5" y="568.0">O</text>
+  <circle cx="617.0" cy="634.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="617.0" y="623.0">E</text>
+  <circle cx="707.0" cy="593.0" r="7" fill="var(--good)" stroke="var(--good)" stroke-width="1.6"/>
+  <text class="nd" x="707.0" y="582.0">F</text>
+  <circle cx="748.0" cy="593.0" r="7" fill="var(--good)" stroke="var(--good)" stroke-width="1.6"/>
+  <text class="nd" x="748.0" y="582.0">G</text>
+  <circle cx="759.5" cy="629.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="759.5" y="618.0">I</text>
+  <circle cx="810.0" cy="621.0" r="5.5" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="nd" x="810.0" y="610.0">J</text>
+  <circle cx="792.0" cy="526.0" r="7" fill="var(--good)" stroke="var(--good)" stroke-width="1.6"/>
+  <text class="nd" x="792.0" y="515.0">L</text>
+  <circle cx="872.0" cy="535.0" r="7" fill="var(--good)" stroke="var(--good)" stroke-width="1.6"/>
+  <text class="nd" x="872.0" y="524.0">N</text>
+  <circle cx="947.0" cy="484.0" r="7" fill="var(--good)" stroke="var(--good)" stroke-width="1.6"/>
+  <text class="nd" x="947.0" y="473.0">Q</text>
+  <circle cx="1000.0" cy="501.0" r="7" fill="var(--good)" stroke="var(--good)" stroke-width="1.6"/>
+  <text class="nd" x="1000.0" y="490.0">R</text>
+  <circle cx="1012.0" cy="588.0" r="7" fill="var(--good)" stroke="var(--good)" stroke-width="1.6"/>
+  <text class="nd" x="1012.0" y="577.0">S</text>
+  <circle cx="1062.0" cy="628.0" r="7" fill="var(--good)" stroke="var(--good)" stroke-width="1.6"/>
+  <text class="nd" x="1062.0" y="617.0">D</text>
+  <text class="mono" x="592" y="650" fill="var(--good)">O → F → G → L → N → Q → R → S → D</text>
+  <text class="mono" x="592" y="669">cost 28 · 8 roads · 20 expanded</text>
+  <text class="verd" x="592" y="686">the cheapest route, and the most work done</text>
+  <text class="note" x="30" y="724">Only the last rule weighs the cost of the whole path so far. It is also the one that expands the most junctions.</text>
+</svg>
