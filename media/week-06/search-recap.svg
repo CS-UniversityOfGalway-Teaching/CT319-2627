@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="430" viewBox="0 0 960 430" role="img" aria-labelledby="title desc">
+  <title id="title">The CT319 search block from Week 2 to Week 6</title>
+  <desc id="desc">Five weeks in sequence. Week 2 representation asks what the machine needs to know. Week 3 blind search asks how it explores without guidance. Week 4 heuristics asks what if some states look more promising. Week 5 local search asks what if immediate improvement gets stuck. Week 6 population asks what if many candidates search at once. Four modelling choices run through all five: representation, information, neighbourhood and number of candidates.</desc>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2328; }
+    .title { font-size: 26px; font-weight: 700; }
+    .week { font-size: 14px; font-weight: 700; fill: #0969da; letter-spacing: 0.08em; }
+    .idea { font-size: 15.5px; font-weight: 700; }
+    .q { font-size: 13.5px; fill: #57606a; }
+    .choice { font-size: 16px; font-weight: 700; }
+    .body { font-size: 17px; fill: #57606a; }
+  </style>
+  <rect width="100%" height="100%" fill="#fff"/>
+  <defs>
+    <marker id="r6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#8c959f"/>
+    </marker>
+  </defs>
+
+  <text x="30" y="40" class="title">ONE PROBLEM · FIVE WEEKS OF SEARCH</text>
+
+  <rect x="30" y="70" width="168" height="128" rx="10" fill="#f6f8fa" stroke="#d0d7de" stroke-width="2"/>
+  <text x="50" y="98" class="week">WEEK 2</text>
+  <text x="50" y="124" class="idea">REPRESENTATION</text>
+  <text x="50" y="152" class="q">What does the machine</text>
+  <text x="50" y="170" class="q">need to know?</text>
+
+  <rect x="222" y="70" width="168" height="128" rx="10" fill="#f6f8fa" stroke="#d0d7de" stroke-width="2"/>
+  <text x="242" y="98" class="week">WEEK 3</text>
+  <text x="242" y="124" class="idea">BLIND SEARCH</text>
+  <text x="242" y="152" class="q">How can it explore</text>
+  <text x="242" y="170" class="q">without guidance?</text>
+
+  <rect x="414" y="70" width="168" height="128" rx="10" fill="#f6f8fa" stroke="#d0d7de" stroke-width="2"/>
+  <text x="434" y="98" class="week">WEEK 4</text>
+  <text x="434" y="124" class="idea">HEURISTIC</text>
+  <text x="434" y="152" class="q">What if some states</text>
+  <text x="434" y="170" class="q">look more promising?</text>
+
+  <rect x="606" y="70" width="168" height="128" rx="10" fill="#f6f8fa" stroke="#d0d7de" stroke-width="2"/>
+  <text x="626" y="98" class="week">WEEK 5</text>
+  <text x="626" y="124" class="idea">LOCAL SEARCH</text>
+  <text x="626" y="152" class="q">What if immediate</text>
+  <text x="626" y="170" class="q">improvement gets stuck?</text>
+
+  <rect x="798" y="70" width="132" height="128" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2.5"/>
+  <text x="818" y="98" class="week">WEEK 6</text>
+  <text x="818" y="124" class="idea">POPULATION</text>
+  <text x="818" y="152" class="q">What if many</text>
+  <text x="818" y="170" class="q">search at once?</text>
+
+  <path d="M198 134 H214" fill="none" stroke="#8c959f" stroke-width="2" marker-end="url(#r6)"/>
+  <path d="M390 134 H406" fill="none" stroke="#8c959f" stroke-width="2" marker-end="url(#r6)"/>
+  <path d="M582 134 H598" fill="none" stroke="#8c959f" stroke-width="2" marker-end="url(#r6)"/>
+  <path d="M774 134 H790" fill="none" stroke="#8c959f" stroke-width="2" marker-end="url(#r6)"/>
+
+  <line x1="30" y1="234" x2="930" y2="234" stroke="#d0d7de" stroke-width="2"/>
+  <text x="30" y="268" class="body">Four modelling choices run through all five weeks:</text>
+
+  <rect x="30" y="286" width="216" height="62" rx="9" fill="#fff8c5" stroke="#9a6700" stroke-width="2"/>
+  <text x="138" y="324" class="choice" text-anchor="middle">REPRESENTATION</text>
+
+  <rect x="258" y="286" width="216" height="62" rx="9" fill="#fff8c5" stroke="#9a6700" stroke-width="2"/>
+  <text x="366" y="324" class="choice" text-anchor="middle">INFORMATION</text>
+
+  <rect x="486" y="286" width="216" height="62" rx="9" fill="#fff8c5" stroke="#9a6700" stroke-width="2"/>
+  <text x="594" y="324" class="choice" text-anchor="middle">NEIGHBOURHOOD</text>
+
+  <rect x="714" y="286" width="216" height="62" rx="9" fill="#fff8c5" stroke="#9a6700" stroke-width="2"/>
+  <text x="822" y="324" class="choice" text-anchor="middle">NUMBER OF CANDIDATES</text>
+
+  <text x="30" y="392" class="body">Change any one of them and the behaviour of the search can change completely — while the</text>
+  <text x="30" y="414" class="body">underlying problem stays exactly where it was.</text>
+</svg>
