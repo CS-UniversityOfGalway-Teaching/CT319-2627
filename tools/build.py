@@ -212,11 +212,17 @@ class Renderer:
             body.append(self.lines[self.i])
             self.i += 1
         self.i += 1  # closing fence
+        text = html.escape("\n".join(body), quote=False)
+        # A "prompt" fence is text meant to be copied out and pasted somewhere
+        # else, so it is wrapped for the copy button that ct319.js adds. The
+        # button is injected rather than emitted here: without JavaScript there
+        # is nothing to copy with, and a dead button would be worse than none.
+        if lang == "prompt":
+            self.out.append(f'<div class="prompt" data-copy><pre><code>{text}</code></pre></div>')
+            return
         cls = f' class="language-{html.escape(lang, quote=True)}"' if lang else ""
         label = f' data-lang="{html.escape(lang, quote=True)}"' if lang else ""
-        self.out.append(
-            f"<pre{label}><code{cls}>" + html.escape("\n".join(body), quote=False) + "</code></pre>"
-        )
+        self.out.append(f"<pre{label}><code{cls}>" + text + "</code></pre>")
 
     def heading(self) -> None:
         m = re.match(r"^(#{1,6})\s+(.*)$", self.lines[self.i].strip())

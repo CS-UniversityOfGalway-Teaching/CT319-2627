@@ -82,3 +82,71 @@
 
   if (bar) bar.removeAttribute("hidden");
 })();
+
+/* Copy buttons on prompt blocks. Injected rather than rendered into the page:
+   with JavaScript off there is no clipboard to write to, so a button that
+   did nothing would be worse than no button at all. */
+(function () {
+  "use strict";
+
+  var blocks = Array.prototype.slice.call(document.querySelectorAll(".prompt[data-copy]"));
+  if (!blocks.length) return;
+
+  function write(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    // Older Safari, and any page not served over https.
+    return new Promise(function (resolve, reject) {
+      var area = document.createElement("textarea");
+      area.value = text;
+      area.setAttribute("readonly", "");
+      area.style.position = "fixed";
+      area.style.top = "-1000px";
+      document.body.appendChild(area);
+      area.select();
+      try {
+        document.execCommand("copy") ? resolve() : reject();
+      } catch (err) {
+        reject(err);
+      }
+      document.body.removeChild(area);
+    });
+  }
+
+  blocks.forEach(function (block) {
+    var source = block.querySelector("pre");
+    if (!source) return;
+
+    var button = document.createElement("button");
+    button.type = "button";
+    button.className = "prompt__copy";
+    button.innerHTML =
+      '<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">' +
+      '<path fill="currentColor" d="M5 1.5A1.5 1.5 0 0 1 6.5 0h6A1.5 1.5 0 0 1 14 1.5v8a1.5 1.5 0 0 1-1.5 1.5h-6A1.5 1.5 0 0 1 5 9.5v-8Zm1.5-.5a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5h-6Z"/>' +
+      '<path fill="currentColor" d="M2 5a1.5 1.5 0 0 1 1.5-1.5H4V5h-.5a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 .5-.5V13h1.5v.5A1.5 1.5 0 0 1 10 15H3.5A1.5 1.5 0 0 1 2 13.5V5Z"/>' +
+      '</svg><span>Copy</span>';
+
+    var label = button.querySelector("span");
+    var reset;
+
+    button.addEventListener("click", function () {
+      write(source.innerText).then(
+        function () { say("Copied"); },
+        function () { say("Press ⌘C"); }
+      );
+    });
+
+    function say(text) {
+      label.textContent = text;
+      button.classList.add("is-done");
+      window.clearTimeout(reset);
+      reset = window.setTimeout(function () {
+        label.textContent = "Copy";
+        button.classList.remove("is-done");
+      }, 1600);
+    }
+
+    block.appendChild(button);
+  });
+})();

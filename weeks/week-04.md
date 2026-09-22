@@ -674,25 +674,73 @@ We will not write these by hand. We will describe each algorithm to a coding mod
 
 That takes some care. A capable model will often notice a better algorithm than the one it was asked for and quietly write that instead. So each request names the mechanism, rules out the substitution, and asks for evidence.
 
-Every request ends with the same two instructions:
+Every request carries the whole problem and ends with the same two instructions — state which algorithm you implemented, and print the evidence. Those two lines are what let us check a program instead of trusting it.
 
-> Before the code, state in one sentence which algorithm you implemented and which you deliberately did not use. After the code, print the route, its total cost, and the number of junctions expanded.
-
-Those two lines are what let us check a program instead of trusting it.
+Each block below is complete. Copy one, paste it, and run what comes back.
 
 **Breadth-first search**
 
-> Write Python for the graph above. Use breadth-first search exactly as defined: a FIFO queue, expand by depth, return the first path that reaches `D`. Do not use the road costs to order the queue. Do not substitute a different algorithm.
+```prompt
+Junctions: A B C D E F G I J L N O Q R S
+Roads (undirected, with cost):
+A-B 3, A-C 1, B-C 3, C-O 1, O-E 2, O-F 2, F-G 1, G-I 5, G-L 2,
+I-J 4, J-N 5, L-N 5, N-Q 4, N-S 15, Q-R 1, R-S 6, S-D 7
+Start: O. Goal: D.
+
+Write Python for this graph. Use breadth-first search exactly
+as defined: a FIFO queue, expand by depth, return the first
+path that reaches D. Do not use the road costs to order the
+queue. Do not substitute a different algorithm.
+
+Before the code, say in one sentence which algorithm you
+implemented and which you deliberately did not use. After the
+code, print the route, its total cost and the number of
+junctions expanded.
+```
 
 **Depth-first search**
 
-> Write Python for the graph above. Use depth-first search exactly as defined: a LIFO stack, follow one branch as far as it goes before backtracking, return the first path that reaches `D`. Take neighbours in alphabetical order. Do not use the road costs. Do not substitute a different algorithm.
+```prompt
+Junctions: A B C D E F G I J L N O Q R S
+Roads (undirected, with cost):
+A-B 3, A-C 1, B-C 3, C-O 1, O-E 2, O-F 2, F-G 1, G-I 5, G-L 2,
+I-J 4, J-N 5, L-N 5, N-Q 4, N-S 15, Q-R 1, R-S 6, S-D 7
+Start: O. Goal: D.
 
-**Hill climbing**
+Write Python for this graph. Use depth-first search exactly as
+defined: a LIFO stack, follow one branch as far as it goes
+before backtracking, return the first path that reaches D.
+Take neighbours in alphabetical order. Do not use the road
+costs. Do not substitute a different algorithm.
 
-> Write Python for the graph above. Use hill climbing: from the current junction, move to the best neighbour under the evaluation function below, and stop when no neighbour is better. Do not look further ahead than one road. Do not substitute a different algorithm.
->
-> Evaluation function: *(whichever of the three we settle on)*
+Before the code, say in one sentence which algorithm you
+implemented and which you deliberately did not use. After the
+code, print the route, its total cost and the number of
+junctions expanded.
+```
+
+**Hill climbing** — paste the evaluation function we settle on into the last line.
+
+```prompt
+Junctions: A B C D E F G I J L N O Q R S
+Roads (undirected, with cost):
+A-B 3, A-C 1, B-C 3, C-O 1, O-E 2, O-F 2, F-G 1, G-I 5, G-L 2,
+I-J 4, J-N 5, L-N 5, N-Q 4, N-S 15, Q-R 1, R-S 6, S-D 7
+Start: O. Goal: D.
+
+Write Python for this graph. Use hill climbing: from the
+current junction, move to the best neighbour under the
+evaluation function below, and stop when no neighbour is
+better. Do not look further ahead than one road. Do not
+substitute a different algorithm.
+
+Evaluation function: <the one we chose>
+
+Before the code, say in one sentence which algorithm you
+implemented and which you deliberately did not use. After the
+code, print the route, its total cost and the number of
+junctions expanded.
+```
 
 ### What to look for when it runs
 
@@ -792,6 +840,31 @@ That argument leans on one assumption, and it is worth naming: **no road may hav
 Uniform-cost search examines more of the graph than breadth-first search does. It has to: to know that a route is the cheapest, it must rule out the ones that looked promising and were not.
 
 That is Week 3's trade-off again, in its plainest form — **search cost** against **solution cost**. Paying more of the first is how you lower the second.
+
+### Try it yourself
+
+The three requests from the previous highlight each named an algorithm and forbade the substitution. This one asks for the algorithm that actually fits the problem, so nothing has to be forbidden.
+
+```prompt
+Junctions: A B C D E F G I J L N O Q R S
+Roads (undirected, with cost):
+A-B 3, A-C 1, B-C 3, C-O 1, O-E 2, O-F 2, F-G 1, G-I 5, G-L 2,
+I-J 4, J-N 5, L-N 5, N-Q 4, N-S 15, Q-R 1, R-S 6, S-D 7
+Start: O. Goal: D.
+
+Write Python for this graph. Use uniform-cost search: a
+priority queue ordered by the total cost of the path so far,
+always expanding the cheapest waiting path, and testing for
+the goal when a path is removed from the queue rather than
+when it is added.
+
+Before the code, say in one sentence which algorithm you
+implemented and which you deliberately did not use. After the
+code, print the route, its total cost and the number of
+junctions expanded.
+```
+
+Run it, then compare four things against the breadth-first result: the route, its cost, the number of junctions expanded, and which of those two numbers each algorithm was trying to make small.
 
 <!-- ct319:focus -->
 
