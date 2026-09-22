@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="442" viewBox="0 0 1120 442" role="img" aria-labelledby="t d">
+  <title id="t">One search loop, three removal rules</title>
+  <desc id="d">A single search loop: take one path off the frontier, ask whether it ends at the goal, and if not expand it by adding each neighbour with the cost of the path so far, then repeat. Beside it, the three strategies differ only in which waiting path is taken off the frontier. Breadth-first search takes the oldest, depth-first search takes the newest, and uniform-cost search takes the cheapest. Only that one step changes between them.</desc>
+  <style>
+    :root { --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --card:#ffffff; --good:#1a7f37; --goodbg:#dafbe1; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --card:#0d1117; --good:#3fb950; --goodbg:#0f2916; } }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .note { font-size:13.5px; fill:var(--muted); }
+    .bx   { font-size:14px; text-anchor:middle; }
+    .key  { font-size:14px; font-weight:700; }
+    .gl   { font-size:12.5px; fill:var(--muted); }
+    .edg  { font-size:12.5px; font-weight:700; fill:var(--muted); }
+    .box  { fill:var(--panel); stroke:var(--line); stroke-width:1.8; }
+    .boxA { fill:var(--panel); stroke:var(--accent); stroke-width:2.8; }
+    .pill { fill:var(--goodbg); stroke:var(--good); stroke-width:2; }
+    .cd   { fill:var(--card); stroke:var(--line); stroke-width:1.6; }
+    .cdA  { fill:var(--panel); stroke:var(--accent); stroke-width:2.6; }
+    .arr  { stroke:var(--muted); stroke-width:2.2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .dash { stroke:var(--accent); stroke-width:2; fill:none; stroke-dasharray:6 4; stroke-linecap:round; }
+    .brk  { stroke:var(--accent); stroke-width:2; fill:none; }
+  </style>
+  <rect width="1120" height="442" rx="18" fill="var(--bg)"/>
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/></marker><marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+  <text class="lab" x="30" y="40">ONE SEARCH LOOP &#183; THREE RULES FOR WHAT COMES OFF THE FRONTIER</text>
+  <text class="note" x="30" y="63">The loop is the same one Week 3 used. Only the first step changes.</text>
+  <rect class="boxA" x="80" y="120" width="340" height="60" rx="12"/>
+  <text class="bx" x="250.0" y="156">take one path off the frontier</text>
+  <rect class="box" x="80" y="216" width="340" height="60" rx="12"/>
+  <text class="bx" x="250.0" y="252">does it end at the goal?</text>
+  <rect class="box" x="80" y="312" width="340" height="60" rx="12"/>
+  <text class="bx" x="250.0" y="338">expand it — add each neighbour,</text>
+  <text class="bx" x="250.0" y="357">with the cost of the path so far</text>
+  <path class="arr" marker-end="url(#a)" d="M250.0 180 V210"/>
+  <path class="arr" marker-end="url(#a)" d="M250.0 276 V306"/>
+  <text class="edg" x="260.0" y="296">no</text>
+  <path class="arr" marker-end="url(#a)" d="M420 246 H508"/>
+  <text class="edg" x="440" y="238" text-anchor="middle">yes</text>
+  <rect class="pill" x="512" y="222" width="150" height="48" rx="24"/>
+  <text class="bx" x="587" y="252">return the path</text>
+  <path class="arr" marker-end="url(#a)" d="M80 342 H48 V150 H72"/>
+  <rect class="cd" x="700" y="120" width="390" height="64" rx="12"/>
+  <text class="key" x="720" y="147">Breadth-first search</text>
+  <text class="gl" x="720" y="168">take the oldest waiting path</text>
+  <rect class="cd" x="700" y="216" width="390" height="64" rx="12"/>
+  <text class="key" x="720" y="243">Depth-first search</text>
+  <text class="gl" x="720" y="264">take the newest waiting path</text>
+  <rect class="cdA" x="700" y="312" width="390" height="64" rx="12"/>
+  <text class="key" x="720" y="339" fill="var(--accent)">Uniform-cost search</text>
+  <text class="gl" x="720" y="360">take the cheapest waiting path</text>
+  <path class="brk" d="M700 130 H684 V342 H700"/>
+  <path class="dash" marker-end="url(#b)" d="M684 150 H430"/>
+  <text class="note" x="556" y="140" text-anchor="middle" fill="var(--accent)">the only step that changes</text>
+  <text class="note" x="30" y="424">Same frontier, same expansion, same goal test. Swap the rule on the right and the search becomes a different algorithm.</text>
+</svg>
