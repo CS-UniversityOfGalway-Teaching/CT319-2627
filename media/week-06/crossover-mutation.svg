@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="470" viewBox="0 0 960 470" role="img" aria-labelledby="title desc">
+  <title id="title">One worked generation on the CT319 knapsack</title>
+  <desc id="desc">Parents 01101 with fitness 14 and 00111 with fitness 13 are cut after position 3. Child one, 01111, weighs 8 and scores 15, the best possible for this instance. Child two, 00101, weighs 5 and scores 12. Mutating bit A of child two gives 10101, which weighs 17 and breaks the capacity of 12, so its fitness is 0.</desc>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2328; }
+    .title { font-size: 26px; font-weight: 700; }
+    .stage { font-size: 16px; font-weight: 700; fill: #57606a; letter-spacing: 0.06em; }
+    .bits { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 27px; font-weight: 700; letter-spacing: 5px; }
+    .meta { font-size: 15px; fill: #57606a; }
+    .fit { font-size: 17px; font-weight: 700; }
+    .small { font-size: 16px; fill: #57606a; }
+  </style>
+  <rect width="100%" height="100%" fill="#fff"/>
+  <defs>
+    <marker id="a6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#57606a"/>
+    </marker>
+  </defs>
+
+  <text x="30" y="40" class="title">SELECTION → CROSSOVER → MUTATION</text>
+  <text x="30" y="66" class="small">Items A B C D E · weights 12 2 1 1 4 · values 4 2 2 1 10 · capacity 12</text>
+
+  <text x="30" y="106" class="stage">PARENTS</text>
+  <text x="404" y="106" class="stage">CHILDREN · cut after position 3</text>
+  <text x="30" y="330" class="stage">MUTATION · bit A of child 2 flips</text>
+
+  <!-- parents -->
+  <rect x="30" y="122" width="300" height="80" rx="10" fill="#f6f8fa" stroke="#8c959f" stroke-width="2"/>
+  <text x="52" y="164" class="bits">011<tspan fill="#0969da">|</tspan>01</text>
+  <text x="216" y="152" class="meta">B C E · w 7</text>
+  <text x="216" y="176" class="fit">fitness 14</text>
+
+  <rect x="30" y="216" width="300" height="80" rx="10" fill="#f6f8fa" stroke="#8c959f" stroke-width="2"/>
+  <text x="52" y="258" class="bits">001<tspan fill="#0969da">|</tspan>11</text>
+  <text x="216" y="246" class="meta">C D E · w 6</text>
+  <text x="216" y="270" class="fit">fitness 13</text>
+
+  <path d="M338 162 L392 162" fill="none" stroke="#57606a" stroke-width="2.5" marker-end="url(#a6)"/>
+  <path d="M338 256 L392 256" fill="none" stroke="#57606a" stroke-width="2.5" marker-end="url(#a6)"/>
+  <path d="M338 176 L392 242" fill="none" stroke="#57606a" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#a6)"/>
+  <path d="M338 242 L392 176" fill="none" stroke="#57606a" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#a6)"/>
+
+  <!-- children -->
+  <rect x="404" y="122" width="330" height="80" rx="10" fill="#dafbe1" stroke="#1a7f37" stroke-width="2.5"/>
+  <text x="426" y="164" class="bits">011<tspan fill="#1a7f37">11</tspan></text>
+  <text x="610" y="152" class="meta">B C D E · w 8</text>
+  <text x="610" y="176" class="fit" fill="#1a7f37">fitness 15</text>
+
+  <rect x="404" y="216" width="330" height="80" rx="10" fill="#f6f8fa" stroke="#8c959f" stroke-width="2"/>
+  <text x="426" y="258" class="bits">001<tspan fill="#0969da">01</tspan></text>
+  <text x="610" y="246" class="meta">C E · w 5</text>
+  <text x="610" y="270" class="fit">fitness 12</text>
+
+  <text x="754" y="152" class="small">Best possible</text>
+  <text x="754" y="174" class="small">for this instance.</text>
+  <text x="754" y="252" class="small">Neither parent</text>
+  <text x="754" y="274" class="small">held this pair.</text>
+
+  <!-- mutation -->
+  <rect x="30" y="346" width="300" height="80" rx="10" fill="#f6f8fa" stroke="#8c959f" stroke-width="2"/>
+  <text x="52" y="388" class="bits">00101</text>
+  <text x="216" y="376" class="meta">C E · w 5</text>
+  <text x="216" y="400" class="fit">fitness 12</text>
+
+  <path d="M338 386 L392 386" fill="none" stroke="#8250df" stroke-width="2.5" marker-end="url(#a6)"/>
+
+  <rect x="404" y="346" width="330" height="80" rx="10" fill="#ffebe9" stroke="#cf222e" stroke-width="2.5"/>
+  <text x="426" y="388" class="bits"><tspan fill="#8250df">1</tspan>0101</text>
+  <text x="610" y="376" class="meta">A C E · w 17</text>
+  <text x="610" y="400" class="fit" fill="#cf222e">fitness 0</text>
+
+  <text x="754" y="376" class="small">Over the capacity</text>
+  <text x="754" y="398" class="small">of 12. Rejected.</text>
+</svg>

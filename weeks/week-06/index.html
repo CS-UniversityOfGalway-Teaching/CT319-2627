@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 6 — Evolution and collective intelligence — CT319</title>
+<meta name="description" content="CT319 Week 6. Populations, genetic algorithms and ant colonies — what changes when a search keeps many candidate solutions instead of one.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230969da'/%3E%3Cpath d='M8 8h7v4h-3v8h3v4H8zm9 0h7v16h-7v-4h3v-8h-3z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/ct319.css">
+</head>
+<body>
+<a class="skip-link" href="#beats">Skip to the teaching sections</a>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">CT319 Artificial Intelligence · Week 6 · Evolution and collective intelligence</p>
+    <h1>Week 6 — Evolution and collective intelligence</h1>
+    <p class="week-question">What changes when the search stops betting on one solution?</p>
+  </header>
+
+  <div class="lede">
+<p>Week 5 kept <strong>one current solution</strong> at the centre of the search. Hill climbing moved it. Variable Neighbourhood Search changed what counted as nearby. Simulated annealing loosened what it would accept. Even repeated restarts still followed one trajectory at a time.</p>
+<p>This week changes that assumption. Instead of asking <em>where should this solution move next?</em>, we ask:</p>
+<div class="focus-block">
+<blockquote><p><strong>What if we search with many candidate solutions at the same time?</strong></p></blockquote>
+</div>
+<p>That gives us a <strong>population</strong>. From there, two nature-inspired ideas become useful:</p>
+<ul><li><strong>evolution</strong> — candidates combine and mutate across generations</li><li><strong>collective behaviour</strong> — many simple agents interact and reinforce useful discoveries</li></ul>
+<p>The formal notes develop both through Genetic Algorithms, Ant Colony Optimisation and Artificial Bee Colony.</p>
+<p>We work through four things.</p>
+<ul><li><a href="#more-than-one-candidate--why-search-with-a-population"><strong>More than one candidate</strong></a> — why keeping a population changes the structure of the search.</li><li><a href="#evolve-a-solution--selection-crossover-and-mutation"><strong>Evolve a solution</strong></a> — how a Genetic Algorithm builds new generations from selection, crossover and mutation.</li><li><a href="#when-evolution-goes-wrong--why-diversity-matters"><strong>When evolution goes wrong</strong></a> — why a population can lose its useful variation and stop improving.</li><li><a href="#no-leader-required--how-can-a-colony-search"><strong>No leader required</strong></a> — how useful search behaviour emerges from many simple agents sharing information.</li></ul>
+<p>Three ideas carry the page, and it is worth keeping them apart:</p>
+<div class="focus-block">
+<div class="lenses">
+<div class="lens"><span class="lens__key">Population</span><span class="lens__gloss">many candidate solutions coexist instead of one trajectory carrying the whole search</span></div>
+<div class="lens"><span class="lens__key">Fitness</span><span class="lens__gloss">a consistent evaluation, so that better candidates can influence what happens next</span></div>
+<div class="lens"><span class="lens__key">Diversity</span><span class="lens__gloss">variation across the population; without it, exploration collapses</span></div>
+</div>
+</div>
+<p>This week is not a new problem type. It is a new way to organise search.</p>
+  </div>
+
+  <div class="beat-bar" data-beat-bar hidden>
+    <span class="beat-bar__label">Week 6 · Sections</span>
+    <button type="button" data-expand-all>Expand all</button>
+    <button type="button" data-collapse-all>Collapse all</button>
+  </div>
+
+  <main class="beats" id="beats">
+<details class="beat" id="more-than-one-candidate--why-search-with-a-population"><summary><h2 class="beat__title">More than one candidate — why search with a population?</h2></summary><div class="beat__body"><p>Up to Week 5, every method had one thing in common: <strong>there was one current solution</strong>. The algorithm could move it, restart it, change its neighbourhood or accept a worse move — but it followed one candidate at a time.</p>
+<p>A population replaces that single candidate with a set of them.</p>
+<div class="callout callout--important"><span class="callout__label">Important</span><p><strong>A population is a set of candidate solutions, not a set of answers.</strong></p>
+<p>Every member is a possible answer under evaluation. A standard Genetic Algorithm still returns one result at the end. Returning several genuinely different solutions is a separate problem, and it belongs to multi-objective optimisation rather than to this week.</p></div>
+<h3 id="replace-one-candidate-with-many">Replace one candidate with many</h3>
+<p>Return to the knapsack representation from Week 5. A candidate is five bits, one per item:</p>
+<pre data-lang="text"><code class="language-text">A B C D E
+0 1 1 0 1</code></pre>
+<p>A population is simply several of those at once:</p>
+<pre data-lang="text"><code class="language-text">01101   00111   10110   01010
+10000   00110   01001   00011</code></pre>
+<p>Now the search occupies several parts of the candidate space at the same time, which changes what <em>getting stuck</em> means.</p>
+<div class="focus-block">
+<p>If one candidate sits in a poor region, others may still be somewhere useful. No single candidate carries the whole search any more.</p>
+</div>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-06/trajectory-vs-population.svg" alt="The same two-peak landscape searched by one candidate and then by a population of eight" loading="lazy" decoding="async"><figcaption>Figure 1. Weeks 4–5 move one candidate along one trajectory. This week spreads candidates across the landscape so more than one region is represented at once. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<h3 id="more-candidates-do-not-automatically-mean-better-search">More candidates do not automatically mean better search</h3>
+<p>A population creates possibilities and it creates cost. If every candidate must be evaluated, a population of <code>100</code> needs roughly a hundred evaluations per generation. A larger population covers more of the space and demands more computation, which is the same trade-off as always: <strong>broader search usually costs more</strong>.</p>
+<div class="focus-block">
+<p>Population-based search is not free parallel intelligence. It is a different way of allocating search effort.</p>
+</div></div></details>
+<details class="beat" id="fitness-turns-candidates-into-comparable-solutions"><summary><h2 class="beat__title">Fitness turns candidates into comparable solutions</h2></summary><div class="beat__body"><p>The formal notes introduce the metaphor as a mapping: an <strong>environment</strong> becomes a problem, an <strong>individual</strong> becomes a solution, and <strong>fitness</strong> becomes that solution's value — which in turn becomes its chance of seeding new solutions.</p>
+<p>For knapsack we use the five items from the formal example, and state the capacity explicitly so that every number on this page can be checked:</p>
+<div class="table-scroll"><table><thead><tr><th>Item</th><th class="num">A</th><th class="num">B</th><th class="num">C</th><th class="num">D</th><th class="num">E</th></tr></thead><tbody><tr><td><strong>Weight</strong></td><td class="num">12</td><td class="num">2</td><td class="num">1</td><td class="num">1</td><td class="num">4</td></tr><tr><td><strong>Value</strong></td><td class="num">4</td><td class="num">2</td><td class="num">2</td><td class="num">1</td><td class="num">10</td></tr></tbody></table></div>
+<p>with a capacity of <strong>12</strong>. So <code>01101</code> selects B, C and E, weighs <code>2 + 1 + 4 = 7</code> and is worth <code>2 + 2 + 10 = 14</code>.</p>
+<p>A candidate that exceeds the capacity is not a solution at all. We give it a fitness of <code>0</code>, which keeps it visible in the population while making it unusable by selection. The best feasible candidate for this instance is <code>01111</code> — items B, C, D and E, weight 8, value <strong>15</strong>.</p>
+<div class="callout callout--note"><span class="callout__label">Note</span><p><strong>Fitness is problem-specific.</strong> Here larger is better. Elsewhere a cost may be minimised instead. What matters is that the algorithm has one consistent way to compare candidates.</p></div>
+<div class="focus-block">
+<p>Fitness is what makes a population more than a pile of bit strings. Without one consistent evaluation there is nothing for selection to prefer, and the population is just storage.</p>
+</div></div></details>
+<details class="beat" id="where-a-population-starts"><summary><h2 class="beat__title">Where a population starts</h2></summary><div class="beat__body"><p>The formal notes describe the initial population as fixed in size, usually generated randomly within the problem's constraints, and ideally holding candidates with diverse characteristics — because <strong>diversity is a major consideration</strong>.</p>
+<p>The reason is easy to see. Compare a population of six different bit strings with a population of the same string repeated six times. Both contain six candidates.</p>
+<div class="focus-block">
+<p>Only one contains any variation, and a population with no variation has numbers but no breadth.</p>
+</div>
+<p>Here is a real generation 0, drawn randomly by the Population Lab:</p>
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-06/population-fitness.png" alt="Eight candidates with weights, values, fitness and selection-wheel shares; four are over capacity with fitness zero" loading="lazy" decoding="async"><figcaption>Figure 2. Generation 0 for seed 39. Four of the eight random candidates exceed the capacity of 12 and score <code>0</code>, so they take no share of the selection wheel. The best candidate here is <code>00101</code> — items C and E, worth 12. Screenshot created for these pages from the Population Lab; no external image licence is used.</figcaption></figure>
+<p>Notice that random initialisation within a constrained problem routinely produces infeasible candidates. How an implementation handles them is a design decision, not a detail.</p>
+<div class="focus-block">
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Week 5 tried to help one solution escape. This week changes the architecture: a population gives us several candidates, fitness gives us a way to compare them, and diversity keeps different possibilities alive.</p>
+<p>Now we need a mechanism for turning one population into the next.</p>
+</div></div></details>
+<details class="beat" id="evolve-a-solution--selection-crossover-and-mutation"><summary><h2 class="beat__title">Evolve a solution — selection, crossover and mutation</h2></summary><div class="beat__body"><p>The formal material presents a Genetic Algorithm as initialisation followed by a repeating loop of selection, crossover and mutation, ending at a stopping condition.</p>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-06/ga-cycle.svg" alt="The genetic algorithm loop: initialise, evaluate, select, crossover, mutate, and back to evaluate" loading="lazy" decoding="async"><figcaption>Figure 3. Each stage contributes something different: fitness makes candidates comparable, selection biases the search, crossover recombines, mutation varies. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<div class="focus-block">
+<p>The stages are not four names for the same thing. Each one does a job the others cannot, and the next four sections are about what each one actually contributes.</p>
+</div></div></details>
+<details class="beat" id="selection--who-influences-the-next-generation"><summary><h2 class="beat__title">Selection — who influences the next generation?</h2></summary><div class="beat__body"><p>If every candidate had the same chance to reproduce, fitness would barely influence the search. Selection changes that. The formal notes describe choosing a portion of the population using a roulette-style draw in which <strong>better solutions are given more probability of being selected</strong>.</p>
+<p>That wording is precise and worth keeping:</p>
+<div class="focus-block">
+<ul><li>being better does <strong>not</strong> guarantee reproduction</li><li>being worse does <strong>not</strong> guarantee disappearance</li></ul>
+<p>Because selection is probabilistic, the population can favour good candidates without collapsing to a single answer in one step.</p>
+</div>
+<p>In Figure 2, <code>00001</code> holds 37% of the wheel and <code>00010</code> holds 3.7% — a strong bias, not a decision.</p></div></details>
+<details class="beat" id="crossover--combine-parts-of-two-candidates"><summary><h2 class="beat__title">Crossover — combine parts of two candidates</h2></summary><div class="beat__body"><p>Take two selected parents and cut them at the same point, then exchange the tails. With <code>11001</code> and <code>00110</code> cut after position 2, the formal notes produce <code>11110</code> and <code>00001</code>. This is <strong>one-point crossover</strong>; the slides also mention multi-point variants.</p>
+<div class="focus-block">
+<blockquote><p><strong>crossover creates new combinations from material already present in the population</strong></p></blockquote>
+<p>It does not certify them. A child can be better than both parents, between them, or worse than both — fitness evaluation decides.</p>
+</div>
+<p>And a crossover operator that makes sense for a bit string may make no sense for a route or a timetable, so <strong>representation still matters</strong>.</p></div></details>
+<details class="beat" id="mutation--introduce-a-small-random-change"><summary><h2 class="beat__title">Mutation — introduce a small random change</h2></summary><div class="beat__body"><p>After crossover, some children are mutated. For a bit string the formal notes show <strong>bit-flip mutation</strong>: pick a position at random and change it, turning <code>11110</code> into <code>10110</code>. The slides also mention swap mutation.</p>
+<p>The computational role is what counts.</p>
+<div class="focus-block">
+<p>Without mutation, the algorithm can only recombine information already in the population. Mutation can introduce a value that has gone missing entirely.</p>
+</div></div></details>
+<details class="beat" id="one-worked-generation"><summary><h2 class="beat__title">One worked generation</h2></summary><div class="beat__body"><p>Take the two fittest candidates from a population — <code>01101</code> (fitness 14) and <code>00111</code> (fitness 13) — and cut after position 3:</p>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-06/crossover-mutation.svg" alt="Two parents crossing to produce the optimum and a second child, then a mutation that breaks the capacity" loading="lazy" decoding="async"><figcaption>Figure 4. Crossover of <code>01101</code> and <code>00111</code> at point 3 produces <code>01111</code>, weight 8 and value 15 — the best feasible candidate for this instance, and one neither parent held. Mutating bit A of the second child gives <code>10101</code>, weight 17, which breaks the capacity. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<div class="focus-block">
+<p>Child 1 is better than either parent because each parent carried a different useful fragment. That is the attraction of crossover: the population can recombine partial structures that developed separately.</p>
+</div>
+<p>Child 2's mutation shows the other half of the story.</p>
+<div class="callout callout--note"><span class="callout__label">Note</span><p><strong>Crossover and mutation do not automatically preserve a problem's constraints.</strong></p>
+<p>An implementation may use a representation that can only produce valid candidates, reject or repair invalid ones, or penalise them through the fitness function. Here we reject: an over-capacity candidate scores <code>0</code>. This is Week 2's point again — <strong>representation matters</strong>, and so does what the operators are allowed to build.</p></div></div></details>
+<details class="beat" id="when-does-a-genetic-algorithm-stop"><summary><h2 class="beat__title">When does a genetic algorithm stop?</h2></summary><div class="beat__body"><p>Selection says <em>keep using what currently looks good</em>. Mutation says <em>do not let the population become too certain too early</em>. That is the exploitation-versus-exploration theme from simulated annealing, in a new form.</p>
+<div class="focus-block">
+<div class="lenses lenses--pair">
+<div class="lens"><span class="lens__key">Selection without diversity</span><span class="lens__gloss">the population can collapse too early, and the search stops finding anything new</span></div>
+<div class="lens"><span class="lens__key">Mutation without selection pressure</span><span class="lens__gloss">the search behaves randomly, and good structure is destroyed as fast as it appears</span></div>
+</div>
+<p>The interesting behaviour lies between those extremes.</p>
+</div>
+<h3 id="a-genetic-algorithm-is-not-one-exact-implementation">A Genetic Algorithm is not one exact implementation</h3>
+<p>The broad stages are stable, but population size, selection method, crossover method and rate, mutation method and rate, replacement strategy and stopping condition can all change. So <em>Genetic Algorithm</em> names a family of related implementations rather than one fixed piece of code.</p>
+<h3 id="three-practical-stopping-conditions">Three practical stopping conditions</h3>
+<p>The formal notes give three: a set number of generations, no improvement in the best solution for some number of generations, or a fitness value above a predefined threshold. They correspond to <em>we have spent our budget</em>, <em>the search appears to have saturated</em> and <em>this is good enough</em>.</p>
+<div class="focus-block">
+<p>Notice what none of them establishes: that the result is the global optimum. Metaheuristic search usually stops because it is good enough or has stopped improving — not because optimality has been proved.</p>
+</div>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>The search no longer moves one candidate through a neighbourhood. It transforms a population across generations, with selection biasing, crossover recombining and mutation varying.</p>
+<p>That sounds powerful. But a whole population can still become too similar.</p></div></details>
+<details class="beat" id="when-evolution-goes-wrong--why-diversity-matters"><summary><h2 class="beat__title">When evolution goes wrong — why diversity matters</h2></summary><div class="beat__body"><p>Suppose that after several generations the population looks like this:</p>
+<pre data-lang="text"><code class="language-text">01101
+01101
+01101
+01101
+01101
+01101</code></pre>
+<p>The fitness is quite good — <code>01101</code> is worth 14, and the best possible is 15. But ask what crossover can do now. Take any two parents and cut them anywhere: both children are <code>01101</code> again.</p>
+<div class="focus-block">
+<p><strong>Crossover cannot create novelty when the parents contain no variation to recombine.</strong></p>
+</div>
+<p>This is the standard failure mode, and it has a name.</p>
+<div class="callout callout--important"><span class="callout__label">Important</span><p><strong>Premature convergence.</strong></p>
+<p>If the population becomes highly similar before it reaches a sufficiently good region of the search space, the Genetic Algorithm may suffer premature convergence: strong selection pressure removes variation, crossover stops producing anything new, and improvement stops even though better solutions exist.</p></div>
+<div class="focus-block">
+<p>It is the population version of Week 5's problem. There, one solution was trapped in one local region. Here, many solutions become so similar that the whole population searches one narrow region. The algorithm still holds many individuals; from a search point of view they are nearly redundant.</p>
+</div></div></details>
+<details class="beat" id="watch-it-happen"><summary><h2 class="beat__title">Watch it happen</h2></summary><div class="beat__body"><p>The Population Lab runs exactly this. With the mutation rate set to <code>0</code>, the default run collapses:</p>
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-06/population-converged.png" alt="Eight identical candidates, one distinct, mean pairwise Hamming zero, stopped on no improvement" loading="lazy" decoding="async"><figcaption>Figure 5. The same seed as Figure 2, thirteen generations later with mutation switched off. Every candidate is <code>01101</code>; distinct candidates is 1 of 8 and mean pairwise Hamming distance is 0.00. The run stops on “no improvement”, holding 14 when 15 was available. Screenshot created for these pages from the Population Lab; no external image licence is used.</figcaption></figure>
+<div class="focus-block">
+<p>The cruel detail is how close it got. <code>01101</code> and <code>01111</code> differ in exactly one bit — item D. No crossover of identical parents can ever add it. Only mutation can.</p>
+</div>
+<h3 id="measuring-diversity">Measuring diversity</h3>
+<p>The lab reports two numbers, and they are not equally good.</p>
+<p><strong>Distinct candidates</strong> simply counts how many different bit strings the population holds. It is easy to read and it is a rough proxy for diversity, not a definitive metric: eight candidates that differ in one bit each score the same as eight that differ in four.</p>
+<p><strong>Mean pairwise Hamming distance</strong> is the average number of bit positions in which two members of the population differ. It reaches 0 only when every candidate is identical, and it degrades smoothly as variation drains away, which makes it the more informative of the two.</p></div></details>
+<details class="beat" id="the-mutation-rate-experiment"><summary><h2 class="beat__title">The mutation-rate experiment</h2></summary><div class="beat__body"><p>Run the same algorithm twice from the same seed, changing only the mutation rate.</p>
+<div class="table-scroll"><table><thead><tr><th>Run A — mutation rate <code>0</code></th><th>Run B — mutation rate <code>0.06</code></th></tr></thead><tbody><tr><td><img src="../../media/week-06/trace-mutation-0.png" alt="Best fitness plateaus at 14 while mean pairwise Hamming falls to zero"></td><td><img src="../../media/week-06/trace-mutation-006.png" alt="Best fitness reaches 15 while mean pairwise Hamming stays above one"></td></tr><tr><td>Best fitness stops at 14. Average fitness climbs to meet it. Diversity falls to zero and stays there.</td><td>Best fitness reaches the dashed line at 15. Diversity dips, recovers and never collapses.</td></tr></tbody></table></div>
+<p class="standalone-caption"><sub><em>Figure 6. The same seed, the same population size, the same selection and crossover. The dashed green line is the best achievable fitness for this instance. Reading the purple diversity trace against the green best-fitness trace is the whole experiment. Screenshots created for these pages from the Population Lab; no external image licence is used.</em></sub></p>
+<div class="focus-block">
+<p>The useful question is not <em>which run scored higher</em>. It is:</p>
+<blockquote><p><strong>What happened to diversity before the search stopped improving?</strong></p></blockquote>
+<p>That makes mutation's role visible as a search mechanism rather than a biological decoration.</p>
+</div>
+<h3 id="too-little-and-too-much">Too little and too much</h3>
+<p>Too little mutation and selection gradually makes the population uniform, so the search becomes purely exploitative and converges early. Too much and useful structure is destroyed as fast as it is found, so the search drifts towards random sampling. There is no universal setting that is best for every problem.</p>
+<h3 id="fitness-shapes-the-pressure">Fitness shapes the pressure</h3>
+<p>Selection is guided by fitness, so the shape of the fitness function influences the direction of the search. If one region scores much better early, selection may commit to it before alternatives have had time to develop. Which returns us to Week 2:</p>
+<blockquote><p><strong>how we represent and evaluate a problem changes what the algorithm can discover</strong></p></blockquote>
+<div class="focus-block">
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Population-based search avoids placing the whole search on one trajectory, but it can still become trapped if the population loses variation. That makes <strong>diversity</strong> an active search resource rather than a pleasant property.</p>
+</div>
+<p>We have now seen one population mechanism based on evolution. The second half of the week asks something different: can many simple agents produce useful search behaviour without any one agent knowing the whole solution?</p></div></details>
+<details class="beat" id="no-leader-required--how-can-a-colony-search"><summary><h2 class="beat__title">No leader required — how can a colony search?</h2></summary><div class="beat__body"><p>The formal <em>Other Meta Heuristic Searches</em> material introduces several population-based techniques inspired by collective behaviour. It lists many; we develop the underlying computational idea rather than memorising a catalogue of animal names.</p>
+<h3 id="ant-colony-optimisation">Ant Colony Optimisation</h3>
+<p>The notes describe Ant Colony Optimisation as inspired by ant behaviour and as a <strong>multi-agent, collective, decentralised, self-organised</strong> search. It was introduced by Marco Dorigo in 1992 and first applied to the Travelling Salesman Problem before being used for other routing problems.</p>
+<p>The mapping the slides give is direct: nest and food become nodes in a graph, ants become artificial agents, pheromone becomes an artificial value on the graph, and foraging becomes <strong>random walks guided by the pheromone</strong>.</p></div></details>
+<details class="beat" id="route-cost-and-pheromone-are-different-things"><summary><h2 class="beat__title">Route cost and pheromone are different things</h2></summary><div class="beat__body"><p>This distinction carries the whole algorithm.</p>
+<div class="focus-block">
+<p>A route has a <strong>cost</strong> — distance, time, energy — which is a fixed property of the problem. The algorithm separately maintains an <strong>artificial pheromone</strong> value on each edge, which is search information the colony accumulates and which changes as ants explore.</p>
+<blockquote><p><strong>Pheromone is not the route cost. It is a reinforced signal stored in the environment rather than inside any agent.</strong></p></blockquote>
+</div>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-06/pheromone-round-1.png" alt="A route graph at round 1, with near-uniform pheromone on every edge" loading="lazy" decoding="async"><figcaption>Figure 7. Round 1. Every edge started at τ = 1.00 regardless of its cost, and one round of ants has barely moved it. Screenshot created for these pages from the Population Lab; no external image licence is used.</figcaption></figure>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-06/pheromone-round-20.png" alt="The same graph after twenty rounds, with pheromone concentrated on the cheapest route" loading="lazy" decoding="async"><figcaption>Figure 8. Round 20 of the same run. The printed costs are identical to Figure 7 — nothing about the problem changed. Pheromone has concentrated on <code>NEST → C → Y → FOOD</code>, the cheapest of the six routes at 5, while the rest has evaporated towards zero. Screenshot created for these pages from the Population Lab; no external image licence is used.</figcaption></figure></div></details>
+<details class="beat" id="reinforcement-and-evaporation"><summary><h2 class="beat__title">Reinforcement and evaporation</h2></summary><div class="beat__body"><p>An individual ant has only local information. It chooses where to move next, completes a route, and its route contributes to the colony's shared signal. The next ant then searches an environment whose pheromone has changed.</p>
+<p>The formal algorithm updates pheromone <strong>using the tour cost</strong>, so cheaper routes deposit more. That is <strong>reinforcement</strong>, and on its own it is unstable: an early accidental preference would keep being reinforced simply because it keeps being sampled.</p>
+<p>Practical ACO therefore pairs it with <strong>evaporation</strong> — every edge loses a fraction of its pheromone each round, before the new deposits are added.</p>
+<div class="focus-block">
+<div class="lenses lenses--pair">
+<div class="lens"><span class="lens__key">Evaporate</span><span class="lens__gloss"><code>τ ← (1 − ρ) × τ</code><br>every edge loses a share of its old value, so old information fades</span></div>
+<div class="lens"><span class="lens__key">Reinforce</span><span class="lens__gloss"><code>τ ← τ + Q / cost</code><br>every ant adds to the edges it used, and cheaper routes add more</span></div>
+</div>
+<p>Reinforcement strengthens the evidence for routes that turned out well. Evaporation weakens old information, so the signal reflects recent routes rather than everything ever deposited.</p>
+</div>
+<p>Without evaporation, nothing is ever forgotten: the initial uniform pheromone and every early accidental deposit stay in the totals, and the colony takes far longer to commit to anything. This is the exploration-and-exploitation balance again, now stored in the environment rather than in a temperature or a mutation rate.</p>
+<div class="callout callout--note"><span class="callout__label">Note</span><p><strong>Artificial ants do not simply take the strongest edge.</strong></p>
+<p>They choose <strong>probabilistically</strong>, with the chance of each edge influenced by its pheromone <em>and</em> by problem-specific information such as distance. An edge with the most pheromone is the most likely next step — not the certain one. That is what stops one early reinforcement from closing the search down.</p></div>
+<h3 id="which-ant-knows-the-best-route">Which ant knows the best route?</h3>
+<div class="focus-block">
+<p>Possibly none of them. Each ant completes one route using local information and a random draw. The useful search behaviour belongs to the <strong>colony-level process</strong>, and it is stored in the pheromone values rather than in any individual.</p>
+</div></div></details>
+<details class="beat" id="metaphor-is-not-mechanism"><summary><h2 class="beat__title">Metaphor is not mechanism</h2></summary><div class="beat__body"><p>The slides use bees as a second collective example, in phases: scouts explore for food sources, sources are exploited, returning bees communicate quality through a waggle dance, better sources attract more recruits through positive feedback, and scouts resume exploring when a source is exhausted.</p>
+<p>The recurring pattern is what to take away:</p>
+<ol class="flow" aria-label="The collective search cycle, in order">
+<li><span>explore</span></li>
+<li><span>evaluate</span></li>
+<li><span>communicate</span></li>
+<li><span class="is-pivot">reinforce</span></li>
+<li><span>explore again</span></li>
+</ol>
+<p class="flow__note">That is conceptually related to Ant Colony Optimisation even though the metaphor and the algorithm differ. The highlighted step is the one that makes the cycle a search rather than a survey.</p>
+<h3 id="evolution-and-collective-intelligence-are-not-the-same-algorithm">Evolution and collective intelligence are not the same algorithm</h3>
+<p>A Genetic Algorithm keeps a population of candidate solutions and transforms it by selection, crossover and mutation across generations. Ant Colony Optimisation keeps a population of agents that construct routes and share a pheromone signal. Artificial Bee Colony keeps agents that explore, evaluate and recruit towards better sources.</p>
+<p>They are not interchangeable, and the formal notes are explicit that <strong>there is no best algorithm among them</strong> — each has strengths and weaknesses and suits particular purposes. What they share is a move away from one-current-solution search.</p>
+<h3 id="do-not-confuse-metaphor-with-mechanism">Do not confuse metaphor with mechanism</h3>
+<p>It is easy to remember a list of animals and forget what the algorithms do. A metaphor is only useful once we can translate it into computation.</p>
+<div class="table-scroll"><table><thead><tr><th>Ant Colony Optimisation</th><th></th><th>Genetic Algorithm</th><th></th></tr></thead><tbody><tr><td>ant</td><td>artificial search agent</td><td>individual</td><td>candidate solution</td></tr><tr><td>route</td><td>candidate solution</td><td>fitness</td><td>evaluation</td></tr><tr><td>pheromone</td><td>shared search signal</td><td>reproduction</td><td>generation of new candidates</td></tr><tr><td>reinforcement</td><td>stronger influence on future choices</td><td>mutation</td><td>variation</td></tr></tbody></table></div>
+<div class="focus-block">
+<p>If we cannot make that translation, the animal name has not taught us anything. Nature-inspired optimisation is not about copying an animal story — it is about identifying a search mechanism and implementing that mechanism computationally.</p>
+</div>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>We began by representing one problem, searched it blindly, added heuristic guidance, improved one candidate locally, gave that candidate ways to escape, and now let many candidates or agents contribute at once.</p>
+<p>The recurring lesson is not that one algorithm is smartest. It is that <strong>changing the information, representation and search structure changes what becomes possible</strong>.</p></div></details>
+  </main>
+
+  <div class="tail">
+<h2 id="the-population-lab">The Population Lab</h2>
+<p>🧪 <strong><a href="../../population-lab/">Open the Population Lab</a></strong></p>
+<p>Two views on the same page. Both are seeded, so a given seed replays the same run exactly.</p>
+<p><strong>Evolution</strong> runs the genetic algorithm above on the five-bit knapsack, showing the population with weights, values, fitness and selection-wheel shares, then the parents, crossover point, children and mutations that build each new generation.</p>
+<p><strong>Colony</strong> runs ant colony optimisation on a six-route graph, printing each edge's cost and pheromone separately and showing the probability of each route on the next round.</p>
+<p>The lab exposes the search mechanism. It is not a production optimiser.</p>
+<h3 id="try-it-yourself">Try it yourself</h3>
+<ol><li>Keep the default seed <code>39</code>. Drag <strong>mutation rate</strong> to <code>0</code>, reset, and run to the end.</li><li>Read the metrics: best fitness, distinct candidates, mean pairwise Hamming.</li><li>Set the mutation rate to <code>0.06</code>, reset, and run again from the same seed.</li><li>Compare the two traces. Ask what happened to diversity <em>before</em> improvement stopped.</li><li>Switch to <strong>Colony</strong>, run with <strong>evaporation</strong> at <code>0.30</code>, and watch pheromone concentrate on the cost-5 route.</li><li>Step a few rounds and read the choice panel: the strongest edge is the most likely next step, never a certainty.</li><li>Reset with evaporation at <code>0</code> and run again. Nothing is forgotten, so the colony stays undecided for much longer.</li></ol>
+<hr>
+<h2 id="before-week-7">Before Week 7</h2>
+<p>Week 7 is the <strong>MCQ assessment and revision point</strong>, so this week closes the first search block rather than opening a new algorithm.</p>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-06/search-recap.svg" alt="Weeks 2 to 6 in sequence, and the four modelling choices that run through all of them" loading="lazy" decoding="async"><figcaption>Figure 9. The five-week progression, and the four modelling choices that recur in every one of them. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<p>Change any one of those four choices and the search behaviour can change dramatically while the underlying problem stays exactly where it was.</p>
+<div class="focus-block">
+<p>A useful revision question for the whole block is therefore:</p>
+<blockquote><p><strong>When you change the representation, information, neighbourhood or number of candidates, what exactly changes about the search?</strong></p></blockquote>
+</div>
+<hr>
+<h2 id="quick-revision">Quick revision</h2>
+<p>If you can answer these without reopening the page, you have the core of this week.</p>
+<ol><li><strong>[WK-06-01]</strong> What is the main structural difference between local search and population-based search?</li><li>Why is diversity useful in an initial population, and why does random initialisation often produce infeasible candidates?</li><li><strong>[WK-06-02]</strong> What different roles do selection, crossover and mutation play in a Genetic Algorithm?</li><li>Why does crossover not guarantee that a child is better than its parents, and why can it produce an invalid one?</li><li><strong>[WK-06-03]</strong> What is premature convergence, and what happens to crossover once it has occurred?</li><li>Why is “number of distinct candidates” only a rough proxy for diversity?</li><li><strong>[WK-06-04]</strong> In Ant Colony Optimisation, what is the difference between route cost and artificial pheromone, and what does evaporation contribute that reinforcement does not?</li><li>Why do artificial ants choose probabilistically rather than always taking the strongest edge?</li></ol>
+<hr>
+<h2 id="sources-and-licensing-notes">Sources and licensing notes</h2>
+<h3 id="ct319-source-material">CT319 source material</h3>
+<p>This week combines selected material from two formal CT319 lectures on Canvas.</p>
+<p><em>Meta Heuristic Search / Genetic Algorithms</em> supplies the move from one current solution to a population, Darwinian evolution as a computational metaphor, the environment/individual/fitness mapping, GA initialisation with diversity as “a major consideration”, roulette-style selection in which better solutions receive more probability, one-point crossover, bit-flip and swap mutation, the three stopping conditions, and the observation that improvement saturates in later generations.</p>
+<p><em>Other Meta Heuristic Searches</em> supplies Ant Colony Optimisation — Dorigo 1992, TSP first, multi-agent and decentralised, with nest and food as nodes, artificial pheromone, and foraging as random walks guided by pheromone — the Artificial Bee Colony phases, and the closing recap that no one algorithm among these is best.</p>
+<p>Three points are handled more explicitly here than in the slides:</p>
+<ul><li><strong>Premature convergence</strong> is named. The slides describe diversity as important and improvement as saturating; this page connects the two and gives the standard term.</li><li><strong>Pheromone evaporation</strong> is added. The slides describe reinforcement using tour cost but not decay. Evaporation is part of standard ACO and is included so the reinforcement story is not left unbalanced.</li><li><strong>Probabilistic route choice</strong> is stated. The slides describe foraging as random walks guided by pheromone; this page makes the “not simply the strongest edge” consequence explicit.</li></ul>
+<p>The formal slides list further metaheuristics — Grey Wolf, Firefly, Bat, Cuckoo Search and others. These pages do not reproduce that catalogue. Multi-objective optimisation is also raised in the slides as the topic of CA1 and a separate guest lecture, and is deliberately not taught here.</p>
+<h3 id="examples">Examples</h3>
+<p>The Genetic Algorithm examples reuse the five-bit knapsack representation from Week 5, and the item weights and values are the ones in the formal knapsack example: A <code>12/4</code>, B <code>2/2</code>, C <code>1/2</code>, D <code>1/1</code>, E <code>4/10</code>.</p>
+<p>The <strong>capacity is stated on this page as 12</strong>. The slides run hill climbing on those items without printing the capacity in the material reproduced here. That run is consistent with any capacity from 12 to 15, and <code>01111</code> — items B, C, D and E, weight 8, value 15 — is the best feasible candidate across that whole range, so no claim on this page depends on the exact figure. Every fitness value shown is derived from those weights, values and capacity, and is checked by the lab's test suite.</p>
+<p>The colony example uses a purpose-built six-route graph rather than a TSP instance, so that pheromone reinforcement and evaporation stay visible on one screen.</p>
+<h3 id="figures">Figures</h3>
+<p>Figures 1–9 were <strong>created for these pages</strong>. They use no external image licence.</p>
+<ul><li>Figures 1, 3, 4 and 9 are original diagrams.</li><li>Figures 2, 5, 6, 7 and 8 are Population Lab screenshots. The values shown are the values the lab computes for those seeds and settings.</li></ul>
+<p>No external images, videos, papers or interactives are used.</p>
+<h3 id="software">Software</h3>
+<ul><li>🧪 <a href="../../population-lab/"><strong>Population Lab</strong></a> — written for this module in HTML, CSS and vanilla JavaScript. No framework, backend, API or build step, matching the Search Lab used in Weeks 2–5.</li></ul>
+<p>The implementation is split by responsibility: <code>knapsack.js</code> holds the items, capacity, feasibility rule and fitness; <code>evolution.js</code> holds selection, crossover, mutation and the diversity measures; <code>colony.js</code> holds the route graph, pheromone, reinforcement and evaporation; <code>app.js</code> holds only controls and rendering.</p>
+<p>Feasibility handling is not hidden. An over-capacity candidate is <strong>rejected by giving it a fitness of <code>0</code></strong>, which is stated in the interface, shown in the population table, and reported in the “over capacity” metric. The genetic algorithm also keeps the single best candidate unchanged each generation, which is stated in the interface, so the best-fitness trace can be read as progress.</p>
+<p>Run the checks with:</p>
+<pre data-lang="sh"><code class="language-sh">node population-lab/test-population.js</code></pre>
+  </div>
+
+  <footer class="page-footer">
+    <p>
+      CT319 Artificial Intelligence · University of Galway ·
+      <a href="../../">Module pages</a> ·
+      <a href="https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/weeks/week-06.md">Markdown source</a> ·
+      <a href="?open=all">Open every section</a>
+    </p>
+    <p>Formal slides and notes are on Canvas. These pages are the companion material.</p>
+  </footer>
+
+</div>
+
+<script src="../../assets/ct319.js" defer></script>
+</body>
+</html>

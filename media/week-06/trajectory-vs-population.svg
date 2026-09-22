@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" role="img" aria-labelledby="title desc">
+  <title id="title">One current candidate against a population on the same landscape</title>
+  <desc id="desc">Two copies of the same search landscape with two peaks. On the left, Weeks 4 and 5 keep a single current candidate that climbs one peak, so the search occupies one region. On the right, Week 6 keeps eight candidates spread across the landscape, so several regions are represented at the same time.</desc>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2328; }
+    .title { font-size: 26px; font-weight: 700; }
+    .panel { font-size: 19px; font-weight: 700; }
+    .small { font-size: 16px; fill: #57606a; }
+    .body { font-size: 18px; }
+    .land { fill: none; stroke: #1f2328; stroke-width: 2.5; }
+  </style>
+  <rect width="100%" height="100%" fill="#fff"/>
+
+  <text x="30" y="40" class="title">THE SAME LANDSCAPE, SEARCHED TWO WAYS</text>
+
+  <!-- left panel: one trajectory -->
+  <rect x="30" y="62" width="440" height="272" rx="10" fill="#f6f8fa" stroke="#d0d7de" stroke-width="2"/>
+  <text x="52" y="94" class="panel">WEEKS 4–5 · ONE CURRENT CANDIDATE</text>
+  <path d="M60 300 C104 296 132 264 178 212 C222 264 250 292 292 296 C340 300 362 232 396 176 C426 220 436 268 448 300" class="land"/>
+  <line x1="52" y1="308" x2="452" y2="308" stroke="#8c959f" stroke-width="1.5"/>
+  <path d="M102.2 285.1 Q140.2 265.1 173 219" fill="none" stroke="#0969da" stroke-width="2.6" stroke-dasharray="7 5" marker-end="url(#blue)"/>
+  <circle cx="96.2" cy="289.1" r="7" fill="#0969da"/>
+  <circle cx="178" cy="212" r="7" fill="#9a6700"/>
+  <text x="52" y="330" class="small">One candidate moves. One region is searched.</text>
+
+  <!-- right panel: a population -->
+  <rect x="490" y="62" width="440" height="272" rx="10" fill="#f6f8fa" stroke="#d0d7de" stroke-width="2"/>
+  <text x="512" y="94" class="panel">WEEK 6 · A POPULATION</text>
+  <path d="M520 300 C564 296 592 264 638 212 C682 264 710 292 752 296 C800 300 822 232 856 176 C886 220 896 268 908 300" class="land"/>
+  <line x1="512" y1="308" x2="912" y2="308" stroke="#8c959f" stroke-width="1.5"/>
+  <circle cx="547.1" cy="293.4" r="7" fill="#0969da"/>
+  <circle cx="587.0" cy="266.3" r="7" fill="#0969da"/>
+  <circle cx="638" cy="212" r="7" fill="#0969da"/>
+  <circle cx="687.2" cy="264.8" r="7" fill="#0969da"/>
+  <circle cx="735.1" cy="292.9" r="7" fill="#0969da"/>
+  <circle cx="801.5" cy="269.2" r="7" fill="#0969da"/>
+  <circle cx="856" cy="176" r="7" fill="#1a7f37"/>
+  <circle cx="891.0" cy="248.9" r="7" fill="#0969da"/>
+  <text x="512" y="330" class="small">Several candidates coexist. Several regions are represented.</text>
+
+  <defs>
+    <marker id="blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0969da"/>
+    </marker>
+  </defs>
+
+  <text x="30" y="378" class="body">A population does not remove the risk of getting stuck. It changes where the risk sits: not in one</text>
+  <text x="30" y="402" class="body">candidate's neighbourhood, but in whether the whole population still holds any useful variation.</text>
+</svg>

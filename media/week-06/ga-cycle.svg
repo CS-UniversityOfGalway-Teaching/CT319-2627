@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360" role="img" aria-labelledby="title desc">
+  <title id="title">The five stages of a genetic algorithm</title>
+  <desc id="desc">An initial population is evaluated for fitness. Selection chooses which candidates contribute, crossover combines two parents into children, and mutation makes small random changes. The result is a new generation, which is evaluated in turn. The loop ends when a stopping condition is met.</desc>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2328; }
+    .title { font-size: 26px; font-weight: 700; }
+    .stage { font-size: 18px; font-weight: 700; }
+    .small { font-size: 14px; fill: #57606a; }
+    .edge { font-size: 15px; font-weight: 700; fill: #0969da; }
+    .body { font-size: 17px; fill: #57606a; }
+  </style>
+  <rect width="100%" height="100%" fill="#fff"/>
+  <defs>
+    <marker id="g6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#57606a"/>
+    </marker>
+    <marker id="b6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0969da"/>
+    </marker>
+  </defs>
+
+  <text x="30" y="40" class="title">ONE GENERATION, FIVE STAGES</text>
+
+  <!-- return arc -->
+  <path d="M848 152 V96 H306 V152" fill="none" stroke="#0969da" stroke-width="2.8" marker-end="url(#b6)"/>
+  <text x="496" y="86" class="edge" text-anchor="middle">the new generation becomes the population to evaluate</text>
+
+  <rect x="30" y="152" width="176" height="96" rx="10" fill="#fff8c5" stroke="#9a6700" stroke-width="2.5"/>
+  <text x="118" y="192" class="stage" text-anchor="middle">INITIALISE</text>
+  <text x="118" y="216" class="small" text-anchor="middle">fixed-size population,</text>
+  <text x="118" y="234" class="small" text-anchor="middle">diverse candidates</text>
+
+  <rect x="226" y="152" width="160" height="96" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2.5"/>
+  <text x="306" y="192" class="stage" text-anchor="middle">EVALUATE</text>
+  <text x="306" y="216" class="small" text-anchor="middle">fitness of every</text>
+  <text x="306" y="234" class="small" text-anchor="middle">candidate</text>
+
+  <rect x="406" y="152" width="160" height="96" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2.5"/>
+  <text x="486" y="192" class="stage" text-anchor="middle">SELECT</text>
+  <text x="486" y="216" class="small" text-anchor="middle">fitter candidates get</text>
+  <text x="486" y="234" class="small" text-anchor="middle">a better chance</text>
+
+  <rect x="586" y="152" width="160" height="96" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2.5"/>
+  <text x="666" y="192" class="stage" text-anchor="middle">CROSSOVER</text>
+  <text x="666" y="216" class="small" text-anchor="middle">two parents make</text>
+  <text x="666" y="234" class="small" text-anchor="middle">two children</text>
+
+  <rect x="766" y="152" width="164" height="96" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2.5"/>
+  <text x="848" y="192" class="stage" text-anchor="middle">MUTATE</text>
+  <text x="848" y="216" class="small" text-anchor="middle">small random change</text>
+  <text x="848" y="234" class="small" text-anchor="middle">to some children</text>
+
+  <path d="M206 200 H218" fill="none" stroke="#57606a" stroke-width="2.5" marker-end="url(#g6)"/>
+  <path d="M386 200 H398" fill="none" stroke="#57606a" stroke-width="2.5" marker-end="url(#g6)"/>
+  <path d="M566 200 H578" fill="none" stroke="#57606a" stroke-width="2.5" marker-end="url(#g6)"/>
+  <path d="M746 200 H758" fill="none" stroke="#57606a" stroke-width="2.5" marker-end="url(#g6)"/>
+
+  <path d="M306 248 V292" fill="none" stroke="#57606a" stroke-width="2.5" marker-end="url(#g6)"/>
+  <text x="330" y="288" class="body">Stopping condition checked each generation: a fitness threshold,</text>
+  <text x="330" y="312" class="body">no improvement for a set number of generations, or a generation limit.</text>
+  <text x="30" y="340" class="small">None of those three conditions proves the result is the global optimum.</text>
+</svg>
