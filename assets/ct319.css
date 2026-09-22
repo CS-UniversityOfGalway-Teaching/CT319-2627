@@ -162,6 +162,16 @@ a:hover { text-decoration-thickness: 2px; }
   color: var(--muted);
 }
 
+/* Two cards rather than three: a pair of cause-and-effect readings, where the
+   two keys are the outcomes and each gloss lists what produces them. */
+.lenses--pair { grid-template-columns: repeat(2, 1fr); }
+
+/* Inside a focus block the cards are part of the passage being read out, so
+   their type has to scale with it rather than stay at body size. */
+.focus-block .lens { padding: 0.9rem 1.05rem 0.95rem; }
+.focus-block .lens__key { font-size: 0.62em; margin-bottom: 0.45rem; }
+.focus-block .lens__gloss { font-size: 0.8em; line-height: 1.5; color: var(--text); }
+
 @media (max-width: 700px) {
   .lenses { grid-template-columns: 1fr; gap: 0.45rem; }
   .lens { padding: 0.55rem 0.8rem 0.6rem; }
