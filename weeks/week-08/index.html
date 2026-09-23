@@ -163,7 +163,9 @@ model = KNeighborsClassifier(n_neighbors=3)
 model.fit(X, y)
 prediction = model.predict(unknown)</code></pre>
 <p><code>X</code> is the six coordinate pairs, <code>y</code> is their supplied A/B labels, and <code>unknown</code> is the separate query point. <code>fit(X, y)</code> hands the algorithm the labelled examples; <code>predict(unknown)</code> applies the fitted model to a new one. Everything else in the script is plotting.</p>
+<div class="focus-block">
 <figure class="figure--secondary"><img class="figure__img" src="../../media/week-08/classification-after.svg" alt="The same labelled examples, with the unknown point now showing predicted class A" loading="lazy" decoding="async"><figcaption>Figure 5. The classifier predicts A for the diamond. The supplied labels and the model's prediction are two different sources of information, and the plot keeps them visually distinct. Plot created for these pages by the scikit-learn demonstration; no external image licence is used.</figcaption></figure>
+</div>
 <p>The reveal is worth saying out loud: the new example was assigned one of the <strong>supplied</strong> classes. That is classification. One plausible prediction says nothing yet about performance on any other case — and k-nearest neighbours itself belongs to Week 9.</p>
 <h3 id="what-did-the-machine-actually-learn">What did the machine actually learn?</h3>
 <p>Be careful with the language here. The model did not learn that <code>A</code> is good or that <code>B</code> is bad. It used the relationship between feature values and supplied labels, under one particular algorithm. KNN keeps its training examples and consults them at prediction time; fitting a model does not have to mean discovering an equation.</p>
@@ -207,7 +209,9 @@ prediction = model.predict(unknown)</code></pre>
 model = KMeans(n_clusters=2, random_state=42, n_init=10)
 groups = model.fit_predict(X)</code></pre>
 <p>We <strong>asked for two clusters</strong>. The model did not discover how many groups there are — we told it. The fixed settings are there to keep a small demonstration reproducible, and the mechanics belong to Week 10.</p>
+<div class="focus-block">
 <figure class="figure--secondary"><img class="figure__img" src="../../media/week-08/clustering-after.svg" alt="The same six points assigned to two clusters, using group identifiers rather than A or B" loading="lazy" decoding="async"><figcaption>Figure 7. K-means groups the same six examples without ever receiving their class labels. The group numbers are identifiers, not supplied meanings — swapping them changes nothing. Plot created for these pages by the scikit-learn demonstration; no external image licence is used.</figcaption></figure>
+</div>
 <p>Three points land in each group. The separation matches the labelled version here because this toy dataset was built to make the contrast visible; clustering does not, in general, recover known classes.</p>
 <div class="focus-block">
 <div class="lenses lenses--pair">

@@ -313,9 +313,13 @@ prediction = model.predict(unknown)
 
 `X` is the six coordinate pairs, `y` is their supplied A/B labels, and `unknown` is the separate query point. `fit(X, y)` hands the algorithm the labelled examples; `predict(unknown)` applies the fitted model to a new one. Everything else in the script is plotting.
 
+<!-- ct319:focus -->
+
 ![The same labelled examples, with the unknown point now showing predicted class A](../../media/week-08/classification-after.svg "secondary")
 
 <sub><em>Figure 5. The classifier predicts A for the diamond. The supplied labels and the model's prediction are two different sources of information, and the plot keeps them visually distinct. Plot created for these pages by the scikit-learn demonstration; no external image licence is used.</em></sub>
+
+<!-- ct319:endfocus -->
 
 The reveal is worth saying out loud: the new example was assigned one of the **supplied** classes. That is classification. One plausible prediction says nothing yet about performance on any other case — and k-nearest neighbours itself belongs to Week 9.
 
@@ -406,9 +410,13 @@ groups = model.fit_predict(X)
 
 We **asked for two clusters**. The model did not discover how many groups there are — we told it. The fixed settings are there to keep a small demonstration reproducible, and the mechanics belong to Week 10.
 
+<!-- ct319:focus -->
+
 ![The same six points assigned to two clusters, using group identifiers rather than A or B](../../media/week-08/clustering-after.svg "secondary")
 
 <sub><em>Figure 7. K-means groups the same six examples without ever receiving their class labels. The group numbers are identifiers, not supplied meanings — swapping them changes nothing. Plot created for these pages by the scikit-learn demonstration; no external image licence is used.</em></sub>
+
+<!-- ct319:endfocus -->
 
 Three points land in each group. The separation matches the labelled version here because this toy dataset was built to make the contrast visible; clustering does not, in general, recover known classes.
 
