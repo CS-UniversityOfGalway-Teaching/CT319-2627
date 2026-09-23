@@ -24,12 +24,13 @@ That gives us a **population**. From there, two nature-inspired ideas become use
 
 The formal notes develop both through Genetic Algorithms, Ant Colony Optimisation and Artificial Bee Colony.
 
-We work through four things.
+We work through five things.
 
 * [**More than one candidate**](#more-than-one-candidate--why-search-with-a-population) — why keeping a population changes the structure of the search.
 * [**Evolve a solution**](#evolve-a-solution--selection-crossover-and-mutation) — how a Genetic Algorithm builds new generations from selection, crossover and mutation.
 * [**When evolution goes wrong**](#when-evolution-goes-wrong--why-diversity-matters) — why a population can lose its useful variation and stop improving.
 * [**No leader required**](#no-leader-required--how-can-a-colony-search) — how useful search behaviour emerges from many simple agents sharing information.
+* [**The travelling salesman**](#the-travelling-salesman--the-problem-this-week-was-built-for) — a problem where a solution is an ordering rather than a path, and what each method needs before it can touch it.
 
 Three ideas carry the page, and it is worth keeping them apart:
 
@@ -484,6 +485,167 @@ We began by representing one problem, searched it blindly, added heuristic guida
 
 The recurring lesson is not that one algorithm is smartest. It is that **changing the information, representation and search structure changes what becomes possible**.
 
+<!-- ct319:beat -->
+## The travelling salesman — the problem this week was built for
+
+Every problem so far has had a start and a goal, and a solution has been a **path** from one to the other. Farmer Jones, the maze, the route between two hospitals: begin here, finish there.
+
+The travelling salesman problem does not work like that.
+
+<!-- ct319:focus -->
+
+> **A solution is not a path. It is an ordering of every city, and it has to come home.**
+
+<!-- ct319:endfocus -->
+
+There is no goal state to search towards. Breadth-first search, depth-first search and uniform-cost search all expand outward from a start until a goal appears — and here every candidate visits every city, so there is nothing for them to recognise.
+
+### Small enough to do by hand
+
+The formal notes give a four-city instance. Work it out before reading on:
+
+![Four cities, their distances, and all three possible tours](../../media/week-06/four-cities-three-tours.svg "hero")
+
+<sub><em>Figure 9. Four cities and six distances. A tour must visit all four and return, and a tour costs the same travelled backwards, so there are only three of them. The shortest is `A-B-D-C-A` at 19. Diagram created for these pages; no external image licence is used.</em></sub>
+
+Three candidates. Check all three, take the smallest, and you are certain you have the best — no heuristic, no population, no cleverness required.
+
+### Why that stops working immediately
+
+The number of distinct tours over `n` cities is `(n−1)! / 2`:
+
+| Cities | Tours |
+|---|---:|
+| 4 | 3 |
+| 10 | 181,440 |
+| 15 | 43,589,145,600 |
+| 20 | 60,822,550,204,416,000 |
+
+<!-- ct319:focus -->
+
+At a million tours checked every second, twenty cities takes about **1,900 years**. Checking every candidate is not a slow algorithm — past a certain size it is not an algorithm at all.
+
+<!-- ct319:endfocus -->
+
+A delivery round, a school-bus route or a drilling schedule for a circuit board is not four stops. This is the shape of problem the whole second half of this module exists for.
+
+### So which of them would you use?
+
+You now have restarts, variable neighbourhood search, simulated annealing, a genetic algorithm and an ant colony. Every one of them can be pointed at this problem, and every one of them needs something defined first.
+
+<div class="lenses">
+<div class="lens"><span class="lens__key">Local search</span><span class="lens__gloss">needs a <strong>neighbourhood</strong> — what counts as a nearby ordering?</span></div>
+<div class="lens"><span class="lens__key">Genetic algorithm</span><span class="lens__gloss">needs a <strong>crossover</strong> that combines two orderings and leaves a tour</span></div>
+<div class="lens"><span class="lens__key">Ant colony</span><span class="lens__gloss">needs a <strong>graph</strong> with a signal on its edges — which is what it was built on</span></div>
+</div>
+
+None of those is supplied by the problem. Each one is a design decision, and each one changes what the search can find.
+
+### What does "nearby" mean for an ordering?
+
+Two answers are obvious enough that the room usually produces both: **swap two cities** in the order, or **reverse a stretch** of it. They sound like the same kind of change. They are not.
+
+![The same nine-city tour, stuck under one neighbourhood and solved under the other](../../media/week-06/two-neighbourhoods.svg "hero")
+
+<sub><em>Figure 10. Nine cities. On the left, `A-H-B-E-G-F-C-D-I-A` costs 72 and crosses itself; all twenty-eight ways of swapping two cities in that order cost 72 or more, so hill climbing stops. On the right, reversing the single stretch `E-G-F-C-D-I` gives 62 — the best tour there is. Diagram created for these pages; no external image licence is used.</em></sub>
+
+<!-- ct319:focus -->
+
+You can see the crossing. The algorithm cannot — not because it is looking at the wrong tour, but because no swap of two cities in that order can undo it. One reversal does, and it reaches the best tour in a single move.
+
+<!-- ct319:endfocus -->
+
+That is Week 5's third design choice arriving with consequences: the candidate, the evaluation and the starting point were all identical on both sides of that figure. Only the definition of a neighbour changed.
+
+### What crossover does to a tour
+
+Take two perfectly good tours over six cities and cut them at the same point, exactly as Figure 4 did with bit strings:
+
+```text
+parent 1   A B C D E F
+parent 2   C E B F A D
+                 |          one-point crossover after position 3
+child 1    A B C F A D      A twice, no E
+child 2    C E B D E F      E twice, no A
+```
+
+Neither child is a tour. The operator that produced this week's optimum from two bit strings destroys the problem here, and no amount of fitness evaluation repairs it — an ordering that visits `A` twice is not a worse answer, it is not an answer.
+
+> [!IMPORTANT]
+> **This is the note from Highlight 2 arriving as a consequence.**
+>
+> Crossover and mutation do not automatically preserve a problem's constraints. For the knapsack we could reject an over-capacity candidate with a fitness of `0` and carry on. Here, almost every child would be rejected. A genetic algorithm for tours needs an operator built for orderings — or a representation in which any string is a valid tour.
+
+### And this is where the colony started
+
+Ant Colony Optimisation was first applied to exactly this problem, and the fit is direct: cities are nodes, a tour is a route an ant completes, and pheromone accumulates on the edges that cheap tours use. The six-route graph in Highlight 4 was a simplification chosen so that reinforcement and evaporation stayed readable on one screen — this is the problem the method was designed for.
+
+### Try it yourself
+
+Start with the small instance, where the answer can be checked by hand:
+
+```prompt
+Four cities with these distances:
+A-B 3, A-C 8, A-D 5, B-C 7, B-D 2, C-D 6
+
+A tour visits every city exactly once and returns to the start.
+
+Write Python that lists every distinct tour with its total
+distance, then prints the shortest. Treat a tour and its
+reverse as the same tour. Do not use a heuristic or a library
+solver.
+```
+
+Then the one that cannot be checked by hand:
+
+```prompt
+Nine cities, with (x, y) coordinates:
+A 1,15   B 12,12   C 13,2   D 18,6   E 3,4
+F 7,3    G 0,1     H 14,16  I 13,6
+
+The distance between two cities is the straight-line distance
+between their coordinates, rounded to the nearest whole
+number. A tour visits every city exactly once and returns to
+the start.
+
+Write Python that starts from the tour A-H-B-E-G-F-C-D-I-A and
+applies hill climbing, where a neighbouring tour is one
+produced by swapping two cities in the order. Stop when no
+neighbour is shorter. Print the starting tour and its length,
+every improving move, and the final tour and its length.
+```
+
+It will stop at 72. Now change one thing — the definition of a neighbour — and run it again:
+
+```prompt
+Nine cities, with (x, y) coordinates:
+A 1,15   B 12,12   C 13,2   D 18,6   E 3,4
+F 7,3    G 0,1     H 14,16  I 13,6
+
+The distance between two cities is the straight-line distance
+between their coordinates, rounded to the nearest whole
+number. A tour visits every city exactly once and returns to
+the start.
+
+Write Python that starts from the tour A-H-B-E-G-F-C-D-I-A and
+applies hill climbing, where a neighbouring tour is one
+produced by reversing any stretch of the order. Stop when no
+neighbour is shorter. Print the starting tour and its length,
+every improving move, and the final tour and its length.
+```
+
+Same cities, same distances, same starting tour, same rule for accepting a move. One line of difference, and one of them finds the best tour there is.
+
+<!-- ct319:focus -->
+
+### Why this matters this week
+
+Nothing in this module has been a competition between algorithms. The travelling salesman problem is where that becomes obvious: every method of the last two weeks can attack it, none of them can be pointed at it unmodified, and what each one needs first is a decision about **representation** — an ordering, a neighbourhood, an operator, a graph.
+
+Week 7 is the checkpoint. The question worth arriving with is not *which algorithm is best*, but *what does this problem have to give an algorithm before it can run at all?*
+
+<!-- ct319:endfocus -->
+
 <!-- ct319:endbeats -->
 
 ## The Population Lab
@@ -516,7 +678,7 @@ Week 7 is the **MCQ assessment and revision point**, so this week closes the fir
 
 ![Weeks 2 to 6 in sequence, and the four modelling choices that run through all of them](../../media/week-06/search-recap.svg "hero")
 
-<sub><em>Figure 9. The five-week progression, and the four modelling choices that recur in every one of them. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 11. The five-week progression, and the four modelling choices that recur in every one of them. Diagram created for these pages; no external image licence is used.</em></sub>
 
 Change any one of those four choices and the search behaviour can change dramatically while the underlying problem stays exactly where it was.
 
@@ -561,6 +723,10 @@ Three points are handled more explicitly here than in the slides:
 - **Pheromone evaporation** is added. The slides describe reinforcement using tour cost but not decay. Evaporation is part of standard ACO and is included so the reinforcement story is not left unbalanced.
 - **Probabilistic route choice** is stated. The slides describe foraging as random walks guided by pheromone; this page makes the “not simply the strongest edge” consequence explicit.
 
+The **travelling salesman problem** is introduced in the formal material, which defines it, separates exact from heuristic solutions, and sets an open discussion question: can hill climbing solve it? Its four-city instance and distances are reproduced here as Figure 9, along with the three tours and the optimum of 19.
+
+The nine-city instance in Figure 10 is original. Its distances are straight-line distances between the stated coordinates, rounded to the nearest whole number, which is the standard convention for a Euclidean instance. Every figure quoted for it — the 72, the 62, the twenty-eight swaps that fail and the single reversal that succeeds — was computed from that instance by exhaustive enumeration of all 20,160 tours.
+
 The formal slides list further metaheuristics — Grey Wolf, Firefly, Bat, Cuckoo Search and others. These pages do not reproduce that catalogue. Multi-objective optimisation is also raised in the slides as the topic of CA1 and a separate guest lecture, and is deliberately not taught here.
 
 ### Examples
@@ -573,9 +739,9 @@ The colony example uses a purpose-built six-route graph rather than a TSP instan
 
 ### Figures
 
-Figures 1–9 were **created for these pages**. They use no external image licence.
+Figures 1–11 were **created for these pages**. They use no external image licence.
 
-- Figures 1, 3, 4 and 9 are original diagrams.
+- Figures 1, 3, 4, 9, 10 and 11 are original diagrams.
 - Figures 2, 5, 6, 7 and 8 are Population Lab screenshots. The values shown are the values the lab computes for those seeds and settings.
 
 No external images, videos, papers or interactives are used.

@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="376" viewBox="0 0 1120 376" role="img" aria-labelledby="t d">
+  <title id="t">Four cities, three tours</title>
+  <desc id="d">Four cities A, B, C and D with distances A-B 3, A-C 8, A-D 5, B-C 7, B-D 2 and C-D 6, shown as a graph and as a distance matrix. Because a tour must visit every city and return to the start, and because a tour and its reverse cost the same, there are only three distinct tours: A-B-D-C-A at 19, A-B-C-D-A at 21 and A-C-B-D-A at 22. The shortest is 19, and with three candidates it can be found by checking all of them.</desc>
+  <style>
+    :root { --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --card:#ffffff; --good:#1a7f37; --goodbg:#dafbe1; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --card:#0d1117; --good:#3fb950; --goodbg:#0f2916; } }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .note { font-size:13.5px; fill:var(--muted); }
+    .cap  { font-size:12px; font-weight:700; letter-spacing:1.1px; fill:var(--muted); }
+    .city { font-size:14px; font-weight:700; text-anchor:middle; }
+    .wt   { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px; font-weight:700; text-anchor:middle; }
+    .mono { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:14px; }
+    .road { stroke:var(--muted); stroke-width:2.4; fill:none; stroke-linecap:round; }
+    .node { fill:var(--panel); stroke:var(--line); stroke-width:2; }
+    .chip { fill:var(--bg); }
+  </style>
+  <rect width="1120" height="376" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="40">FOUR CITIES &#183; THREE TOURS &#183; YOU CAN CHECK THEM ALL BY HAND</text>
+  <path class="road" d="M104 126 L288 126"/>
+  <path class="road" d="M104 126 L104 286"/>
+  <path class="road" d="M288 126 L288 286"/>
+  <path class="road" d="M104 286 L288 286"/>
+  <path class="road" d="M104 126 L288 286"/>
+  <path class="road" d="M288 126 L104 286"/>
+  <rect class="chip" x="186.0" y="100.0" width="20" height="19" rx="5"/>
+  <text class="wt" x="196.0" y="114.0">3</text>
+  <rect class="chip" x="76.0" y="196.0" width="20" height="19" rx="5"/>
+  <text class="wt" x="86.0" y="210.0">8</text>
+  <rect class="chip" x="296.0" y="196.0" width="20" height="19" rx="5"/>
+  <text class="wt" x="306.0" y="210.0">2</text>
+  <rect class="chip" x="186.0" y="294.0" width="20" height="19" rx="5"/>
+  <text class="wt" x="196.0" y="308.0">6</text>
+  <rect class="chip" x="152.0" y="190.0" width="20" height="19" rx="5"/>
+  <text class="wt" x="162.0" y="204.0">5</text>
+  <rect class="chip" x="220.0" y="190.0" width="20" height="19" rx="5"/>
+  <text class="wt" x="230.0" y="204.0">7</text>
+  <circle class="node" cx="104" cy="126" r="17"/>
+  <text class="city" x="104" y="131">A</text>
+  <circle class="node" cx="288" cy="126" r="17"/>
+  <text class="city" x="288" y="131">B</text>
+  <circle class="node" cx="104" cy="286" r="17"/>
+  <text class="city" x="104" y="291">C</text>
+  <circle class="node" cx="288" cy="286" r="17"/>
+  <text class="city" x="288" y="291">D</text>
+  <text class="cap" x="430" y="118">DISTANCES</text>
+  <text class="mono" x="488" y="148" text-anchor="middle" fill="var(--muted)">A</text>
+  <text class="mono" x="528" y="148" text-anchor="middle" fill="var(--muted)">B</text>
+  <text class="mono" x="568" y="148" text-anchor="middle" fill="var(--muted)">C</text>
+  <text class="mono" x="608" y="148" text-anchor="middle" fill="var(--muted)">D</text>
+  <text class="mono" x="430" y="176" fill="var(--muted)">A</text>
+  <text class="mono" x="488" y="176" text-anchor="middle">0</text>
+  <text class="mono" x="528" y="176" text-anchor="middle">3</text>
+  <text class="mono" x="568" y="176" text-anchor="middle">8</text>
+  <text class="mono" x="608" y="176" text-anchor="middle">5</text>
+  <text class="mono" x="430" y="206" fill="var(--muted)">B</text>
+  <text class="mono" x="488" y="206" text-anchor="middle">3</text>
+  <text class="mono" x="528" y="206" text-anchor="middle">0</text>
+  <text class="mono" x="568" y="206" text-anchor="middle">7</text>
+  <text class="mono" x="608" y="206" text-anchor="middle">2</text>
+  <text class="mono" x="430" y="236" fill="var(--muted)">C</text>
+  <text class="mono" x="488" y="236" text-anchor="middle">8</text>
+  <text class="mono" x="528" y="236" text-anchor="middle">7</text>
+  <text class="mono" x="568" y="236" text-anchor="middle">0</text>
+  <text class="mono" x="608" y="236" text-anchor="middle">6</text>
+  <text class="mono" x="430" y="266" fill="var(--muted)">D</text>
+  <text class="mono" x="488" y="266" text-anchor="middle">5</text>
+  <text class="mono" x="528" y="266" text-anchor="middle">2</text>
+  <text class="mono" x="568" y="266" text-anchor="middle">6</text>
+  <text class="mono" x="608" y="266" text-anchor="middle">0</text>
+  <text class="cap" x="740" y="118">EVERY TOUR</text>
+  <rect x="740" y="140" width="330" height="42" rx="10" fill="var(--goodbg)" stroke="var(--good)" stroke-width="2.4"/>
+  <text class="mono" x="758" y="167">A-B-D-C-A</text>
+  <text class="mono" x="1052" y="167" text-anchor="end" font-weight="700" fill="var(--good)">19</text>
+  <rect x="740" y="192" width="330" height="42" rx="10" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="mono" x="758" y="219">A-B-C-D-A</text>
+  <text class="mono" x="1052" y="219" text-anchor="end" font-weight="700">21</text>
+  <rect x="740" y="244" width="330" height="42" rx="10" fill="var(--card)" stroke="var(--line)" stroke-width="1.6"/>
+  <text class="mono" x="758" y="271">A-C-B-D-A</text>
+  <text class="mono" x="1052" y="271" text-anchor="end" font-weight="700">22</text>
+  <text class="note" x="740" y="318">A tour and its reverse cost the same.</text>
+  <text class="note" x="30" y="358">Three candidates can be checked exhaustively. That is the last time on this page that will be true.</text>
+</svg>

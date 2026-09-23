@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="566" viewBox="0 0 1120 566" role="img" aria-labelledby="t d">
+  <title id="t">A tour hill climbing cannot improve, and the reversal that fixes it</title>
+  <desc id="d">Nine cities. On the left, the tour A-H-B-E-G-F-C-D-I-A costs 72 and crosses itself. None of the twenty-eight ways of swapping two cities in that order produces a shorter tour, so hill climbing with a swap neighbourhood stops there. On the right, reversing the single stretch E-G-F-C-D-I gives A-H-B-I-D-C-F-G-E-A at cost 62, which is the shortest tour for these nine cities. The same candidate, the same evaluation; only the definition of a neighbouring tour changed.</desc>
+  <style>
+    :root { --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --card:#ffffff; --good:#1a7f37; --goodbg:#dafbe1;
+      --bad:#cf222e; --badbg:#ffebe9; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --card:#0d1117; --good:#3fb950; --goodbg:#0f2916;
+        --bad:#f85149; --badbg:#2b1113; } }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .note { font-size:13.5px; fill:var(--muted); }
+    .head { font-size:15px; font-weight:700; }
+    .sub  { font-size:12.5px; fill:var(--muted); }
+    .city { font-size:12px; font-weight:700; text-anchor:middle; }
+    .mono { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13.5px; font-weight:700; }
+    .warn { font-size:12.5px; font-weight:700; fill:var(--bad); }
+    .pbox { fill:var(--panel); stroke:var(--line); stroke-width:1.6; }
+    .dot  { fill:var(--card); stroke:var(--muted); stroke-width:1.8; }
+  </style>
+  <rect width="1120" height="566" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="40">NINE CITIES &#183; THE SAME TOUR UNDER TWO DEFINITIONS OF &#8220;NEARBY&#8221;</text>
+  <rect class="pbox" x="24" y="74" width="536" height="444" rx="12"/>
+  <text class="head" x="48" y="104">Swapping two cities</text>
+  <text class="sub" x="48" y="126">all 28 swaps cost 72 or more — hill climbing stops here</text>
+  <path d="M132.0 166.0 L392.0 146.0" stroke="var(--bad)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M392.0 146.0 L352.0 226.0" stroke="var(--bad)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M352.0 226.0 L172.0 386.0" stroke="var(--bad)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M172.0 386.0 L112.0 446.0" stroke="var(--bad)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M112.0 446.0 L252.0 406.0" stroke="var(--bad)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M252.0 406.0 L372.0 426.0" stroke="var(--bad)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M372.0 426.0 L472.0 346.0" stroke="var(--bad)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M472.0 346.0 L372.0 346.0" stroke="var(--bad)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M372.0 346.0 L132.0 166.0" stroke="var(--bad)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <circle cx="287.9" cy="282.9" r="13" fill="none" stroke="var(--bad)" stroke-width="2.2" stroke-dasharray="4 3"/>
+  <text class="warn" x="307.9" y="287.9">it crosses itself</text>
+  <circle class="dot" cx="132.0" cy="166.0" r="12"/>
+  <text class="city" x="132.0" y="170.0">A</text>
+  <circle class="dot" cx="352.0" cy="226.0" r="12"/>
+  <text class="city" x="352.0" y="230.0">B</text>
+  <circle class="dot" cx="372.0" cy="426.0" r="12"/>
+  <text class="city" x="372.0" y="430.0">C</text>
+  <circle class="dot" cx="472.0" cy="346.0" r="12"/>
+  <text class="city" x="472.0" y="350.0">D</text>
+  <circle class="dot" cx="172.0" cy="386.0" r="12"/>
+  <text class="city" x="172.0" y="390.0">E</text>
+  <circle class="dot" cx="252.0" cy="406.0" r="12"/>
+  <text class="city" x="252.0" y="410.0">F</text>
+  <circle class="dot" cx="112.0" cy="446.0" r="12"/>
+  <text class="city" x="112.0" y="450.0">G</text>
+  <circle class="dot" cx="392.0" cy="146.0" r="12"/>
+  <text class="city" x="392.0" y="150.0">H</text>
+  <circle class="dot" cx="372.0" cy="346.0" r="12"/>
+  <text class="city" x="372.0" y="350.0">I</text>
+  <text class="mono" x="48" y="488" fill="var(--bad)">A-H-B-E-G-F-C-D-I-A</text>
+  <text class="mono" x="48" y="509">total 72</text>
+  <rect class="pbox" x="560" y="74" width="536" height="444" rx="12"/>
+  <text class="head" x="584" y="104">Reversing one stretch</text>
+  <text class="sub" x="584" y="126">reverse E-G-F-C-D-I and the crossing disappears</text>
+  <path d="M668.0 166.0 L928.0 146.0" stroke="var(--good)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M928.0 146.0 L888.0 226.0" stroke="var(--good)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M888.0 226.0 L908.0 346.0" stroke="var(--good)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M908.0 346.0 L1008.0 346.0" stroke="var(--good)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M1008.0 346.0 L908.0 426.0" stroke="var(--good)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M908.0 426.0 L788.0 406.0" stroke="var(--good)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M788.0 406.0 L648.0 446.0" stroke="var(--good)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M648.0 446.0 L708.0 386.0" stroke="var(--good)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M708.0 386.0 L668.0 166.0" stroke="var(--good)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <circle class="dot" cx="668.0" cy="166.0" r="12"/>
+  <text class="city" x="668.0" y="170.0">A</text>
+  <circle class="dot" cx="888.0" cy="226.0" r="12"/>
+  <text class="city" x="888.0" y="230.0">B</text>
+  <circle class="dot" cx="908.0" cy="426.0" r="12"/>
+  <text class="city" x="908.0" y="430.0">C</text>
+  <circle class="dot" cx="1008.0" cy="346.0" r="12"/>
+  <text class="city" x="1008.0" y="350.0">D</text>
+  <circle class="dot" cx="708.0" cy="386.0" r="12"/>
+  <text class="city" x="708.0" y="390.0">E</text>
+  <circle class="dot" cx="788.0" cy="406.0" r="12"/>
+  <text class="city" x="788.0" y="410.0">F</text>
+  <circle class="dot" cx="648.0" cy="446.0" r="12"/>
+  <text class="city" x="648.0" y="450.0">G</text>
+  <circle class="dot" cx="928.0" cy="146.0" r="12"/>
+  <text class="city" x="928.0" y="150.0">H</text>
+  <circle class="dot" cx="908.0" cy="346.0" r="12"/>
+  <text class="city" x="908.0" y="350.0">I</text>
+  <text class="mono" x="584" y="488" fill="var(--good)">A-H-B-I-D-C-F-G-E-A</text>
+  <text class="mono" x="584" y="509">total 62</text>
+  <text class="note" x="30" y="548">Same nine cities, same distances, same rule &#8212; move to a better neighbour. Only what counts as a neighbouring tour changed.</text>
+</svg>

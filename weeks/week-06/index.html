@@ -28,8 +28,8 @@
 <p>That gives us a <strong>population</strong>. From there, two nature-inspired ideas become useful:</p>
 <ul><li><strong>evolution</strong> — candidates combine and mutate across generations</li><li><strong>collective behaviour</strong> — many simple agents interact and reinforce useful discoveries</li></ul>
 <p>The formal notes develop both through Genetic Algorithms, Ant Colony Optimisation and Artificial Bee Colony.</p>
-<p>We work through four things.</p>
-<ul><li><a href="#more-than-one-candidate--why-search-with-a-population"><strong>More than one candidate</strong></a> — why keeping a population changes the structure of the search.</li><li><a href="#evolve-a-solution--selection-crossover-and-mutation"><strong>Evolve a solution</strong></a> — how a Genetic Algorithm builds new generations from selection, crossover and mutation.</li><li><a href="#when-evolution-goes-wrong--why-diversity-matters"><strong>When evolution goes wrong</strong></a> — why a population can lose its useful variation and stop improving.</li><li><a href="#no-leader-required--how-can-a-colony-search"><strong>No leader required</strong></a> — how useful search behaviour emerges from many simple agents sharing information.</li></ul>
+<p>We work through five things.</p>
+<ul><li><a href="#more-than-one-candidate--why-search-with-a-population"><strong>More than one candidate</strong></a> — why keeping a population changes the structure of the search.</li><li><a href="#evolve-a-solution--selection-crossover-and-mutation"><strong>Evolve a solution</strong></a> — how a Genetic Algorithm builds new generations from selection, crossover and mutation.</li><li><a href="#when-evolution-goes-wrong--why-diversity-matters"><strong>When evolution goes wrong</strong></a> — why a population can lose its useful variation and stop improving.</li><li><a href="#no-leader-required--how-can-a-colony-search"><strong>No leader required</strong></a> — how useful search behaviour emerges from many simple agents sharing information.</li><li><a href="#the-travelling-salesman--the-problem-this-week-was-built-for"><strong>The travelling salesman</strong></a> — a problem where a solution is an ordering rather than a path, and what each method needs before it can touch it.</li></ul>
 <p>Three ideas carry the page, and it is worth keeping them apart:</p>
 <div class="focus-block">
 <div class="lenses">
@@ -234,6 +234,97 @@
 <h3 id="why-this-matters-this-week">Why this matters this week</h3>
 <p>We began by representing one problem, searched it blindly, added heuristic guidance, improved one candidate locally, gave that candidate ways to escape, and now let many candidates or agents contribute at once.</p>
 <p>The recurring lesson is not that one algorithm is smartest. It is that <strong>changing the information, representation and search structure changes what becomes possible</strong>.</p></div></details>
+<details class="beat" id="the-travelling-salesman--the-problem-this-week-was-built-for"><summary><h2 class="beat__title">The travelling salesman — the problem this week was built for</h2></summary><div class="beat__body"><p>Every problem so far has had a start and a goal, and a solution has been a <strong>path</strong> from one to the other. Farmer Jones, the maze, the route between two hospitals: begin here, finish there.</p>
+<p>The travelling salesman problem does not work like that.</p>
+<div class="focus-block">
+<blockquote><p><strong>A solution is not a path. It is an ordering of every city, and it has to come home.</strong></p></blockquote>
+</div>
+<p>There is no goal state to search towards. Breadth-first search, depth-first search and uniform-cost search all expand outward from a start until a goal appears — and here every candidate visits every city, so there is nothing for them to recognise.</p>
+<h3 id="small-enough-to-do-by-hand">Small enough to do by hand</h3>
+<p>The formal notes give a four-city instance. Work it out before reading on:</p>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-06/four-cities-three-tours.svg" alt="Four cities, their distances, and all three possible tours" loading="lazy" decoding="async"><figcaption>Figure 9. Four cities and six distances. A tour must visit all four and return, and a tour costs the same travelled backwards, so there are only three of them. The shortest is <code>A-B-D-C-A</code> at 19. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<p>Three candidates. Check all three, take the smallest, and you are certain you have the best — no heuristic, no population, no cleverness required.</p>
+<h3 id="why-that-stops-working-immediately">Why that stops working immediately</h3>
+<p>The number of distinct tours over <code>n</code> cities is <code>(n−1)! / 2</code>:</p>
+<div class="table-scroll"><table><thead><tr><th>Cities</th><th class="num">Tours</th></tr></thead><tbody><tr><td>4</td><td class="num">3</td></tr><tr><td>10</td><td class="num">181,440</td></tr><tr><td>15</td><td class="num">43,589,145,600</td></tr><tr><td>20</td><td class="num">60,822,550,204,416,000</td></tr></tbody></table></div>
+<div class="focus-block">
+<p>At a million tours checked every second, twenty cities takes about <strong>1,900 years</strong>. Checking every candidate is not a slow algorithm — past a certain size it is not an algorithm at all.</p>
+</div>
+<p>A delivery round, a school-bus route or a drilling schedule for a circuit board is not four stops. This is the shape of problem the whole second half of this module exists for.</p>
+<h3 id="so-which-of-them-would-you-use">So which of them would you use?</h3>
+<p>You now have restarts, variable neighbourhood search, simulated annealing, a genetic algorithm and an ant colony. Every one of them can be pointed at this problem, and every one of them needs something defined first.</p>
+<div class="lenses">
+<div class="lens"><span class="lens__key">Local search</span><span class="lens__gloss">needs a <strong>neighbourhood</strong> — what counts as a nearby ordering?</span></div>
+<div class="lens"><span class="lens__key">Genetic algorithm</span><span class="lens__gloss">needs a <strong>crossover</strong> that combines two orderings and leaves a tour</span></div>
+<div class="lens"><span class="lens__key">Ant colony</span><span class="lens__gloss">needs a <strong>graph</strong> with a signal on its edges — which is what it was built on</span></div>
+</div>
+<p>None of those is supplied by the problem. Each one is a design decision, and each one changes what the search can find.</p>
+<h3 id="what-does-nearby-mean-for-an-ordering">What does "nearby" mean for an ordering?</h3>
+<p>Two answers are obvious enough that the room usually produces both: <strong>swap two cities</strong> in the order, or <strong>reverse a stretch</strong> of it. They sound like the same kind of change. They are not.</p>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-06/two-neighbourhoods.svg" alt="The same nine-city tour, stuck under one neighbourhood and solved under the other" loading="lazy" decoding="async"><figcaption>Figure 10. Nine cities. On the left, <code>A-H-B-E-G-F-C-D-I-A</code> costs 72 and crosses itself; all twenty-eight ways of swapping two cities in that order cost 72 or more, so hill climbing stops. On the right, reversing the single stretch <code>E-G-F-C-D-I</code> gives 62 — the best tour there is. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<div class="focus-block">
+<p>You can see the crossing. The algorithm cannot — not because it is looking at the wrong tour, but because no swap of two cities in that order can undo it. One reversal does, and it reaches the best tour in a single move.</p>
+</div>
+<p>That is Week 5's third design choice arriving with consequences: the candidate, the evaluation and the starting point were all identical on both sides of that figure. Only the definition of a neighbour changed.</p>
+<h3 id="what-crossover-does-to-a-tour">What crossover does to a tour</h3>
+<p>Take two perfectly good tours over six cities and cut them at the same point, exactly as Figure 4 did with bit strings:</p>
+<pre data-lang="text"><code class="language-text">parent 1   A B C D E F
+parent 2   C E B F A D
+                 |          one-point crossover after position 3
+child 1    A B C F A D      A twice, no E
+child 2    C E B D E F      E twice, no A</code></pre>
+<p>Neither child is a tour. The operator that produced this week's optimum from two bit strings destroys the problem here, and no amount of fitness evaluation repairs it — an ordering that visits <code>A</code> twice is not a worse answer, it is not an answer.</p>
+<div class="callout callout--important"><span class="callout__label">Important</span><p><strong>This is the note from Highlight 2 arriving as a consequence.</strong></p>
+<p>Crossover and mutation do not automatically preserve a problem's constraints. For the knapsack we could reject an over-capacity candidate with a fitness of <code>0</code> and carry on. Here, almost every child would be rejected. A genetic algorithm for tours needs an operator built for orderings — or a representation in which any string is a valid tour.</p></div>
+<h3 id="and-this-is-where-the-colony-started">And this is where the colony started</h3>
+<p>Ant Colony Optimisation was first applied to exactly this problem, and the fit is direct: cities are nodes, a tour is a route an ant completes, and pheromone accumulates on the edges that cheap tours use. The six-route graph in Highlight 4 was a simplification chosen so that reinforcement and evaporation stayed readable on one screen — this is the problem the method was designed for.</p>
+<h3 id="try-it-yourself">Try it yourself</h3>
+<p>Start with the small instance, where the answer can be checked by hand:</p>
+<div class="prompt" data-copy><pre><code>Four cities with these distances:
+A-B 3, A-C 8, A-D 5, B-C 7, B-D 2, C-D 6
+
+A tour visits every city exactly once and returns to the start.
+
+Write Python that lists every distinct tour with its total
+distance, then prints the shortest. Treat a tour and its
+reverse as the same tour. Do not use a heuristic or a library
+solver.</code></pre></div>
+<p>Then the one that cannot be checked by hand:</p>
+<div class="prompt" data-copy><pre><code>Nine cities, with (x, y) coordinates:
+A 1,15   B 12,12   C 13,2   D 18,6   E 3,4
+F 7,3    G 0,1     H 14,16  I 13,6
+
+The distance between two cities is the straight-line distance
+between their coordinates, rounded to the nearest whole
+number. A tour visits every city exactly once and returns to
+the start.
+
+Write Python that starts from the tour A-H-B-E-G-F-C-D-I-A and
+applies hill climbing, where a neighbouring tour is one
+produced by swapping two cities in the order. Stop when no
+neighbour is shorter. Print the starting tour and its length,
+every improving move, and the final tour and its length.</code></pre></div>
+<p>It will stop at 72. Now change one thing — the definition of a neighbour — and run it again:</p>
+<div class="prompt" data-copy><pre><code>Nine cities, with (x, y) coordinates:
+A 1,15   B 12,12   C 13,2   D 18,6   E 3,4
+F 7,3    G 0,1     H 14,16  I 13,6
+
+The distance between two cities is the straight-line distance
+between their coordinates, rounded to the nearest whole
+number. A tour visits every city exactly once and returns to
+the start.
+
+Write Python that starts from the tour A-H-B-E-G-F-C-D-I-A and
+applies hill climbing, where a neighbouring tour is one
+produced by reversing any stretch of the order. Stop when no
+neighbour is shorter. Print the starting tour and its length,
+every improving move, and the final tour and its length.</code></pre></div>
+<p>Same cities, same distances, same starting tour, same rule for accepting a move. One line of difference, and one of them finds the best tour there is.</p>
+<div class="focus-block">
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Nothing in this module has been a competition between algorithms. The travelling salesman problem is where that becomes obvious: every method of the last two weeks can attack it, none of them can be pointed at it unmodified, and what each one needs first is a decision about <strong>representation</strong> — an ordering, a neighbourhood, an operator, a graph.</p>
+<p>Week 7 is the checkpoint. The question worth arriving with is not <em>which algorithm is best</em>, but <em>what does this problem have to give an algorithm before it can run at all?</em></p>
+</div></div></details>
   </main>
 
   <div class="tail">
@@ -248,7 +339,7 @@
 <hr>
 <h2 id="before-week-7">Before Week 7</h2>
 <p>Week 7 is the <strong>MCQ assessment and revision point</strong>, so this week closes the first search block rather than opening a new algorithm.</p>
-<figure class="figure--hero"><img class="figure__img" src="../../media/week-06/search-recap.svg" alt="Weeks 2 to 6 in sequence, and the four modelling choices that run through all of them" loading="lazy" decoding="async"><figcaption>Figure 9. The five-week progression, and the four modelling choices that recur in every one of them. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-06/search-recap.svg" alt="Weeks 2 to 6 in sequence, and the four modelling choices that run through all of them" loading="lazy" decoding="async"><figcaption>Figure 11. The five-week progression, and the four modelling choices that recur in every one of them. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <p>Change any one of those four choices and the search behaviour can change dramatically while the underlying problem stays exactly where it was.</p>
 <div class="focus-block">
 <p>A useful revision question for the whole block is therefore:</p>
@@ -266,14 +357,16 @@
 <p><em>Other Meta Heuristic Searches</em> supplies Ant Colony Optimisation — Dorigo 1992, TSP first, multi-agent and decentralised, with nest and food as nodes, artificial pheromone, and foraging as random walks guided by pheromone — the Artificial Bee Colony phases, and the closing recap that no one algorithm among these is best.</p>
 <p>Three points are handled more explicitly here than in the slides:</p>
 <ul><li><strong>Premature convergence</strong> is named. The slides describe diversity as important and improvement as saturating; this page connects the two and gives the standard term.</li><li><strong>Pheromone evaporation</strong> is added. The slides describe reinforcement using tour cost but not decay. Evaporation is part of standard ACO and is included so the reinforcement story is not left unbalanced.</li><li><strong>Probabilistic route choice</strong> is stated. The slides describe foraging as random walks guided by pheromone; this page makes the “not simply the strongest edge” consequence explicit.</li></ul>
+<p>The <strong>travelling salesman problem</strong> is introduced in the formal material, which defines it, separates exact from heuristic solutions, and sets an open discussion question: can hill climbing solve it? Its four-city instance and distances are reproduced here as Figure 9, along with the three tours and the optimum of 19.</p>
+<p>The nine-city instance in Figure 10 is original. Its distances are straight-line distances between the stated coordinates, rounded to the nearest whole number, which is the standard convention for a Euclidean instance. Every figure quoted for it — the 72, the 62, the twenty-eight swaps that fail and the single reversal that succeeds — was computed from that instance by exhaustive enumeration of all 20,160 tours.</p>
 <p>The formal slides list further metaheuristics — Grey Wolf, Firefly, Bat, Cuckoo Search and others. These pages do not reproduce that catalogue. Multi-objective optimisation is also raised in the slides as the topic of CA1 and a separate guest lecture, and is deliberately not taught here.</p>
 <h3 id="examples">Examples</h3>
 <p>The Genetic Algorithm examples reuse the five-bit knapsack representation from Week 5, and the item weights and values are the ones in the formal knapsack example: A <code>12/4</code>, B <code>2/2</code>, C <code>1/2</code>, D <code>1/1</code>, E <code>4/10</code>.</p>
 <p>The <strong>capacity is stated on this page as 12</strong>. The slides run hill climbing on those items without printing the capacity in the material reproduced here. That run is consistent with any capacity from 12 to 15, and <code>01111</code> — items B, C, D and E, weight 8, value 15 — is the best feasible candidate across that whole range, so no claim on this page depends on the exact figure. Every fitness value shown is derived from those weights, values and capacity, and is checked by the lab's test suite.</p>
 <p>The colony example uses a purpose-built six-route graph rather than a TSP instance, so that pheromone reinforcement and evaporation stay visible on one screen.</p>
 <h3 id="figures">Figures</h3>
-<p>Figures 1–9 were <strong>created for these pages</strong>. They use no external image licence.</p>
-<ul><li>Figures 1, 3, 4 and 9 are original diagrams.</li><li>Figures 2, 5, 6, 7 and 8 are Population Lab screenshots. The values shown are the values the lab computes for those seeds and settings.</li></ul>
+<p>Figures 1–11 were <strong>created for these pages</strong>. They use no external image licence.</p>
+<ul><li>Figures 1, 3, 4, 9, 10 and 11 are original diagrams.</li><li>Figures 2, 5, 6, 7 and 8 are Population Lab screenshots. The values shown are the values the lab computes for those seeds and settings.</li></ul>
 <p>No external images, videos, papers or interactives are used.</p>
 <h3 id="software">Software</h3>
 <ul><li>🧪 <a href="../../population-lab/"><strong>Population Lab</strong></a> — written for this module in HTML, CSS and vanilla JavaScript. No framework, backend, API or build step, matching the Search Lab used in Weeks 2–5.</li></ul>
