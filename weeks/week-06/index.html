@@ -167,27 +167,27 @@
 <p><strong>Distinct candidates</strong> simply counts how many different bit strings the population holds. It is easy to read and it is a rough proxy for diversity, not a definitive metric: eight candidates that differ in one bit each score the same as eight that differ in four.</p>
 <p><strong>Mean pairwise Hamming distance</strong> is the average number of bit positions in which two members of the population differ. It reaches 0 only when every candidate is identical, and it degrades smoothly as variation drains away, which makes it the more informative of the two.</p></div></details>
 <details class="beat" id="the-mutation-rate-experiment"><summary><h2 class="beat__title">The mutation-rate experiment</h2></summary><div class="beat__body"><p>Run the same algorithm twice from the same seed, changing only the mutation rate.</p>
+<div class="focus-block">
 <div class="table-scroll"><table><thead><tr><th>Run A — mutation rate <code>0</code></th><th>Run B — mutation rate <code>0.06</code></th></tr></thead><tbody><tr><td><img src="../../media/week-06/trace-mutation-0.png" alt="Best fitness plateaus at 14 while mean pairwise Hamming falls to zero"></td><td><img src="../../media/week-06/trace-mutation-006.png" alt="Best fitness reaches 15 while mean pairwise Hamming stays above one"></td></tr><tr><td>Best fitness stops at 14. Average fitness climbs to meet it. Diversity falls to zero and stays there.</td><td>Best fitness reaches the dashed line at 15. Diversity dips, recovers and never collapses.</td></tr></tbody></table></div>
 <p class="standalone-caption"><sub><em>Figure 6. The same seed, the same population size, the same selection and crossover. The dashed green line is the best achievable fitness for this instance. Reading the purple diversity trace against the green best-fitness trace is the whole experiment. Screenshots created for these pages from the Population Lab; no external image licence is used.</em></sub></p>
-<div class="focus-block">
+</div>
 <p>The useful question is not <em>which run scored higher</em>. It is:</p>
 <blockquote><p><strong>What happened to diversity before the search stopped improving?</strong></p></blockquote>
 <p>That makes mutation's role visible as a search mechanism rather than a biological decoration.</p>
-</div>
 <h3 id="too-little-and-too-much">Too little and too much</h3>
 <p>Too little mutation and selection gradually makes the population uniform, so the search becomes purely exploitative and converges early. Too much and useful structure is destroyed as fast as it is found, so the search drifts towards random sampling. There is no universal setting that is best for every problem.</p>
 <h3 id="fitness-shapes-the-pressure">Fitness shapes the pressure</h3>
 <p>Selection is guided by fitness, so the shape of the fitness function influences the direction of the search. If one region scores much better early, selection may commit to it before alternatives have had time to develop. Which returns us to Week 2:</p>
 <blockquote><p><strong>how we represent and evaluate a problem changes what the algorithm can discover</strong></p></blockquote>
-<div class="focus-block">
 <h3 id="why-this-matters-this-week">Why this matters this week</h3>
 <p>Population-based search avoids placing the whole search on one trajectory, but it can still become trapped if the population loses variation. That makes <strong>diversity</strong> an active search resource rather than a pleasant property.</p>
-</div>
 <p>We have now seen one population mechanism based on evolution. The second half of the week asks something different: can many simple agents produce useful search behaviour without any one agent knowing the whole solution?</p></div></details>
 <details class="beat" id="no-leader-required--how-can-a-colony-search"><summary><h2 class="beat__title">No leader required — how can a colony search?</h2></summary><div class="beat__body"><p>The formal <em>Other Meta Heuristic Searches</em> material introduces several population-based techniques inspired by collective behaviour. It lists many; we develop the underlying computational idea rather than memorising a catalogue of animal names.</p>
+<div class="focus-block">
 <h3 id="ant-colony-optimisation">Ant Colony Optimisation</h3>
 <p>The notes describe Ant Colony Optimisation as inspired by ant behaviour and as a <strong>multi-agent, collective, decentralised, self-organised</strong> search. It was introduced by Marco Dorigo in 1992 and first applied to the Travelling Salesman Problem before being used for other routing problems.</p>
-<p>The mapping the slides give is direct: nest and food become nodes in a graph, ants become artificial agents, pheromone becomes an artificial value on the graph, and foraging becomes <strong>random walks guided by the pheromone</strong>.</p></div></details>
+<p>The mapping the slides give is direct: nest and food become nodes in a graph, ants become artificial agents, pheromone becomes an artificial value on the graph, and foraging becomes <strong>random walks guided by the pheromone</strong>.</p>
+</div></div></details>
 <details class="beat" id="route-cost-and-pheromone-are-different-things"><summary><h2 class="beat__title">Route cost and pheromone are different things</h2></summary><div class="beat__body"><p>This distinction carries the whole algorithm.</p>
 <div class="focus-block">
 <p>A route has a <strong>cost</strong> — distance, time, energy — which is a fixed property of the problem. The algorithm separately maintains an <strong>artificial pheromone</strong> value on each edge, which is search information the colony accumulates and which changes as ants explore.</p>

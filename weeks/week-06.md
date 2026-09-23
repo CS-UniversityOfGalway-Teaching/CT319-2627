@@ -336,6 +336,8 @@ The lab reports two numbers, and they are not equally good.
 
 Run the same algorithm twice from the same seed, changing only the mutation rate.
 
+<!-- ct319:focus -->
+
 | Run A — mutation rate `0` | Run B — mutation rate `0.06` |
 |---|---|
 | ![Best fitness plateaus at 14 while mean pairwise Hamming falls to zero](../../media/week-06/trace-mutation-0.png) | ![Best fitness reaches 15 while mean pairwise Hamming stays above one](../../media/week-06/trace-mutation-006.png) |
@@ -343,15 +345,13 @@ Run the same algorithm twice from the same seed, changing only the mutation rate
 
 <sub><em>Figure 6. The same seed, the same population size, the same selection and crossover. The dashed green line is the best achievable fitness for this instance. Reading the purple diversity trace against the green best-fitness trace is the whole experiment. Screenshots created for these pages from the Population Lab; no external image licence is used.</em></sub>
 
-<!-- ct319:focus -->
+<!-- ct319:endfocus -->
 
 The useful question is not *which run scored higher*. It is:
 
 > **What happened to diversity before the search stopped improving?**
 
 That makes mutation's role visible as a search mechanism rather than a biological decoration.
-
-<!-- ct319:endfocus -->
 
 ### Too little and too much
 
@@ -363,13 +363,9 @@ Selection is guided by fitness, so the shape of the fitness function influences 
 
 > **how we represent and evaluate a problem changes what the algorithm can discover**
 
-<!-- ct319:focus -->
-
 ### Why this matters this week
 
 Population-based search avoids placing the whole search on one trajectory, but it can still become trapped if the population loses variation. That makes **diversity** an active search resource rather than a pleasant property.
-
-<!-- ct319:endfocus -->
 
 We have now seen one population mechanism based on evolution. The second half of the week asks something different: can many simple agents produce useful search behaviour without any one agent knowing the whole solution?
 
@@ -378,11 +374,15 @@ We have now seen one population mechanism based on evolution. The second half of
 
 The formal *Other Meta Heuristic Searches* material introduces several population-based techniques inspired by collective behaviour. It lists many; we develop the underlying computational idea rather than memorising a catalogue of animal names.
 
+<!-- ct319:focus -->
+
 ### Ant Colony Optimisation
 
 The notes describe Ant Colony Optimisation as inspired by ant behaviour and as a **multi-agent, collective, decentralised, self-organised** search. It was introduced by Marco Dorigo in 1992 and first applied to the Travelling Salesman Problem before being used for other routing problems.
 
 The mapping the slides give is direct: nest and food become nodes in a graph, ants become artificial agents, pheromone becomes an artificial value on the graph, and foraging becomes **random walks guided by the pheromone**.
+
+<!-- ct319:endfocus -->
 
 <!-- ct319:beat -->
 ## Route cost and pheromone are different things

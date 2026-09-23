@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 7 — Search checkpoint — CT319</title>
+<meta name="description" content="CT319 Week 7. A checkpoint on the search block — reconnect Weeks 1–6, identify a method from its behaviour, predict before running, and correct the traps.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230969da'/%3E%3Cpath d='M8 8h7v4h-3v8h3v4H8zm9 0h7v16h-7v-4h3v-8h-3z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/ct319.css">
+</head>
+<body>
+<a class="skip-link" href="#beats">Skip to the teaching sections</a>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">CT319 Artificial Intelligence · Week 7 · Search checkpoint</p>
+    <h1>Week 7 — Search checkpoint</h1>
+    <p class="week-question">Can you recognise the idea when the algorithm name is removed?</p>
+  </header>
+
+  <div class="lede">
+<p>Weeks 2 to 6 built one thing, one change at a time. A problem became a representation. A representation gained a rule for what to explore next. That rule gained information. The information gained a way out when strict improvement ran out. And the single candidate became a population.</p>
+<p>There is no new algorithm on this page. This is a checkpoint: we take the names off and find out whether the mechanisms underneath are still recognisable.</p>
+<div class="focus-block">
+<blockquote><p><strong>Can you recognise the idea when the algorithm name is removed?</strong></p></blockquote>
+</div>
+<p>Start from memory, say your prediction out loud, then explain or revise it using the behaviour on screen. Getting it wrong first and correcting it against the run is the exercise, not a failure of it.</p>
+<p>We work through four activities.</p>
+<ul><li><a href="#the-story-so-far--what-changed-each-week"><strong>The story so far</strong></a> — reconnect Weeks 1–6 as one progression rather than six separate topics.</li><li><a href="#algorithm-detective--what-clues-tell-you-what-is-happening"><strong>Algorithm detective</strong></a> — identify a method from what it actually does.</li><li><a href="#predict-before-you-run--what-will-the-algorithm-do-next"><strong>Predict before you run</strong></a> — use the Search Lab and the Population Lab to connect a decision rule to an observed result.</li><li><a href="#final-check--what-are-the-traps-to-avoid"><strong>Final check</strong></a> — correct the misconceptions that blur those mechanisms together.</li></ul>
+<p>Three habits carry the page, and it is worth keeping them apart:</p>
+<div class="focus-block">
+<div class="lenses">
+<div class="lens"><span class="lens__key">Recognise</span><span class="lens__gloss">identify the mechanism from its behaviour, not from a memorised definition</span></div>
+<div class="lens"><span class="lens__key">Predict</span><span class="lens__gloss">work out what an algorithm will do before running it</span></div>
+<div class="lens"><span class="lens__key">Connect</span><span class="lens__gloss">explain how representation, information and search strategy influence one another</span></div>
+</div>
+</div>
+<p>Nothing here is new. There is quite a lot here to be able to tell apart.</p>
+  </div>
+
+  <div class="beat-bar" data-beat-bar hidden>
+    <span class="beat-bar__label">Week 7 · Sections</span>
+    <button type="button" data-expand-all>Expand all</button>
+    <button type="button" data-collapse-all>Collapse all</button>
+  </div>
+
+  <main class="beats" id="beats">
+<details class="beat" id="the-story-so-far--what-changed-each-week"><summary><h2 class="beat__title">The story so far — what changed each week?</h2></summary><div class="beat__body"><p>Six weeks reads as a list of six topics. Read as a progression, each week changed exactly <strong>one</strong> part of the same problem-solving story and left the rest alone.</p>
+<h3 id="week-1--behaviour-is-not-the-same-thing-as-mechanism">Week 1 — behaviour is not the same thing as mechanism</h3>
+<p>ELIZA and Turing's imitation game separated <strong>behaviour</strong> — what a system does — from <strong>mechanism</strong> — how it produces that behaviour — and <strong>evaluation</strong> — what the evidence actually establishes.</p>
+<p>An impressive conversation does not reveal its internal mechanism. An impressive search run likewise does not establish that the method always succeeds, or that it finds the best solution. Keep that distinction as we reconnect the later weeks.</p>
+<h3 id="week-2--representation">Week 2 — representation</h3>
+<p>Farmer Jones and the maze became states, legal transitions and constraints. In the maze, <code>state = (row, column)</code> records where the agent is, and <code>neighbours(state)</code> reports the legal next states.</p>
+<p>The change was <strong>representation</strong>: deciding what the machine is able to describe. Missing relevant information makes some decisions impossible; unnecessary information enlarges the state space. Generating legal options still leaves the choice between them unresolved.</p>
+<h3 id="week-3--blind-search">Week 3 — blind search</h3>
+<p>BFS removes the oldest waiting frontier state; DFS removes the newest. Both explore systematically, without estimating which state is nearer the goal.</p>
+<p>The change was the <strong>exploration rule</strong>, not the maze. The frontier keeps alternatives available, and its removal policy decides when they receive attention. DFS may spend a long time inside an unhelpful branch before it returns to the alternatives it kept.</p>
+<h3 id="week-4--heuristic-information">Week 4 — heuristic information</h3>
+<p>The maze, the legal moves and the goal all stayed fixed. We added <code>h(state)</code>: Manhattan distance, a cheap estimate of remaining cost that ignores walls.</p>
+<p>The change was <strong>additional information</strong>. A lower value means a state looks closer under that estimate. It influences behaviour only when the strategy reads it. Strict hill climbing supplied a local rule that acted on the comparison.</p>
+<h3 id="week-5--local-movement-and-escape">Week 5 — local movement and escape</h3>
+<p>Hill climbing was already local search. Week 5 broadened what a search following one current candidate could do once strict improvement stopped.</p>
+<p>The changes were <strong>start</strong>, <strong>neighbourhood</strong> and <strong>acceptance</strong>: begin somewhere else, inspect different nearby candidates, or sometimes accept a worse move. VNS changes the neighbourhood; simulated annealing changes acceptance. Neither has to change the underlying objective.</p>
+<div class="focus-block">
+<blockquote><p><strong>“No better neighbour exists” does not mean “no better solution exists.”</strong></p></blockquote>
+</div>
+<h3 id="week-6--one-candidate-becomes-many">Week 6 — one candidate becomes many</h3>
+<p>A Genetic Algorithm keeps a population of candidates and transforms it through selection, crossover and mutation. Ant Colony Optimisation uses many route-building agents and a shared pheromone signal.</p>
+<p>The change was <strong>search organisation</strong>: many candidates or agents contribute, rather than one current candidate carrying the whole search. Diversity and shared information now matter — but more participants on their own do not guarantee a better result.</p>
+<h3 id="the-whole-search-block">The whole search block</h3>
+<div class="focus-block">
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-06/search-recap.svg" alt="Weeks 2 to 6 in sequence, and the four modelling choices that run through all of them" loading="lazy" decoding="async"><figcaption>Figure 1. The progression from Weeks 2–6, and the four modelling choices that recur in every one of them. This is the Week 6 summary diagram, reused here rather than redrawn, because it is the same story being reconnected. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+</div>
+<h3 id="one-problem-several-possible-questions">One problem, several possible questions</h3>
+<p>Read that as a sequence of changes, not as a ranking from weak algorithms to strong ones. A representation defines the possibilities. A search rule decides what receives attention. A heuristic supplies guidance. A neighbourhood and an acceptance rule govern local movement. Population operators and shared signals organise contributions from many candidates at once.</p>
+<p>Pick one transition and explain it using the maze, the knapsack or the route graph:</p>
+<div class="focus-block">
+<blockquote><p><strong>What became available that was missing before?</strong></p></blockquote>
+</div>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>The progression is what connects the methods. Now we remove their names and recognise them from behaviour alone.</p></div></details>
+<details class="beat" id="algorithm-detective--what-clues-tell-you-what-is-happening"><summary><h2 class="beat__title">Algorithm detective — what clues tell you what is happening?</h2></summary><div class="beat__body"><p>Read all eight cases before looking at any explanation. Compare your reasoning with someone else's before moving down the page — the disagreement is more useful than the answer.</p>
+<p>For each case, two things:</p>
+<div class="focus-block">
+<blockquote><p><strong>Name the method. Then name the single decision that gives it away.</strong></p></blockquote>
+</div>
+<h3 id="the-eight-cases">The eight cases</h3>
+<p><strong>Case 1</strong> — The algorithm always removes the state that has been waiting on the frontier the longest. Newly discovered states join behind the waiting ones.</p>
+<p><strong>Case 2</strong> — The algorithm expands the most recently added frontier state. Newly generated successors receive attention before older alternatives.</p>
+<p><strong>Case 3</strong> — Each maze state receives a cheap estimate of remaining distance, <code>h(state)</code>. A smaller value looks more promising, although walls may force a detour.</p>
+<p><strong>Case 4</strong> — The algorithm inspects every legal neighbour and selects the best strictly improving value. Successor order breaks an equal-best tie. With no strict improvement available, it stops.</p>
+<p><strong>Case 5</strong> — The search uses a small neighbourhood while improvements are available. When that fails, it checks a larger one, and returns to the small one after a successful move.</p>
+<p><strong>Case 6</strong> — A proposed worse candidate may be accepted. Acceptance depends on how much worse it is, and on a temperature that decreases during the run.</p>
+<p><strong>Case 7</strong> — Several bit strings are evaluated. Fitter candidates receive more selection probability, parents are combined, and occasional bit changes introduce variation.</p>
+<p><strong>Case 8</strong> — Many agents construct routes probabilistically. Values stored on edges influence later choices, receive reinforcement from completed routes, and gradually evaporate.</p>
+<h3 id="check-your-answers">Check your answers</h3>
+<ol><li><strong>Breadth-first search.</strong> The clue is a <strong>FIFO frontier</strong>: first in, first out. New discoveries wait behind older entries.</li><li><strong>Depth-first search.</strong> The clue is a <strong>LIFO frontier</strong>: last in, first out. Older alternatives stay available while newer ones are explored.</li><li><strong>Heuristic information.</strong> <code>h(state)</code> supplies a problem-specific estimate. This is information — not a complete algorithm, and not a guarantee about the route.</li><li><strong>Strict hill climbing.</strong> Our version takes the best strict local improvement, resolves ties by successor order, and stops when none exists.</li><li><strong>Variable Neighbourhood Search.</strong> The clue is changing what counts as nearby. The CT319 version returns to the cheaper neighbourhood after an improvement.</li><li><strong>Simulated Annealing.</strong> The clue is controlled, probabilistic acceptance of worse moves. A higher temperature permits more exploration for the same amount of worsening.</li><li><strong>Genetic Algorithm.</strong> The combination is <strong>population + selection + crossover + mutation</strong>. Each operator has a different job.</li><li><strong>Ant Colony Optimisation.</strong> The shared signal is <strong>artificial pheromone</strong>. Reinforcement and evaporation change future route probabilities; edge costs remain properties of the problem.</li></ol>
+<h3 id="the-clues-that-matter">The clues that matter</h3>
+<p>Three questions separate every method on that list:</p>
+<div class="focus-block">
+<blockquote><p><strong>What is stored? What information is read? What decides the next change?</strong></p></blockquote>
+</div>
+<p>Randomness answers none of them. It can select a parent, propose a move or influence a route choice — its presence alone identifies nothing.</p>
+<div class="callout callout--note"><span class="callout__label">Note</span><p><strong>Do not identify an algorithm from one vague word.</strong></p>
+<p>“Random”, “best”, “population” and “distance” appear in many methods. Identify the actual decision rule.</p></div>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Recognising the mechanism explains why a name fits. The next activity goes one step further: use that mechanism to predict a visible decision, then check the prediction against the run.</p></div></details>
+<details class="beat" id="predict-before-you-run--what-will-the-algorithm-do-next"><summary><h2 class="beat__title">Predict before you run — what will the algorithm do next?</h2></summary><div class="beat__body"><p>Use the <a href="../../search-lab/"><strong>Search Lab</strong></a> and the <a href="../../population-lab/"><strong>Population Lab</strong></a>. Every scenario below follows the same sequence:</p>
+<div class="focus-block">
+<blockquote><p><strong>Predict → run or step → observe → explain.</strong></p></blockquote>
+</div>
+<p>Say what you expect <em>before</em> pressing the control. Afterwards, name the rule that caused the result.</p>
+<h3 id="which-waiting-state-gets-attention-next">Which waiting state gets attention next?</h3>
+<p>Keep the default maze and successor order. Step <strong>BFS</strong> until several states are waiting, predict the next expansion from the frontier, then step once. Reset, select <strong>DFS</strong> and repeat.</p>
+<p>Explain the difference using oldest versus newest, not closeness to the goal. The lab displays each frontier in <strong>removal order, next first</strong>, so the DFS display already accounts for the stack. Compare how new successors join the waiting alternatives rather than assuming both panels show insertion order.</p>
+<h3 id="does-showing-a-heuristic-change-bfs">Does showing a heuristic change BFS?</h3>
+<p>Keep <strong>BFS</strong> selected and turn <strong>Show Manhattan h</strong> on. Predict whether a waiting state with a lower value will jump ahead. Run from the same start and successor order, then compare against the run without the overlay.</p>
+<p>The traversal is unchanged, because BFS never reads <code>h</code> when it selects its next state. The number is on screen; the queue still decides.</p>
+<div class="focus-block">
+<blockquote><p><strong>Information in a program affects a strategy only when its decision rule uses it.</strong></p></blockquote>
+</div>
+<h3 id="what-happens-at-the-strict-hill-climbing-trap">What happens at the strict hill-climbing trap?</h3>
+<p>Select <strong>Hill climb</strong>, set <strong>neighbours() order</strong> to <code>UP → RIGHT → DOWN → LEFT</code>, and step to <code>(4,7)</code>. Predict which equal-best neighbour wins, then continue to <code>(4,8)</code>.</p>
+<p>At that cell, pause before the next step:</p>
+<div class="focus-block">
+<pre data-lang="text"><code class="language-text">current (4,8): h = 2
+UP   → (3,8): h = 3
+LEFT → (4,7): h = 3</code></pre>
+</div>
+<p>Predict the outcome, then step. Explain the stopping message using <strong>acceptable</strong> moves, not legal ones. The goal is still reachable through <code>(4,7) → (5,7) → (6,7) → (6,8)</code>: four moves remain, although the heuristic estimates two.</p>
+<h3 id="can-the-same-worse-looking-exit-be-accepted">Can the same worse-looking exit be accepted?</h3>
+<p>Select <strong>Anneal</strong>, restore <code>UP → DOWN → LEFT → RIGHT</code>, and use seed <code>743</code>. After fourteen steps the run is at <code>(4,8)</code>. Predict what the acceptance rule permits, then inspect the next two proposals.</p>
+<p>The first is rejected. The second accepts <code>LEFT → (4,7)</code>, raising <code>h</code> from <code>2</code> to <code>3</code>. Read the probability and the random draw together.</p>
+<div class="focus-block">
+<blockquote><p><strong>A worse proposal is possible to accept, not certain to be accepted.</strong></p></blockquote>
+</div>
+<p>Temperature influences that probability. One step can reject a proposal without the agent moving at all.</p>
+<p>Explain what changed from the strict rule. The wall and the distance estimate are exactly as they were. The run now has a way out of the local minimum — which is a possibility, not a promise for every seed or cooling schedule.</p>
+<h3 id="what-can-crossover-do-when-everyone-looks-alike">What can crossover do when everyone looks alike?</h3>
+<p>In the Population Lab's <strong>Evolution</strong> view, keep seed <code>39</code>. Predict how population similarity will change with <strong>mutation rate = 0</strong>, then reset and run. Read <strong>distinct candidates</strong> and <strong>mean pairwise Hamming distance</strong> alongside best fitness.</p>
+<p>Repeat from the same seed with mutation <code>0.06</code>. Predict whether variation can reappear, then compare the populations and the traces. Keep every other setting fixed, so the mutation rate is the one change you are explaining.</p>
+<p>In the zero-mutation run the population becomes copies of <code>01101</code>: best fitness <code>14</code>, one distinct candidate, mean pairwise Hamming distance <code>0</code>. With mutation <code>0.06</code>, this seeded run reaches fitness <code>15</code> and keeps its variation. Those are observations from these settings, not universal promises about mutation rates.</p>
+<p>Explain why identical parents produce identical children under this crossover. Similar parents leave fewer differences to recombine, and mutation is what can reintroduce the missing variation. A small non-zero rate offers that possibility without replacing a whole candidate at random.</p>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>A good explanation identifies <strong>what changed</strong> — frontier policy, information used, acceptance rule, population variation — and keeps it separate from what stayed fixed. That connects a visible outcome to a mechanism, instead of treating one successful run as proof of general superiority.</p></div></details>
+<details class="beat" id="final-check--what-are-the-traps-to-avoid"><summary><h2 class="beat__title">Final check — what are the traps to avoid?</h2></summary><div class="beat__body"><p>Every correction below has the same shape.</p>
+<div class="focus-block">
+<blockquote><p><strong>A method's name, a low score or one successful run does not establish a general guarantee.</strong></p></blockquote>
+</div>
+<div class="callout callout--note"><span class="callout__label">Note</span><p><strong>Keep the conditions attached to the claim.</strong> Most of these are not wrong statements — they are true statements with their conditions quietly removed.</p></div>
+<ul><li><strong>“BFS finds the cheapest route.”</strong> BFS finds a minimum-<strong>depth</strong> route. That is minimum cost when action costs are equal; BFS does not optimise unequal edge weights.</li><li><strong>“DFS always finds a reachable goal.”</strong> DFS is not complete in general: infinite branches or unchecked cycles can stop it returning to alternatives. On our finite maze, reached-state checking makes it terminate and find a reachable goal.</li><li><strong>“The heuristic tells us the work actually left.”</strong> It <em>estimates</em> remaining cost. At <code>(4,8)</code> Manhattan distance is <code>2</code>, but the shortest remaining route costs <code>4</code> moves.</li><li><strong>“Hill climbing stopped, so there is no solution.”</strong> Stopping means no strictly improving neighbour exists under the chosen neighbourhood and evaluation. Legal routes can remain.</li><li><strong>“A larger neighbourhood is automatically better.”</strong> It may expose an escape, but evaluating more candidates costs more. The CT319 VNS version returns to the smaller neighbourhood after an improvement.</li><li><strong>“Simulated Annealing accepts worse moves.”</strong> It <em>may</em> accept them, with a probability controlled by the amount of worsening and the temperature. It does not accept every worse proposal.</li><li><strong>“Crossover makes better children.”</strong> It recombines parent material. Children still need evaluating, and may be worse or infeasible; identical bit-string parents supply no variation to recombine.</li><li><strong>“Mutation simply randomises the solution.”</strong> It introduces controlled random variation through an operator such as bit flipping. Too little leaves useful variation missing; too much disrupts useful structure.</li><li><strong>“Pheromone is route cost.”</strong> Cost belongs to the problem. Pheromone is accumulated search information that influences probabilistic choices and changes through reinforcement and evaporation.</li></ul>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<div class="focus-block">
+<p>Every one of those corrections separates what a mechanism <strong>does</strong> from what we are entitled to <strong>conclude</strong> — which is where the module started in Week 1. Describe the behaviour, identify the mechanism, and make only the claim the evidence supports.</p>
+</div></div></details>
+  </main>
+
+  <div class="tail">
+<h2 id="the-labs">The labs</h2>
+<p>Both labs are seeded, so a given seed replays the same run exactly. That is what makes a prediction checkable rather than an opinion.</p>
+<p>🧪 <strong><a href="../../search-lab/">Open the Search Lab</a></strong> — the recurring maze under BFS, DFS, strict hill climbing and seeded annealing, with the frontier and the Manhattan overlay visible.</p>
+<p>🧪 <strong><a href="../../population-lab/">Open the Population Lab</a></strong> — the five-bit knapsack population in the Evolution view, and the colony's shared pheromone signal in the Colony view.</p>
+<p>Both are existing CT319 artefacts from Weeks 2–6. Nothing new was built for this week; the point is to revisit them knowing what to look for.</p>
+<hr>
+<h2 id="before-week-8">Before Week 8</h2>
+<p>The first search block is complete. We supplied the representations, the legal transitions, the evaluations and the rules for deciding what happens next. The machine searched inside the structure we designed for it — and every interesting failure this block produced came from that structure, not from the machine.</p>
+<p>Which raises the obvious next question:</p>
+<div class="focus-block">
+<blockquote><p><strong>What if, instead of specifying every decision rule ourselves, we gave the machine data or experience and asked it to improve from that?</strong></p></blockquote>
+</div>
+<p>That is where Week 8 begins.</p>
+<hr>
+<h2 id="quick-revision">Quick revision</h2>
+<p>If you can answer these without reopening the page, you have the core of this week.</p>
+<ol><li><strong>[WK-07-01]</strong> Weeks 2 to 6 each changed one part of the same story. Name the change each of them made.</li><li>Why is it a mistake to read that progression as a ranking from weak algorithms to strong ones?</li><li><strong>[WK-07-02]</strong> A method expands the most recently added frontier state. What is it, and which word in that sentence identifies it?</li><li>Why is “it uses randomness” never enough to identify an algorithm?</li><li><strong>[WK-07-03]</strong> Why does turning on the Manhattan overlay leave a breadth-first traversal unchanged?</li><li>At <code>(4,8)</code> the heuristic reads <code>2</code> while the shortest remaining route is four moves. Why is that not a bug?</li><li><strong>[WK-07-04]</strong> Why does “hill climbing stopped” not mean “no solution exists”?</li><li>What is the difference between an edge's cost and the pheromone on that edge, and which of the two does the algorithm change?</li></ol>
+<hr>
+<h2 id="sources-and-licensing-notes">Sources and licensing notes</h2>
+<h3 id="ct319-source-material">CT319 source material</h3>
+<p>This checkpoint draws on the CT319 material already covered in Weeks 1–6: behaviour and mechanism; representation; BFS and DFS; heuristics; local search; and evolution and collective intelligence. The individual week pages carry the worked explanations and their own source notes.</p>
+<p>No new formal lecture material is introduced here. Where this page states a value — the <code>h = 2</code> reading at <code>(4,8)</code>, the four remaining moves, seed <code>743</code>, seed <code>39</code>, fitness <code>14</code> and <code>15</code> — it is the value the labs compute for those settings, and it is checked by their test suites.</p>
+<h3 id="figures">Figures</h3>
+<p>Figure 1 is the Week 6 summary diagram, <strong>created for these pages</strong> and reused here rather than redrawn. It uses no external image licence.</p>
+<p>No external images, videos, papers or interactives are used.</p>
+<h3 id="classroom-artefacts">Classroom artefacts</h3>
+<ul><li>🧪 <a href="../../search-lab/"><strong>CT319 Search Lab</strong></a> — frontier decisions, the heuristic overlay, strict hill climbing and seeded annealing on the recurring maze.</li><li>🧪 <a href="../../population-lab/"><strong>CT319 Population Lab</strong></a> — the five-bit knapsack population and the colony's shared pheromone signal.</li></ul>
+<p>Both are existing CT319 teaching artefacts. This week adds no new application and no external media.</p>
+  </div>
+
+  <footer class="page-footer">
+    <p>
+      CT319 Artificial Intelligence · University of Galway ·
+      <a href="../../">Module pages</a> ·
+      <a href="https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/weeks/week-07.md">Markdown source</a> ·
+      <a href="?open=all">Open every section</a>
+    </p>
+    <p>Formal slides and notes are on Canvas. These pages are the companion material.</p>
+  </footer>
+
+</div>
+
+<script src="../../assets/ct319.js" defer></script>
+</body>
+</html>
