@@ -40,8 +40,9 @@
   <rect x="606" y="70" width="168" height="128" rx="10" fill="#f6f8fa" stroke="#d0d7de" stroke-width="2"/>
   <text x="626" y="98" class="week">WEEK 5</text>
   <text x="626" y="124" class="idea">LOCAL SEARCH</text>
-  <text x="626" y="152" class="q">What if immediate</text>
-  <text x="626" y="170" class="q">improvement gets stuck?</text>
+  <text x="626" y="146" class="q">What if immediate</text>
+  <text x="626" y="164" class="q">improvement</text>
+  <text x="626" y="182" class="q">gets stuck?</text>
 
   <rect x="798" y="70" width="132" height="128" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2.5"/>
   <text x="818" y="98" class="week">WEEK 6</text>
