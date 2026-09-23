@@ -642,8 +642,6 @@ Same cities, same distances, same starting tour, same rule for accepting a move.
 
 Nothing in this module has been a competition between algorithms. The travelling salesman problem is where that becomes obvious: every method of the last two weeks can attack it, none of them can be pointed at it unmodified, and what each one needs first is a decision about **representation** — an ordering, a neighbourhood, an operator, a graph.
 
-Week 7 is the checkpoint. The question worth arriving with is not *which algorithm is best*, but *what does this problem have to give an algorithm before it can run at all?*
-
 <!-- ct319:endfocus -->
 
 <!-- ct319:endbeats -->
