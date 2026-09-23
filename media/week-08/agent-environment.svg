@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="320" viewBox="0 0 960 320" role="img" aria-labelledby="t d">
+  <title id="t">An agent acts in an environment and receives a consequence</title>
+  <desc id="d">An agent sends an action to an environment, and the environment returns a new state and a reward. The loop repeats, so the learner receives consequences rather than being told the correct action for each situation.</desc>
+  <style>
+    :root { --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --good:#1a7f37; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --good:#3fb950; } }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .node { font-size:18px; font-weight:700; letter-spacing:1.1px; text-anchor:middle; }
+    .edge { font-size:14px; font-weight:700; letter-spacing:1px; text-anchor:middle; }
+    .note { font-size:13.5px; fill:var(--muted); }
+    .box  { fill:var(--panel); stroke:var(--line); stroke-width:2; }
+    .out  { stroke:var(--accent); stroke-width:2.6; fill:none; marker-end:url(#a); }
+    .back { stroke:var(--good); stroke-width:2.6; fill:none; marker-end:url(#g); }
+  </style>
+  <rect width="960" height="320" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="42">LEARNING FROM CONSEQUENCES, NOT FROM SUPPLIED ANSWERS</text>
+
+  <rect class="box" x="110" y="128" width="230" height="86" rx="12"/>
+  <text class="node" x="225" y="178">AGENT</text>
+
+  <rect class="box" x="620" y="128" width="230" height="86" rx="12"/>
+  <text class="node" x="735" y="178">ENVIRONMENT</text>
+
+  <path class="out"  d="M344 152 C430 116 530 116 614 152"/>
+  <text class="edge" x="479" y="110" fill="var(--accent)">ACTION</text>
+
+  <path class="back" d="M616 192 C530 228 430 228 346 192"/>
+  <text class="edge" x="479" y="250" fill="var(--good)">NEW STATE &#43; REWARD</text>
+
+  <text class="note" x="30" y="296">Nobody supplies the correct action. The reward arrives as a consequence &#8212; sometimes long after the move that caused it.</text>
+
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/>
+    </marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--good)"/>
+    </marker>
+  </defs>
+</svg>

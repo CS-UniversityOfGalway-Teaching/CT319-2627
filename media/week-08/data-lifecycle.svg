@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="290" viewBox="0 0 1040 290" role="img" aria-labelledby="t d">
+  <title id="t">The model is one step inside a larger loop</title>
+  <desc id="d">Six stages in sequence: question, gather, prepare, model, validate, and communicate or decide. A dashed return arrow runs from validate back to prepare, labelled not good enough, showing that the process repeats rather than finishing at the first model.</desc>
+  <style>
+    :root { --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --accentbg:#ddf4ff; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --accentbg:#0c2d6b; } }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .node { font-size:16px; font-weight:700; text-anchor:middle; }
+    .edge { font-size:13px; fill:var(--muted); text-anchor:middle; font-style:italic; }
+    .note { font-size:13.5px; fill:var(--muted); }
+    .box  { fill:var(--panel); stroke:var(--line); stroke-width:2; }
+    .box--key { fill:var(--accentbg); stroke:var(--accent); stroke-width:2.4; }
+    .arr  { stroke:var(--muted); stroke-width:2.4; fill:none; marker-end:url(#a); }
+    .back { stroke:var(--accent); stroke-width:2.2; fill:none; stroke-dasharray:7 5; marker-end:url(#b); }
+  </style>
+  <rect width="1040" height="290" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="40">A MODEL IS ONE STEP INSIDE A LARGER PROCESS</text>
+
+  <rect class="box" x="26" y="76" width="148" height="64" rx="10"/>
+  <text class="node" x="100" y="115">QUESTION</text>
+  <path class="arr" d="M178 108 H190"/>
+
+  <rect class="box" x="194" y="76" width="148" height="64" rx="10"/>
+  <text class="node" x="268" y="115">GATHER</text>
+  <path class="arr" d="M346 108 H358"/>
+
+  <rect class="box" x="362" y="76" width="148" height="64" rx="10"/>
+  <text class="node" x="436" y="115">PREPARE</text>
+  <path class="arr" d="M514 108 H526"/>
+
+  <rect class="box box--key" x="530" y="76" width="148" height="64" rx="10"/>
+  <text class="node" x="604" y="115">MODEL</text>
+  <path class="arr" d="M682 108 H694"/>
+
+  <rect class="box" x="698" y="76" width="148" height="64" rx="10"/>
+  <text class="node" x="772" y="115">VALIDATE</text>
+  <path class="arr" d="M850 108 H862"/>
+
+  <rect class="box" x="866" y="76" width="148" height="64" rx="10"/>
+  <text class="node" x="940" y="103">COMMUNICATE</text>
+  <text class="node" x="940" y="125">OR DECIDE</text>
+
+  <path class="back" d="M772 144 V202 H436 V148"/>
+  <text class="edge" x="604" y="222">not good enough</text>
+
+  <text class="note" x="30" y="266">Validation can send you back to preparation. That return is the normal case, not a sign that something went wrong.</text>
+
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/>
+    </marker>
+    <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+</svg>
