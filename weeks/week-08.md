@@ -282,7 +282,7 @@ Six labelled examples, two numerical features each. The diamond marked **?** is 
 
 <!-- ct319:focus -->
 
-![Six labelled points in classes A and B, plus an unknown diamond at 2.4, 1.8, before prediction](../../media/week-08/classification-before.svg "wide")
+![Six labelled points in classes A and B, plus an unknown diamond at 2.4, 1.8, before prediction](../../media/week-08/classification-before.svg "secondary")
 
 <sub><em>Figure 4. The supplied classes A and B, plus a visible unknown point whose answer the learner has never been given. Plot created for these pages from the demonstration's synthetic data; no external image licence is used.</em></sub>
 
@@ -313,7 +313,7 @@ prediction = model.predict(unknown)
 
 `X` is the six coordinate pairs, `y` is their supplied A/B labels, and `unknown` is the separate query point. `fit(X, y)` hands the algorithm the labelled examples; `predict(unknown)` applies the fitted model to a new one. Everything else in the script is plotting.
 
-![The same labelled examples, with the unknown point now showing predicted class A](../../media/week-08/classification-after.svg "wide")
+![The same labelled examples, with the unknown point now showing predicted class A](../../media/week-08/classification-after.svg "secondary")
 
 <sub><em>Figure 5. The classifier predicts A for the diamond. The supplied labels and the model's prediction are two different sources of information, and the plot keeps them visually distinct. Plot created for these pages by the scikit-learn demonstration; no external image licence is used.</em></sub>
 
@@ -377,7 +377,7 @@ Take exactly the same six examples used to fit the classifier and delete `y`, le
 
 <!-- ct319:focus -->
 
-![The same six example coordinates drawn neutrally, with no supplied labels](../../media/week-08/clustering-before.svg "wide")
+![The same six example coordinates drawn neutrally, with no supplied labels](../../media/week-08/clustering-before.svg "secondary")
 
 <sub><em>Figure 6. The six example points from Figure 4 with their labels removed. Not a single position has moved. Plot created for these pages from the same synthetic data; no external image licence is used.</em></sub>
 
@@ -406,7 +406,7 @@ groups = model.fit_predict(X)
 
 We **asked for two clusters**. The model did not discover how many groups there are — we told it. The fixed settings are there to keep a small demonstration reproducible, and the mechanics belong to Week 10.
 
-![The same six points assigned to two clusters, using group identifiers rather than A or B](../../media/week-08/clustering-after.svg "wide")
+![The same six points assigned to two clusters, using group identifiers rather than A or B](../../media/week-08/clustering-after.svg "secondary")
 
 <sub><em>Figure 7. K-means groups the same six examples without ever receiving their class labels. The group numbers are identifiers, not supplied meanings — swapping them changes nothing. Plot created for these pages by the scikit-learn demonstration; no external image licence is used.</em></sub>
 
