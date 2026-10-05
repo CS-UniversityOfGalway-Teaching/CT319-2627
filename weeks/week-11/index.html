@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 11 — Trustworthy AI — CT319</title>
+<meta name="description" content="CT319 Week 11. Fairness, privacy, transparency and accountability — why one accuracy figure settles nothing, and what evidence would justify deploying a system at all.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230969da'/%3E%3Cpath d='M8 8h7v4h-3v8h3v4H8zm9 0h7v16h-7v-4h3v-8h-3z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/ct319.css">
+</head>
+<body>
+<a class="skip-link" href="#beats">Skip to the teaching sections</a>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">CT319 Artificial Intelligence · Week 11 · Trustworthy AI</p>
+    <h1>Week 11 — Trustworthy AI</h1>
+    <p class="week-question">When should we trust an AI system?</p>
+  </header>
+
+  <div class="lede">
+<p>For three weeks we asked whether a machine can learn from data, classify new examples, discover structure and make recommendations. Every question was a version of <em>does it work?</em></p>
+<p>Now suppose it does. Suppose the accuracy is high. Suppose people are already using it.</p>
+<div class="focus-block">
+<blockquote><p><strong>Is that enough?</strong></p></blockquote>
+</div>
+<p>This is the one week on the module where the interesting answers are not technical. They are still answers, though — the discipline is the same one we have used since Week 1: say what the evidence establishes, and say what it does not.</p>
+<p>We work through five things.</p>
+<ul><li><a href="#accurate-but-trustworthy--is-good-performance-enough"><strong>Accurate, but trustworthy?</strong></a> — why a headline accuracy figure does not settle whether a system should be relied on.</li><li><a href="#the-data-were-biased-before-the-model-arrived--where-can-unfairness-enter"><strong>The data were biased before the model arrived</strong></a> — where unfairness enters the sequence of choices that builds a system.</li><li><a href="#just-because-we-can-collect-it--how-much-data-should-a-system-use"><strong>Just because we can collect it</strong></a> — how much data a system <em>should</em> use, rather than how much it could.</li><li><a href="#why-did-the-model-say-no--what-does-transparency-actually-require"><strong>Why did the model say no?</strong></a> — what transparency actually requires of an explanation.</li><li><a href="#from-principles-to-responsibility--who-is-accountable"><strong>From principles to responsibility</strong></a> — who remains accountable, worked through one fictional university system.</li></ul>
+<p>Three ideas carry the page, and it is worth keeping them apart:</p>
+<div class="focus-block">
+<div class="lenses">
+<div class="lens"><span class="lens__key">Fairness</span><span class="lens__gloss">a system can perform well overall while treating groups very differently</span></div>
+<div class="lens"><span class="lens__key">Privacy</span><span class="lens__gloss">more data is not automatically better data, and collecting it is itself a decision</span></div>
+<div class="lens"><span class="lens__key">Accountability</span><span class="lens__gloss">somebody has to remain responsible for how a system is designed, deployed and used</span></div>
+</div>
+</div>
+  </div>
+
+  <div class="beat-bar" data-beat-bar hidden>
+    <span class="beat-bar__label">Week 11 · Sections</span>
+    <button type="button" data-expand-all>Expand all</button>
+    <button type="button" data-collapse-all>Collapse all</button>
+  </div>
+
+  <main class="beats" id="beats">
+<details class="beat" id="accurate-but-trustworthy--is-good-performance-enough"><summary><h2 class="beat__title">Accurate, but trustworthy? — is good performance enough?</h2></summary><div class="beat__body"><p>Imagine a system that helps decide whether loan applications are approved. Its test accuracy is <strong>94%</strong>. That sounds impressive. Then somebody reports the approval rate by group: <strong>78%</strong> for Group A, <strong>42%</strong> for Group B.</p>
+<p>A difference in outcomes does not by itself prove unfairness. What it does prove is that one number was never going to settle the question.</p>
+<div class="focus-block">
+<blockquote><p><strong>94% tells us something real about predictive performance. It tells us nothing about who the performance was for.</strong></p></blockquote>
+</div>
+<p>It does not say whether the data were representative, whether particular groups are disadvantaged, whether sensitive information was used appropriately, whether anybody affected understands the decision, whether it can be challenged, or who is responsible when it goes wrong.</p>
+<h3 id="how-does-performance-vary-across-the-people-affected">How does performance vary across the people affected?</h3>
+<p>Week 9 asked whether a classifier generalises to unseen data. Add a second question to it:</p>
+<div class="focus-block">
+<blockquote><p><strong>How does performance vary across the people who will actually be affected?</strong></p></blockquote>
+</div>
+<p>Here is a classifier with a perfectly respectable headline figure.</p>
+<div class="focus-block">
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-11/aggregate-hides-the-gap.svg" alt="92.8% overall, which is 96% for Group A with 800 examples and 80% for Group B with 200" loading="lazy" decoding="async"><figcaption>Figure 1. Fictional figures, chosen to make one arithmetic point: the aggregate is an average weighted by group size, so the larger group's experience dominates it. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+</div>
+<p>Sixteen points separate the two groups, and neither number appears in the headline. Generalisation does not require identical performance in every subgroup — but a gap like that needs investigating rather than averaging away.</p>
+<p>It does not, on its own, prove unlawful discrimination, and it does not tell us <em>why</em> the gap exists. It tells us that one aggregate score is not enough to understand how a system behaves.</p>
+<h3 id="what-does-trustworthy-mean">What does "trustworthy" mean?</h3>
+<p>The 2019 <a href="https://digital-strategy.ec.europa.eu/en/library/ethics-guidelines-trustworthy-ai">Ethics Guidelines for Trustworthy AI</a>, from the Commission's High-Level Expert Group on AI, describe trustworthy AI under three headings.</p>
+<div class="focus-block">
+<div class="lenses">
+<div class="lens"><span class="lens__key">Lawful</span><span class="lens__gloss">it complies with the law that applies to it</span></div>
+<div class="lens"><span class="lens__key">Ethical</span><span class="lens__gloss">it respects the principles and values at stake</span></div>
+<div class="lens"><span class="lens__key">Robust</span><span class="lens__gloss">it works reliably, technically and in its social setting</span></div>
+</div>
+</div>
+<p>The guidelines then set out seven requirements: human agency and oversight; technical robustness and safety; privacy and data governance; transparency; diversity, non-discrimination and fairness; societal and environmental wellbeing; and accountability.</p>
+<p>This week takes selected requirements seriously rather than treating all seven as a list to memorise. Fairness, privacy, transparency and accountability are part of that framework, not the whole of it.</p>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>For any system, five questions replace the one we have been asking:</p>
+<div class="focus-block">
+<ol class="flow" aria-label="Five questions to ask of any AI system">
+<li><span>Does it work?</span></li>
+<li><span class="is-pivot">Who does it work for?</span></li>
+<li><span>What data does it use?</span></li>
+<li><span>Can people understand or challenge it?</span></li>
+<li><span>Who remains responsible?</span></li>
+</ol>
+<p class="flow__note">Only the first is answered by a test score. The highlighted one is where most of the trouble on this page starts.</p>
+</div></div></details>
+<details class="beat" id="the-data-were-biased-before-the-model-arrived--where-can-unfairness-enter"><summary><h2 class="beat__title">The data were biased before the model arrived — where can unfairness enter?</h2></summary><div class="beat__body"><p>It is tempting to talk as though a model becomes unfair by itself, somewhere during training. It does not. A system is built through a sequence of decisions, and most of them are made before anything is fitted.</p>
+<div class="focus-block">
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-11/where-unfairness-enters.svg" alt="Purpose, data, labels, features, model, decision rule and use, each with its own fairness question" loading="lazy" decoding="async"><figcaption>Figure 2. Seven decisions. The one most people mean by "the AI" is the fifth, and four have already been made by the time it arrives. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+</div>
+<h3 id="who-appears-in-the-data">Who appears in the data?</h3>
+<p>Suppose a recruitment model is trained mainly on previous successful employees. That sounds sensible — until you ask what the previous hiring process favoured. If it favoured one kind of candidate, the historical record encodes that, and the learner has no way of knowing which patterns were worth preserving.</p>
+<h3 id="who-decided-the-labels">Who decided the labels?</h3>
+<p>Imagine previous employees labelled <code>successful</code> or <code>unsuccessful</code>. What does <code>successful</code> mean? Stayed three years? High manager ratings? Earned promotion? Sold the most? Worked the longest hours?</p>
+<div class="focus-block">
+<blockquote><p><strong>Labels are not facts because they appear in a spreadsheet. Somebody decided what the target would represent, and a questionable label produces a questionable objective.</strong></p></blockquote>
+</div>
+<h3 id="which-features-are-allowed-to-matter">Which features are allowed to matter?</h3>
+<p>Suppose the model receives education, experience, assessment score and postcode. Even with a protected characteristic removed, another feature can correlate strongly with it. Dropping one column does not remove the possibility of unfair treatment — it removes one route to it.</p>
+<p>The design question is broader, and it is the one from Week 8 again:</p>
+<div class="focus-block">
+<blockquote><p><strong>Why is this feature relevant to the decision we are making?</strong></p></blockquote>
+</div>
+<p>Available data is not automatically appropriate data.</p>
+<h3 id="what-happens-after-the-model-produces-a-score">What happens after the model produces a score?</h3>
+<p>Two applicants score <code>0.71</code> and <code>0.69</code>. Somebody then chooses: <em>interview if score ≥ 0.70</em>. The model produced numbers. The threshold turned them into consequences — and the threshold is a design decision made by a person, usually one who is not in the room when the model is discussed.</p>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Fairness is not a checkbox applied after training, because by then most of the decisions that could have caused a problem have already been taken. The audit has to run across all seven steps in Figure 2.</p></div></details>
+<details class="beat" id="just-because-we-can-collect-it--how-much-data-should-a-system-use"><summary><h2 class="beat__title">Just because we can collect it — how much data should a system use?</h2></summary><div class="beat__body"><p>Imagine a university wants to identify students who may need additional academic support. Which data should it collect — attendance, assessment history, LMS activity, library use, postcode, family income, browser history, medical information, social media?</p>
+<p>Using every available source would not necessarily produce a better system. And there are two separate questions hiding in the word "should".</p>
+<div class="focus-block">
+<div class="lenses lenses--pair">
+<div class="lens"><span class="lens__key">Would it help?</span><span class="lens__gloss">does this information improve the prediction?</span></div>
+<div class="lens"><span class="lens__key">Should we?</span><span class="lens__gloss">ought the system to be using this information at all?</span></div>
+</div>
+</div>
+<p>Those are not the same question, and the first one answering <em>yes</em> does not settle the second.</p>
+<h3 id="data-minimisation">Data minimisation</h3>
+<p>Under the GDPR, <strong>data minimisation</strong> means personal data should be adequate, relevant and limited to what is necessary for the intended purpose — see the <a href="https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/principles-gdpr_en">Commission's guidance on GDPR principles</a>. The principle is deliberately restrictive, and it runs in the opposite direction to the instinct of anyone who has ever built a dataset.</p>
+<div class="focus-block">
+<div class="lenses lenses--pair">
+<div class="lens"><span class="lens__key">The instinct</span><span class="lens__gloss">collect everything now, and work out later what turned out to be useful</span></div>
+<div class="lens"><span class="lens__key">The principle</span><span class="lens__gloss">define the purpose, identify what is necessary for it, collect only what that justifies</span></div>
+</div>
+</div>
+<p>Assessment information may be easier to justify for a stated support purpose than unrelated browsing behaviour — but every use still needs an appropriate purpose and basis. Having collected data for one academic purpose does not automatically permit reusing it for another.</p>
+<h3 id="more-data-can-mean-more-risk">More data can mean more risk</h3>
+<p>Unnecessary personal information increases what can be exposed in a breach, misused, misunderstood, kept too long, combined with other records, or used for things people never expected. The cost does not sit in the model; it sits with the people in the dataset.</p>
+<h3 id="removing-identifiers-is-not-anonymisation">Removing identifiers is not anonymisation</h3>
+<p>This is the point most often got wrong, and it is worth being exact about.</p>
+<div class="focus-block">
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-11/identifiability.svg" alt="Identified and pseudonymised data are both personal data; only genuinely anonymised data is not" loading="lazy" decoding="async"><figcaption>Figure 3. Deleting the name column moves you one box to the right, not two. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+</div>
+<p><strong>Pseudonymisation</strong> replaces direct identifiers with codes and keeps the identifying information separately. It is real protection — and data that can still be linked back to a person remains personal data.</p>
+<p><strong>Genuine anonymisation</strong> means the individual is no longer identifiable, and such data is not personal data under the GDPR. The distinction is whether identification remains possible, not whether a column was dropped. See the <a href="https://commission.europa.eu/law/law-topic/data-protection/data-protection-explained_en">Commission's explanation of personal data</a>.</p>
+<div class="focus-block">
+<blockquote><p><strong>Age, programme, postcode and one rare condition can identify a single person — especially combined with information from somewhere else.</strong></p></blockquote>
+</div>
+<h3 id="what-about-synthetic-data">What about synthetic data?</h3>
+<p>Synthetic data is not automatically private, not automatically unbiased and not automatically safe. Those properties depend entirely on how it was generated and which patterns from the original it preserves.</p>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Every dataset in this module arrived ready-made. In practice somebody decides what goes into one, and that decision is the first place a system can go wrong — before a single line of modelling code is written.</p></div></details>
+<details class="beat" id="why-did-the-model-say-no--what-does-transparency-actually-require"><summary><h2 class="beat__title">Why did the model say no? — what does transparency actually require?</h2></summary><div class="beat__body"><p>Return to the loan decision, and compare two systems that reach the same kind of outcome.</p>
+<div class="focus-block">
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-11/interpretable-vs-opaque.svg" alt="A traceable decision tree beside an opaque model emitting the score 0.83 and a rejection" loading="lazy" decoding="async"><figcaption>Figure 4. Fictional example. On the left there is a route to show somebody. On the right there is a number. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+</div>
+<p>If an applicant asks why they were sent for review, the tree can be walked. The right-hand system has nothing to walk. What would the affected person reasonably want to know? What data was used, what factors mattered, what <code>0.83</code> means, how reliable the model is, whether a human was involved, and how to challenge the result.</p>
+<p>Publishing the source code answers none of those six.</p>
+<h3 id="three-words-that-are-not-synonyms">Three words that are not synonyms</h3>
+<div class="focus-block">
+<div class="lenses">
+<div class="lens"><span class="lens__key">Interpretability</span><span class="lens__gloss">the model itself is understandable enough to inspect how inputs relate to output</span></div>
+<div class="lens"><span class="lens__key">Explainability</span><span class="lens__gloss">additional methods help describe why a model produced a particular output</span></div>
+<div class="lens"><span class="lens__key">Transparency</span><span class="lens__gloss">the wider system communicates how AI is used, what matters, its limits, and who is responsible</span></div>
+</div>
+</div>
+<p>These terms are used somewhat differently across the literature; this is the practical sense we use here. A small decision tree is interpretable. For more complicated models, tools such as <strong>LIME</strong> and <strong>SHAP</strong> estimate or attribute how features contributed to a prediction. We do not need their mathematics this week — only the kind of output they try to produce.</p>
+<div class="focus-block">
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-11/contribution-display.svg" alt="A schematic bar display showing debt and missed payments pushing towards reject and income towards approve" loading="lazy" decoding="async"><figcaption>Figure 5. <strong>Schematic</strong> — this is the shape of such an output, not a measured LIME or SHAP result. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+</div>
+<p>A system can produce an explanation for one prediction while being badly governed and poorly communicated overall. Explanation is one requirement, not the whole of transparency.</p>
+<h3 id="explanation-is-not-justification">Explanation is not justification</h3>
+<p>Look at the fourth row of Figure 5. Suppose an explanation reports that postcode strongly influenced the decision. That tells us something true about the model. It does not tell us that postcode <em>should</em> have influenced it.</p>
+<div class="focus-block">
+<div class="lenses lenses--pair">
+<div class="lens"><span class="lens__key">Explanation</span><span class="lens__gloss">what influenced the output?</span></div>
+<div class="lens"><span class="lens__key">Justification</span><span class="lens__gloss">was that influence appropriate?</span></div>
+</div>
+</div>
+<p>An explanation can reveal a problem rather than excuse one. That is arguably the most useful thing it does.</p>
+<h3 id="transparency-as-an-obligation">Transparency as an obligation</h3>
+<p>The <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai">EU AI Act</a> takes a risk-based approach: the obligations follow what a system is used for, not which technique it uses.</p>
+<div class="focus-block">
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-11/ai-act-risk.svg" alt="Four bands: unacceptable risk, high risk, transparency risk, and minimal or no risk" loading="lazy" decoding="async"><figcaption>Figure 6. The same technique can sit in different bands depending on its use. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+</div>
+<p>The Act applies in stages. The <strong>Article 50 transparency obligations have applied since 2 August 2026</strong>, covering disclosure of direct AI interaction, machine-readable marking of certain AI-generated content, and disclosure of deepfakes, subject to the relevant conditions and exceptions.</p>
+<p>Limited transitional arrangements apply to some pre-existing systems. The Commission's FAQ identifies a narrow grace period until <strong>2 December 2026</strong> for the Article 50(2) content-marking and detection obligations of systems placed on the market before 2 August 2026 — this is not a delay to every transparency duty. See the <a href="https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act">Commission's Article 50 FAQ</a>.</p>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<div class="focus-block">
+<blockquote><p><strong>Trustworthy-AI principles now come with concrete deployment obligations attached. The law supports this discussion — it does not replace the judgement about whether a particular system should exist.</strong></p></blockquote>
+</div></div></details>
+<details class="beat" id="from-principles-to-responsibility--who-is-accountable"><summary><h2 class="beat__title">From principles to responsibility — who is accountable?</h2></summary><div class="beat__body"><p>Take one fictional case and work it through, revealing a piece at a time.</p>
+<blockquote><p><strong>University X proposes an AI system to identify students who may need academic support.</strong></p></blockquote>
+<p>Six questions carry the discussion — and the point of the exercise is to decide what further evidence or changes you would require <em>before</em> deployment, not to reach a verdict from the description alone.</p>
+<div class="focus-block">
+<ol class="flow" aria-label="Six questions for the University X case, in order">
+<li><span>Purpose</span></li>
+<li><span>Data</span></li>
+<li><span>Fairness</span></li>
+<li><span>Transparency</span></li>
+<li><span>Oversight</span></li>
+<li><span class="is-pivot">Accountability</span></li>
+</ol>
+<p class="flow__note">The last one is the only question that still has an answer after the system has already caused harm.</p>
+</div>
+<h3 id="purpose">Purpose</h3>
+<p>What is the system actually for? Predicting dropout, identifying students who need support, prioritising scarce staff time and triggering automatic intervention are <strong>four different systems</strong>, and a proposal that has not chosen between them makes everything downstream impossible to justify.</p>
+<h3 id="data">Data</h3>
+<p>The proposal uses attendance, grades, postcode, library use and LMS activity. Which of those are necessary for a support purpose, and which would you remove? What purpose and basis support using the records at all?</p>
+<p>Would postcode improve the prediction? Possibly. Should it therefore be used? Not automatically — and that gap between the two answers is the whole of the previous highlight.</p>
+<h3 id="fairness">Fairness</h3>
+<p>Overall accuracy <strong>88%</strong>; Group A <strong>91%</strong>; Group B <strong>72%</strong>. Should it be deployed unchanged?</p>
+<p>That result should trigger investigation, not an automatic verdict of discrimination. Perhaps Group B is under-represented in the training data. Perhaps a feature behaves differently for that group. Perhaps the labels are weaker there. The aggregate cannot distinguish between those, and each one implies a different fix.</p>
+<h3 id="transparency">Transparency</h3>
+<p>Now reveal how a prediction becomes an action: a risk score from 0 to 100, and above 75 an automatic message to the student plus a flag to programme staff. The threshold and the automatic contact are deployment choices, not model outputs.</p>
+<p>Should students know that AI is being used, what data is included, what the score is used for, whether a human reviews it, and how to challenge incorrect information? A system that affects people while hiding its own existence makes meaningful oversight impossible by construction.</p>
+<h3 id="oversight">Oversight</h3>
+<p>The model says <code>risk = 82</code>. Should that decide what happens next?</p>
+<div class="focus-block">
+<div class="lenses">
+<div class="lens"><span class="lens__key">Review</span><span class="lens__gloss">a human checks before any action is taken</span></div>
+<div class="lens"><span class="lens__key">Monitor</span><span class="lens__gloss">a human watches an automated action as it runs</span></div>
+<div class="lens"><span class="lens__key">Override</span><span class="lens__gloss">a human can stop or reverse what the system did</span></div>
+</div>
+</div>
+<p>All three are called "human oversight". The question that separates real oversight from the appearance of it is practical:</p>
+<div class="focus-block">
+<blockquote><p><strong>Does that person actually have enough information, authority and time to intervene?</strong></p></blockquote>
+</div>
+<p>A nominal human in the loop who clicks <strong>Approve</strong> on everything is not oversight. Ask what they can genuinely review, override or stop.</p>
+<h3 id="accountability">Accountability</h3>
+<p>Now suppose the system causes harm.</p>
+<div class="focus-block">
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-11/accountability-chain.svg" alt="The vendor, developer, data team, deploying organisation and staff member, and the claim that the AI did it" loading="lazy" decoding="async"><figcaption>Figure 7. Every link in that chain is a person or an organisation. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+</div>
+<p>Responsibility exists across the whole chain, and it does not stop at deployment. Who monitors the running system, who investigates complaints, and who has the authority to change or withdraw it?</p>
+<h3 id="would-your-judgement-change">Would your judgement change?</h3>
+<p>Keep the case and change one deployment condition at a time.</p>
+<blockquote><p><strong>Instead of contacting students automatically, the system only gives academic advisers a ranked list.</strong></p></blockquote>
+<p>Does that change your judgement? Consider whether advisers can inspect and challenge the ranking — and whether it still decides who receives attention.</p>
+<blockquote><p><strong>Overall accuracy falls from 88% to 76%, but the gap between groups becomes much smaller.</strong></p></blockquote>
+<p>Is the lower-accuracy system automatically worse? Is the smaller gap enough to justify it? Weigh the remaining errors, their consequences, and the support purpose before deciding.</p>
+<p>There is no correct verdict supplied here. What you are asked for is which evidence and which deployment conditions your judgement depends on.</p>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<div class="focus-block">
+<blockquote><p><strong>A technically successful system can still be badly designed, badly governed, or inappropriate to deploy at all.</strong></p></blockquote>
+</div></div></details>
+  </main>
+
+  <div class="tail">
+<h2 id="what-to-carry-out-of-this-week">What to carry out of this week</h2>
+<ul><li><strong>Fairness</strong> — investigate who benefits and who is harmed, across purpose, data, labels, features, decisions and use. A subgroup gap calls for investigation; it is not automatic proof of discrimination.</li><li><strong>Privacy and data minimisation</strong> — define the purpose, then use only the personal data that purpose needs. Removing identifiers establishes neither anonymity nor permission to reuse.</li><li><strong>Transparency</strong> — communicate how AI is used, what its limits are and who is responsible. Interpretability lets you inspect a model; explainability methods describe its outputs. Neither makes an influence appropriate.</li><li><strong>Human oversight</strong> — people need information, authority and time, or the oversight is nominal.</li><li><strong>Accountability</strong> — responsibility stays with the people and organisations who design, deploy and use the system, including long after it goes live.</li></ul>
+<hr>
+<h2 id="before-the-end-of-the-module">Before the end of the module</h2>
+<p>Weeks 8 to 11 ran a progression, and it is worth seeing it whole.</p>
+<div class="focus-block">
+<ol class="flow" aria-label="The arc from Week 8 to Week 11">
+<li><span>learn from data</span></li>
+<li><span>classify</span></li>
+<li><span>discover structure</span></li>
+<li><span>recommend</span></li>
+<li><span class="is-pivot">question the system</span></li>
+</ol>
+<p class="flow__note">The first four build something. The last one asks whether it should have been built, and it is the only step that cannot be automated.</p>
+</div>
+<p>Carry one question out of the module:</p>
+<div class="focus-block">
+<blockquote><p><strong>What evidence and safeguards would justify trusting this system, for this purpose, with these people affected?</strong></p></blockquote>
+</div>
+<hr>
+<h2 id="quick-revision">Quick revision</h2>
+<p>If you can answer these without reopening the page, you have the core of this week.</p>
+<ol><li><strong>[WK-11-01]</strong> Why does a single accuracy figure not settle whether a system should be relied on?</li><li>A classifier scores 92.8% overall, 96% on one group and 80% on another. Why is the overall figure so close to the higher one?</li><li>What do <em>lawful</em>, <em>ethical</em> and <em>robust</em> add up to, and why is each one insufficient alone?</li><li><strong>[WK-11-02]</strong> Name the seven decisions that build a system, and say which of them happen before any model exists.</li><li>Why is a label not a fact, and what can a questionable label do to a learning objective?</li><li>Why does removing a protected characteristic from the features not remove the possibility of unfair treatment?</li><li><strong>[WK-11-03]</strong> What does data minimisation require, and which two questions does it keep apart?</li><li>Why is deleting the name column not anonymisation, and what is the actual test?</li><li><strong>[WK-11-04]</strong> What is the difference between interpretability, explainability and transparency?</li><li>Why is an explanation not a justification, and what is the most useful thing an explanation can do?</li><li><strong>[WK-11-05]</strong> What makes human oversight meaningful rather than nominal?</li><li>Why is “the AI did it” not an accountability model?</li></ol>
+<hr>
+<h2 id="sources-and-licensing-notes">Sources and licensing notes</h2>
+<h3 id="ct319-source-material">CT319 source material</h3>
+<p>This week follows selected material from the formal CT319 <em>Lecture 10: AI Ethics</em> material on Canvas — fairness across the development process, privacy and data minimisation, synthetic data, transparency and responsibility. The formal slides remain the broader reference; these pages develop selected requirements rather than the whole framework.</p>
+<h3 id="external-sources">External sources</h3>
+<ul><li>European Commission — <a href="https://digital-strategy.ec.europa.eu/en/library/ethics-guidelines-trustworthy-ai">Ethics Guidelines for Trustworthy AI</a></li><li>European Commission — <a href="https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/principles-gdpr_en">Principles of personal data processing under the GDPR</a></li><li>European Commission — <a href="https://commission.europa.eu/law/law-topic/data-protection/data-protection-explained_en">Data protection explained</a></li><li>European Commission — <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai">AI Act — regulatory framework and risk-based approach</a></li><li>European Commission — <a href="https://digital-strategy.ec.europa.eu/en/library/guidelines-transparency-obligations-providers-and-deployers-ai-systems">Guidelines on transparency obligations for providers and deployers of AI systems</a></li><li>European Commission — <a href="https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act">Transparency obligations under Article 50 of the AI Act</a></li></ul>
+<p>The Commission sources were checked on <strong>10 September 2026</strong>, and the regulatory overview is deliberately limited to the teaching context and the staged application of Article 50. Dates in this area move; check the linked pages before relying on them.</p>
+<h3 id="quotation-and-licensing">Quotation and licensing</h3>
+<p>The Commission material is <strong>linked, not reproduced</strong>. Where the Ethics Guidelines are drawn on, this page cites short factual labels — the lawful/ethical/robust framing and the names of the seven requirements — with attribution. The surrounding text is not reproduced, and the AI Act and GDPR material is summarised in this page's own words for teaching rather than quoted.</p>
+<h3 id="fictional-teaching-material">Fictional teaching material</h3>
+<p>The University X case, the loan-approval example, and <strong>every numerical value used in them</strong>, are fictional teaching examples constructed for these pages.</p>
+<p>They are not findings, measurements or claims about any actual institution, lender or deployed system. The accuracy figures and the feature contributions in Figure 5 were chosen to make a teaching point, not measured from data — Figure 5 is labelled schematic for that reason, and is not the output of LIME, SHAP or any other method.</p>
+<h3 id="figures">Figures</h3>
+<p>Figures 1–7 were <strong>created for these pages</strong> and are original diagrams. They use no external image licence.</p>
+<p>No external images, videos, papers or interactives are used.</p>
+  </div>
+
+  <footer class="page-footer">
+    <p>
+      CT319 Artificial Intelligence · University of Galway ·
+      <a href="../../">Module pages</a> ·
+      <a href="https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/weeks/week-11.md">Markdown source</a> ·
+      <a href="?open=all">Open every section</a>
+    </p>
+    <p>Formal slides and notes are on Canvas. These pages are the companion material.</p>
+  </footer>
+
+</div>
+
+<script src="../../assets/ct319.js" defer></script>
+</body>
+</html>

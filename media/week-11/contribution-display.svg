@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="360" viewBox="0 0 1040 360" role="img" aria-labelledby="t d">
+  <title id="t">A schematic feature-contribution display, and the question it cannot answer</title>
+  <desc id="d">A schematic display for a reject prediction shows high debt and missed payments pushing towards reject and income pushing towards approve. A fourth bar shows postcode pushing towards reject, which illustrates that an explanation can reveal a problem rather than excuse one. The figures are illustrative, not a measured LIME or SHAP result.</desc>
+  <style>
+    :root { --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --good:#1a7f37; --warn:#9a6700; --warnbg:#fff8c5; --bad:#cf222e; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --good:#3fb950; --warn:#d29922; --warnbg:#2d2200; --bad:#f85149; } }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .cap  { font-size:12.5px; font-weight:700; letter-spacing:1.1px; fill:var(--muted); }
+    .feat { font-size:16px; font-weight:700; }
+    .dir  { font-size:13.5px; fill:var(--muted); }
+    .note { font-size:13.5px; fill:var(--muted); }
+    .warn { font-size:13.5px; fill:var(--warn); font-weight:700; }
+  </style>
+  <rect width="1040" height="360" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="40">PREDICTION: REJECT &#183; WHAT PUSHED IT THERE</text>
+
+  <rect x="30" y="58" width="980" height="196" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
+
+  <text class="feat" x="56"  y="100">high debt</text>
+  <rect x="250" y="84" width="238" height="22" rx="4" fill="var(--bad)"/>
+  <text class="dir"  x="502" y="101">pushes towards reject</text>
+
+  <text class="feat" x="56"  y="142">missed payments</text>
+  <rect x="250" y="126" width="170" height="22" rx="4" fill="var(--bad)"/>
+  <text class="dir"  x="502" y="143">pushes towards reject</text>
+
+  <text class="feat" x="56"  y="184">income</text>
+  <rect x="250" y="168" width="102" height="22" rx="4" fill="var(--good)"/>
+  <text class="dir"  x="502" y="185">pushes towards approve</text>
+
+  <text class="feat" x="56"  y="226" fill="var(--warn)">postcode</text>
+  <rect x="250" y="210" width="136" height="22" rx="4" fill="var(--warn)"/>
+  <text class="warn" x="502" y="227">&#8230; and why is this here at all?</text>
+
+  <text class="cap" x="30" y="290">SCHEMATIC &#183; NOT A MEASURED LIME OR SHAP RESULT</text>
+  <text class="note" x="30" y="318">A display like this answers &#8220;what influenced the output?&#8221;. It does not answer &#8220;should that have influenced it?&#8221; &#8212; and the fourth row is</text>
+  <text class="note" x="30" y="340">the reason the two questions have to be asked separately. An explanation can reveal a problem rather than excuse one.</text>
+</svg>

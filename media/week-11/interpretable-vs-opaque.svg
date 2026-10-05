@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="400" viewBox="0 0 1040 400" role="img" aria-labelledby="t d">
+  <title id="t">A route you can trace, against a number you cannot</title>
+  <desc id="d">On the left, a small decision tree asks whether income exceeds 45 thousand and whether the debt ratio is below 0.40, so an applicant sent for review can be shown the exact route taken. On the right, a model emits the score 0.83 and the application is rejected, with no route to show.</desc>
+  <style>
+    :root { --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --good:#1a7f37; --goodbg:#dafbe1; --warn:#9a6700; --warnbg:#fff8c5; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --good:#3fb950; --goodbg:#0f2916; --warn:#d29922; --warnbg:#2d2200; } }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .cap  { font-size:12.5px; font-weight:700; letter-spacing:1.1px; fill:var(--muted); }
+    .q    { font-size:15px; font-weight:700; text-anchor:middle; }
+    .leaf { font-size:13.5px; font-weight:700; letter-spacing:1px; text-anchor:middle; }
+    .edge { font-size:12.5px; font-weight:700; fill:var(--muted); text-anchor:middle; }
+    .huge { font-size:46px; font-weight:700; text-anchor:middle; }
+    .sub  { font-size:13.5px; fill:var(--muted); }
+    .note { font-size:13.5px; fill:var(--muted); }
+    .link { stroke:var(--muted); stroke-width:2.2; fill:none; }
+    .arr  { stroke:var(--muted); stroke-width:2.4; fill:none; marker-end:url(#a); }
+  </style>
+  <rect width="1040" height="400" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="40">&#8220;WHY WAS I SENT FOR REVIEW?&#8221;</text>
+
+  <rect x="30" y="62" width="580" height="268" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
+  <text class="cap" x="56" y="90">INTERPRETABLE &#183; THERE IS A ROUTE TO SHOW</text>
+
+  <path class="link" d="M320 148 V166 H140 V186"/>
+  <path class="link" d="M320 148 V166 H440 V186"/>
+  <path class="link" d="M440 230 V248 H320 V268"/>
+  <path class="link" d="M440 230 V248 H540 V268"/>
+
+  <rect x="220" y="104" width="200" height="44" rx="8" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.2"/>
+  <text class="q" x="320" y="132">income (&#8364;k) &#62; 45?</text>
+  <text class="edge" x="205" y="162">no</text>
+  <text class="edge" x="408" y="162">yes</text>
+
+  <rect x="66" y="186" width="148" height="40" rx="8" fill="var(--warnbg)" stroke="var(--warn)" stroke-width="2"/>
+  <text class="leaf" x="140" y="212" fill="var(--warn)">REVIEW</text>
+
+  <rect x="340" y="186" width="200" height="44" rx="8" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.2"/>
+  <text class="q" x="440" y="214">debt ratio &#60; 0.40?</text>
+  <text class="edge" x="345" y="244">no</text>
+  <text class="edge" x="508" y="244">yes</text>
+
+  <rect x="246" y="268" width="148" height="40" rx="8" fill="var(--warnbg)" stroke="var(--warn)" stroke-width="2"/>
+  <text class="leaf" x="320" y="294" fill="var(--warn)">REVIEW</text>
+
+  <rect x="466" y="268" width="148" height="40" rx="8" fill="var(--goodbg)" stroke="var(--good)" stroke-width="2"/>
+  <text class="leaf" x="540" y="294" fill="var(--good)">APPROVE</text>
+
+  <rect x="640" y="62" width="370" height="268" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
+  <text class="cap" x="666" y="90">OPAQUE &#183; THERE IS A NUMBER</text>
+
+  <rect x="700" y="112" width="250" height="48" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="2"/>
+  <text class="q" x="825" y="142">MODEL</text>
+  <path class="arr" d="M825 166 V194"/>
+  <text class="huge" x="825" y="238">0.83</text>
+  <path class="arr" d="M825 254 V282"/>
+  <rect x="740" y="288" width="170" height="40" rx="8" fill="var(--warnbg)" stroke="var(--warn)" stroke-width="2"/>
+  <text class="leaf" x="825" y="314" fill="var(--warn)">REJECT</text>
+
+  <text class="note" x="30" y="366">What would the person reasonably want to know? What data were used, what mattered, what 0.83 means, how reliable the model is,</text>
+  <text class="note" x="30" y="388">whether a human was involved, and how to challenge it. Publishing the source code answers none of those six.</text>
+
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/>
+    </marker>
+  </defs>
+</svg>

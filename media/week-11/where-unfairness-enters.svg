@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="400" viewBox="0 0 1040 400" role="img" aria-labelledby="t d">
+  <title id="t">Seven decisions build a system, and unfairness can enter at any of them</title>
+  <desc id="d">A chain runs from purpose, to data, to labels, to features, to model, to decision rule, to use. Each step carries its own question: what is this for, who is represented, what counts as correct, why should this matter, does performance differ by group, how do scores become actions, and what happens to the person affected. Four of the seven are decided before any model exists.</desc>
+  <style>
+    :root { --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --accentbg:#ddf4ff; --warn:#9a6700; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --accentbg:#0c2d6b; --warn:#d29922; } }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .cap  { font-size:12px; font-weight:700; letter-spacing:1.1px; fill:var(--muted); }
+    .node { font-size:13px; font-weight:700; letter-spacing:0.8px; text-anchor:middle; }
+    .q    { font-size:11.5px; fill:var(--muted); text-anchor:middle; }
+    .note { font-size:13.5px; fill:var(--muted); }
+    .box  { fill:var(--panel); stroke:var(--line); stroke-width:2; }
+    .box--m { fill:var(--accentbg); stroke:var(--accent); stroke-width:2.4; }
+    .arr  { stroke:var(--muted); stroke-width:2.2; fill:none; marker-end:url(#a); }
+    .tick { stroke:var(--warn); stroke-width:2.2; }
+  </style>
+  <rect width="1040" height="400" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="40">A SYSTEM IS A SEQUENCE OF CHOICES &#183; EVERY ONE OF THEM IS A PLACE UNFAIRNESS CAN ENTER</text>
+
+  <line x1="88" y1="72" x2="952" y2="72" stroke="var(--warn)" stroke-width="2" stroke-dasharray="6 5"/>
+  <line class="tick" x1="88"  y1="66" x2="88"  y2="94"/>
+  <line class="tick" x1="232" y1="66" x2="232" y2="94"/>
+  <line class="tick" x1="376" y1="66" x2="376" y2="94"/>
+  <line class="tick" x1="520" y1="66" x2="520" y2="94"/>
+  <line class="tick" x1="664" y1="66" x2="664" y2="94"/>
+  <line class="tick" x1="808" y1="66" x2="808" y2="94"/>
+  <line class="tick" x1="952" y1="66" x2="952" y2="94"/>
+
+  <rect class="box"    x="23"  y="106" width="130" height="64" rx="10"/>
+  <text class="node" x="88"  y="144">PURPOSE</text>
+  <text class="q"    x="88"  y="194">what is this for?</text>
+  <path class="arr" d="M157 138 H167"/>
+
+  <rect class="box"    x="167" y="106" width="130" height="64" rx="10"/>
+  <text class="node" x="232" y="144">DATA</text>
+  <text class="q"    x="232" y="194">who is represented?</text>
+  <path class="arr" d="M301 138 H311"/>
+
+  <rect class="box"    x="311" y="106" width="130" height="64" rx="10"/>
+  <text class="node" x="376" y="144">LABELS</text>
+  <text class="q"    x="376" y="194">what counts as</text>
+  <text class="q"    x="376" y="210">the right answer?</text>
+  <path class="arr" d="M445 138 H455"/>
+
+  <rect class="box"    x="455" y="106" width="130" height="64" rx="10"/>
+  <text class="node" x="520" y="144">FEATURES</text>
+  <text class="q"    x="520" y="194">why should this</text>
+  <text class="q"    x="520" y="210">variable matter?</text>
+  <path class="arr" d="M589 138 H599"/>
+
+  <rect class="box--m" x="599" y="106" width="130" height="64" rx="10"/>
+  <text class="node" x="664" y="144">MODEL</text>
+  <text class="q"    x="664" y="194">does performance</text>
+  <text class="q"    x="664" y="210">differ by group?</text>
+  <path class="arr" d="M733 138 H743"/>
+
+  <rect class="box"    x="743" y="106" width="130" height="64" rx="10"/>
+  <text class="node" x="808" y="138">DECISION</text>
+  <text class="node" x="808" y="156">RULE</text>
+  <text class="q"    x="808" y="194">how does a score</text>
+  <text class="q"    x="808" y="210">become an action?</text>
+  <path class="arr" d="M877 138 H887"/>
+
+  <rect class="box"    x="887" y="106" width="130" height="64" rx="10"/>
+  <text class="node" x="952" y="144">USE</text>
+  <text class="q"    x="952" y="194">what happens to</text>
+  <text class="q"    x="952" y="210">the person affected?</text>
+
+  <text class="cap" x="30" y="268" fill="var(--warn)">BEFORE A MODEL EXISTS AT ALL</text>
+  <rect x="23" y="282" width="562" height="4" rx="2" fill="var(--warn)" opacity="0.5"/>
+  <text class="note" x="30" y="318">Four of the seven decisions are already made by the time anything is fitted. The one box most people mean by "the AI" is the fifth.</text>
+  <text class="note" x="30" y="352">Fairness is not a check applied after training. The only place it can be applied is across all seven.</text>
+
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="360" viewBox="0 0 1040 360" role="img" aria-labelledby="t d">
+  <title id="t">Deleting the name column does not reach anonymous</title>
+  <desc id="d">Three states: identified data carrying names and numbers, pseudonymised data where direct identifiers are replaced by codes but a key is kept, and genuinely anonymous data where the individual can no longer be identified. The first two are both personal data under the GDPR, so removing the name column moves you only from the first state to the second.</desc>
+  <style>
+    :root { --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --warn:#9a6700; --warnbg:#fff8c5; --good:#1a7f37; --goodbg:#dafbe1; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --warn:#d29922; --warnbg:#2d2200; --good:#3fb950; --goodbg:#0f2916; } }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .cap  { font-size:12.5px; font-weight:700; letter-spacing:1.1px; }
+    .ttl  { font-size:19px; font-weight:700; letter-spacing:1px; }
+    .sub  { font-size:13.5px; fill:var(--muted); }
+    .note { font-size:13.5px; fill:var(--muted); }
+    .arr  { stroke:var(--muted); stroke-width:2.4; fill:none; marker-end:url(#a); }
+  </style>
+  <rect width="1040" height="360" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="40">THREE STATES, AND ONLY ONE OF THEM IS ANONYMOUS</text>
+
+  <rect x="30" y="66" width="290" height="150" rx="12" fill="var(--warnbg)" stroke="var(--warn)" stroke-width="2.2"/>
+  <text class="ttl" x="56" y="104" fill="var(--warn)">IDENTIFIED</text>
+  <text class="sub" x="56" y="134">name, student number, email</text>
+  <text class="sub" x="56" y="156">address, date of birth</text>
+
+  <path class="arr" d="M330 141 H368"/>
+  <text class="sub" x="349" y="130" text-anchor="middle">delete</text>
+  <text class="sub" x="349" y="166" text-anchor="middle">the name</text>
+
+  <rect x="378" y="66" width="290" height="150" rx="12" fill="var(--warnbg)" stroke="var(--warn)" stroke-width="2.2"/>
+  <text class="ttl" x="404" y="104" fill="var(--warn)">PSEUDONYMISED</text>
+  <text class="sub" x="404" y="134">direct identifiers replaced by codes,</text>
+  <text class="sub" x="404" y="156">with the key held separately</text>
+  <text class="sub" x="404" y="190">Useful protection. Still linkable.</text>
+
+  <path class="arr" d="M678 141 H716"/>
+
+  <rect x="726" y="66" width="284" height="150" rx="12" fill="var(--goodbg)" stroke="var(--good)" stroke-width="2.2"/>
+  <text class="ttl" x="752" y="104" fill="var(--good)">ANONYMISED</text>
+  <text class="sub" x="752" y="134">the individual can no longer</text>
+  <text class="sub" x="752" y="156">be identified, by anyone</text>
+  <text class="sub" x="752" y="190">Not personal data.</text>
+
+  <path d="M30 236 V254 H668 V236" fill="none" stroke="var(--warn)" stroke-width="2.4"/>
+  <text class="cap" x="349" y="278" text-anchor="middle" fill="var(--warn)">BOTH OF THESE ARE STILL PERSONAL DATA UNDER THE GDPR</text>
+
+  <text class="note" x="30" y="316">Deleting the name column moves you from the first box to the second. It does not reach the third.</text>
+  <text class="note" x="30" y="340">Age, programme, postcode and one rare condition can identify a single person &#8212; especially once combined with information from elsewhere.</text>
+
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/>
+    </marker>
+  </defs>
+</svg>

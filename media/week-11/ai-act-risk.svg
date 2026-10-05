@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" role="img" aria-labelledby="t d">
+  <title id="t">The AI Act's risk-based approach, in four bands</title>
+  <desc id="d">Four bands of decreasing obligation: unacceptable risk, where some practices are prohibited; high risk, which carries stronger obligations; transparency risk, which carries specific disclosure duties; and minimal or no risk, which carries no additional AI Act duties on that basis alone.</desc>
+  <style>
+    :root { --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --bad:#cf222e; --badbg:#ffebe9;
+      --warn:#9a6700; --warnbg:#fff8c5; --accentbg:#ddf4ff; --good:#1a7f37; --goodbg:#dafbe1; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --bad:#f85149; --badbg:#2d0f0f;
+        --warn:#d29922; --warnbg:#2d2200; --accentbg:#0c2d6b; --good:#3fb950; --goodbg:#0f2916; } }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .band { font-size:18px; font-weight:700; letter-spacing:1px; }
+    .duty { font-size:14px; fill:var(--muted); text-anchor:end; }
+    .note { font-size:13.5px; fill:var(--muted); }
+    .axis { font-size:12px; font-weight:700; letter-spacing:1.1px; fill:var(--muted); }
+  </style>
+  <rect width="960" height="420" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="40">OBLIGATION FOLLOWS RISK, NOT TECHNIQUE</text>
+
+  <rect x="250" y="62" width="620" height="62" rx="10" fill="var(--badbg)" stroke="var(--bad)" stroke-width="2.2"/>
+  <text class="band" x="276" y="100" fill="var(--bad)">UNACCEPTABLE RISK</text>
+  <text class="duty" x="844" y="100">some practices prohibited outright</text>
+
+  <rect x="250" y="134" width="620" height="62" rx="10" fill="var(--warnbg)" stroke="var(--warn)" stroke-width="2.2"/>
+  <text class="band" x="276" y="172" fill="var(--warn)">HIGH RISK</text>
+  <text class="duty" x="844" y="172">stronger obligations</text>
+
+  <rect x="250" y="206" width="620" height="62" rx="10" fill="var(--accentbg)" stroke="var(--accent)" stroke-width="2.2"/>
+  <text class="band" x="276" y="244" fill="var(--accent)">TRANSPARENCY RISK</text>
+  <text class="duty" x="844" y="244">specific disclosure duties</text>
+
+  <rect x="250" y="278" width="620" height="62" rx="10" fill="var(--goodbg)" stroke="var(--good)" stroke-width="2.2"/>
+  <text class="band" x="276" y="310" fill="var(--good)">MINIMAL OR NO RISK</text>
+  <text class="duty" x="844" y="304">no additional AI Act duties</text>
+  <text class="duty" x="844" y="324">on this basis alone</text>
+
+  <path d="M120 70 V336" stroke="var(--muted)" stroke-width="2.4" fill="none" marker-end="url(#a)"/>
+  <text class="axis" x="104" y="150" text-anchor="end" transform="rotate(-90 104 150)">OBLIGATION DECREASES</text>
+
+  <text class="note" x="30" y="376">The same technique can land in different bands depending on what it is used for &#8212; the Act classifies the use, not the algorithm.</text>
+  <text class="note" x="30" y="400">The law supports this discussion. It does not replace judgement about whether a particular system is appropriate at all.</text>
+
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/>
+    </marker>
+  </defs>
+</svg>
