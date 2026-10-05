@@ -132,9 +132,9 @@ The formal CT319 notes give this as the first idea for improving hill climbing:
 
 Nothing about the climbing rule changes. The starting candidate decides which region of the search space the algorithm meets first, and a strict climber can only improve from where it already is.
 
-![A landscape with two peaks: Start A climbs to a local optimum, Start B climbs to the global optimum](../../media/week-05/different-starts.svg "hero")
+![The rugged profile drawn as valleys: Start A descends into a shallow basin, Start B into the deepest one](../../media/week-05/different-starts.svg "hero")
 
-<sub><em>Figure 5. The same deterministic rule, neighbourhood and evaluation function, run twice. Start A reaches a local optimum; Start B reaches a better one. Only the initial candidate differs. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 5. The same deterministic rule, neighbourhood and evaluation function, run twice. Lower `h` is better, so each run descends until no neighbour is lower. Start A stops in the shallow first basin, a local optimum; Start B reaches the deepest one. Only the initial candidate differs. The same profile returns in Figures 13 and 18. Diagram created for these pages; no external image licence is used.</em></sub>
 
 Repeating the search from randomly chosen initial candidates and keeping the best result is commonly called **random-restart hill climbing**. The name matters less than the change it makes:
 
