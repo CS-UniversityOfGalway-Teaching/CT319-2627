@@ -60,7 +60,8 @@ You can still see two groups. So can most people. But nobody supplied them, whic
 
 <!-- ct319:endfocus -->
 
-### What actually changed
+<!-- ct319:beat -->
+## What actually changed
 
 <!-- ct319:focus -->
 
@@ -75,7 +76,8 @@ One important unsupervised task is **clustering**: organising examples into grou
 
 The difficult word in that sentence is *similar*.
 
-### Similarity still has to be designed
+<!-- ct319:beat -->
+## Similarity still has to be designed
 
 Suppose we represent customers using age, location, purchase frequency, average spend and products viewed. Two customers can be close in age and far apart in buying behaviour, or live two countries apart and buy nearly identical things. Which of those pairs is "similar" depends entirely on what we chose to record.
 
@@ -130,7 +132,8 @@ centroids = model.cluster_centers_
 
 The returned values `0`, `1` and `2` are identifiers. They are not class names and they carry no meaning until somebody gives them one.
 
-### One dataset, three values of `k`
+<!-- ct319:beat -->
+## One dataset, three values of `k`
 
 The demonstration uses 180 deterministic points in three compact regions. The data and the axes never move; only `k` changes. Black stars mark the fitted centroids.
 
@@ -161,7 +164,8 @@ The demonstration uses 180 deterministic points in three compact regions. The da
 
 <!-- ct319:endfocus -->
 
-### Why you cannot pick `k` by the score
+<!-- ct319:beat -->
+## Why you cannot pick `k` by the score
 
 There is an obvious-looking escape: let the algorithm choose `k` by measuring how tight the clusters are. **Inertia** — the total squared distance from each point to its own centroid — is the usual measure, and on this dataset it reads:
 
@@ -198,7 +202,8 @@ The second dataset is 220 points in two interleaving crescents — the same shap
 
 <!-- ct319:endfocus -->
 
-### Centres against density
+<!-- ct319:beat -->
+## Centres against density
 
 Ask K-means for two clusters and it will give you two clusters. Then compare it with **DBSCAN**, which looks for dense, connected regions instead of organising everything around a centre. Two parameters carry the intuition: **`eps`**, the neighbourhood radius around a point, and **`min_samples`**, the local density a neighbourhood has to reach.
 
@@ -224,7 +229,8 @@ Two things in that right-hand panel are worth naming. DBSCAN was never told ther
 
 `eps = 0.18` is tuned to the scale and density of these particular crescents. It is not a universal setting, and on a different dataset it would be meaningless.
 
-### A third view — hierarchy
+<!-- ct319:beat -->
+## A third view — hierarchy
 
 Hierarchical clustering records groups within groups. An **agglomerative** approach starts from small groups and repeatedly merges; a **divisive** one starts from a single large group and repeatedly splits. A **dendrogram** displays that history.
 
@@ -281,7 +287,8 @@ Ben and Carla share Aoife's high ratings for Films A and B and her low rating fo
 
 This is **collaborative filtering**: using patterns in collective behaviour to estimate a preference nobody has observed yet.
 
-### Two ways to use the same table
+<!-- ct319:beat -->
+## Two ways to use the same table
 
 <!-- ct319:focus -->
 
@@ -335,7 +342,8 @@ Old behaviour goes stale as interests change. An account can also represent more
 
 <!-- ct319:endfocus -->
 
-### Recommendations change the next dataset
+<!-- ct319:beat -->
+## Recommendations change the next dataset
 
 A recommender does not sit outside the process that generates its evidence. It takes part in it.
 
