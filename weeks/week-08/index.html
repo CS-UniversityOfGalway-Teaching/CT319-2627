@@ -25,7 +25,7 @@
 <div class="focus-block">
 <blockquote><p><strong>What if we gave the machine data or experience, and asked it to improve from that?</strong></p></blockquote>
 </div>
-<p>That is the starting point for <strong>machine learning</strong>. The formal CT319 material introduces the transition through data analytics, the growth of available data, the different kinds of learning, and a worked loan-approval example.</p>
+<p>That is the starting point for <strong>machine learning</strong>. The formal material introduces the transition through data analytics, the growth of available data, the different kinds of learning, and a worked loan-approval example.</p>
 <p>We work through five things.</p>
 <ul><li><a href="#from-rules-to-learning--what-changes-when-the-machine-learns-from-experience"><strong>From rules to learning</strong></a> — what changes when part of the behaviour comes from data rather than from rules we wrote case by case.</li><li><a href="#data-becomes-evidence--what-exactly-do-we-give-the-learner"><strong>Data becomes evidence</strong></a> — how examples, features, labels and preparation decide what can be learned at all.</li><li><a href="#learning-from-answers--what-does-supervised-learning-look-like"><strong>Learning from answers</strong></a> — supervised learning, classification and regression, with a small classification teaser you can run.</li><li><a href="#different-feedback--what-does-the-learner-actually-receive"><strong>Different feedback</strong></a> — supplied labels, unlabelled examples and reward from interaction, with a clustering teaser on the same six points.</li><li><a href="#learning-is-not-remembering--how-do-we-know-the-model-learned-something-useful"><strong>Learning is not remembering</strong></a> — generalisation, overfitting, and why a good-looking result can still be misleading.</li></ul>
 <p>Three ideas carry the page, and it is worth keeping them apart:</p>
@@ -65,25 +65,22 @@ message 4 -&gt; spam</code></pre>
 <div class="focus-block">
 <blockquote><p><strong>Part of the decision behaviour is learned from data, rather than specified case by case by the programmer.</strong></p></blockquote>
 </div>
-<p>That does <strong>not</strong> mean the computer has been given no rules. We still decide what problem we are solving, what data to collect, how to represent it, which learning algorithm to use, what counts as success, and when the resulting model is safe or useful enough to put in front of anyone. Machine learning changes the <em>source</em> of some behaviour. It does not remove engineering judgement.</p>
-<h3 id="search-and-learning-are-different-questions">Search and learning are different questions</h3>
-<p>The first half of CT319 asked us to specify how a machine explores possibilities: BFS expands the oldest frontier state, hill climbing moves to a better neighbour, a Genetic Algorithm selects, recombines and mutates a population. Every one of those rules came from us.</p>
+<p>That does <strong>not</strong> mean the computer has been given no rules. We still decide what problem we are solving, what data to collect, how to represent it, which learning algorithm to use, what counts as success, and when the resulting model is safe or useful enough to put in front of anyone. Machine learning changes the <em>source</em> of some behaviour. It does not remove engineering judgement.</p></div></details>
+<details class="beat" id="search-and-learning-are-different-questions"><summary><h2 class="beat__title">Search and learning are different questions</h2></summary><div class="beat__body"><p>The first half of this module asked us to specify how a machine explores possibilities: BFS expands the oldest frontier state, hill climbing moves to a better neighbour, a Genetic Algorithm selects, recombines and mutates a population. Every one of those rules came from us.</p>
 <div class="focus-block">
 <div class="lenses lenses--pair">
 <div class="lens"><span class="lens__key">Search</span><span class="lens__gloss">we specify how to explore the possibilities</span></div>
 <div class="lens"><span class="lens__key">Learning</span><span class="lens__gloss">we supply data or experience, and a method that adjusts a model</span></div>
 </div>
 </div>
-<p>The boundary is not absolute. Learning algorithms use optimisation internally, and search methods appear inside larger learning systems. For this part of the module the useful distinction is simpler: <strong>search asks how to explore possible solutions; machine learning asks how behaviour can improve from data or experience.</strong></p>
-<h3 id="ai-machine-learning-and-deep-learning">AI, machine learning and deep learning</h3>
-<p>The formal material also separates three terms that get used as if they were interchangeable.</p>
+<p>The boundary is not absolute. Learning algorithms use optimisation internally, and search methods appear inside larger learning systems. For this part of the module the useful distinction is simpler: <strong>search asks how to explore possible solutions; machine learning asks how behaviour can improve from data or experience.</strong></p></div></details>
+<details class="beat" id="ai-machine-learning-and-deep-learning"><summary><h2 class="beat__title">AI, machine learning and deep learning</h2></summary><div class="beat__body"><p>The formal material also separates three terms that get used as if they were interchangeable.</p>
 <div class="focus-block">
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-08/ai-ml-dl.svg" alt="Artificial intelligence contains machine learning, which contains deep learning" loading="lazy" decoding="async"><figcaption>Figure 2. Three nested scopes, not three names for the same thing. Everything from Weeks 2 to 6 sits in the outer ring. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 </div>
 <p><strong>Artificial Intelligence</strong> is the broad field: search and optimisation as much as learning, reasoning and planning. <strong>Machine Learning</strong> is the family of methods whose performance can improve through data or experience rather than through rules written case by case. <strong>Deep Learning</strong> is the subset of machine learning built on multi-layer neural networks.</p>
-<p>That last relationship matters here, because it is easy to forget: Weeks 2 to 6 were AI too.</p>
-<h3 id="why-did-machine-learning-become-so-prominent">Why did machine learning become so prominent?</h3>
-<p>One reason is the sheer amount and variety of data ordinary systems now produce — transactions, sensors, websites, mobile devices, images and video, text, location traces, industrial equipment, scientific instruments. The formal material introduces this through <strong>Big Data</strong>, and the useful idea is not "big data means lots of rows". The familiar "Vs" each name a different pressure:</p>
+<p>That last relationship matters here, because it is easy to forget: Weeks 2 to 6 were AI too.</p></div></details>
+<details class="beat" id="why-did-machine-learning-become-so-prominent"><summary><h2 class="beat__title">Why did machine learning become so prominent?</h2></summary><div class="beat__body"><p>One reason is the sheer amount and variety of data ordinary systems now produce — transactions, sensors, websites, mobile devices, images and video, text, location traces, industrial equipment, scientific instruments. The formal material introduces this through <strong>Big Data</strong>, and the useful idea is not "big data means lots of rows". The familiar "Vs" each name a different pressure:</p>
 <div class="table-scroll"><table><thead><tr><th>Idea</th><th>The question it asks</th></tr></thead><tbody><tr><td><strong>Volume</strong></td><td>How much data is there?</td></tr><tr><td><strong>Variety</strong></td><td>What forms does it take?</td></tr><tr><td><strong>Velocity</strong></td><td>How quickly does it arrive or change?</td></tr><tr><td><strong>Veracity</strong></td><td>How trustworthy is it?</td></tr><tr><td><strong>Value</strong></td><td>Does it contain information useful for <em>this</em> problem?</td></tr></tbody></table></div>
 <p>A million poor-quality records are not automatically worth more than ten thousand relevant ones. A fast stream of inaccurate data is still inaccurate. A dataset can be enormous and still carry almost nothing about the decision we actually care about.</p>
 <div class="callout callout--important"><span class="callout__label">Important</span><p><strong>More data is not the same thing as better learning.</strong></p>
@@ -104,16 +101,14 @@ message 4 -&gt; spam</code></pre>
 <h3 id="what-forms-can-the-examples-take">What forms can the examples take?</h3>
 <p>The formal material draws four useful contrasts.</p>
 <ul><li><strong>Numerical</strong> — salary or temperature is a measurement; number of missed payments is a count.</li><li><strong>Categorical</strong> — payment type or product category records membership, not a measured amount.</li><li><strong>Time series</strong> — hourly demand or daily sales carries an order in time, and that order matters.</li><li><strong>Text</strong> — an email or a review needs some representation of its content before anything can be learned from it.</li></ul>
-<p>Those categories overlap: a time series is usually made of numerical measurements. Images, audio and graphs need representations too. Week 2's question has not gone anywhere — <strong>what must we record for this task?</strong></p>
-<h3 id="raw-data-is-rarely-ready-to-learn-from">Raw data is rarely ready to learn from</h3>
-<p>Go back to the loan table. <code>€35k</code> and <code>35000</code> may mean the same income. <code>N/A</code> is missing information, not zero. Duplicated applications and wrong dates quietly distort the evidence.</p>
+<p>Those categories overlap: a time series is usually made of numerical measurements. Images, audio and graphs need representations too. Week 2's question has not gone anywhere — <strong>what must we record for this task?</strong></p></div></details>
+<details class="beat" id="raw-data-is-rarely-ready-to-learn-from"><summary><h2 class="beat__title">Raw data is rarely ready to learn from</h2></summary><div class="beat__body"><p>Go back to the loan table. <code>€35k</code> and <code>35000</code> may mean the same income. <code>N/A</code> is missing information, not zero. Duplicated applications and wrong dates quietly distort the evidence.</p>
 <p>Preparation means inspecting records, correcting errors, deciding what to do about missing values, representing categories, selecting relevant features, and sometimes scaling or transforming values. Every one of those choices changes what actually reaches the learner.</p>
 <p>The formal lecture presents a fuller data-analysis lifecycle based on CRISP-DM and KDD. The part worth carrying this week is the shape of it.</p>
 <div class="focus-block">
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-08/data-lifecycle.svg" alt="Question, gather, prepare, model, validate, communicate, with a dashed return from validate to prepare" loading="lazy" decoding="async"><figcaption>Figure 3. The model is one step in a larger loop, not the whole of it. The dashed return is the ordinary case: validation sends you back to preparation. Diagram created for these pages; no external image licence is used.</figcaption></figure>
-</div>
-<h3 id="is-an-available-feature-an-appropriate-feature">Is an available feature an appropriate feature?</h3>
-<p>The loan example raises a question worth sitting with. A lender may hold shopping history, location traces, phone records or social-media activity alongside the financial information.</p>
+</div></div></details>
+<details class="beat" id="is-an-available-feature-an-appropriate-feature"><summary><h2 class="beat__title">Is an available feature an appropriate feature?</h2></summary><div class="beat__body"><p>The loan example raises a question worth sitting with. A lender may hold shopping history, location traces, phone records or social-media activity alongside the financial information.</p>
 <div class="focus-block">
 <blockquote><p><strong>If a feature is available, should the model use it?</strong></p></blockquote>
 </div>
@@ -121,14 +116,15 @@ message 4 -&gt; spam</code></pre>
 <div class="focus-block">
 <blockquote><p><strong>Available data is not automatically appropriate data.</strong></p></blockquote>
 </div>
-<p>Keep that principle here; the broader ethical treatment returns later in the module.</p>
-<h3 id="the-tool-landscape">The tool landscape</h3>
-<p>The formal lecture introduces several tools with different jobs.</p>
+<p>Keep that principle here; the broader ethical treatment returns later in the module.</p></div></details>
+<details class="beat" id="the-tool-landscape"><summary><h2 class="beat__title">The tool landscape</h2></summary><div class="beat__body"><p>The formal lecture introduces several tools with different jobs.</p>
 <div class="table-scroll"><table><thead><tr><th>Tool</th><th>Useful for</th></tr></thead><tbody><tr><td><strong>Python</strong></td><td>general programming, data processing, machine learning and automation</td></tr><tr><td><strong>scikit-learn</strong></td><td>classical machine-learning algorithms behind one consistent Python API</td></tr><tr><td><strong>R</strong></td><td>statistics, data analysis and visualisation</td></tr><tr><td><strong>Excel</strong></td><td>small-scale tabular exploration, calculation and charting</td></tr><tr><td><strong>Weka</strong></td><td>GUI-based experimentation with classical machine-learning algorithms</td></tr></tbody></table></div>
-<div class="callout callout--note"><span class="callout__label">Note</span><p><strong>Weka appears in the original CT319 material; it is not a required installation this year.</strong> The practical demonstrations in CT319 2026/27 use Python and scikit-learn. R and Excel remain useful parts of the wider analytics landscape.</p></div>
-<p>The first choice is the question, not the software. The lecture's analytics categories give a compact way to tell those questions apart:</p>
+<div class="callout callout--note"><span class="callout__label">Note</span><p><strong>Weka appears in the original course material; it is not a required installation this year.</strong> This year's practical demonstrations use Python and scikit-learn. R and Excel remain useful parts of the wider analytics landscape.</p></div>
+<div class="focus-block">
+<p><strong>The first choice is the question, not the software.</strong> The lecture's analytics categories give a compact way to tell those questions apart:</p>
 <div class="table-scroll"><table><thead><tr><th>Question</th><th>What it asks</th></tr></thead><tbody><tr><td><strong>Descriptive</strong></td><td>What happened?</td></tr><tr><td><strong>Diagnostic</strong></td><td>Why might it have happened?</td></tr><tr><td><strong>Predictive</strong></td><td>What is likely to happen?</td></tr><tr><td><strong>Prescriptive</strong></td><td>What action should we consider?</td></tr></tbody></table></div>
 <p>Machine learning contributes to prediction and to pattern discovery. A summary, a chart or a spreadsheet may answer the other two without any learned model at all.</p>
+</div>
 <h3 id="why-this-matters-this-week">Why this matters this week</h3>
 <p>We now have the raw ingredients: examples, features, and — sometimes — labels. That last word is where the next question lives. Sometimes we know the correct outcome for past examples. Sometimes nobody does. That single distinction creates the first major division in machine learning.</p></div></details>
 <details class="beat" id="learning-from-answers--what-does-supervised-learning-look-like"><summary><h2 class="beat__title">Learning from answers — what does supervised learning look like?</h2></summary><div class="beat__body"><p>Take those historical email messages again. For each one, somebody already knows the answer, so the learner receives two things together: the input features, and the known target.</p>
@@ -144,9 +140,8 @@ message 4 -&gt; spam</code></pre>
 <div class="lens"><span class="lens__key">Regression</span><span class="lens__gloss">predicts a numerical value — a house price, tomorrow's temperature, expected delivery time</span></div>
 </div>
 </div>
-<p>The recognition rule is short: a <strong>category</strong> means classification, a <strong>numerical quantity</strong> means regression. That is as far as we take it this week — classification gets a proper treatment next week.</p>
-<h3 id="a-classification-teaser--which-class-would-you-predict">A classification teaser — which class would you predict?</h3>
-<p>Six labelled examples, two numerical features each. The diamond marked <strong>?</strong> is a new example at <code>(2.4, 1.8)</code> — not one of the six, and no answer has been supplied for it.</p>
+<p>The recognition rule is short: a <strong>category</strong> means classification, a <strong>numerical quantity</strong> means regression. That is as far as we take it this week — classification gets a proper treatment next week.</p></div></details>
+<details class="beat" id="a-classification-teaser--which-class-would-you-predict"><summary><h2 class="beat__title">A classification teaser — which class would you predict?</h2></summary><div class="beat__body"><p>Six labelled examples, two numerical features each. The diamond marked <strong>?</strong> is a new example at <code>(2.4, 1.8)</code> — not one of the six, and no answer has been supplied for it.</p>
 <div class="focus-block">
 <figure class="figure--secondary"><img class="figure__img" src="../../media/week-08/classification-before.svg" alt="Six labelled points in classes A and B, plus an unknown diamond at 2.4, 1.8, before prediction" loading="lazy" decoding="async"><figcaption>Figure 4. The supplied classes A and B, plus a visible unknown point whose answer the learner has never been given. Plot created for these pages from the demonstration's synthetic data; no external image licence is used.</figcaption></figure>
 <blockquote><p><strong>Would you expect the unknown point to be A or B — and what in the picture supports that?</strong></p></blockquote>
@@ -166,9 +161,8 @@ prediction = model.predict(unknown)</code></pre>
 <div class="focus-block">
 <figure class="figure--secondary"><img class="figure__img" src="../../media/week-08/classification-after.svg" alt="The same labelled examples, with the unknown point now showing predicted class A" loading="lazy" decoding="async"><figcaption>Figure 5. The classifier predicts A for the diamond. The supplied labels and the model's prediction are two different sources of information, and the plot keeps them visually distinct. Plot created for these pages by the scikit-learn demonstration; no external image licence is used.</figcaption></figure>
 </div>
-<p>The reveal is worth saying out loud: the new example was assigned one of the <strong>supplied</strong> classes. That is classification. One plausible prediction says nothing yet about performance on any other case — and k-nearest neighbours itself belongs to Week 9.</p>
-<h3 id="what-did-the-machine-actually-learn">What did the machine actually learn?</h3>
-<p>Be careful with the language here. The model did not learn that <code>A</code> is good or that <code>B</code> is bad. It used the relationship between feature values and supplied labels, under one particular algorithm. KNN keeps its training examples and consults them at prediction time; fitting a model does not have to mean discovering an equation.</p>
+<p>The reveal is worth saying out loud: the new example was assigned one of the <strong>supplied</strong> classes. That is classification. One plausible prediction says nothing yet about performance on any other case — and k-nearest neighbours itself belongs to Week 9.</p></div></details>
+<details class="beat" id="what-did-the-machine-actually-learn"><summary><h2 class="beat__title">What did the machine actually learn?</h2></summary><div class="beat__body"><p>Be careful with the language here. The model did not learn that <code>A</code> is good or that <code>B</code> is bad. It used the relationship between feature values and supplied labels, under one particular algorithm. KNN keeps its training examples and consults them at prediction time; fitting a model does not have to mean discovering an equation.</p>
 <p>Change the data and the result can change. Change the features, the algorithm or the labels, and the result can change too. Machine learning gives us a new dependency chain to keep track of:</p>
 <div class="focus-block">
 <ol class="flow" aria-label="What a prediction depends on, in order">
@@ -199,9 +193,8 @@ prediction = model.predict(unknown)</code></pre>
 <figure class="figure--secondary"><img class="figure__img" src="../../media/week-08/clustering-before.svg" alt="The same six example coordinates drawn neutrally, with no supplied labels" loading="lazy" decoding="async"><figcaption>Figure 6. The six example points from Figure 4 with their labels removed. Not a single position has moved. Plot created for these pages from the same synthetic data; no external image licence is used.</figcaption></figure>
 <blockquote><p><strong>Can you still see structure? What grouping would you expect, without being told A or B?</strong></p></blockquote>
 </div>
-<p><strong>Clustering</strong> groups examples using patterns or similarities in their features. Notice that the question itself has changed: it asks about structure across the examples, not about the class of one new point.</p>
-<h3 id="a-clustering-teaser--run-then-reveal-the-groups">A clustering teaser — run, then reveal the groups</h3>
-<p>Open the unlabelled view of the same demonstration:</p>
+<p><strong>Clustering</strong> groups examples using patterns or similarities in their features. Notice that the question itself has changed: it asks about structure across the examples, not about the class of one new point.</p></div></details>
+<details class="beat" id="a-clustering-teaser--run-then-reveal-the-groups"><summary><h2 class="beat__title">A clustering teaser — run, then reveal the groups</h2></summary><div class="beat__body"><p>Open the unlabelled view of the same demonstration:</p>
 <pre data-lang="sh"><code class="language-sh">python learning_demo.py --mode clustering</code></pre>
 <p>Predict a grouping, then click <strong>Run and reveal</strong>. The six neutral points pick up group colours and markers. The key code uses <code>X</code>, and no <code>y</code> at all:</p>
 <pre data-lang="python"><code class="language-python">from sklearn.cluster import KMeans
@@ -222,9 +215,8 @@ groups = model.fit_predict(X)</code></pre>
 <p>Running <code>python learning_demo.py</code> with no mode presents both demonstrations in sequence, pausing before each reveal.</p>
 <h3 id="same-data-different-question">Same data, different question</h3>
 <p>Customer features with <code>churned</code> / <code>did not churn</code> labels support supervised prediction. The <em>same</em> features without those labels can support clustering — finding groups of similar recorded behaviour. What decides between them is the question being asked and the information that happens to be available.</p>
-<p>A result with four clusters does not prove there are four objective types of customer. Features, algorithms and settings all influence the grouping, and it takes interpretation to decide whether it is useful. Week 10 returns to exactly that.</p>
-<h3 id="a-third-kind-of-feedback--reinforcement-learning">A third kind of feedback — reinforcement learning</h3>
-<p>In <strong>reinforcement learning</strong>, an <strong>agent</strong> chooses actions in an <strong>environment</strong>, and the consequences come back as a <strong>reward</strong>.</p>
+<p>A result with four clusters does not prove there are four objective types of customer. Features, algorithms and settings all influence the grouping, and it takes interpretation to decide whether it is useful. Week 10 returns to exactly that.</p></div></details>
+<details class="beat" id="a-third-kind-of-feedback--reinforcement-learning"><summary><h2 class="beat__title">A third kind of feedback — reinforcement learning</h2></summary><div class="beat__body"><p>In <strong>reinforcement learning</strong>, an <strong>agent</strong> chooses actions in an <strong>environment</strong>, and the consequences come back as a <strong>reward</strong>.</p>
 <div class="focus-block">
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-08/agent-environment.svg" alt="An agent sends an action to an environment, which returns a new state and a reward" loading="lazy" decoding="async"><figcaption>Figure 8. Learning through interaction. The agent is not told the correct action; it receives what happened afterwards. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 </div>
@@ -247,16 +239,14 @@ groups = model.fit_predict(X)</code></pre>
 </ol>
 <p class="flow__note">Only the highlighted step is a test. Everything before it is preparation, and it is entirely possible to do all of it well and fail there.</p>
 </div>
-<p>So the goal is not <em>perform perfectly on the data used to fit the model</em>. It is <strong>learn enough useful structure to perform well on new cases drawn from the problem we care about</strong>.</p>
-<h3 id="overfitting">Overfitting</h3>
-<p><strong>Overfitting</strong> is what happens when a model captures detail or noise that is specific to the training examples and does not transfer. A very close training fit sitting beside poor performance on comparable unseen data is the warning sign.</p>
+<p>So the goal is not <em>perform perfectly on the data used to fit the model</em>. It is <strong>learn enough useful structure to perform well on new cases drawn from the problem we care about</strong>.</p></div></details>
+<details class="beat" id="overfitting"><summary><h2 class="beat__title">Overfitting</h2></summary><div class="beat__body"><p><strong>Overfitting</strong> is what happens when a model captures detail or noise that is specific to the training examples and does not transfer. A very close training fit sitting beside poor performance on comparable unseen data is the warning sign.</p>
 <p>The analogy is studying by memorising the answers to ten known questions. If the real exam asks those ten questions, memorisation looks brilliant. Change them slightly and the weakness is immediate.</p>
 <div class="focus-block">
 <blockquote><p><strong>Memorising the training examples is not the same thing as generalising to new ones.</strong></p></blockquote>
 </div>
-<p>Retaining examples, as KNN does, is not by itself overfitting — the question is always whether the predictions generalise. Week 9 makes this concrete by separating training data from test data when we build classifiers.</p>
-<h3 id="what-if-the-learning-signal-is-wrong">What if the learning signal is wrong?</h3>
-<p>The loan example shows why fitting successfully is not enough. A repayment label may simply be wrong. A dataset may leave out whole groups of applicants. Historical approval decisions may encode unfair treatment. Learning to reproduce those records does not establish that the learned pattern is useful, or appropriate.</p>
+<p>Retaining examples, as KNN does, is not by itself overfitting — the question is always whether the predictions generalise. Week 9 makes this concrete by separating training data from test data when we build classifiers.</p></div></details>
+<details class="beat" id="what-if-the-learning-signal-is-wrong"><summary><h2 class="beat__title">What if the learning signal is wrong?</h2></summary><div class="beat__body"><p>The loan example shows why fitting successfully is not enough. A repayment label may simply be wrong. A dataset may leave out whole groups of applicants. Historical approval decisions may encode unfair treatment. Learning to reproduce those records does not establish that the learned pattern is useful, or appropriate.</p>
 <ul><li><strong>Poor labels or biased historical examples</strong> give the learner misleading evidence to fit.</li><li><strong>Weak evaluation</strong> gives us misleading confidence in whatever it produced.</li><li><strong>A badly designed reward</strong> encourages the wrong behaviour, and does it efficiently.</li></ul>
 <p>For clustering, a visually neat grouping is not proof that it means anything. For reinforcement learning, rewarding speed alone can produce something fast and careless. In every case the learner improves against its signal while missing the purpose we had in mind.</p>
 <div class="focus-block">
@@ -264,9 +254,9 @@ groups = model.fit_predict(X)</code></pre>
 </div>
 <p>That is the reason to inspect the data, the feedback and the evidence of usefulness rather than the score alone. The broader treatment comes later in the module.</p>
 <h3 id="why-this-matters-this-week">Why this matters this week</h3>
-<p>The CT319 progression now extends by one step.</p>
+<p>The progression now extends by one step.</p>
 <div class="focus-block">
-<ol class="flow" aria-label="The CT319 progression from representation to learning">
+<ol class="flow" aria-label="The progression from representation to learning">
 <li><span>Week 2 · representation</span></li>
 <li><span>Week 3 · blind search</span></li>
 <li><span>Week 4 · heuristic</span></li>
