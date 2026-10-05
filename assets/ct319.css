@@ -499,6 +499,24 @@ figcaption a { color: var(--muted); }
 /* A secondary figure that belongs to a focus block is part of that teaching
    stop, so it fills the block rather than sitting at 80% inside it. */
 .focus-block .figure--secondary { max-width: 100%; }
+/* A screenshot comparison carries its pictures inside a table, so it has no
+   figure class to size it. In a focus block it is the teaching stop itself,
+   and it breaks out the way a hero figure does — the pictures are what the
+   block exists to enlarge. */
+.focus-block .table-scroll:has(img) {
+  --cmp-w: min(1120px, calc(100vw - 3rem));
+  width: var(--cmp-w);
+  margin-left: calc(50% - var(--cmp-w) / 2);
+}
+/* Its caption stays a caption. Without this the paragraph inherits the focus
+   block's display type, and the sentence under the picture is what gets blown
+   up instead of the picture. */
+.focus-block .standalone-caption {
+  font-size: 1rem;
+  max-width: var(--measure);
+  margin-left: auto;
+  margin-right: auto;
+}
 .focus-block .lenses { max-width: none; }
 .focus-block li { margin: 0.45rem 0; }
 
@@ -514,6 +532,8 @@ figcaption a { color: var(--muted); }
     padding: 1.3rem 0;
     font-size: 1.1rem;
   }
+  /* 1120px of breakout does not fit a phone; the scroller handles it. */
+  .focus-block .table-scroll:has(img) { width: auto; margin-left: 0; }
 }
 
 @media print {
@@ -523,6 +543,7 @@ figcaption a { color: var(--muted); }
     padding: 1rem 0;
     font-size: 1.05rem;
   }
+  .focus-block .table-scroll:has(img) { width: auto; margin-left: 0; }
 }
 
 /* Teaching hierarchy. A hero figure is one I stop and discuss in class, so it
