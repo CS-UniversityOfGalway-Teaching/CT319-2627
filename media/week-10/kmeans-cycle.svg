@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="400" viewBox="0 0 960 400" role="img" aria-labelledby="t d">
+  <title id="t">K-means repeats two steps until the centroids stop moving</title>
+  <desc id="d">After we choose k and place k centroids, the algorithm assigns every point to its nearest centroid, then moves each centroid to the mean of the points assigned to it, and repeats. It stops when centroid movement is small enough or the iteration limit is reached.</desc>
+  <style>
+    :root { --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --accentbg:#ddf4ff; --good:#1a7f37; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --accentbg:#0c2d6b; --good:#3fb950; } }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .cap  { font-size:12.5px; font-weight:700; letter-spacing:1.1px; fill:var(--muted); }
+    .step { font-size:19px; font-weight:700; text-anchor:middle; }
+    .sub  { font-size:14px; fill:var(--muted); text-anchor:middle; }
+    .note { font-size:13.5px; fill:var(--muted); }
+    .arr  { stroke:var(--accent); stroke-width:2.6; fill:none; marker-end:url(#a); }
+  </style>
+  <rect width="960" height="400" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="40">TWO STEPS, REPEATED &#183; AND WE CHOOSE k BEFORE EITHER OF THEM RUNS</text>
+
+  <text class="cap" x="30" y="78">START</text>
+  <text class="sub" x="140" y="78" style="text-anchor:start">choose k, then place k centroids</text>
+  <path class="arr" d="M58 90 V128"/>
+
+  <rect x="90" y="134" width="330" height="92" rx="12" fill="var(--accentbg)" stroke="var(--accent)" stroke-width="2.4"/>
+  <text class="step" x="255" y="178">ASSIGN</text>
+  <text class="sub"  x="255" y="203">every point to its nearest centroid</text>
+
+  <path class="arr" d="M426 180 H534"/>
+
+  <rect x="540" y="134" width="330" height="92" rx="12" fill="var(--accentbg)" stroke="var(--accent)" stroke-width="2.4"/>
+  <text class="step" x="705" y="178">MOVE</text>
+  <text class="sub"  x="705" y="203">each centroid to the mean of its points</text>
+
+  <path class="arr" d="M705 232 C705 302 255 302 255 238"/>
+  <text class="cap" x="480" y="296" text-anchor="middle" fill="var(--accent)">REPEAT</text>
+
+  <text class="note" x="30" y="344">Fitting stops when centroid movement becomes small enough, or the iteration limit is reached.</text>
+  <text class="note" x="30" y="368">A centroid is the mean position of the points currently assigned to it &#8212; which is why one distant point drags it outwards.</text>
+
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+</svg>

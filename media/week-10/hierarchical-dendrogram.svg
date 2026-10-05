@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="430" viewBox="0 0 960 430" role="img" aria-labelledby="t d">
+  <title id="t">A small hierarchical-clustering dendrogram</title>
+  <desc id="d">Examples A and B merge first, D and E merge, C joins the group holding A and B, and finally the two larger groups merge into one. Read upwards, the diagram is a record of the order in which groups were joined.</desc>
+  <style>
+    :root { --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --accent:#0969da; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --accent:#58a6ff; } }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); text-anchor:middle; }
+    .sub  { font-size:16px; fill:var(--muted); text-anchor:middle; }
+    .leaf { font-size:24px; font-weight:700; text-anchor:middle; }
+    .join { font-size:15px; fill:var(--muted); text-anchor:middle; }
+    .link { fill:none; stroke:var(--accent); stroke-width:5; stroke-linecap:round; stroke-linejoin:round; }
+    .knot { fill:var(--bg); stroke:var(--accent); stroke-width:4; }
+  </style>
+  <rect width="960" height="430" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="480" y="44">DENDROGRAM &#183; GROUPS WITHIN GROUPS</text>
+  <text class="sub" x="480" y="76">Read upwards: nearby examples merge into progressively larger groups</text>
+
+  <path class="link" d="M120 350 V280 H260 V350"/>
+  <path class="link" d="M650 350 V235 H800 V350"/>
+  <path class="link" d="M190 280 V175 H430 V350"/>
+  <path class="link" d="M310 175 V115 H725 V235"/>
+
+  <text class="leaf" x="120" y="390">A</text>
+  <text class="leaf" x="260" y="390">B</text>
+  <text class="leaf" x="430" y="390">C</text>
+  <text class="leaf" x="650" y="390">D</text>
+  <text class="leaf" x="800" y="390">E</text>
+
+  <text class="join" x="190" y="267">A + B</text>
+  <text class="join" x="725" y="222">D + E</text>
+  <text class="join" x="310" y="162">A + B + C</text>
+  <text class="join" x="518" y="102">all examples</text>
+
+  <circle class="knot" cx="190" cy="280" r="7"/>
+  <circle class="knot" cx="725" cy="235" r="7"/>
+  <circle class="knot" cx="310" cy="175" r="7"/>
+  <circle class="knot" cx="518" cy="115" r="7"/>
+
+  <text class="sub" x="480" y="418" style="font-size:13.5px">No k is chosen in advance. The height at which you cut the tree is what decides how many groups you end up with.</text>
+</svg>

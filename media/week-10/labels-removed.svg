@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="384" viewBox="0 0 1040 384" role="img" aria-labelledby="t d">
+  <title id="t">The same points, with and without their labels</title>
+  <desc id="d">On the left, ten points in two groups, five marked class A and five marked class B. On the right, exactly the same ten positions drawn neutrally with no labels at all. Nothing has moved; only the answers have been removed.</desc>
+  <style>
+    :root { --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --b:#a34400; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --b:#db8a2a; } }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .cap  { font-size:12.5px; font-weight:700; letter-spacing:1.1px; fill:var(--muted); }
+    .key  { font-size:13.5px; fill:var(--muted); }
+    .note { font-size:13.5px; fill:var(--muted); }
+    .pt   { stroke:var(--bg); stroke-width:2; }
+  </style>
+  <rect width="1040" height="384" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="40">NOTHING MOVED &#183; ONLY THE ANSWERS WERE TAKEN AWAY</text>
+
+  <rect x="30" y="58" width="470" height="264" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
+  <text class="cap" x="54" y="86">LAST WEEK &#183; LABELS SUPPLIED</text>
+  <circle class="pt" cx="120" cy="175" r="10" fill="var(--accent)"/>
+  <circle class="pt" cx="162" cy="148" r="10" fill="var(--accent)"/>
+  <circle class="pt" cx="142" cy="214" r="10" fill="var(--accent)"/>
+  <circle class="pt" cx="192" cy="192" r="10" fill="var(--accent)"/>
+  <circle class="pt" cx="102" cy="138" r="10" fill="var(--accent)"/>
+  <rect class="pt" x="348" y="140" width="19" height="19" rx="3" fill="var(--b)"/>
+  <rect class="pt" x="394" y="176" width="19" height="19" rx="3" fill="var(--b)"/>
+  <rect class="pt" x="364" y="206" width="19" height="19" rx="3" fill="var(--b)"/>
+  <rect class="pt" x="418" y="134" width="19" height="19" rx="3" fill="var(--b)"/>
+  <rect class="pt" x="320" y="186" width="19" height="19" rx="3" fill="var(--b)"/>
+  <circle class="pt" cx="62" cy="294" r="8" fill="var(--accent)"/>
+  <text class="key" x="78" y="299">class A</text>
+  <rect class="pt" x="166" y="286" width="16" height="16" rx="3" fill="var(--b)"/>
+  <text class="key" x="190" y="299">class B</text>
+
+  <rect x="540" y="58" width="470" height="264" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
+  <text class="cap" x="564" y="86">THIS WEEK &#183; SAME POINTS, NO LABELS</text>
+  <circle class="pt" cx="630" cy="175" r="10" fill="var(--muted)"/>
+  <circle class="pt" cx="672" cy="148" r="10" fill="var(--muted)"/>
+  <circle class="pt" cx="652" cy="214" r="10" fill="var(--muted)"/>
+  <circle class="pt" cx="702" cy="192" r="10" fill="var(--muted)"/>
+  <circle class="pt" cx="612" cy="138" r="10" fill="var(--muted)"/>
+  <circle class="pt" cx="867" cy="150" r="10" fill="var(--muted)"/>
+  <circle class="pt" cx="913" cy="186" r="10" fill="var(--muted)"/>
+  <circle class="pt" cx="883" cy="216" r="10" fill="var(--muted)"/>
+  <circle class="pt" cx="937" cy="144" r="10" fill="var(--muted)"/>
+  <circle class="pt" cx="839" cy="196" r="10" fill="var(--muted)"/>
+  <text class="key" x="564" y="299">no class, no legend, no answer key</text>
+
+  <text class="note" x="30" y="358">You can still see two groups. Nobody told you there were two &#8212; and nobody told the algorithm either. That is the whole question this week.</text>
+</svg>

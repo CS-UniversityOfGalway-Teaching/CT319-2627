@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 10 — Clustering and recommendation — CT319</title>
+<meta name="description" content="CT319 Week 10. K-means, DBSCAN and hierarchical clustering on fixed datasets, then collaborative filtering — what counts as similar, and who decided how many groups there are.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230969da'/%3E%3Cpath d='M8 8h7v4h-3v8h3v4H8zm9 0h7v16h-7v-4h3v-8h-3z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/ct319.css">
+</head>
+<body>
+<a class="skip-link" href="#beats">Skip to the teaching sections</a>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">CT319 Artificial Intelligence · Week 10 · Clustering and recommendation</p>
+    <h1>Week 10 — Clustering and recommendation</h1>
+    <p class="week-question">Can a machine discover useful structure when nobody tells it the correct groups?</p>
+  </header>
+
+  <div class="lede">
+<p>Last week the examples arrived with labels, and the job was to predict one. This week the labels are gone. The points stay exactly where they were; only the answers disappear.</p>
+<div class="focus-block">
+<blockquote><p><strong>Can a machine discover useful structure when nobody tells it the correct groups?</strong></p></blockquote>
+</div>
+<p>There is a trap waiting in that question, and it is worth naming before we start. An algorithm will always return groups. Whether those groups mean anything is a separate question, and not one the algorithm can answer.</p>
+<p>We work through five things.</p>
+<ul><li><a href="#remove-the-labels--what-can-the-machine-still-see"><strong>Remove the labels</strong></a> — what is left visible once the class names are taken away.</li><li><a href="#move-the-centres--how-does-k-means-discover-groups"><strong>Move the centres</strong></a> — how K-means turns a chosen <code>k</code> into groups by reassigning points and moving centroids.</li><li><a href="#what-if-the-groups-are-not-blobs--does-every-algorithm-see-the-same-structure"><strong>What if the groups are not blobs?</strong></a> — what happens when the data do not form compact regions around centres.</li><li><a href="#people-who-liked-this-also-liked--where-do-recommendations-come-from"><strong>People who liked this also liked</strong></a> — how patterns of similarity and preference turn into recommendations.</li><li><a href="#useful-pattern-or-misleading-pattern--what-can-go-wrong"><strong>Useful pattern or misleading pattern</strong></a> — why a clustering is an output to interpret, and what cold start costs a recommender.</li></ul>
+<p>Three ideas carry the page, and it is worth keeping them apart:</p>
+<div class="focus-block">
+<div class="lenses">
+<div class="lens"><span class="lens__key">Structure</span><span class="lens__gloss">useful patterns can exist even when nobody supplied a single label</span></div>
+<div class="lens"><span class="lens__key">Similarity</span><span class="lens__gloss">how we define “similar” decides which groups get discovered</span></div>
+<div class="lens"><span class="lens__key">Preference</span><span class="lens__gloss">patterns across people and items can be turned into recommendations</span></div>
+</div>
+</div>
+  </div>
+
+  <div class="beat-bar" data-beat-bar hidden>
+    <span class="beat-bar__label">Week 10 · Sections</span>
+    <button type="button" data-expand-all>Expand all</button>
+    <button type="button" data-collapse-all>Collapse all</button>
+  </div>
+
+  <main class="beats" id="beats">
+<details class="beat" id="remove-the-labels--what-can-the-machine-still-see"><summary><h2 class="beat__title">Remove the labels — what can the machine still see?</h2></summary><div class="beat__body"><p>Last week every example came with a target attached. Take it away and the picture barely changes — which is exactly the problem.</p>
+<div class="focus-block">
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-10/labels-removed.svg" alt="The same ten points shown first with class A and B labels and then drawn neutrally with none" loading="lazy" decoding="async"><figcaption>Figure 1. Identical positions on both sides. The only thing removed was the answer key. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+</div>
+<p>You can still see two groups. So can most people. But nobody supplied them, which turns a comfortable question into an uncomfortable one:</p>
+<div class="focus-block">
+<blockquote><p><strong>Who decided how many groups there are?</strong></p></blockquote>
+</div>
+<h3 id="what-actually-changed">What actually changed</h3>
+<div class="focus-block">
+<div class="lenses lenses--pair">
+<div class="lens"><span class="lens__key">Supervised</span><span class="lens__gloss">examples carry a target, and the learner fits a rule that predicts it</span></div>
+<div class="lens"><span class="lens__key">Unsupervised</span><span class="lens__gloss">examples carry no supplied label, and the learner looks for structure in the features</span></div>
+</div>
+</div>
+<p>One important unsupervised task is <strong>clustering</strong>: organising examples into groups using some notion of similarity. The usual starting definition is that examples within a cluster should be more similar to one another than to examples in other clusters.</p>
+<p>The difficult word in that sentence is <em>similar</em>.</p>
+<h3 id="similarity-still-has-to-be-designed">Similarity still has to be designed</h3>
+<p>Suppose we represent customers using age, location, purchase frequency, average spend and products viewed. Two customers can be close in age and far apart in buying behaviour, or live two countries apart and buy nearly identical things. Which of those pairs is "similar" depends entirely on what we chose to record.</p>
+<p>The algorithm sees the representation we provide, and the question from Weeks 2 and 9 comes back unchanged:</p>
+<div class="focus-block">
+<blockquote><p><strong>What should count as similar for this problem?</strong></p></blockquote>
+</div>
+<p>Clustering can group customers, organise documents, divide images into regions or flag unusual observations. None of that makes a cluster a real-world category. <code>Cluster 0</code>, <code>Cluster 1</code> and <code>Cluster 2</code> are identifiers for an algorithm's output — interpreting them is still our job.</p>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Everything that follows produces groups. The work is deciding which of those groups you are entitled to believe.</p></div></details>
+<details class="beat" id="move-the-centres--how-does-k-means-discover-groups"><summary><h2 class="beat__title">Move the centres — how does K-means discover groups?</h2></summary><div class="beat__body"><p>Suppose unlabelled points sit in three compact regions. We can see a grouping; the algorithm has not been given one. <strong>K-means</strong> starts from a decision that is ours, not its:</p>
+<div class="focus-block">
+<blockquote><p><strong>Choose <code>k</code> — the number of clusters to request.</strong></p></blockquote>
+</div>
+<p>For <code>k = 3</code> it starts with three candidate centres, called <strong>centroids</strong>. A centroid is the mean position of the points currently assigned to it. From there it repeats two steps.</p>
+<div class="focus-block">
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-10/kmeans-cycle.svg" alt="Assign every point to its nearest centroid, move each centroid to the mean of its points, repeat" loading="lazy" decoding="async"><figcaption>Figure 2. Two steps, repeated until the centroids stop moving. Everything interesting happens because of what we fixed before the loop started. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+</div>
+<h3 id="predict-before-running">Predict before running</h3>
+<p>If a centroid starts too far to the right, where does it move once nearby points are assigned to it? And what happens if one distant point is assigned to it as well?</p>
+<p>The mean moves towards the assigned points — <em>including</em> the distant one. Which tells you the shape of problem K-means is built for: groups that form reasonably compact regions around a centre.</p>
+<pre data-lang="python"><code class="language-python">from sklearn.cluster import KMeans
+
+model = KMeans(n_clusters=3, random_state=42, n_init=10)
+labels = model.fit_predict(X)
+centroids = model.cluster_centers_</code></pre>
+<p>The returned values <code>0</code>, <code>1</code> and <code>2</code> are identifiers. They are not class names and they carry no meaning until somebody gives them one.</p>
+<h3 id="one-dataset-three-values-of-k">One dataset, three values of <code>k</code></h3>
+<p>The demonstration uses 180 deterministic points in three compact regions. The data and the axes never move; only <code>k</code> changes. Black stars mark the fitted centroids.</p>
+<div class="focus-block">
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-10/blobs-data.svg" alt="180 unlabelled points forming three compact regions" loading="lazy" decoding="async"><figcaption>Figure 3. The starting picture. Before running anything, decide how many groups you would ask for — and be ready to say why. Plot created for these pages by the clustering demonstration; no external image licence is used.</figcaption></figure>
+</div>
+<div class="focus-block">
+<div class="table-scroll"><table><thead><tr><th><code>k = 2</code> — too few</th><th><code>k = 3</code> — matches what we see</th></tr></thead><tbody><tr><td><img src="../../media/week-10/blobs-k2.svg" alt="K-means with k equals 2 merging two of the three regions"></td><td><img src="../../media/week-10/blobs-k3.svg" alt="K-means with k equals 3 recovering the three regions"></td></tr><tr><td>Cluster sizes <strong>60, 120</strong>. Two visible regions are merged into one.</td><td>Cluster sizes <strong>60, 60, 60</strong>. Each region recovered exactly.</td></tr></tbody></table></div>
+<p class="standalone-caption"><sub><em>Figure 4. At <code>k = 2</code> the algorithm did not fail — it did precisely what was asked, which was to produce two groups. Plots created for these pages by the clustering demonstration; no external image licence is used.</em></sub></p>
+</div>
+<div class="focus-block">
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-10/blobs-k5.svg" alt="K-means with k equals 5 subdividing two of the three visible regions" loading="lazy" decoding="async"><figcaption>Figure 5. At <code>k = 5</code>, cluster sizes are <strong>60, 38, 38, 22, 22</strong> — two of the three regions get split down the middle. The points did not change. The requested number of groups did. Plot created for these pages by the clustering demonstration; no external image licence is used.</figcaption></figure>
+</div>
+<h3 id="why-you-cannot-pick-k-by-the-score">Why you cannot pick <code>k</code> by the score</h3>
+<p>There is an obvious-looking escape: let the algorithm choose <code>k</code> by measuring how tight the clusters are. <strong>Inertia</strong> — the total squared distance from each point to its own centroid — is the usual measure, and on this dataset it reads:</p>
+<div class="table-scroll"><table><thead><tr><th class="num"><code>k</code></th><th>Cluster sizes</th><th class="num">Inertia</th></tr></thead><tbody><tr><td class="num">2</td><td>60, 120</td><td class="num">946.7</td></tr><tr><td class="num">3</td><td>60, 60, 60</td><td class="num">204.1</td></tr><tr><td class="num">5</td><td>60, 38, 38, 22, 22</td><td class="num"><strong>149.9</strong></td></tr></tbody></table></div>
+<p>The lowest inertia belongs to <code>k = 5</code>, which is the one that splits two perfectly good regions in half. Inertia keeps falling as <code>k</code> rises, all the way to one cluster per point, where it reaches zero.</p>
+<div class="focus-block">
+<blockquote><p><strong>The tightest clustering is not the most useful one. Choosing <code>k</code> is a judgement, and it stays ours.</strong></p></blockquote>
+</div>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>K-means did not discover the one true grouping at <code>k = 3</code>. It produced a grouping under the representation, the <code>k</code>, the initialisation and the centre-based assumption we handed it. Change any of the four and the answer changes with it.</p></div></details>
+<details class="beat" id="what-if-the-groups-are-not-blobs--does-every-algorithm-see-the-same-structure"><summary><h2 class="beat__title">What if the groups are not blobs? — does every algorithm see the same structure?</h2></summary><div class="beat__body"><p>K-means works naturally when groups are compact regions around a centre. Nothing obliges data to be shaped that way.</p>
+<p>The second dataset is 220 points in two interleaving crescents — the same shape as Week 9, with its own fixed settings.</p>
+<div class="focus-block">
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-10/moons.svg" alt="220 unlabelled points forming two interleaving crescent shapes" loading="lazy" decoding="async"><figcaption>Figure 6. Trace the two shapes with your finger before choosing an algorithm. Then ask whether a pair of centres could possibly describe them. Plot created for these pages by the clustering demonstration; no external image licence is used.</figcaption></figure>
+</div>
+<h3 id="centres-against-density">Centres against density</h3>
+<p>Ask K-means for two clusters and it will give you two clusters. Then compare it with <strong>DBSCAN</strong>, which looks for dense, connected regions instead of organising everything around a centre. Two parameters carry the intuition: <strong><code>eps</code></strong>, the neighbourhood radius around a point, and <strong><code>min_samples</code></strong>, the local density a neighbourhood has to reach.</p>
+<pre data-lang="python"><code class="language-python">from sklearn.cluster import DBSCAN
+
+model = DBSCAN(eps=0.18, min_samples=5)
+labels = model.fit_predict(X)</code></pre>
+<div class="focus-block">
+<div class="table-scroll"><table><thead><tr><th>K-means, <code>k = 2</code></th><th>DBSCAN, <code>eps = 0.18</code></th></tr></thead><tbody><tr><td><img src="../../media/week-10/moons-kmeans.svg" alt="K-means cutting straight across both crescents"></td><td><img src="../../media/week-10/moons-dbscan.svg" alt="DBSCAN recovering both crescents and marking four points as noise"></td></tr><tr><td>Cluster sizes <strong>110, 110</strong>. The boundary cuts across both shapes.</td><td><strong>2 clusters</strong> recovered, and <strong>4</strong> of the 220 points marked as noise.</td></tr></tbody></table></div>
+<p class="standalone-caption"><sub><em>Figure 7. K-means did not break. Its assumption — that a group is whatever lies nearest a centre — simply does not describe a crescent. Plots created for these pages by the clustering demonstration; no external image licence is used.</em></sub></p>
+</div>
+<p>Two things in that right-hand panel are worth naming. DBSCAN was never told there were two groups — it found two. And it is allowed to say <em>neither</em>: those four noise points are a legitimate output, not a failure.</p>
+<p><code>eps = 0.18</code> is tuned to the scale and density of these particular crescents. It is not a universal setting, and on a different dataset it would be meaningless.</p>
+<h3 id="a-third-view--hierarchy">A third view — hierarchy</h3>
+<p>Hierarchical clustering records groups within groups. An <strong>agglomerative</strong> approach starts from small groups and repeatedly merges; a <strong>divisive</strong> one starts from a single large group and repeatedly splits. A <strong>dendrogram</strong> displays that history.</p>
+<div class="focus-block">
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-10/hierarchical-dendrogram.svg" alt="A dendrogram where A and B merge, D and E merge, C joins A and B, and the two groups merge" loading="lazy" decoding="async"><figcaption>Figure 8. Read upwards. Note what is missing: no <code>k</code> was chosen in advance — the height at which you cut the tree is what decides how many groups you get. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+</div>
+<div class="focus-block">
+<div class="lenses">
+<div class="lens"><span class="lens__key">K-means</span><span class="lens__gloss">a group is whatever is nearest a centroid; you must supply `k`</span></div>
+<div class="lens"><span class="lens__key">DBSCAN</span><span class="lens__gloss">a group is a dense connected region; some points may be noise</span></div>
+<div class="lens"><span class="lens__key">Hierarchical</span><span class="lens__gloss">groups nest inside groups; you cut the tree wherever you choose</span></div>
+</div>
+</div>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Three algorithms, one dataset, three different answers — and none of them is wrong. Each encodes a different assumption about what a group <em>is</em>. The honest version of "we clustered the data" names which assumption was used.</p></div></details>
+<details class="beat" id="people-who-liked-this-also-liked--where-do-recommendations-come-from"><summary><h2 class="beat__title">People who liked this also liked — where do recommendations come from?</h2></summary><div class="beat__body"><p>Clustering asks which examples look similar. Recommendation asks a different question: can patterns of similarity and preference predict what somebody wants next?</p>
+<div class="focus-block">
+<blockquote><p><strong>Recommendation can use similarity without first clustering users or items into groups at all.</strong></p></blockquote>
+</div>
+<p>Five people, five films, and two gaps.</p>
+<div class="table-scroll"><table><thead><tr><th></th><th class="num">Film A</th><th class="num">Film B</th><th class="num">Film C</th><th class="num">Film D</th><th class="num">Film E</th></tr></thead><tbody><tr><td><strong>Aoife</strong></td><td class="num">5</td><td class="num">4</td><td class="num"><strong>?</strong></td><td class="num">1</td><td class="num"><strong>?</strong></td></tr><tr><td>Ben</td><td class="num">5</td><td class="num">5</td><td class="num">4</td><td class="num">1</td><td class="num">2</td></tr><tr><td>Carla</td><td class="num">4</td><td class="num">4</td><td class="num">5</td><td class="num">2</td><td class="num">1</td></tr><tr><td>Darragh</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td class="num">5</td><td class="num">4</td></tr><tr><td>Eimear</td><td class="num">1</td><td class="num">2</td><td class="num">1</td><td class="num">4</td><td class="num">5</td></tr></tbody></table></div>
+<div class="focus-block">
+<blockquote><p><strong>What would you recommend to Aoife — and which rows gave you the evidence?</strong></p></blockquote>
+</div>
+<p>Ben and Carla share Aoife's high ratings for Films A and B and her low rating for Film D. Both of them prefer Film C to Film E. That is evidence for recommending Film C — and notice what it is not based on: nobody described what Film C is about.</p>
+<p>This is <strong>collaborative filtering</strong>: using patterns in collective behaviour to estimate a preference nobody has observed yet.</p>
+<h3 id="two-ways-to-use-the-same-table">Two ways to use the same table</h3>
+<div class="focus-block">
+<div class="lenses lenses--pair">
+<div class="lens"><span class="lens__key">User-based</span><span class="lens__gloss">who behaves like Aoife? Find similar users, look at what they liked, recommend something she has not seen</span></div>
+<div class="lens"><span class="lens__key">Item-based</span><span class="lens__gloss">which films behave like the films Aoife likes? Compare items by their interaction patterns across users</span></div>
+</div>
+</div>
+<p>Both are classical collaborative strategies, and neither exhausts the possibilities. The evidence in both cases comes from ratings, viewing, purchases or other interactions — behaviour, not description.</p>
+<h3 id="when-description-is-available">When description is available</h3>
+<p>If item features exist — genre, director, cast, release year, language — a <strong>content-based</strong> recommender can find items related to what a user already prefers. A <strong>hybrid</strong> combines the two signals.</p>
+<p>The distinction is where the relationship comes from: behaviour across users and items, or features describing the items themselves.</p>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>A recommendation is a prediction, in exactly the sense Week 9 used the word — will this user click, watch, buy or rate highly? But it is also a decision about what the user gets the chance to see at all. That second half has a consequence, and it is the last thing on this page.</p></div></details>
+<details class="beat" id="useful-pattern-or-misleading-pattern--what-can-go-wrong"><summary><h2 class="beat__title">Useful pattern or misleading pattern — what can go wrong?</h2></summary><div class="beat__body"><h3 id="a-clustering-is-an-output-not-a-discovery">A clustering is an output, not a discovery</h3>
+<p>Features, numerical scale, parameters and algorithmic assumptions all shape the grouping that comes back. K-means and DBSCAN can disagree about the same points and both be behaving correctly, because they are looking for different things.</p>
+<div class="focus-block">
+<blockquote><p><strong>Which assumptions make sense for this problem?</strong></p></blockquote>
+</div>
+<p>Four clusters in the output is not evidence that four kinds of customer exist in the world.</p>
+<h3 id="cold-start">Cold start</h3>
+<p>A new user has no ratings, no purchases and no viewing history, so a collaborative approach has almost nothing to work with. A new item has the matching problem: nobody has interacted with it yet.</p>
+<p>This is the <strong>cold-start problem</strong>. Item features or a short set of opening preference questions can supply other evidence, but the missing history is real and no amount of algorithm fixes it.</p>
+<h3 id="preferences-and-context-move">Preferences and context move</h3>
+<p>Old behaviour goes stale as interests change. An account can also represent more than one person: a household profile holding children's programmes, crime dramas, football and documentaries is not one stable taste, and averaging it describes nobody.</p>
+<div class="focus-block">
+<blockquote><p><strong>Every observed interaction has a time and a context. Treating all of them as equally current expressions of one person's preference is a modelling assumption, not a neutral default.</strong></p></blockquote>
+</div>
+<h3 id="recommendations-change-the-next-dataset">Recommendations change the next dataset</h3>
+<p>A recommender does not sit outside the process that generates its evidence. It takes part in it.</p>
+<div class="focus-block">
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-10/recommendation-loop.svg" alt="The system recommends, the user sees and interacts, the interaction becomes data, and the system learns from it" loading="lazy" decoding="async"><figcaption>Figure 9. The loop closes. What the system suggested yesterday shapes what it has to learn from today. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+</div>
+<p>So: if recommendations influence what people see, is the next dataset independent of the system that produced the recommendations?</p>
+<div class="focus-block">
+<blockquote><p><strong>No. It records behaviour that happened after the system helped decide what was visible.</strong></p></blockquote>
+</div>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Weeks 8 to 10 moved from learning from data, to prediction with labels, to structure without them. The algorithms changed every week. The discipline did not: inspect the representation, name the assumptions, and ask what the evidence actually supports.</p></div></details>
+  </main>
+
+  <div class="tail">
+<h2 id="the-clustering-demo">The clustering demo</h2>
+<p>📦 <strong><a href="https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-10/clustering_demo.py"><code>clustering_demo.py</code></a></strong> — every plot on this page, as a sequence you can step through.</p>
+<pre data-lang="sh"><code class="language-sh">python -m pip install numpy matplotlib scikit-learn
+python experiments/week-10/clustering_demo.py</code></pre>
+<p>Press <strong>Space</strong>, the <strong>right arrow</strong> or the on-screen button to advance. Two fixed datasets serve every stage, so each visible change is attributable to the algorithm or parameter that changed.</p>
+<h3 id="try-it-yourself">Try it yourself</h3>
+<ol><li>Open <code>--mode blobs --k 3</code> and ask how many groups you would have requested from the raw points alone.</li><li>Run <code>--k 2</code> and <code>--k 5</code>. For each, say what the algorithm was asked to do before saying whether it did it well.</li><li>Read the inertia printed in the terminal for all three. Notice that the lowest value is not the best grouping.</li><li>Switch to <code>--mode moons</code> and trace the two shapes before running anything.</li><li>Run <code>--mode moons-kmeans</code>, then <code>--mode moons-dbscan</code>. Name the assumption that makes the difference.</li><li>Find the four noise points, and decide whether you would want an algorithm that is allowed to say "neither".</li></ol>
+<p>To regenerate every plot on this page without opening a window:</p>
+<pre data-lang="sh"><code class="language-sh">python experiments/week-10/clustering_demo.py --save-dir media/week-10</code></pre>
+<hr>
+<h2 id="before-week-11">Before Week 11</h2>
+<p>Across the last three weeks the machine learned from data — with labels, then without them, then from patterns of behaviour. Everything we asked was whether a result was <em>accurate</em>.</p>
+<div class="focus-block">
+<blockquote><p><strong>Accuracy is one question. When should anyone trust what the system did with it?</strong></p></blockquote>
+</div>
+<p>That is where Week 11 begins.</p>
+<hr>
+<h2 id="quick-revision">Quick revision</h2>
+<p>If you can answer these without reopening the page, you have the core of this week.</p>
+<ol><li><strong>[WK-10-01]</strong> What does an unsupervised learner receive that a supervised one does not, and what is it looking for instead?</li><li>Why is “similar” a design decision rather than a property of the data?</li><li><strong>[WK-10-02]</strong> Describe the two steps K-means repeats, and what makes it stop.</li><li>On the blob dataset, <code>k = 5</code> has the lowest inertia. Why is it not the best answer?</li><li>Why does one distant point pull a centroid, and what does that imply about the shapes K-means suits?</li><li><strong>[WK-10-03]</strong> Why does K-means cut across the crescents, and what is DBSCAN doing differently?</li><li>What does it mean that DBSCAN marked four points as noise, and why is that not a failure?</li><li>What does a dendrogram record, and what does it let you avoid choosing in advance?</li><li><strong>[WK-10-04]</strong> What evidence does collaborative filtering use, and what does it not need?</li><li>What is the difference between a user-based and an item-based approach to the same ratings table?</li><li><strong>[WK-10-05]</strong> What is the cold-start problem, and why can no algorithm solve it outright?</li><li>Explain why a recommender's next dataset is not independent of the recommender.</li></ol>
+<hr>
+<h2 id="sources-and-licensing-notes">Sources and licensing notes</h2>
+<h3 id="ct319-source-material">CT319 source material</h3>
+<p>This week follows selected material from the formal CT319 <em>Clustering &amp; Recommender Systems</em> material on Canvas, which remains the broader reference. These pages do not reproduce every slide; they develop a smaller number of points in more depth.</p>
+<p>The page concentrates on what remains available once class labels are removed; K-means as a repeated cycle of assignment and centroid movement driven by a chosen <code>k</code>; the visible consequences of choosing <code>k</code> badly, on one fixed dataset; density-based clustering as a different set of assumptions, with noise as a legitimate output; hierarchical clustering as a nested alternative that needs no <code>k</code> in advance; recommendation from patterns of behaviour, without clustering first; and a clustering as an output to interpret, with cold start as a structural limit.</p>
+<p>The inertia comparison is not in the formal material. It is included because the obvious escape from choosing <code>k</code> is to let a score choose it, and on this dataset that score picks the wrong answer — which is worth seeing once.</p>
+<h3 id="continuity-from-week-9">Continuity from Week 9</h3>
+<p>Week 9 predicted a category from labelled examples. This week removes the labels and asks what structure can still be justified.</p>
+<p>Both weeks use scikit-learn's two-moons generator, with <strong>different settings</strong>: Week 9 uses <code>n_samples=140, noise=0.23, random_state=2</code>, and this week uses <code>n_samples=220, noise=0.08, random_state=7</code>. The shape is familiar while each page keeps its own fixed data.</p>
+<h3 id="examples-and-measured-values">Examples and measured values</h3>
+<p>Two fixed datasets serve every stage:</p>
+<pre data-lang="python"><code class="language-python">make_blobs(n_samples=180,
+           centers=((-3.0, -1.0), (0.0, 2.8), (3.0, -0.8)),
+           cluster_std=(0.75, 0.80, 0.85),
+           random_state=42)
+make_moons(n_samples=220, noise=0.08, random_state=7)</code></pre>
+<p>Because the datasets and the estimators are seeded, every cluster size, inertia value and noise count quoted here is <strong>reproducible rather than illustrative</strong>. They were last regenerated with scikit-learn 1.9.1, matplotlib 3.11.2 and NumPy 2.5.3 on <strong>5 October 2026</strong>, by the script in this repository.</p>
+<p>The five-person ratings table is a worked classroom example, not a dataset; no model is fitted to it.</p>
+<h3 id="figures">Figures</h3>
+<p>Figures 1–9 were <strong>created for these pages</strong>. They use no external image licence.</p>
+<ul><li>Figures 1, 2, 8 and 9 are original diagrams.</li><li>Figures 3, 4, 5, 6 and 7 are plots generated by the demonstration script from the datasets above. Every value quoted beside them is computed, not transcribed.</li></ul>
+<p>No external images, videos, papers or interactives are used.</p>
+<h3 id="software">Software</h3>
+<ul><li>📦 <a href="https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-10/clustering_demo.py"><strong><code>clustering_demo.py</code></strong></a> — written for this module. Requires <code>numpy</code>, <code>matplotlib</code> and <code>scikit-learn</code>; nothing is downloaded at run time.</li><li>scikit-learn User Guide — <a href="https://scikit-learn.org/stable/modules/clustering.html">clustering</a></li><li>scikit-learn reference — <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html"><code>KMeans</code></a> · <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html"><code>DBSCAN</code></a> · <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_blobs.html"><code>make_blobs</code></a> · <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_moons.html"><code>make_moons</code></a></li></ul>
+<p>scikit-learn and NumPy are distributed under the BSD 3-Clause licence, and matplotlib under the Python Software Foundation licence. They are used here as tools; no library code is reproduced on these pages.</p>
+  </div>
+
+  <footer class="page-footer">
+    <p>
+      CT319 Artificial Intelligence · University of Galway ·
+      <a href="../../">Module pages</a> ·
+      <a href="https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/weeks/week-10.md">Markdown source</a> ·
+      <a href="?open=all">Open every section</a>
+    </p>
+    <p>Formal slides and notes are on Canvas. These pages are the companion material.</p>
+  </footer>
+
+</div>
+
+<script src="../../assets/ct319.js" defer></script>
+</body>
+</html>

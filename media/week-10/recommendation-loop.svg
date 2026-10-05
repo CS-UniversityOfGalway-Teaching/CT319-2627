@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="350" viewBox="0 0 1040 350" role="img" aria-labelledby="t d">
+  <title id="t">A recommender helps create the data it will learn from next</title>
+  <desc id="d">The system recommends an item, the user sees that item, the user clicks, watches or buys, that interaction becomes new data, and the system learns from it. A return arrow closes the loop, so the next dataset records behaviour that happened after the system decided what was visible.</desc>
+  <style>
+    :root { --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --warn:#9a6700; --warnbg:#fff8c5; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --warn:#d29922; --warnbg:#2d2200; } }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .node { font-size:13.5px; font-weight:700; letter-spacing:0.9px; text-anchor:middle; }
+    .edge { font-size:13.5px; font-weight:700; fill:var(--warn); text-anchor:middle; }
+    .note { font-size:13.5px; fill:var(--muted); }
+    .box  { fill:var(--panel); stroke:var(--line); stroke-width:2; }
+    .arr  { stroke:var(--muted); stroke-width:2.4; fill:none; marker-end:url(#a); }
+    .back { stroke:var(--warn); stroke-width:2.6; fill:none; stroke-dasharray:8 5; marker-end:url(#w); }
+  </style>
+  <rect width="1040" height="350" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="40">THE SYSTEM HELPS DECIDE WHAT ITS NEXT DATASET WILL CONTAIN</text>
+
+  <rect class="box" x="26" y="76" width="180" height="76" rx="10"/>
+  <text class="node" x="116" y="110">SYSTEM</text>
+  <text class="node" x="116" y="130">RECOMMENDS</text>
+  <path class="arr" d="M210 114 H224"/>
+
+  <rect class="box" x="228" y="76" width="180" height="76" rx="10"/>
+  <text class="node" x="318" y="110">USER SEES</text>
+  <text class="node" x="318" y="130">THAT ITEM</text>
+  <path class="arr" d="M412 114 H426"/>
+
+  <rect class="box" x="430" y="76" width="180" height="76" rx="10"/>
+  <text class="node" x="520" y="110">USER CLICKS,</text>
+  <text class="node" x="520" y="130">WATCHES, BUYS</text>
+  <path class="arr" d="M614 114 H628"/>
+
+  <rect class="box" x="632" y="76" width="180" height="76" rx="10"/>
+  <text class="node" x="722" y="110">THAT BECOMES</text>
+  <text class="node" x="722" y="130">NEW DATA</text>
+  <path class="arr" d="M816 114 H830"/>
+
+  <rect class="box" x="834" y="76" width="180" height="76" rx="10"/>
+  <text class="node" x="924" y="110">SYSTEM LEARNS</text>
+  <text class="node" x="924" y="130">FROM IT</text>
+
+  <path class="back" d="M924 156 V222 H116 V158"/>
+  <text class="edge" x="520" y="246">so the next dataset is not independent of the system that produced it</text>
+
+  <text class="note" x="30" y="300">A recommendation is a prediction &#8212; will this user click, watch, buy or rate the item highly?</text>
+  <text class="note" x="30" y="324">It is also a decision about what the user gets the chance to interact with at all, and that part shows up in the evidence later.</text>
+
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/>
+    </marker>
+    <marker id="w" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--warn)"/>
+    </marker>
+  </defs>
+</svg>
