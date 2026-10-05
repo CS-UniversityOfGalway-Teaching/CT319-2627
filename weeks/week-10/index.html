@@ -51,18 +51,16 @@
 <p>You can still see two groups. So can most people. But nobody supplied them, which turns a comfortable question into an uncomfortable one:</p>
 <div class="focus-block">
 <blockquote><p><strong>Who decided how many groups there are?</strong></p></blockquote>
-</div>
-<h3 id="what-actually-changed">What actually changed</h3>
-<div class="focus-block">
+</div></div></details>
+<details class="beat" id="what-actually-changed"><summary><h2 class="beat__title">What actually changed</h2></summary><div class="beat__body"><div class="focus-block">
 <div class="lenses lenses--pair">
 <div class="lens"><span class="lens__key">Supervised</span><span class="lens__gloss">examples carry a target, and the learner fits a rule that predicts it</span></div>
 <div class="lens"><span class="lens__key">Unsupervised</span><span class="lens__gloss">examples carry no supplied label, and the learner looks for structure in the features</span></div>
 </div>
 </div>
 <p>One important unsupervised task is <strong>clustering</strong>: organising examples into groups using some notion of similarity. The usual starting definition is that examples within a cluster should be more similar to one another than to examples in other clusters.</p>
-<p>The difficult word in that sentence is <em>similar</em>.</p>
-<h3 id="similarity-still-has-to-be-designed">Similarity still has to be designed</h3>
-<p>Suppose we represent customers using age, location, purchase frequency, average spend and products viewed. Two customers can be close in age and far apart in buying behaviour, or live two countries apart and buy nearly identical things. Which of those pairs is "similar" depends entirely on what we chose to record.</p>
+<p>The difficult word in that sentence is <em>similar</em>.</p></div></details>
+<details class="beat" id="similarity-still-has-to-be-designed"><summary><h2 class="beat__title">Similarity still has to be designed</h2></summary><div class="beat__body"><p>Suppose we represent customers using age, location, purchase frequency, average spend and products viewed. Two customers can be close in age and far apart in buying behaviour, or live two countries apart and buy nearly identical things. Which of those pairs is "similar" depends entirely on what we chose to record.</p>
 <p>The algorithm sees the representation we provide, and the question from Weeks 2 and 9 comes back unchanged:</p>
 <div class="focus-block">
 <blockquote><p><strong>What should count as similar for this problem?</strong></p></blockquote>
@@ -86,9 +84,8 @@
 model = KMeans(n_clusters=3, random_state=42, n_init=10)
 labels = model.fit_predict(X)
 centroids = model.cluster_centers_</code></pre>
-<p>The returned values <code>0</code>, <code>1</code> and <code>2</code> are identifiers. They are not class names and they carry no meaning until somebody gives them one.</p>
-<h3 id="one-dataset-three-values-of-k">One dataset, three values of <code>k</code></h3>
-<p>The demonstration uses 180 deterministic points in three compact regions. The data and the axes never move; only <code>k</code> changes. Black stars mark the fitted centroids.</p>
+<p>The returned values <code>0</code>, <code>1</code> and <code>2</code> are identifiers. They are not class names and they carry no meaning until somebody gives them one.</p></div></details>
+<details class="beat" id="one-dataset-three-values-of-k"><summary><h2 class="beat__title">One dataset, three values of <code>k</code></h2></summary><div class="beat__body"><p>The demonstration uses 180 deterministic points in three compact regions. The data and the axes never move; only <code>k</code> changes. Black stars mark the fitted centroids.</p>
 <div class="focus-block">
 <figure class="figure--wide"><img class="figure__img" src="../../media/week-10/blobs-data.svg" alt="180 unlabelled points forming three compact regions" loading="lazy" decoding="async"><figcaption>Figure 3. The starting picture. Before running anything, decide how many groups you would ask for — and be ready to say why. Plot created for these pages by the clustering demonstration; no external image licence is used.</figcaption></figure>
 </div>
@@ -98,9 +95,8 @@ centroids = model.cluster_centers_</code></pre>
 </div>
 <div class="focus-block">
 <figure class="figure--wide"><img class="figure__img" src="../../media/week-10/blobs-k5.svg" alt="K-means with k equals 5 subdividing two of the three visible regions" loading="lazy" decoding="async"><figcaption>Figure 5. At <code>k = 5</code>, cluster sizes are <strong>60, 38, 38, 22, 22</strong> — two of the three regions get split down the middle. The points did not change. The requested number of groups did. Plot created for these pages by the clustering demonstration; no external image licence is used.</figcaption></figure>
-</div>
-<h3 id="why-you-cannot-pick-k-by-the-score">Why you cannot pick <code>k</code> by the score</h3>
-<p>There is an obvious-looking escape: let the algorithm choose <code>k</code> by measuring how tight the clusters are. <strong>Inertia</strong> — the total squared distance from each point to its own centroid — is the usual measure, and on this dataset it reads:</p>
+</div></div></details>
+<details class="beat" id="why-you-cannot-pick-k-by-the-score"><summary><h2 class="beat__title">Why you cannot pick <code>k</code> by the score</h2></summary><div class="beat__body"><p>There is an obvious-looking escape: let the algorithm choose <code>k</code> by measuring how tight the clusters are. <strong>Inertia</strong> — the total squared distance from each point to its own centroid — is the usual measure, and on this dataset it reads:</p>
 <div class="table-scroll"><table><thead><tr><th class="num"><code>k</code></th><th>Cluster sizes</th><th class="num">Inertia</th></tr></thead><tbody><tr><td class="num">2</td><td>60, 120</td><td class="num">946.7</td></tr><tr><td class="num">3</td><td>60, 60, 60</td><td class="num">204.1</td></tr><tr><td class="num">5</td><td>60, 38, 38, 22, 22</td><td class="num"><strong>149.9</strong></td></tr></tbody></table></div>
 <p>The lowest inertia belongs to <code>k = 5</code>, which is the one that splits two perfectly good regions in half. Inertia keeps falling as <code>k</code> rises, all the way to one cluster per point, where it reaches zero.</p>
 <div class="focus-block">
@@ -112,9 +108,8 @@ centroids = model.cluster_centers_</code></pre>
 <p>The second dataset is 220 points in two interleaving crescents — the same shape as Week 9, with its own fixed settings.</p>
 <div class="focus-block">
 <figure class="figure--wide"><img class="figure__img" src="../../media/week-10/moons.svg" alt="220 unlabelled points forming two interleaving crescent shapes" loading="lazy" decoding="async"><figcaption>Figure 6. Trace the two shapes with your finger before choosing an algorithm. Then ask whether a pair of centres could possibly describe them. Plot created for these pages by the clustering demonstration; no external image licence is used.</figcaption></figure>
-</div>
-<h3 id="centres-against-density">Centres against density</h3>
-<p>Ask K-means for two clusters and it will give you two clusters. Then compare it with <strong>DBSCAN</strong>, which looks for dense, connected regions instead of organising everything around a centre. Two parameters carry the intuition: <strong><code>eps</code></strong>, the neighbourhood radius around a point, and <strong><code>min_samples</code></strong>, the local density a neighbourhood has to reach.</p>
+</div></div></details>
+<details class="beat" id="centres-against-density"><summary><h2 class="beat__title">Centres against density</h2></summary><div class="beat__body"><p>Ask K-means for two clusters and it will give you two clusters. Then compare it with <strong>DBSCAN</strong>, which looks for dense, connected regions instead of organising everything around a centre. Two parameters carry the intuition: <strong><code>eps</code></strong>, the neighbourhood radius around a point, and <strong><code>min_samples</code></strong>, the local density a neighbourhood has to reach.</p>
 <pre data-lang="python"><code class="language-python">from sklearn.cluster import DBSCAN
 
 model = DBSCAN(eps=0.18, min_samples=5)
@@ -124,9 +119,8 @@ labels = model.fit_predict(X)</code></pre>
 <p class="standalone-caption"><sub><em>Figure 7. K-means did not break. Its assumption — that a group is whatever lies nearest a centre — simply does not describe a crescent. Plots created for these pages by the clustering demonstration; no external image licence is used.</em></sub></p>
 </div>
 <p>Two things in that right-hand panel are worth naming. DBSCAN was never told there were two groups — it found two. And it is allowed to say <em>neither</em>: those four noise points are a legitimate output, not a failure.</p>
-<p><code>eps = 0.18</code> is tuned to the scale and density of these particular crescents. It is not a universal setting, and on a different dataset it would be meaningless.</p>
-<h3 id="a-third-view--hierarchy">A third view — hierarchy</h3>
-<p>Hierarchical clustering records groups within groups. An <strong>agglomerative</strong> approach starts from small groups and repeatedly merges; a <strong>divisive</strong> one starts from a single large group and repeatedly splits. A <strong>dendrogram</strong> displays that history.</p>
+<p><code>eps = 0.18</code> is tuned to the scale and density of these particular crescents. It is not a universal setting, and on a different dataset it would be meaningless.</p></div></details>
+<details class="beat" id="a-third-view--hierarchy"><summary><h2 class="beat__title">A third view — hierarchy</h2></summary><div class="beat__body"><p>Hierarchical clustering records groups within groups. An <strong>agglomerative</strong> approach starts from small groups and repeatedly merges; a <strong>divisive</strong> one starts from a single large group and repeatedly splits. A <strong>dendrogram</strong> displays that history.</p>
 <div class="focus-block">
 <figure class="figure--wide"><img class="figure__img" src="../../media/week-10/hierarchical-dendrogram.svg" alt="A dendrogram where A and B merge, D and E merge, C joins A and B, and the two groups merge" loading="lazy" decoding="async"><figcaption>Figure 8. Read upwards. Note what is missing: no <code>k</code> was chosen in advance — the height at which you cut the tree is what decides how many groups you get. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 </div>
@@ -149,9 +143,8 @@ labels = model.fit_predict(X)</code></pre>
 <blockquote><p><strong>What would you recommend to Aoife — and which rows gave you the evidence?</strong></p></blockquote>
 </div>
 <p>Ben and Carla share Aoife's high ratings for Films A and B and her low rating for Film D. Both of them prefer Film C to Film E. That is evidence for recommending Film C — and notice what it is not based on: nobody described what Film C is about.</p>
-<p>This is <strong>collaborative filtering</strong>: using patterns in collective behaviour to estimate a preference nobody has observed yet.</p>
-<h3 id="two-ways-to-use-the-same-table">Two ways to use the same table</h3>
-<div class="focus-block">
+<p>This is <strong>collaborative filtering</strong>: using patterns in collective behaviour to estimate a preference nobody has observed yet.</p></div></details>
+<details class="beat" id="two-ways-to-use-the-same-table"><summary><h2 class="beat__title">Two ways to use the same table</h2></summary><div class="beat__body"><div class="focus-block">
 <div class="lenses lenses--pair">
 <div class="lens"><span class="lens__key">User-based</span><span class="lens__gloss">who behaves like Aoife? Find similar users, look at what they liked, recommend something she has not seen</span></div>
 <div class="lens"><span class="lens__key">Item-based</span><span class="lens__gloss">which films behave like the films Aoife likes? Compare items by their interaction patterns across users</span></div>
@@ -176,9 +169,8 @@ labels = model.fit_predict(X)</code></pre>
 <p>Old behaviour goes stale as interests change. An account can also represent more than one person: a household profile holding children's programmes, crime dramas, football and documentaries is not one stable taste, and averaging it describes nobody.</p>
 <div class="focus-block">
 <blockquote><p><strong>Every observed interaction has a time and a context. Treating all of them as equally current expressions of one person's preference is a modelling assumption, not a neutral default.</strong></p></blockquote>
-</div>
-<h3 id="recommendations-change-the-next-dataset">Recommendations change the next dataset</h3>
-<p>A recommender does not sit outside the process that generates its evidence. It takes part in it.</p>
+</div></div></details>
+<details class="beat" id="recommendations-change-the-next-dataset"><summary><h2 class="beat__title">Recommendations change the next dataset</h2></summary><div class="beat__body"><p>A recommender does not sit outside the process that generates its evidence. It takes part in it.</p>
 <div class="focus-block">
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-10/recommendation-loop.svg" alt="The system recommends, the user sees and interacts, the interaction becomes data, and the system learns from it" loading="lazy" decoding="async"><figcaption>Figure 9. The loop closes. What the system suggested yesterday shapes what it has to learn from today. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 </div>

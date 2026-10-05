@@ -56,7 +56,8 @@ A difference in outcomes does not by itself prove unfairness. What it does prove
 
 It does not say whether the data were representative, whether particular groups are disadvantaged, whether sensitive information was used appropriately, whether anybody affected understands the decision, whether it can be challenged, or who is responsible when it goes wrong.
 
-### How does performance vary across the people affected?
+<!-- ct319:beat -->
+## How does performance vary across the people affected?
 
 Week 9 asked whether a classifier generalises to unseen data. Add a second question to it:
 
@@ -80,7 +81,8 @@ Sixteen points separate the two groups, and neither number appears in the headli
 
 It does not, on its own, prove unlawful discrimination, and it does not tell us *why* the gap exists. It tells us that one aggregate score is not enough to understand how a system behaves.
 
-### What does "trustworthy" mean?
+<!-- ct319:beat -->
+## What does "trustworthy" mean?
 
 The 2019 [Ethics Guidelines for Trustworthy AI](https://digital-strategy.ec.europa.eu/en/library/ethics-guidelines-trustworthy-ai), from the Commission's High-Level Expert Group on AI, describe trustworthy AI under three headings.
 
@@ -142,7 +144,8 @@ Imagine previous employees labelled `successful` or `unsuccessful`. What does `s
 
 <!-- ct319:endfocus -->
 
-### Which features are allowed to matter?
+<!-- ct319:beat -->
+## Which features are allowed to matter?
 
 Suppose the model receives education, experience, assessment score and postcode. Even with a protected characteristic removed, another feature can correlate strongly with it. Dropping one column does not remove the possibility of unfair treatment — it removes one route to it.
 
@@ -182,7 +185,8 @@ Using every available source would not necessarily produce a better system. And 
 
 Those are not the same question, and the first one answering *yes* does not settle the second.
 
-### Data minimisation
+<!-- ct319:beat -->
+## Data minimisation
 
 Under the GDPR, **data minimisation** means personal data should be adequate, relevant and limited to what is necessary for the intended purpose — see the [Commission's guidance on GDPR principles](https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/principles-gdpr_en). The principle is deliberately restrictive, and it runs in the opposite direction to the instinct of anyone who has ever built a dataset.
 
@@ -201,7 +205,8 @@ Assessment information may be easier to justify for a stated support purpose tha
 
 Unnecessary personal information increases what can be exposed in a breach, misused, misunderstood, kept too long, combined with other records, or used for things people never expected. The cost does not sit in the model; it sits with the people in the dataset.
 
-### Removing identifiers is not anonymisation
+<!-- ct319:beat -->
+## Removing identifiers is not anonymisation
 
 This is the point most often got wrong, and it is worth being exact about.
 
@@ -248,7 +253,8 @@ If an applicant asks why they were sent for review, the tree can be walked. The 
 
 Publishing the source code answers none of those six.
 
-### Three words that are not synonyms
+<!-- ct319:beat -->
+## Three words that are not synonyms
 
 <!-- ct319:focus -->
 
@@ -272,7 +278,8 @@ These terms are used somewhat differently across the literature; this is the pra
 
 A system can produce an explanation for one prediction while being badly governed and poorly communicated overall. Explanation is one requirement, not the whole of transparency.
 
-### Explanation is not justification
+<!-- ct319:beat -->
+## Explanation is not justification
 
 Look at the fourth row of Figure 5. Suppose an explanation reports that postcode strongly influenced the decision. That tells us something true about the model. It does not tell us that postcode *should* have influenced it.
 
@@ -287,7 +294,8 @@ Look at the fourth row of Figure 5. Suppose an explanation reports that postcode
 
 An explanation can reveal a problem rather than excuse one. That is arguably the most useful thing it does.
 
-### Transparency as an obligation
+<!-- ct319:beat -->
+## Transparency as an obligation
 
 The [EU AI Act](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai) takes a risk-based approach: the obligations follow what a system is used for, not which technique it uses.
 
@@ -356,7 +364,8 @@ Now reveal how a prediction becomes an action: a risk score from 0 to 100, and a
 
 Should students know that AI is being used, what data is included, what the score is used for, whether a human reviews it, and how to challenge incorrect information? A system that affects people while hiding its own existence makes meaningful oversight impossible by construction.
 
-### Oversight
+<!-- ct319:beat -->
+## Oversight
 
 The model says `risk = 82`. Should that decide what happens next?
 
@@ -380,7 +389,8 @@ All three are called "human oversight". The question that separates real oversig
 
 A nominal human in the loop who clicks **Approve** on everything is not oversight. Ask what they can genuinely review, override or stop.
 
-### Accountability
+<!-- ct319:beat -->
+## Accountability
 
 Now suppose the system causes harm.
 
