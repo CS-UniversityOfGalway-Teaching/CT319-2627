@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 9 — Classification — CT319</title>
+<meta name="description" content="CT319 Week 9. k-nearest neighbours and decision trees on one fixed dataset — what changes when k changes, what a tree learns, and why training accuracy proves nothing on its own.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230969da'/%3E%3Cpath d='M8 8h7v4h-3v8h3v4H8zm9 0h7v16h-7v-4h3v-8h-3z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/ct319.css">
+</head>
+<body>
+<a class="skip-link" href="#beats">Skip to the teaching sections</a>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">CT319 Artificial Intelligence · Week 9 · Classification</p>
+    <h1>Week 9 — Classification</h1>
+    <p class="week-question">How can a machine decide which category a new example belongs to?</p>
+  </header>
+
+  <div class="lede">
+<p>Last week introduced learning from data and experience in general. This week narrows it to one setting — <strong>labelled examples</strong> — and one question: how do known answers become category predictions for new cases?</p>
+<div class="focus-block">
+<blockquote><p><strong>How can a machine decide which category a new example belongs to?</strong></p></blockquote>
+</div>
+<p>Everything on this page runs on one dataset, with one fixed split, one fixed pair of axes and one unknown point. Nothing else moves. That is deliberate: when the picture changes, exactly one thing caused it, and you should be able to name it.</p>
+<p>We work through five things.</p>
+<ul><li><a href="#from-examples-to-categories--what-are-we-asking-the-machine-to-learn"><strong>From examples to categories</strong></a> — what a supervised task asks for once the training examples already carry their answers.</li><li><a href="#ask-the-neighbours--how-does-knn-make-a-decision"><strong>Ask the neighbours</strong></a> — how KNN predicts by consulting the labelled examples nearest a new case.</li><li><a href="#learn-the-rules-instead--what-does-a-decision-tree-do-differently"><strong>Learn the rules instead</strong></a> — how a decision tree learns a sequence of questions rather than keeping the examples.</li><li><a href="#good-on-what-data--did-the-classifier-actually-learn"><strong>Good on what data?</strong></a> — why scoring well on the training examples establishes nothing on its own.</li><li><a href="#representation-first--what-does-the-classifier-actually-see"><strong>Representation first</strong></a> — what the algorithm actually receives once a customer, an email or a photograph becomes features.</li></ul>
+<p>Three ideas carry the page, and it is worth keeping them apart:</p>
+<div class="focus-block">
+<div class="lenses">
+<div class="lens"><span class="lens__key">Examples</span><span class="lens__gloss">the learner sees cases whose answers somebody already knows</span></div>
+<div class="lens"><span class="lens__key">Decisions</span><span class="lens__gloss">a classifier must put a new case into one of a fixed set of categories</span></div>
+<div class="lens"><span class="lens__key">Generalisation</span><span class="lens__gloss">doing well on examples it has already seen is not the question; what happens next is</span></div>
+</div>
+</div>
+<p>Two algorithms this week, and they disagree with each other on the same data. That disagreement is the lesson.</p>
+  </div>
+
+  <div class="beat-bar" data-beat-bar hidden>
+    <span class="beat-bar__label">Week 9 · Sections</span>
+    <button type="button" data-expand-all>Expand all</button>
+    <button type="button" data-collapse-all>Collapse all</button>
+  </div>
+
+  <main class="beats" id="beats">
+<details class="beat" id="from-examples-to-categories--what-are-we-asking-the-machine-to-learn"><summary><h2 class="beat__title">From examples to categories — what are we asking the machine to learn?</h2></summary><div class="beat__body"><p>Classification is a <strong>supervised learning</strong> task, which means the training examples arrive with their answers attached.</p>
+<p>Suppose we have a set of previous customers, and we already know whether each one repaid a loan.</p>
+<div class="table-scroll"><table><thead><tr><th class="num">Income (€k)</th><th class="num">Savings (€k)</th><th>Repaid?</th></tr></thead><tbody><tr><td class="num">31</td><td class="num">4</td><td>No</td></tr><tr><td class="num">36</td><td class="num">7</td><td>No</td></tr><tr><td class="num">48</td><td class="num">14</td><td>Yes</td></tr><tr><td class="num">55</td><td class="num">18</td><td>Yes</td></tr><tr><td class="num">63</td><td class="num">24</td><td>Yes</td></tr></tbody></table></div>
+<p>Each row is an <strong>example</strong>. <code>Income</code> and <code>Savings</code> are <strong>features</strong> — the measurements we chose to represent each case. <code>Repaid?</code> is the <strong>class label</strong>, the answer we want predicted.</p>
+<p>Now a new customer arrives, and the one column that matters is empty.</p>
+<div class="table-scroll"><table><thead><tr><th class="num">Income (€k)</th><th class="num">Savings (€k)</th><th>Repaid?</th></tr></thead><tbody><tr><td class="num">46</td><td class="num">12</td><td><strong>?</strong></td></tr></tbody></table></div>
+<p>The classifier does not know the answer. That is the entire point — it has to use what the previous examples taught it.</p>
+<div class="focus-block">
+<blockquote><p><strong>Given the features of a new example, predict its class.</strong></p></blockquote>
+</div>
+<h3 id="binary-and-multiclass">Binary and multiclass</h3>
+<p>Sometimes there are exactly two possible classes — spam or not spam, fraud or not fraud, approve or reject. That is <strong>binary classification</strong>. Sometimes there are more — cat, dog or rabbit; red, amber or green. That is <strong>multiclass classification</strong>. The structure is identical either way; only the size of the answer set changes.</p>
+<h3 id="the-dataset-everything-else-runs-on">The dataset everything else runs on</h3>
+<p>The loan table gives us the vocabulary. For the live experiments we switch to one deterministic two-dimensional dataset, so that the geometry is visible on a screen.</p>
+<pre data-lang="python"><code class="language-python">make_moons(n_samples=140, noise=0.23, random_state=2)</code></pre>
+<p>140 points, two numerical features on comparable scales, every point labelled <code>A</code> or <code>B</code>, and one diamond marking the unknown point at <code>[-0.4, 0.15]</code>.</p>
+<div class="focus-block">
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-09/data.svg" alt="140 labelled points in two interleaving crescents, with an unknown diamond at minus 0.4, 0.15" loading="lazy" decoding="async"><figcaption>Figure 1. The whole week on one pair of axes. Solid circles are training examples, hollow circles are the held-back test examples, and the diamond is the unknown point. Plot created for these pages by the classification demonstration; no external image licence is used.</figcaption></figure>
+<blockquote><p><strong>Which class would you give the diamond — and what evidence did you just use?</strong></p></blockquote>
+</div>
+<p>Answer that before any model runs. Then ask what, exactly, your eye was doing. That turns out to be most of this week.</p>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Everything from here changes one thing at a time against that picture: first how many neighbours get consulted, then which algorithm is doing the consulting, then how much of the data it was allowed to see.</p></div></details>
+<details class="beat" id="ask-the-neighbours--how-does-knn-make-a-decision"><summary><h2 class="beat__title">Ask the neighbours — how does KNN make a decision?</h2></summary><div class="beat__body"><p><strong>k-nearest neighbours</strong>, written <strong>KNN</strong>, makes a prediction by looking at the labelled examples nearest the new one. That is the whole idea, and it is deliberately unambitious: find the nearby examples, look at their classes, count the votes.</p>
+<div class="focus-block">
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-09/knn-vote.svg" alt="An unknown point with a dashed circle around its three nearest neighbours, two of class A and one of class B" loading="lazy" decoding="async"><figcaption>Figure 2. With <code>k = 3</code>, three labelled examples vote and the rest take no part. Two of them are A, so the prediction is A. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+</div>
+<p>No rule book was written in advance. The decision comes from whichever labelled examples happen to lie nearest.</p>
+<h3 id="what-does-nearest-mean">What does <em>nearest</em> mean?</h3>
+<p>The examples have to be represented as features first. If both features are numerical, each example becomes a point, and KNN needs a way to measure the distance between points. For two-dimensional numerical data the familiar choice is <strong>Euclidean distance</strong> — ordinary straight-line distance.</p>
+<p>We do not need to do that arithmetic by hand. The consequence is what matters:</p>
+<div class="focus-block">
+<blockquote><p><strong>KNN relies on the geometry of the representation we chose.</strong></p></blockquote>
+</div>
+<p>Two examples that are close in feature space are treated as similar. Which creates a design problem immediately.</p>
+<h3 id="is-distance-always-meaningful">Is distance always meaningful?</h3>
+<p>Suppose a customer is represented as <code>age = 37</code> and <code>income = 75000</code>. The numerical scale of income is enormously larger than the scale of age, so a distance calculation is dominated by income — not because income matters more, but because of the units somebody picked.</p>
+<div class="focus-block">
+<blockquote><p><strong>A distance can be dominated by one feature simply because of the units it was recorded in.</strong></p></blockquote>
+</div>
+<p>Today's dataset deliberately keeps both feature scales comparable, so that this effect is held still while we vary something else. In a real problem it is not held still, and scaling becomes part of the representation decision.</p>
+<h3 id="what-does-k-change">What does <code>k</code> change?</h3>
+<p><code>k</code> is how many neighbours get consulted. With <code>k = 1</code> a single nearby example decides. With <code>k = 15</code>, fifteen of them vote and a much larger region influences the answer.</p>
+<p>Before running anything:</p>
+<div class="focus-block">
+<blockquote><p><strong>Will changing <code>k</code> leave the prediction unchanged?</strong></p></blockquote>
+</div>
+<p>The scikit-learn version is three lines, and it is not the interesting part:</p>
+<pre data-lang="python"><code class="language-python">from sklearn.neighbors import KNeighborsClassifier
+
+model = KNeighborsClassifier(n_neighbors=3)
+model.fit(X_train, y_train)
+prediction = model.predict(X_new)</code></pre>
+<p>The behaviour is the interesting part. Same data, same split, same axes, same diamond — change only <code>k</code>.</p>
+<div class="focus-block">
+<div class="table-scroll"><table><thead><tr><th><code>k = 1</code> — one example decides</th><th><code>k = 3</code> — three vote</th></tr></thead><tbody><tr><td><img src="../../media/week-09/knn-k1.svg" alt="KNN decision boundary with k equals 1, highly fragmented"></td><td><img src="../../media/week-09/knn-k3.svg" alt="KNN decision boundary with k equals 3, smoother"></td></tr><tr><td>Training <strong>100.0%</strong>, test <strong>81.0%</strong>. Diamond → <strong>A</strong></td><td>Training <strong>93.9%</strong>, test <strong>92.9%</strong>. Diamond → <strong>A</strong></td></tr></tbody></table></div>
+<p class="standalone-caption"><sub><em>Figure 3. At <code>k = 1</code> every training example gets its own small territory, which is why training accuracy is perfect and test accuracy is the worst of the four. Plots created for these pages by the classification demonstration; no external image licence is used.</em></sub></p>
+</div>
+<div class="focus-block">
+<div class="table-scroll"><table><thead><tr><th><code>k = 9</code></th><th><code>k = 15</code></th></tr></thead><tbody><tr><td><img src="../../media/week-09/knn-k9.svg" alt="KNN decision boundary with k equals 9"></td><td><img src="../../media/week-09/knn-k15.svg" alt="KNN decision boundary with k equals 15"></td></tr><tr><td>Training <strong>93.9%</strong>, test <strong>95.2%</strong>. Diamond → <strong>B</strong></td><td>Training <strong>93.9%</strong>, test <strong>95.2%</strong>. Diamond → <strong>B</strong></td></tr></tbody></table></div>
+<p class="standalone-caption"><sub><em>Figure 4. Somewhere between <code>k = 3</code> and <code>k = 9</code> the diamond changes class. Nothing about the diamond changed — only how many examples were allowed to speak about it. Plots created for these pages by the classification demonstration; no external image licence is used.</em></sub></p>
+</div>
+<p>Read the two tables together:</p>
+<div class="table-scroll"><table><thead><tr><th class="num"><code>k</code></th><th class="num">Training accuracy</th><th class="num">Test accuracy</th><th>Diamond</th></tr></thead><tbody><tr><td class="num">1</td><td class="num">100.0%</td><td class="num">81.0%</td><td>A</td></tr><tr><td class="num">3</td><td class="num">93.9%</td><td class="num">92.9%</td><td>A</td></tr><tr><td class="num">9</td><td class="num">93.9%</td><td class="num">95.2%</td><td><strong>B</strong></td></tr><tr><td class="num">15</td><td class="num">93.9%</td><td class="num">95.2%</td><td>B</td></tr></tbody></table></div>
+<p>A very small <code>k</code> makes the classifier hypersensitive to individual examples. A larger <code>k</code> smooths that out — but larger is not automatically better, because eventually examples that are nowhere near the new point are influencing what should have been a local decision.</p>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>The score is part of the evidence; the picture is the experiment. Ask where the decision region moved, and which examples now reach the diamond. The number alone will not tell you that the answer flipped.</p></div></details>
+<details class="beat" id="learn-the-rules-instead--what-does-a-decision-tree-do-differently"><summary><h2 class="beat__title">Learn the rules instead — what does a decision tree do differently?</h2></summary><div class="beat__body"><p>KNN keeps the training examples and consults them when a new case arrives. That is not the only option. A <strong>decision tree</strong> instead learns a sequence of questions during training, and afterwards just follows them.</p>
+<div class="focus-block">
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-09/decision-tree-rules.svg" alt="A tree that asks whether income exceeds 45, then whether savings exceed 10, reaching high or low risk" loading="lazy" decoding="async"><figcaption>Figure 5. A new example enters at the top and follows branches until it reaches a prediction. Nobody wrote the thresholds — the algorithm searched the training data for splits that separate the classes. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+</div>
+<h3 id="lazy-and-eager-learning">Lazy and eager learning</h3>
+<p>The classical terminology for that difference is <strong>lazy</strong> against <strong>eager</strong> learning.</p>
+<div class="focus-block">
+<div class="lenses lenses--pair">
+<div class="lens"><span class="lens__key">KNN · lazy</span><span class="lens__gloss">stores the training examples and delays the work until a prediction is requested</span></div>
+<div class="lens"><span class="lens__key">Decision tree · eager</span><span class="lens__gloss">builds a model during training, then uses that model and not the examples</span></div>
+</div>
+</div>
+<p>Neither label means better. They describe <em>when</em> the work happens, and what has to be kept around afterwards.</p>
+<h3 id="what-if-we-let-the-tree-keep-growing">What if we let the tree keep growing?</h3>
+<p>A shallow tree gets most training examples right. Allow more branches and it can start writing very specific rules that deal with individual training examples. Training accuracy improves. Is that good?</p>
+<p>No — and this is the Week 8 distinction arriving with evidence attached:</p>
+<div class="focus-block">
+<blockquote><p><strong>Learning is not remembering.</strong></p></blockquote>
+</div>
+<p>The second classifier is the same three lines with one word changed, which is the point: the data stays put, the learning algorithm moves.</p>
+<pre data-lang="python"><code class="language-python">from sklearn.tree import DecisionTreeClassifier
+
+model = DecisionTreeClassifier(max_depth=2, random_state=42)
+model.fit(X_train, y_train)
+prediction = model.predict(X_new)</code></pre>
+<div class="focus-block">
+<div class="table-scroll"><table><thead><tr><th><code>max_depth = 2</code> — 7 nodes, 4 leaves</th><th><code>max_depth = 5</code> — 23 nodes, 12 leaves</th></tr></thead><tbody><tr><td><img src="../../media/week-09/tree-depth-2.svg" alt="Decision tree boundary at depth 2, four rectangular regions"></td><td><img src="../../media/week-09/tree-depth-5.svg" alt="Decision tree boundary at depth 5, twelve regions"></td></tr><tr><td>Training <strong>90.8%</strong>, test <strong>90.5%</strong></td><td>Training <strong>96.9%</strong>, test <strong>85.7%</strong></td></tr></tbody></table></div>
+<p class="standalone-caption"><sub><em>Figure 6. Deeper means more regions, and the regions are axis-aligned rectangles — a tree can only cut straight across one feature at a time. Training accuracy rises by six points while test accuracy falls by five. Plots created for these pages by the classification demonstration; no external image licence is used.</em></sub></p>
+</div>
+<p>Now remove the limit entirely.</p>
+<div class="focus-block">
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-09/tree-depth-unrestricted.svg" alt="Decision tree boundary with no depth limit, fragmented into seventeen regions including slivers" loading="lazy" decoding="async"><figcaption>Figure 7. Unrestricted: 33 nodes, 17 leaves, <strong>100.0%</strong> on the training examples and <strong>76.2%</strong> on the held-back ones — the worst of the three. Several of those regions exist to accommodate a single training point. Plot created for these pages by the classification demonstration; no external image licence is used.</figcaption></figure>
+</div>
+<h3 id="if-the-data-are-identical-why-do-the-models-disagree">If the data are identical, why do the models disagree?</h3>
+<p>They disagree because they assume different things about how useful structure should be extracted. KNN assumes nearby examples are similar. A tree assumes the classes can be separated by cuts across one feature at a time.</p>
+<p>The dataset does not uniquely determine one model. It never did.</p>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Two algorithms, one dataset, two different answers — and neither of them is reading the data wrongly. The choice of learner is a modelling decision, exactly like the choice of representation in Week 2.</p></div></details>
+<details class="beat" id="good-on-what-data--did-the-classifier-actually-learn"><summary><h2 class="beat__title">Good on what data? — did the classifier actually learn?</h2></summary><div class="beat__body"><p>Train a classifier on 100 examples, then ask it to predict those same 100. It gets all of them right.</p>
+<div class="focus-block">
+<blockquote><p><strong>Those are the examples it learned from. Repeating them is not evidence of anything.</strong></p></blockquote>
+</div>
+<p>The useful question is what happens on examples it did not see during training — which means arranging, in advance, for some to exist.</p>
+<h3 id="training-data-and-test-data">Training data and test data</h3>
+<p>The standard move is to hold some labelled examples back before any learning happens.</p>
+<div class="focus-block">
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-09/train-test-split.svg" alt="140 labelled examples split into 98 for training and 42 kept unseen for testing" loading="lazy" decoding="async"><figcaption>Figure 8. The split used by every figure on this page. Stratified, so the class proportions survive into both parts. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+</div>
+<pre data-lang="python"><code class="language-python">from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.30, random_state=42, stratify=y
+)</code></pre>
+<p><code>random_state=42</code> makes the split reproducible, so the same figures come back every time. <code>stratify=y</code> preserves the class proportions. With 140 examples that gives 98 for training and 42 held back.</p>
+<div class="focus-block">
+<blockquote><p><strong>Keep some evidence outside the training process.</strong></p></blockquote>
+</div>
+<p>Train on everything and you have no clean check left. The result then looks good for a reason that has nothing to do with the model being any good.</p>
+<h3 id="overfitting-measured">Overfitting, measured</h3>
+<p>A model <strong>overfits</strong> when it fits its training data so closely that performance on new data suffers. On this dataset the pattern is not subtle:</p>
+<div class="table-scroll"><table><thead><tr><th>Decision tree</th><th class="num">Nodes</th><th class="num">Leaves</th><th class="num">Training</th><th class="num">Test</th></tr></thead><tbody><tr><td><code>max_depth=2</code></td><td class="num">7</td><td class="num">4</td><td class="num">90.8%</td><td class="num"><strong>90.5%</strong></td></tr><tr><td><code>max_depth=5</code></td><td class="num">23</td><td class="num">12</td><td class="num">96.9%</td><td class="num">85.7%</td></tr><tr><td>unrestricted</td><td class="num">33</td><td class="num">17</td><td class="num"><strong>100.0%</strong></td><td class="num"><strong>76.2%</strong></td></tr></tbody></table></div>
+<p>Training accuracy climbs all the way to perfect. Test accuracy falls the whole way down. The model that memorised every training label is the worst of the three at the only job that matters.</p>
+<div class="focus-block">
+<figure class="figure--wide"><img class="figure__img" src="../../media/week-09/compare.svg" alt="KNN and decision tree results side by side on the same dataset and split" loading="lazy" decoding="async"><figcaption>Figure 9. All of it on one screen. The setting with the best training score and the setting with the best test score are not the same setting. Plot created for these pages by the classification demonstration; no external image licence is used.</figcaption></figure>
+</div>
+<h3 id="accuracy-and-where-it-goes-blind">Accuracy, and where it goes blind</h3>
+<p>For a simple problem the obvious measure is <strong>accuracy</strong>: what proportion of predictions were correct? 18 of 20 test examples is 90%. Useful — but not the whole story.</p>
+<p>Imagine detecting something rare, where 99 of every 100 examples belong to the same class. A system that always predicts the majority class scores <strong>99%</strong> accuracy while detecting <strong>none</strong> of the events anyone cares about.</p>
+<div class="focus-block">
+<blockquote><p><strong>Accuracy is a useful starting measure, not a definition of a good classifier. The evaluation has to match the problem.</strong></p></blockquote>
+</div>
+<p>We are not turning this week into a catalogue of metrics. The habit is what carries forward.</p>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Three numbers now exist for every model: a training score, a test score, and the gap between them. The gap is the one that says something.</p></div></details>
+<details class="beat" id="representation-first--what-does-the-classifier-actually-see"><summary><h2 class="beat__title">Representation first — what does the classifier actually see?</h2></summary><div class="beat__body"><p>There is a problem sitting underneath every classifier on this page. The algorithm does not see a customer, an email, a photograph or a patient.</p>
+<div class="focus-block">
+<blockquote><p><strong>It sees the representation we gave it — and nothing else.</strong></p></blockquote>
+</div>
+<p>Which takes us straight back to Week 2.</p>
+<h3 id="an-email-is-not-a-feature-vector">An email is not a feature vector</h3>
+<p>Suppose the message is <em>FREE tickets available in Galway tomorrow</em>. A classical classifier cannot work with the meaning of that sentence. It needs something countable first.</p>
+<div class="focus-block">
+<figure class="figure--hero"><img class="figure__img" src="../../media/week-09/bag-of-words.svg" alt="A message turned into word counts, and the pair good and not good colliding under those counts" loading="lazy" decoding="async"><figcaption>Figure 10. A <strong>bag-of-words</strong> representation records which words appear and largely discards their order. That works surprisingly well for some tasks — and fails exactly where order carries the meaning. Diagram created for these pages; no external image licence is used.</figcaption></figure>
+</div>
+<p><code>good</code> and <code>not good</code> both contain <code>good</code>, so counting words alone cannot tell a recommendation from its opposite. One response is to count short sequences of neighbouring words as features too: <code>"not good"</code> is a <strong>bigram</strong>, and sequences of neighbouring terms in general are <strong>n-grams</strong>.</p>
+<p>We are not building a text classifier today. The point is more fundamental than any particular fix:</p>
+<div class="focus-block">
+<blockquote><p><strong>Changing the representation changes what the classifier is capable of learning — before any algorithm has been chosen.</strong></p></blockquote>
+</div>
+<h3 id="similarity-changes-too">Similarity changes too</h3>
+<p>For some representations, ordinary Euclidean distance is not the most useful notion of similarity. Text as word counts is usually sparse — most entries are zero — and measures such as <strong>cosine similarity</strong> compare the direction of those vectors rather than the straight-line distance between them.</p>
+<p>The formula is not today's target. The design question is:</p>
+<div class="focus-block">
+<blockquote><p><strong>What should count as similar for this problem?</strong></p></blockquote>
+</div>
+<p>That is not a question the classifier can answer, because the answer is built into the representation before the classifier ever runs.</p>
+<h3 id="why-this-matters-this-week">Why this matters this week</h3>
+<p>Week 2 made us decide what a state was, what actions existed, and what counted as a goal. Machine learning does not take that responsibility away. For classification we still decide what an example is, which features represent it, what the labels mean, which data get used for learning, and how success is measured. The algorithm works inside those choices — all of them ours.</p></div></details>
+  </main>
+
+  <div class="tail">
+<h2 id="the-classification-demo">The classification demo</h2>
+<p>📦 <strong><a href="https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-09/classification_demo.py"><code>classification_demo.py</code></a></strong> — every figure on this page, as a sequence you can step through.</p>
+<pre data-lang="sh"><code class="language-sh">python -m pip install numpy matplotlib scikit-learn
+python experiments/week-09/classification_demo.py</code></pre>
+<p>Press <strong>Space</strong>, the <strong>right arrow</strong> or <strong>Next →</strong> to advance. Each stage carries its own prompt and measured result on the figure, and the dataset, split, axes and unknown point never move.</p>
+<h3 id="try-it-yourself">Try it yourself</h3>
+<ol><li>Open <code>--mode data</code> and predict the diamond's class by eye. Say what evidence you used.</li><li>Step <code>--mode knn --k 1</code>, then <code>3</code>, then <code>9</code>, then <code>15</code>. Predict the boundary before each one.</li><li>Find where the diamond changes class, and name the examples responsible.</li><li>Switch to <code>--mode tree --depth 2</code>, then <code>5</code>, then <code>none</code>. Predict whether test accuracy will follow training accuracy up.</li><li>Finish on <code>--mode compare</code> and pick out three things: the setting that memorised every training example, the setting with the best test score, and why training accuracy cannot tell you which is which.</li></ol>
+<p>To regenerate every figure on this page without opening a window:</p>
+<pre data-lang="sh"><code class="language-sh">python experiments/week-09/classification_demo.py --save-dir media/week-09</code></pre>
+<hr>
+<h2 id="before-week-10">Before Week 10</h2>
+<p>Every classifier this week learned from examples that arrived with a correct label attached. Somebody had already done the hard part.</p>
+<div class="focus-block">
+<blockquote><p><strong>What happens when nobody gives us the labels?</strong></p></blockquote>
+</div>
+<p>That is where Week 10 begins: <strong>clustering</strong>.</p>
+<hr>
+<h2 id="quick-revision">Quick revision</h2>
+<p>If you can answer these without reopening the page, you have the core of this week.</p>
+<ol><li><strong>[WK-09-01]</strong> What makes classification a supervised task, and what does the learner receive that an unsupervised one does not?</li><li>What is the difference between binary and multiclass classification, and what stays the same?</li><li><strong>[WK-09-02]</strong> How does KNN reach a prediction, and what does <code>k</code> control?</li><li>Why can changing <code>k</code> alone change the predicted class of a point that has not moved?</li><li>Why does feature scale matter to KNN but not to a decision tree?</li><li><strong>[WK-09-03]</strong> What does a decision tree learn during training, and what does it keep afterwards?</li><li>What do “lazy” and “eager” describe, and why is neither one better?</li><li><strong>[WK-09-04]</strong> Why does 100% on the training examples establish nothing, and what would establish something?</li><li>Why does test accuracy fall as the tree is allowed to grow, while training accuracy rises?</li><li>Give a case where 99% accuracy is evidence of a useless classifier.</li><li><strong>[WK-09-05]</strong> Why can a bag-of-words representation not separate “good” from “not good”, and what fixes it?</li><li>Name three decisions a classifier cannot make for you.</li></ol>
+<hr>
+<h2 id="sources-and-licensing-notes">Sources and licensing notes</h2>
+<h3 id="ct319-source-material">CT319 source material</h3>
+<p>This week follows selected material from the formal CT319 <em>Classification</em> material on Canvas, which remains the broader reference. These pages do not reproduce every slide; they develop a smaller number of points in more depth.</p>
+<p>The page concentrates on classification as a supervised task; k-nearest neighbours as a decision reached by consulting nearby labelled examples; the effect of <code>k</code> on both the decision boundary and one individual prediction; decision trees as a learned sequence of questions, and the effect of depth; training accuracy against held-out accuracy, and why the first alone establishes nothing; the blind spot in accuracy when one class is rare; and representation — features, numerical scale, and what the classifier actually receives.</p>
+<h3 id="continuity-from-week-8">Continuity from Week 8</h3>
+<p>Week 8 used <code>KNeighborsClassifier</code> only to expose the scikit-learn workflow of <code>fit(...)</code> followed by prediction. This week teaches k-nearest neighbours in its own right, adds decision trees, and turns Week 8's remarks about generalisation and overfitting into a measured train/test comparison.</p>
+<h3 id="examples-and-measured-values">Examples and measured values</h3>
+<p>One fixed dataset and one fixed split serve every stage, so each visible change is attributable to the classifier or parameter that changed:</p>
+<pre data-lang="python"><code class="language-python">make_moons(n_samples=140, noise=0.23, random_state=2)
+train_test_split(test_size=0.30, random_state=42, stratify=y)</code></pre>
+<p>Because the dataset, the split and the estimators are all seeded, every accuracy, node count and leaf count quoted here is <strong>reproducible rather than illustrative</strong>. They were last regenerated with scikit-learn 1.9.1, matplotlib 3.11.2 and NumPy 2.5.3 on <strong>5 October 2026</strong>, by the script in this repository.</p>
+<p>The loan table in the first highlight is a vocabulary example only, and no model is fitted to it.</p>
+<h3 id="figures">Figures</h3>
+<p>Figures 1–10 were <strong>created for these pages</strong>. They use no external image licence.</p>
+<ul><li>Figures 2, 5, 8 and 10 are original diagrams.</li><li>Figures 1, 3, 4, 6, 7 and 9 are plots generated by the demonstration script from the fixed dataset above. Every value printed on them is computed, not transcribed.</li></ul>
+<p>No external images, videos, papers or interactives are used.</p>
+<h3 id="software">Software</h3>
+<ul><li>📦 <a href="https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-09/classification_demo.py"><strong><code>classification_demo.py</code></strong></a> — written for this module. Requires <code>numpy</code>, <code>matplotlib</code> and <code>scikit-learn</code>; nothing is downloaded at run time.</li><li>scikit-learn User Guide — <a href="https://scikit-learn.org/stable/modules/neighbors.html">nearest neighbours</a> · <a href="https://scikit-learn.org/stable/modules/tree.html">decision trees</a></li><li>scikit-learn reference — <a href="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html"><code>KNeighborsClassifier</code></a> · <a href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html"><code>DecisionTreeClassifier</code></a> · <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html"><code>train_test_split</code></a> · <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_moons.html"><code>make_moons</code></a></li></ul>
+<p>scikit-learn and NumPy are distributed under the BSD 3-Clause licence, and matplotlib under the Python Software Foundation licence. They are used here as tools; no library code is reproduced on these pages.</p>
+  </div>
+
+  <footer class="page-footer">
+    <p>
+      CT319 Artificial Intelligence · University of Galway ·
+      <a href="../../">Module pages</a> ·
+      <a href="https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/weeks/week-09.md">Markdown source</a> ·
+      <a href="?open=all">Open every section</a>
+    </p>
+    <p>Formal slides and notes are on Canvas. These pages are the companion material.</p>
+  </footer>
+
+</div>
+
+<script src="../../assets/ct319.js" defer></script>
+</body>
+</html>

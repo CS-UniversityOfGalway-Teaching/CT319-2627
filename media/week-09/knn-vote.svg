@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" role="img" aria-labelledby="t d">
+  <title id="t">With k = 3, the three nearest labelled examples vote</title>
+  <desc id="d">An unknown point sits among labelled examples. A dashed circle encloses its three nearest neighbours: two belong to class A and one to class B. The majority vote is two to one, so the prediction is A. Examples outside the circle take no part in the decision.</desc>
+  <style>
+    :root { --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --b:#a34400; --good:#1a7f37; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --b:#db8a2a; --good:#3fb950; } }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .cap  { font-size:12px; font-weight:700; letter-spacing:1.1px; fill:var(--muted); }
+    .row  { font-size:17px; font-weight:700; }
+    .note { font-size:13.5px; fill:var(--muted); }
+    .pt   { stroke:var(--bg); stroke-width:2; }
+    .ring { fill:none; stroke:var(--accent); stroke-width:2.2; stroke-dasharray:8 6; }
+    .far  { opacity:0.32; }
+  </style>
+  <rect width="960" height="420" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="40">ONLY THE NEAREST k EXAMPLES GET A VOTE</text>
+
+  <rect x="30" y="58" width="570" height="302" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
+
+  <circle class="ring" cx="300" cy="215" r="95"/>
+
+  <circle class="pt far" cx="120" cy="115" r="10" fill="var(--accent)"/>
+  <circle class="pt far" cx="160" cy="305" r="10" fill="var(--accent)"/>
+  <circle class="pt far" cx="470" cy="145" r="10" fill="var(--b)"/>
+  <circle class="pt far" cx="520" cy="275" r="10" fill="var(--b)"/>
+  <circle class="pt far" cx="430" cy="325" r="10" fill="var(--b)"/>
+
+  <circle class="pt" cx="235" cy="160" r="11" fill="var(--accent)"/>
+  <circle class="pt" cx="350" cy="155" r="11" fill="var(--accent)"/>
+  <circle class="pt" cx="320" cy="295" r="11" fill="var(--b)"/>
+
+  <path d="M300 201 L314 215 L300 229 L286 215 Z" fill="var(--bg)" stroke="var(--fg)" stroke-width="2.6"/>
+  <text class="cap" x="300" y="188" text-anchor="middle">UNKNOWN</text>
+  <text class="cap" x="300" y="336" text-anchor="middle" fill="var(--accent)">k = 3</text>
+
+  <rect x="640" y="58" width="290" height="302" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
+  <text class="cap" x="666" y="90">INSIDE THE CIRCLE</text>
+
+  <circle class="pt" cx="680" cy="138" r="11" fill="var(--accent)"/>
+  <text class="row" x="706" y="144">class A</text>
+  <text class="row" x="890" y="144" text-anchor="end">2 votes</text>
+
+  <circle class="pt" cx="680" cy="188" r="11" fill="var(--b)"/>
+  <text class="row" x="706" y="194">class B</text>
+  <text class="row" x="890" y="194" text-anchor="end">1 vote</text>
+
+  <line x1="666" y1="224" x2="904" y2="224" stroke="var(--line)" stroke-width="2"/>
+  <text class="cap" x="666" y="256">MAJORITY</text>
+  <text class="row" x="666" y="296" fill="var(--good)" style="font-size:30px">PREDICT A</text>
+  <text class="note" x="666" y="330">The five fainter points are too far to count.</text>
+
+  <text class="note" x="30" y="396">No rule was written in advance. The answer comes from whichever labelled examples happen to lie nearest the new point &#8212; so changing k changes who gets to speak.</text>
+</svg>

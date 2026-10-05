@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="430" viewBox="0 0 1040 430" role="img" aria-labelledby="t d">
+  <title id="t">A message has to become numbers before a classifier can touch it</title>
+  <desc id="d">On the left, a message is turned into word counts, so free, tickets, galway and tomorrow are one and invoice and meeting are zero. On the right, the phrases good and not good both contain good, so counting words alone cannot tell them apart; adding the pair not good as a single feature restores the difference.</desc>
+  <style>
+    :root { --bg:#ffffff; --fg:#1f2328; --muted:#57606a; --line:#d0d7de;
+      --accent:#0969da; --panel:#f6f8fa; --good:#1a7f37; --warn:#9a6700; --warnbg:#fff8c5; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d;
+        --accent:#58a6ff; --panel:#161b22; --good:#3fb950; --warn:#d29922; --warnbg:#2d2200; } }
+    text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; fill:var(--fg); }
+    .lab  { font-size:14px; font-weight:700; letter-spacing:1.4px; fill:var(--accent); }
+    .cap  { font-size:12px; font-weight:700; letter-spacing:1.1px; fill:var(--muted); }
+    .msg  { font-size:17px; font-weight:700; }
+    .mono { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:15px; }
+    .zero { fill:var(--muted); }
+    .note { font-size:13.5px; fill:var(--muted); }
+    .arr  { stroke:var(--muted); stroke-width:2.4; fill:none; marker-end:url(#a); }
+  </style>
+  <rect width="1040" height="430" rx="18" fill="var(--bg)"/>
+  <text class="lab" x="30" y="40">THE CLASSIFIER NEVER SEES THE EMAIL &#183; IT SEES WHAT WE COUNTED</text>
+
+  <rect x="30" y="62" width="470" height="300" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
+  <text class="cap" x="56" y="92">THE MESSAGE</text>
+  <rect x="56" y="106" width="418" height="44" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="2"/>
+  <text class="msg" x="74" y="134">FREE tickets available in Galway tomorrow</text>
+
+  <path class="arr" d="M265 158 V186"/>
+
+  <text class="cap" x="56" y="208">WHAT THE LEARNER RECEIVES</text>
+  <text class="mono" x="74"  y="240">free</text>      <text class="mono" x="240" y="240">1</text>
+  <text class="mono" x="74"  y="266">tickets</text>   <text class="mono" x="240" y="266">1</text>
+  <text class="mono" x="74"  y="292">galway</text>    <text class="mono" x="240" y="292">1</text>
+  <text class="mono" x="286" y="240">tomorrow</text>  <text class="mono" x="452" y="240">1</text>
+  <text class="mono zero" x="286" y="266">invoice</text>  <text class="mono zero" x="452" y="266">0</text>
+  <text class="mono zero" x="286" y="292">meeting</text>  <text class="mono zero" x="452" y="292">0</text>
+  <text class="note" x="56" y="334">Order is gone. Meaning is gone. Six numbers remain.</text>
+
+  <rect x="530" y="62" width="480" height="300" rx="12" fill="var(--warnbg)" stroke="var(--warn)" stroke-width="2.2"/>
+  <text class="cap" x="556" y="92" fill="var(--warn)">AND THAT IS A PROBLEM</text>
+
+  <text class="msg" x="556" y="130">good</text>
+  <text class="mono" x="700" y="130">good 1</text>
+
+  <text class="msg" x="556" y="166">not good</text>
+  <text class="mono" x="700" y="166">good 1 &#183; not 1</text>
+
+  <text class="note" x="556" y="200">Both contain good. Counting words alone cannot separate</text>
+  <text class="note" x="556" y="222">a recommendation from its opposite.</text>
+
+  <line x1="556" y1="244" x2="984" y2="244" stroke="var(--warn)" stroke-width="1.6" stroke-dasharray="6 5"/>
+
+  <text class="cap" x="556" y="274">ONE FIX</text>
+  <text class="mono" x="556" y="306">"not good"</text>
+  <text class="note" x="700" y="306">&#8212; count the pair as one feature</text>
+  <text class="note" x="556" y="334">A sequence of neighbouring terms is an n-gram; two of them, a bigram.</text>
+
+  <text class="note" x="30" y="406">Changing the representation changes what the classifier is capable of learning &#8212; before any algorithm has been chosen.</text>
+
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/>
+    </marker>
+  </defs>
+</svg>
