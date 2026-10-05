@@ -17,7 +17,7 @@ This week changes the question. Instead of asking *how should the machine search
 
 <!-- ct319:endfocus -->
 
-That is the starting point for **machine learning**. The formal CT319 material introduces the transition through data analytics, the growth of available data, the different kinds of learning, and a worked loan-approval example.
+That is the starting point for **machine learning**. The formal material introduces the transition through data analytics, the growth of available data, the different kinds of learning, and a worked loan-approval example.
 
 We work through five things.
 
@@ -87,9 +87,10 @@ The change that matters is this:
 
 That does **not** mean the computer has been given no rules. We still decide what problem we are solving, what data to collect, how to represent it, which learning algorithm to use, what counts as success, and when the resulting model is safe or useful enough to put in front of anyone. Machine learning changes the *source* of some behaviour. It does not remove engineering judgement.
 
-### Search and learning are different questions
+<!-- ct319:beat -->
+## Search and learning are different questions
 
-The first half of CT319 asked us to specify how a machine explores possibilities: BFS expands the oldest frontier state, hill climbing moves to a better neighbour, a Genetic Algorithm selects, recombines and mutates a population. Every one of those rules came from us.
+The first half of this module asked us to specify how a machine explores possibilities: BFS expands the oldest frontier state, hill climbing moves to a better neighbour, a Genetic Algorithm selects, recombines and mutates a population. Every one of those rules came from us.
 
 <!-- ct319:focus -->
 
@@ -102,7 +103,8 @@ The first half of CT319 asked us to specify how a machine explores possibilities
 
 The boundary is not absolute. Learning algorithms use optimisation internally, and search methods appear inside larger learning systems. For this part of the module the useful distinction is simpler: **search asks how to explore possible solutions; machine learning asks how behaviour can improve from data or experience.**
 
-### AI, machine learning and deep learning
+<!-- ct319:beat -->
+## AI, machine learning and deep learning
 
 The formal material also separates three terms that get used as if they were interchangeable.
 
@@ -118,7 +120,8 @@ The formal material also separates three terms that get used as if they were int
 
 That last relationship matters here, because it is easy to forget: Weeks 2 to 6 were AI too.
 
-### Why did machine learning become so prominent?
+<!-- ct319:beat -->
+## Why did machine learning become so prominent?
 
 One reason is the sheer amount and variety of data ordinary systems now produce — transactions, sensors, websites, mobile devices, images and video, text, location traces, industrial equipment, scientific instruments. The formal material introduces this through **Big Data**, and the useful idea is not "big data means lots of rows". The familiar "Vs" each name a different pressure:
 
@@ -182,7 +185,8 @@ The formal material draws four useful contrasts.
 
 Those categories overlap: a time series is usually made of numerical measurements. Images, audio and graphs need representations too. Week 2's question has not gone anywhere — **what must we record for this task?**
 
-### Raw data is rarely ready to learn from
+<!-- ct319:beat -->
+## Raw data is rarely ready to learn from
 
 Go back to the loan table. `€35k` and `35000` may mean the same income. `N/A` is missing information, not zero. Duplicated applications and wrong dates quietly distort the evidence.
 
@@ -198,7 +202,8 @@ The formal lecture presents a fuller data-analysis lifecycle based on CRISP-DM a
 
 <!-- ct319:endfocus -->
 
-### Is an available feature an appropriate feature?
+<!-- ct319:beat -->
+## Is an available feature an appropriate feature?
 
 The loan example raises a question worth sitting with. A lender may hold shopping history, location traces, phone records or social-media activity alongside the financial information.
 
@@ -218,7 +223,8 @@ Four things are worth checking: **relevance** to the question being asked, **qua
 
 Keep that principle here; the broader ethical treatment returns later in the module.
 
-### The tool landscape
+<!-- ct319:beat -->
+## The tool landscape
 
 The formal lecture introduces several tools with different jobs.
 
@@ -231,9 +237,11 @@ The formal lecture introduces several tools with different jobs.
 | **Weka** | GUI-based experimentation with classical machine-learning algorithms |
 
 > [!NOTE]
-> **Weka appears in the original CT319 material; it is not a required installation this year.** The practical demonstrations in CT319 2026/27 use Python and scikit-learn. R and Excel remain useful parts of the wider analytics landscape.
+> **Weka appears in the original course material; it is not a required installation this year.** This year's practical demonstrations use Python and scikit-learn. R and Excel remain useful parts of the wider analytics landscape.
 
-The first choice is the question, not the software. The lecture's analytics categories give a compact way to tell those questions apart:
+<!-- ct319:focus -->
+
+**The first choice is the question, not the software.** The lecture's analytics categories give a compact way to tell those questions apart:
 
 | Question | What it asks |
 | --- | --- |
@@ -243,6 +251,8 @@ The first choice is the question, not the software. The lecture's analytics cate
 | **Prescriptive** | What action should we consider? |
 
 Machine learning contributes to prediction and to pattern discovery. A summary, a chart or a spreadsheet may answer the other two without any learned model at all.
+
+<!-- ct319:endfocus -->
 
 ### Why this matters this week
 
@@ -276,7 +286,8 @@ The formal material introduces two supervised tasks, and the difference between 
 
 The recognition rule is short: a **category** means classification, a **numerical quantity** means regression. That is as far as we take it this week — classification gets a proper treatment next week.
 
-### A classification teaser — which class would you predict?
+<!-- ct319:beat -->
+## A classification teaser — which class would you predict?
 
 Six labelled examples, two numerical features each. The diamond marked **?** is a new example at `(2.4, 1.8)` — not one of the six, and no answer has been supplied for it.
 
@@ -323,7 +334,8 @@ prediction = model.predict(unknown)
 
 The reveal is worth saying out loud: the new example was assigned one of the **supplied** classes. That is classification. One plausible prediction says nothing yet about performance on any other case — and k-nearest neighbours itself belongs to Week 9.
 
-### What did the machine actually learn?
+<!-- ct319:beat -->
+## What did the machine actually learn?
 
 Be careful with the language here. The model did not learn that `A` is good or that `B` is bad. It used the relationship between feature values and supplied labels, under one particular algorithm. KNN keeps its training examples and consults them at prediction time; fitting a model does not have to mean discovering an equation.
 
@@ -391,7 +403,8 @@ Take exactly the same six examples used to fit the classifier and delete `y`, le
 
 **Clustering** groups examples using patterns or similarities in their features. Notice that the question itself has changed: it asks about structure across the examples, not about the class of one new point.
 
-### A clustering teaser — run, then reveal the groups
+<!-- ct319:beat -->
+## A clustering teaser — run, then reveal the groups
 
 Open the unlabelled view of the same demonstration:
 
@@ -437,7 +450,8 @@ Customer features with `churned` / `did not churn` labels support supervised pre
 
 A result with four clusters does not prove there are four objective types of customer. Features, algorithms and settings all influence the grouping, and it takes interpretation to decide whether it is useful. Week 10 returns to exactly that.
 
-### A third kind of feedback — reinforcement learning
+<!-- ct319:beat -->
+## A third kind of feedback — reinforcement learning
 
 In **reinforcement learning**, an **agent** chooses actions in an **environment**, and the consequences come back as a **reward**.
 
@@ -486,7 +500,8 @@ A useful model captures something that transfers beyond the examples it was show
 
 So the goal is not *perform perfectly on the data used to fit the model*. It is **learn enough useful structure to perform well on new cases drawn from the problem we care about**.
 
-### Overfitting
+<!-- ct319:beat -->
+## Overfitting
 
 **Overfitting** is what happens when a model captures detail or noise that is specific to the training examples and does not transfer. A very close training fit sitting beside poor performance on comparable unseen data is the warning sign.
 
@@ -500,7 +515,8 @@ The analogy is studying by memorising the answers to ten known questions. If the
 
 Retaining examples, as KNN does, is not by itself overfitting — the question is always whether the predictions generalise. Week 9 makes this concrete by separating training data from test data when we build classifiers.
 
-### What if the learning signal is wrong?
+<!-- ct319:beat -->
+## What if the learning signal is wrong?
 
 The loan example shows why fitting successfully is not enough. A repayment label may simply be wrong. A dataset may leave out whole groups of applicants. Historical approval decisions may encode unfair treatment. Learning to reproduce those records does not establish that the learned pattern is useful, or appropriate.
 
@@ -520,11 +536,11 @@ That is the reason to inspect the data, the feedback and the evidence of usefuln
 
 ### Why this matters this week
 
-The CT319 progression now extends by one step.
+The progression now extends by one step.
 
 <!-- ct319:focus -->
 
-<ol class="flow" aria-label="The CT319 progression from representation to learning">
+<ol class="flow" aria-label="The progression from representation to learning">
 <li><span>Week 2 · representation</span></li>
 <li><span>Week 3 · blind search</span></li>
 <li><span>Week 4 · heuristic</span></li>
