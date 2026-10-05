@@ -501,10 +501,12 @@ figcaption a { color: var(--muted); }
 .focus-block .figure--secondary { max-width: 100%; }
 /* A screenshot comparison carries its pictures inside a table, so it has no
    figure class to size it. In a focus block it is the teaching stop itself,
-   and it breaks out the way a hero figure does — the pictures are what the
-   block exists to enlarge. */
+   and it breaks out the way a wide figure does — the pictures are what the
+   block exists to enlarge, and a two-panel comparison is as wide a thing as
+   the page carries. Matching .figure--wide keeps it level with the full-run
+   screenshot that follows it. */
 .focus-block .table-scroll:has(img) {
-  --cmp-w: min(1120px, calc(100vw - 3rem));
+  --cmp-w: min(1360px, calc(100vw - 3rem));
   width: var(--cmp-w);
   margin-left: calc(50% - var(--cmp-w) / 2);
 }
