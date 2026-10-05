@@ -86,6 +86,9 @@
 <p>Repeating the search from randomly chosen initial candidates and keeping the best result is commonly called <strong>random-restart hill climbing</strong>. The name matters less than the change it makes:</p>
 <div class="focus-block">
 <p>What changes is <strong><code>START</code></strong>. The hill-climbing rule itself is untouched.</p>
+<p>In the maze, though, <code>(0,0)</code> is part of the problem, so the start cannot move. What a restart can change is the one choice the problem leaves open. At <code>(4,7)</code>, <code>DOWN</code> and <code>RIGHT</code> tie at <code>h = 2</code>: <code>DOWN</code> reaches the goal in 14 moves, <code>RIGHT</code> walks into the trap at <code>(4,8)</code>. Week 4 treated that tie-break as part of the search, not the problem — so restarting the maze means running again from <code>(0,0)</code> with the tie broken at random, and every run is a coin toss:</p>
+<div class="table-scroll"><table><thead><tr><th>Restarts</th><th class="num">Chance every run gets stuck</th></tr></thead><tbody><tr><td>1</td><td class="num">50%</td></tr><tr><td>3</td><td class="num">12.5%</td></tr><tr><td>5</td><td class="num">3.1%</td></tr></tbody></table></div>
+<blockquote><p><strong>Five reruns from the same start almost certainly escape the trap — without changing the problem at all.</strong></p></blockquote>
 </div>
 <h3 id="one-run-is-evidence-about-one-region">One run is evidence about one region</h3>
 <p>A single hill-climbing run tells us where the algorithm ends <em>from that starting point</em>. That is much weaker than a claim about the whole search space. Several starts give evidence from several regions:</p>
