@@ -142,6 +142,16 @@ Repeating the search from randomly chosen initial candidates and keeping the bes
 
 What changes is **`START`**. The hill-climbing rule itself is untouched.
 
+In the maze, though, `(0,0)` is part of the problem, so the start cannot move. What a restart can change is the one choice the problem leaves open. At `(4,7)`, `DOWN` and `RIGHT` tie at `h = 2`: `DOWN` reaches the goal in 14 moves, `RIGHT` walks into the trap at `(4,8)`. Week 4 treated that tie-break as part of the search, not the problem — so restarting the maze means running again from `(0,0)` with the tie broken at random, and every run is a coin toss:
+
+| Restarts | Chance every run gets stuck |
+|---|---:|
+| 1 | 50% |
+| 3 | 12.5% |
+| 5 | 3.1% |
+
+> **Five reruns from the same start almost certainly escape the trap — without changing the problem at all.**
+
 <!-- ct319:endfocus -->
 
 ### One run is evidence about one region
