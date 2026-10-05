@@ -50,9 +50,8 @@
 <div class="focus-block">
 <blockquote><p><strong>94% tells us something real about predictive performance. It tells us nothing about who the performance was for.</strong></p></blockquote>
 </div>
-<p>It does not say whether the data were representative, whether particular groups are disadvantaged, whether sensitive information was used appropriately, whether anybody affected understands the decision, whether it can be challenged, or who is responsible when it goes wrong.</p>
-<h3 id="how-does-performance-vary-across-the-people-affected">How does performance vary across the people affected?</h3>
-<p>Week 9 asked whether a classifier generalises to unseen data. Add a second question to it:</p>
+<p>It does not say whether the data were representative, whether particular groups are disadvantaged, whether sensitive information was used appropriately, whether anybody affected understands the decision, whether it can be challenged, or who is responsible when it goes wrong.</p></div></details>
+<details class="beat" id="how-does-performance-vary-across-the-people-affected"><summary><h2 class="beat__title">How does performance vary across the people affected?</h2></summary><div class="beat__body"><p>Week 9 asked whether a classifier generalises to unseen data. Add a second question to it:</p>
 <div class="focus-block">
 <blockquote><p><strong>How does performance vary across the people who will actually be affected?</strong></p></blockquote>
 </div>
@@ -61,9 +60,8 @@
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-11/aggregate-hides-the-gap.svg" alt="92.8% overall, which is 96% for Group A with 800 examples and 80% for Group B with 200" loading="lazy" decoding="async"><figcaption>Figure 1. Fictional figures, chosen to make one arithmetic point: the aggregate is an average weighted by group size, so the larger group's experience dominates it. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 </div>
 <p>Sixteen points separate the two groups, and neither number appears in the headline. Generalisation does not require identical performance in every subgroup — but a gap like that needs investigating rather than averaging away.</p>
-<p>It does not, on its own, prove unlawful discrimination, and it does not tell us <em>why</em> the gap exists. It tells us that one aggregate score is not enough to understand how a system behaves.</p>
-<h3 id="what-does-trustworthy-mean">What does "trustworthy" mean?</h3>
-<p>The 2019 <a href="https://digital-strategy.ec.europa.eu/en/library/ethics-guidelines-trustworthy-ai">Ethics Guidelines for Trustworthy AI</a>, from the Commission's High-Level Expert Group on AI, describe trustworthy AI under three headings.</p>
+<p>It does not, on its own, prove unlawful discrimination, and it does not tell us <em>why</em> the gap exists. It tells us that one aggregate score is not enough to understand how a system behaves.</p></div></details>
+<details class="beat" id="what-does-trustworthy-mean"><summary><h2 class="beat__title">What does "trustworthy" mean?</h2></summary><div class="beat__body"><p>The 2019 <a href="https://digital-strategy.ec.europa.eu/en/library/ethics-guidelines-trustworthy-ai">Ethics Guidelines for Trustworthy AI</a>, from the Commission's High-Level Expert Group on AI, describe trustworthy AI under three headings.</p>
 <div class="focus-block">
 <div class="lenses">
 <div class="lens"><span class="lens__key">Lawful</span><span class="lens__gloss">it complies with the law that applies to it</span></div>
@@ -95,9 +93,8 @@
 <p>Imagine previous employees labelled <code>successful</code> or <code>unsuccessful</code>. What does <code>successful</code> mean? Stayed three years? High manager ratings? Earned promotion? Sold the most? Worked the longest hours?</p>
 <div class="focus-block">
 <blockquote><p><strong>Labels are not facts because they appear in a spreadsheet. Somebody decided what the target would represent, and a questionable label produces a questionable objective.</strong></p></blockquote>
-</div>
-<h3 id="which-features-are-allowed-to-matter">Which features are allowed to matter?</h3>
-<p>Suppose the model receives education, experience, assessment score and postcode. Even with a protected characteristic removed, another feature can correlate strongly with it. Dropping one column does not remove the possibility of unfair treatment — it removes one route to it.</p>
+</div></div></details>
+<details class="beat" id="which-features-are-allowed-to-matter"><summary><h2 class="beat__title">Which features are allowed to matter?</h2></summary><div class="beat__body"><p>Suppose the model receives education, experience, assessment score and postcode. Even with a protected characteristic removed, another feature can correlate strongly with it. Dropping one column does not remove the possibility of unfair treatment — it removes one route to it.</p>
 <p>The design question is broader, and it is the one from Week 8 again:</p>
 <div class="focus-block">
 <blockquote><p><strong>Why is this feature relevant to the decision we are making?</strong></p></blockquote>
@@ -115,9 +112,8 @@
 <div class="lens"><span class="lens__key">Should we?</span><span class="lens__gloss">ought the system to be using this information at all?</span></div>
 </div>
 </div>
-<p>Those are not the same question, and the first one answering <em>yes</em> does not settle the second.</p>
-<h3 id="data-minimisation">Data minimisation</h3>
-<p>Under the GDPR, <strong>data minimisation</strong> means personal data should be adequate, relevant and limited to what is necessary for the intended purpose — see the <a href="https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/principles-gdpr_en">Commission's guidance on GDPR principles</a>. The principle is deliberately restrictive, and it runs in the opposite direction to the instinct of anyone who has ever built a dataset.</p>
+<p>Those are not the same question, and the first one answering <em>yes</em> does not settle the second.</p></div></details>
+<details class="beat" id="data-minimisation"><summary><h2 class="beat__title">Data minimisation</h2></summary><div class="beat__body"><p>Under the GDPR, <strong>data minimisation</strong> means personal data should be adequate, relevant and limited to what is necessary for the intended purpose — see the <a href="https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/principles-gdpr_en">Commission's guidance on GDPR principles</a>. The principle is deliberately restrictive, and it runs in the opposite direction to the instinct of anyone who has ever built a dataset.</p>
 <div class="focus-block">
 <div class="lenses lenses--pair">
 <div class="lens"><span class="lens__key">The instinct</span><span class="lens__gloss">collect everything now, and work out later what turned out to be useful</span></div>
@@ -126,9 +122,8 @@
 </div>
 <p>Assessment information may be easier to justify for a stated support purpose than unrelated browsing behaviour — but every use still needs an appropriate purpose and basis. Having collected data for one academic purpose does not automatically permit reusing it for another.</p>
 <h3 id="more-data-can-mean-more-risk">More data can mean more risk</h3>
-<p>Unnecessary personal information increases what can be exposed in a breach, misused, misunderstood, kept too long, combined with other records, or used for things people never expected. The cost does not sit in the model; it sits with the people in the dataset.</p>
-<h3 id="removing-identifiers-is-not-anonymisation">Removing identifiers is not anonymisation</h3>
-<p>This is the point most often got wrong, and it is worth being exact about.</p>
+<p>Unnecessary personal information increases what can be exposed in a breach, misused, misunderstood, kept too long, combined with other records, or used for things people never expected. The cost does not sit in the model; it sits with the people in the dataset.</p></div></details>
+<details class="beat" id="removing-identifiers-is-not-anonymisation"><summary><h2 class="beat__title">Removing identifiers is not anonymisation</h2></summary><div class="beat__body"><p>This is the point most often got wrong, and it is worth being exact about.</p>
 <div class="focus-block">
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-11/identifiability.svg" alt="Identified and pseudonymised data are both personal data; only genuinely anonymised data is not" loading="lazy" decoding="async"><figcaption>Figure 3. Deleting the name column moves you one box to the right, not two. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 </div>
@@ -146,9 +141,8 @@
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-11/interpretable-vs-opaque.svg" alt="A traceable decision tree beside an opaque model emitting the score 0.83 and a rejection" loading="lazy" decoding="async"><figcaption>Figure 4. Fictional example. On the left there is a route to show somebody. On the right there is a number. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 </div>
 <p>If an applicant asks why they were sent for review, the tree can be walked. The right-hand system has nothing to walk. What would the affected person reasonably want to know? What data was used, what factors mattered, what <code>0.83</code> means, how reliable the model is, whether a human was involved, and how to challenge the result.</p>
-<p>Publishing the source code answers none of those six.</p>
-<h3 id="three-words-that-are-not-synonyms">Three words that are not synonyms</h3>
-<div class="focus-block">
+<p>Publishing the source code answers none of those six.</p></div></details>
+<details class="beat" id="three-words-that-are-not-synonyms"><summary><h2 class="beat__title">Three words that are not synonyms</h2></summary><div class="beat__body"><div class="focus-block">
 <div class="lenses">
 <div class="lens"><span class="lens__key">Interpretability</span><span class="lens__gloss">the model itself is understandable enough to inspect how inputs relate to output</span></div>
 <div class="lens"><span class="lens__key">Explainability</span><span class="lens__gloss">additional methods help describe why a model produced a particular output</span></div>
@@ -159,18 +153,16 @@
 <div class="focus-block">
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-11/contribution-display.svg" alt="A schematic bar display showing debt and missed payments pushing towards reject and income towards approve" loading="lazy" decoding="async"><figcaption>Figure 5. <strong>Schematic</strong> — this is the shape of such an output, not a measured LIME or SHAP result. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 </div>
-<p>A system can produce an explanation for one prediction while being badly governed and poorly communicated overall. Explanation is one requirement, not the whole of transparency.</p>
-<h3 id="explanation-is-not-justification">Explanation is not justification</h3>
-<p>Look at the fourth row of Figure 5. Suppose an explanation reports that postcode strongly influenced the decision. That tells us something true about the model. It does not tell us that postcode <em>should</em> have influenced it.</p>
+<p>A system can produce an explanation for one prediction while being badly governed and poorly communicated overall. Explanation is one requirement, not the whole of transparency.</p></div></details>
+<details class="beat" id="explanation-is-not-justification"><summary><h2 class="beat__title">Explanation is not justification</h2></summary><div class="beat__body"><p>Look at the fourth row of Figure 5. Suppose an explanation reports that postcode strongly influenced the decision. That tells us something true about the model. It does not tell us that postcode <em>should</em> have influenced it.</p>
 <div class="focus-block">
 <div class="lenses lenses--pair">
 <div class="lens"><span class="lens__key">Explanation</span><span class="lens__gloss">what influenced the output?</span></div>
 <div class="lens"><span class="lens__key">Justification</span><span class="lens__gloss">was that influence appropriate?</span></div>
 </div>
 </div>
-<p>An explanation can reveal a problem rather than excuse one. That is arguably the most useful thing it does.</p>
-<h3 id="transparency-as-an-obligation">Transparency as an obligation</h3>
-<p>The <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai">EU AI Act</a> takes a risk-based approach: the obligations follow what a system is used for, not which technique it uses.</p>
+<p>An explanation can reveal a problem rather than excuse one. That is arguably the most useful thing it does.</p></div></details>
+<details class="beat" id="transparency-as-an-obligation"><summary><h2 class="beat__title">Transparency as an obligation</h2></summary><div class="beat__body"><p>The <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai">EU AI Act</a> takes a risk-based approach: the obligations follow what a system is used for, not which technique it uses.</p>
 <div class="focus-block">
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-11/ai-act-risk.svg" alt="Four bands: unacceptable risk, high risk, transparency risk, and minimal or no risk" loading="lazy" decoding="async"><figcaption>Figure 6. The same technique can sit in different bands depending on its use. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 </div>
@@ -204,9 +196,8 @@
 <p>That result should trigger investigation, not an automatic verdict of discrimination. Perhaps Group B is under-represented in the training data. Perhaps a feature behaves differently for that group. Perhaps the labels are weaker there. The aggregate cannot distinguish between those, and each one implies a different fix.</p>
 <h3 id="transparency">Transparency</h3>
 <p>Now reveal how a prediction becomes an action: a risk score from 0 to 100, and above 75 an automatic message to the student plus a flag to programme staff. The threshold and the automatic contact are deployment choices, not model outputs.</p>
-<p>Should students know that AI is being used, what data is included, what the score is used for, whether a human reviews it, and how to challenge incorrect information? A system that affects people while hiding its own existence makes meaningful oversight impossible by construction.</p>
-<h3 id="oversight">Oversight</h3>
-<p>The model says <code>risk = 82</code>. Should that decide what happens next?</p>
+<p>Should students know that AI is being used, what data is included, what the score is used for, whether a human reviews it, and how to challenge incorrect information? A system that affects people while hiding its own existence makes meaningful oversight impossible by construction.</p></div></details>
+<details class="beat" id="oversight"><summary><h2 class="beat__title">Oversight</h2></summary><div class="beat__body"><p>The model says <code>risk = 82</code>. Should that decide what happens next?</p>
 <div class="focus-block">
 <div class="lenses">
 <div class="lens"><span class="lens__key">Review</span><span class="lens__gloss">a human checks before any action is taken</span></div>
@@ -218,9 +209,8 @@
 <div class="focus-block">
 <blockquote><p><strong>Does that person actually have enough information, authority and time to intervene?</strong></p></blockquote>
 </div>
-<p>A nominal human in the loop who clicks <strong>Approve</strong> on everything is not oversight. Ask what they can genuinely review, override or stop.</p>
-<h3 id="accountability">Accountability</h3>
-<p>Now suppose the system causes harm.</p>
+<p>A nominal human in the loop who clicks <strong>Approve</strong> on everything is not oversight. Ask what they can genuinely review, override or stop.</p></div></details>
+<details class="beat" id="accountability"><summary><h2 class="beat__title">Accountability</h2></summary><div class="beat__body"><p>Now suppose the system causes harm.</p>
 <div class="focus-block">
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-11/accountability-chain.svg" alt="The vendor, developer, data team, deploying organisation and staff member, and the claim that the AI did it" loading="lazy" decoding="async"><figcaption>Figure 7. Every link in that chain is a person or an organisation. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 </div>
