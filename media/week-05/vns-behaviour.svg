@@ -22,7 +22,7 @@
   <text x="30" y="40" class="title">CHANGE NEIGHBOURHOOD WHEN THE CURRENT ONE FAILS</text>
 
   <!-- return arc: larger neighbourhood back to the small one -->
-  <path d="M520 184 V90 H36 V236 H64" fill="none" stroke="#0969da" stroke-width="3" marker-end="url(#b)"/>
+  <path d="M520 184 V90 H36 V245 H64" fill="none" stroke="#0969da" stroke-width="3" marker-end="url(#b)"/>
   <text x="546" y="80" class="edge" text-anchor="middle" fill="#0969da">improvement → move, then go back to the small neighbourhood</text>
 
   <!-- self loop on the small neighbourhood -->
@@ -30,31 +30,33 @@
   <text x="200" y="136" class="edge" text-anchor="middle" fill="#0969da">improvement → move and stay here</text>
 
   <!-- small neighbourhood -->
-  <rect x="70" y="184" width="248" height="104" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2.5"/>
-  <text x="194" y="222" class="label" text-anchor="middle">SMALL</text>
-  <text x="194" y="248" class="small" text-anchor="middle">neighbourhood · change 1 bit</text>
-  <text x="194" y="272" class="mono" text-anchor="middle">5 candidates</text>
+  <rect x="70" y="184" width="248" height="122" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2.5"/>
+  <text x="194" y="216" class="label" text-anchor="middle">SMALL</text>
+  <text x="194" y="242" class="small" text-anchor="middle">neighbourhood</text>
+  <text x="194" y="262" class="small" text-anchor="middle">change 1 bit</text>
+  <text x="194" y="288" class="mono" text-anchor="middle">5 candidates</text>
 
   <!-- larger neighbourhood -->
-  <rect x="396" y="184" width="248" height="104" rx="10" fill="#f6f8fa" stroke="#8c959f" stroke-width="2.5"/>
-  <text x="520" y="222" class="label" text-anchor="middle">LARGER</text>
-  <text x="520" y="248" class="small" text-anchor="middle">neighbourhood · change 2 bits</text>
-  <text x="520" y="272" class="mono" text-anchor="middle">10 candidates</text>
+  <rect x="396" y="184" width="248" height="122" rx="10" fill="#f6f8fa" stroke="#8c959f" stroke-width="2.5"/>
+  <text x="520" y="216" class="label" text-anchor="middle">LARGER</text>
+  <text x="520" y="242" class="small" text-anchor="middle">neighbourhood</text>
+  <text x="520" y="262" class="small" text-anchor="middle">change 2 bits</text>
+  <text x="520" y="288" class="mono" text-anchor="middle">10 candidates</text>
 
   <!-- stop -->
-  <rect x="712" y="184" width="216" height="104" rx="10" fill="#f6f8fa" stroke="#cf222e" stroke-width="2.5"/>
+  <rect x="712" y="184" width="216" height="122" rx="10" fill="#f6f8fa" stroke="#cf222e" stroke-width="2.5"/>
   <text x="820" y="226" class="label" text-anchor="middle">STOP</text>
   <text x="820" y="254" class="small" text-anchor="middle">no improvement under</text>
   <text x="820" y="276" class="small" text-anchor="middle">either neighbourhood</text>
 
   <!-- transitions -->
-  <path d="M318 236 H386" fill="none" stroke="#57606a" stroke-width="2.5" marker-end="url(#g)"/>
-  <text x="352" y="222" class="edge" text-anchor="middle" fill="#cf222e">no</text>
-  <text x="352" y="326" class="small" text-anchor="middle">no improvement</text>
-  <text x="352" y="348" class="small" text-anchor="middle">in the small set</text>
+  <path d="M318 245 H386" fill="none" stroke="#57606a" stroke-width="2.5" marker-end="url(#g)"/>
+  <text x="352" y="231" class="edge" text-anchor="middle" fill="#cf222e">no</text>
+  <text x="352" y="334" class="small" text-anchor="middle">no improvement</text>
+  <text x="352" y="356" class="small" text-anchor="middle">in the small set</text>
 
-  <path d="M644 236 H702" fill="none" stroke="#57606a" stroke-width="2.5" marker-end="url(#g)"/>
-  <text x="673" y="222" class="edge" text-anchor="middle" fill="#cf222e">no</text>
+  <path d="M644 245 H702" fill="none" stroke="#57606a" stroke-width="2.5" marker-end="url(#g)"/>
+  <text x="673" y="231" class="edge" text-anchor="middle" fill="#cf222e">no</text>
 
   <text x="30" y="404" class="small">The larger neighbourhood is an escape route, not a permanent setting: small neighbourhoods stay cheaper to inspect.</text>
 </svg>
