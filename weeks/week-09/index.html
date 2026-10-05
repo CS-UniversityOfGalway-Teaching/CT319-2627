@@ -56,9 +56,8 @@
 <blockquote><p><strong>Given the features of a new example, predict its class.</strong></p></blockquote>
 </div>
 <h3 id="binary-and-multiclass">Binary and multiclass</h3>
-<p>Sometimes there are exactly two possible classes — spam or not spam, fraud or not fraud, approve or reject. That is <strong>binary classification</strong>. Sometimes there are more — cat, dog or rabbit; red, amber or green. That is <strong>multiclass classification</strong>. The structure is identical either way; only the size of the answer set changes.</p>
-<h3 id="the-dataset-everything-else-runs-on">The dataset everything else runs on</h3>
-<p>The loan table gives us the vocabulary. For the live experiments we switch to one deterministic two-dimensional dataset, so that the geometry is visible on a screen.</p>
+<p>Sometimes there are exactly two possible classes — spam or not spam, fraud or not fraud, approve or reject. That is <strong>binary classification</strong>. Sometimes there are more — cat, dog or rabbit; red, amber or green. That is <strong>multiclass classification</strong>. The structure is identical either way; only the size of the answer set changes.</p></div></details>
+<details class="beat" id="the-dataset-everything-else-runs-on"><summary><h2 class="beat__title">The dataset everything else runs on</h2></summary><div class="beat__body"><p>The loan table gives us the vocabulary. For the live experiments we switch to one deterministic two-dimensional dataset, so that the geometry is visible on a screen.</p>
 <pre data-lang="python"><code class="language-python">make_moons(n_samples=140, noise=0.23, random_state=2)</code></pre>
 <p>140 points, two numerical features on comparable scales, every point labelled <code>A</code> or <code>B</code>, and one diamond marking the unknown point at <code>[-0.4, 0.15]</code>.</p>
 <div class="focus-block">
@@ -72,22 +71,19 @@
 <div class="focus-block">
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-09/knn-vote.svg" alt="An unknown point with a dashed circle around its three nearest neighbours, two of class A and one of class B" loading="lazy" decoding="async"><figcaption>Figure 2. With <code>k = 3</code>, three labelled examples vote and the rest take no part. Two of them are A, so the prediction is A. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 </div>
-<p>No rule book was written in advance. The decision comes from whichever labelled examples happen to lie nearest.</p>
-<h3 id="what-does-nearest-mean">What does <em>nearest</em> mean?</h3>
-<p>The examples have to be represented as features first. If both features are numerical, each example becomes a point, and KNN needs a way to measure the distance between points. For two-dimensional numerical data the familiar choice is <strong>Euclidean distance</strong> — ordinary straight-line distance.</p>
+<p>No rule book was written in advance. The decision comes from whichever labelled examples happen to lie nearest.</p></div></details>
+<details class="beat" id="what-does-nearest-mean"><summary><h2 class="beat__title">What does <em>nearest</em> mean?</h2></summary><div class="beat__body"><p>The examples have to be represented as features first. If both features are numerical, each example becomes a point, and KNN needs a way to measure the distance between points. For two-dimensional numerical data the familiar choice is <strong>Euclidean distance</strong> — ordinary straight-line distance.</p>
 <p>We do not need to do that arithmetic by hand. The consequence is what matters:</p>
 <div class="focus-block">
 <blockquote><p><strong>KNN relies on the geometry of the representation we chose.</strong></p></blockquote>
 </div>
-<p>Two examples that are close in feature space are treated as similar. Which creates a design problem immediately.</p>
-<h3 id="is-distance-always-meaningful">Is distance always meaningful?</h3>
-<p>Suppose a customer is represented as <code>age = 37</code> and <code>income = 75000</code>. The numerical scale of income is enormously larger than the scale of age, so a distance calculation is dominated by income — not because income matters more, but because of the units somebody picked.</p>
+<p>Two examples that are close in feature space are treated as similar. Which creates a design problem immediately.</p></div></details>
+<details class="beat" id="is-distance-always-meaningful"><summary><h2 class="beat__title">Is distance always meaningful?</h2></summary><div class="beat__body"><p>Suppose a customer is represented as <code>age = 37</code> and <code>income = 75000</code>. The numerical scale of income is enormously larger than the scale of age, so a distance calculation is dominated by income — not because income matters more, but because of the units somebody picked.</p>
 <div class="focus-block">
 <blockquote><p><strong>A distance can be dominated by one feature simply because of the units it was recorded in.</strong></p></blockquote>
 </div>
-<p>Today's dataset deliberately keeps both feature scales comparable, so that this effect is held still while we vary something else. In a real problem it is not held still, and scaling becomes part of the representation decision.</p>
-<h3 id="what-does-k-change">What does <code>k</code> change?</h3>
-<p><code>k</code> is how many neighbours get consulted. With <code>k = 1</code> a single nearby example decides. With <code>k = 15</code>, fifteen of them vote and a much larger region influences the answer.</p>
+<p>Today's dataset deliberately keeps both feature scales comparable, so that this effect is held still while we vary something else. In a real problem it is not held still, and scaling becomes part of the representation decision.</p></div></details>
+<details class="beat" id="what-does-k-change"><summary><h2 class="beat__title">What does <code>k</code> change?</h2></summary><div class="beat__body"><p><code>k</code> is how many neighbours get consulted. With <code>k = 1</code> a single nearby example decides. With <code>k = 15</code>, fifteen of them vote and a much larger region influences the answer.</p>
 <p>Before running anything:</p>
 <div class="focus-block">
 <blockquote><p><strong>Will changing <code>k</code> leave the prediction unchanged?</strong></p></blockquote>
@@ -115,18 +111,16 @@ prediction = model.predict(X_new)</code></pre>
 <details class="beat" id="learn-the-rules-instead--what-does-a-decision-tree-do-differently"><summary><h2 class="beat__title">Learn the rules instead — what does a decision tree do differently?</h2></summary><div class="beat__body"><p>KNN keeps the training examples and consults them when a new case arrives. That is not the only option. A <strong>decision tree</strong> instead learns a sequence of questions during training, and afterwards just follows them.</p>
 <div class="focus-block">
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-09/decision-tree-rules.svg" alt="A tree that asks whether income exceeds 45, then whether savings exceed 10, reaching high or low risk" loading="lazy" decoding="async"><figcaption>Figure 5. A new example enters at the top and follows branches until it reaches a prediction. Nobody wrote the thresholds — the algorithm searched the training data for splits that separate the classes. Diagram created for these pages; no external image licence is used.</figcaption></figure>
-</div>
-<h3 id="lazy-and-eager-learning">Lazy and eager learning</h3>
-<p>The classical terminology for that difference is <strong>lazy</strong> against <strong>eager</strong> learning.</p>
+</div></div></details>
+<details class="beat" id="lazy-and-eager-learning"><summary><h2 class="beat__title">Lazy and eager learning</h2></summary><div class="beat__body"><p>The classical terminology for that difference is <strong>lazy</strong> against <strong>eager</strong> learning.</p>
 <div class="focus-block">
 <div class="lenses lenses--pair">
 <div class="lens"><span class="lens__key">KNN · lazy</span><span class="lens__gloss">stores the training examples and delays the work until a prediction is requested</span></div>
 <div class="lens"><span class="lens__key">Decision tree · eager</span><span class="lens__gloss">builds a model during training, then uses that model and not the examples</span></div>
 </div>
 </div>
-<p>Neither label means better. They describe <em>when</em> the work happens, and what has to be kept around afterwards.</p>
-<h3 id="what-if-we-let-the-tree-keep-growing">What if we let the tree keep growing?</h3>
-<p>A shallow tree gets most training examples right. Allow more branches and it can start writing very specific rules that deal with individual training examples. Training accuracy improves. Is that good?</p>
+<p>Neither label means better. They describe <em>when</em> the work happens, and what has to be kept around afterwards.</p></div></details>
+<details class="beat" id="what-if-we-let-the-tree-keep-growing"><summary><h2 class="beat__title">What if we let the tree keep growing?</h2></summary><div class="beat__body"><p>A shallow tree gets most training examples right. Allow more branches and it can start writing very specific rules that deal with individual training examples. Training accuracy improves. Is that good?</p>
 <p>No — and this is the Week 8 distinction arriving with evidence attached:</p>
 <div class="focus-block">
 <blockquote><p><strong>Learning is not remembering.</strong></p></blockquote>
@@ -154,9 +148,8 @@ prediction = model.predict(X_new)</code></pre>
 <div class="focus-block">
 <blockquote><p><strong>Those are the examples it learned from. Repeating them is not evidence of anything.</strong></p></blockquote>
 </div>
-<p>The useful question is what happens on examples it did not see during training — which means arranging, in advance, for some to exist.</p>
-<h3 id="training-data-and-test-data">Training data and test data</h3>
-<p>The standard move is to hold some labelled examples back before any learning happens.</p>
+<p>The useful question is what happens on examples it did not see during training — which means arranging, in advance, for some to exist.</p></div></details>
+<details class="beat" id="training-data-and-test-data"><summary><h2 class="beat__title">Training data and test data</h2></summary><div class="beat__body"><p>The standard move is to hold some labelled examples back before any learning happens.</p>
 <div class="focus-block">
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-09/train-test-split.svg" alt="140 labelled examples split into 98 for training and 42 kept unseen for testing" loading="lazy" decoding="async"><figcaption>Figure 8. The split used by every figure on this page. Stratified, so the class proportions survive into both parts. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 </div>
@@ -169,16 +162,14 @@ X_train, X_test, y_train, y_test = train_test_split(
 <div class="focus-block">
 <blockquote><p><strong>Keep some evidence outside the training process.</strong></p></blockquote>
 </div>
-<p>Train on everything and you have no clean check left. The result then looks good for a reason that has nothing to do with the model being any good.</p>
-<h3 id="overfitting-measured">Overfitting, measured</h3>
-<p>A model <strong>overfits</strong> when it fits its training data so closely that performance on new data suffers. On this dataset the pattern is not subtle:</p>
+<p>Train on everything and you have no clean check left. The result then looks good for a reason that has nothing to do with the model being any good.</p></div></details>
+<details class="beat" id="overfitting-measured"><summary><h2 class="beat__title">Overfitting, measured</h2></summary><div class="beat__body"><p>A model <strong>overfits</strong> when it fits its training data so closely that performance on new data suffers. On this dataset the pattern is not subtle:</p>
 <div class="table-scroll"><table><thead><tr><th>Decision tree</th><th class="num">Nodes</th><th class="num">Leaves</th><th class="num">Training</th><th class="num">Test</th></tr></thead><tbody><tr><td><code>max_depth=2</code></td><td class="num">7</td><td class="num">4</td><td class="num">90.8%</td><td class="num"><strong>90.5%</strong></td></tr><tr><td><code>max_depth=5</code></td><td class="num">23</td><td class="num">12</td><td class="num">96.9%</td><td class="num">85.7%</td></tr><tr><td>unrestricted</td><td class="num">33</td><td class="num">17</td><td class="num"><strong>100.0%</strong></td><td class="num"><strong>76.2%</strong></td></tr></tbody></table></div>
 <p>Training accuracy climbs all the way to perfect. Test accuracy falls the whole way down. The model that memorised every training label is the worst of the three at the only job that matters.</p>
 <div class="focus-block">
 <figure class="figure--wide"><img class="figure__img" src="../../media/week-09/compare.svg" alt="KNN and decision tree results side by side on the same dataset and split" loading="lazy" decoding="async"><figcaption>Figure 9. All of it on one screen. The setting with the best training score and the setting with the best test score are not the same setting. Plot created for these pages by the classification demonstration; no external image licence is used.</figcaption></figure>
-</div>
-<h3 id="accuracy-and-where-it-goes-blind">Accuracy, and where it goes blind</h3>
-<p>For a simple problem the obvious measure is <strong>accuracy</strong>: what proportion of predictions were correct? 18 of 20 test examples is 90%. Useful — but not the whole story.</p>
+</div></div></details>
+<details class="beat" id="accuracy-and-where-it-goes-blind"><summary><h2 class="beat__title">Accuracy, and where it goes blind</h2></summary><div class="beat__body"><p>For a simple problem the obvious measure is <strong>accuracy</strong>: what proportion of predictions were correct? 18 of 20 test examples is 90%. Useful — but not the whole story.</p>
 <p>Imagine detecting something rare, where 99 of every 100 examples belong to the same class. A system that always predicts the majority class scores <strong>99%</strong> accuracy while detecting <strong>none</strong> of the events anyone cares about.</p>
 <div class="focus-block">
 <blockquote><p><strong>Accuracy is a useful starting measure, not a definition of a good classifier. The evaluation has to match the problem.</strong></p></blockquote>
@@ -190,9 +181,8 @@ X_train, X_test, y_train, y_test = train_test_split(
 <div class="focus-block">
 <blockquote><p><strong>It sees the representation we gave it — and nothing else.</strong></p></blockquote>
 </div>
-<p>Which takes us straight back to Week 2.</p>
-<h3 id="an-email-is-not-a-feature-vector">An email is not a feature vector</h3>
-<p>Suppose the message is <em>FREE tickets available in Galway tomorrow</em>. A classical classifier cannot work with the meaning of that sentence. It needs something countable first.</p>
+<p>Which takes us straight back to Week 2.</p></div></details>
+<details class="beat" id="an-email-is-not-a-feature-vector"><summary><h2 class="beat__title">An email is not a feature vector</h2></summary><div class="beat__body"><p>Suppose the message is <em>FREE tickets available in Galway tomorrow</em>. A classical classifier cannot work with the meaning of that sentence. It needs something countable first.</p>
 <div class="focus-block">
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-09/bag-of-words.svg" alt="A message turned into word counts, and the pair good and not good colliding under those counts" loading="lazy" decoding="async"><figcaption>Figure 10. A <strong>bag-of-words</strong> representation records which words appear and largely discards their order. That works surprisingly well for some tasks — and fails exactly where order carries the meaning. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 </div>
@@ -200,9 +190,8 @@ X_train, X_test, y_train, y_test = train_test_split(
 <p>We are not building a text classifier today. The point is more fundamental than any particular fix:</p>
 <div class="focus-block">
 <blockquote><p><strong>Changing the representation changes what the classifier is capable of learning — before any algorithm has been chosen.</strong></p></blockquote>
-</div>
-<h3 id="similarity-changes-too">Similarity changes too</h3>
-<p>For some representations, ordinary Euclidean distance is not the most useful notion of similarity. Text as word counts is usually sparse — most entries are zero — and measures such as <strong>cosine similarity</strong> compare the direction of those vectors rather than the straight-line distance between them.</p>
+</div></div></details>
+<details class="beat" id="similarity-changes-too"><summary><h2 class="beat__title">Similarity changes too</h2></summary><div class="beat__body"><p>For some representations, ordinary Euclidean distance is not the most useful notion of similarity. Text as word counts is usually sparse — most entries are zero — and measures such as <strong>cosine similarity</strong> compare the direction of those vectors rather than the straight-line distance between them.</p>
 <p>The formula is not today's target. The design question is:</p>
 <div class="focus-block">
 <blockquote><p><strong>What should count as similar for this problem?</strong></p></blockquote>

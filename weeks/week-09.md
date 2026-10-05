@@ -76,7 +76,8 @@ The classifier does not know the answer. That is the entire point — it has to 
 
 Sometimes there are exactly two possible classes — spam or not spam, fraud or not fraud, approve or reject. That is **binary classification**. Sometimes there are more — cat, dog or rabbit; red, amber or green. That is **multiclass classification**. The structure is identical either way; only the size of the answer set changes.
 
-### The dataset everything else runs on
+<!-- ct319:beat -->
+## The dataset everything else runs on
 
 The loan table gives us the vocabulary. For the live experiments we switch to one deterministic two-dimensional dataset, so that the geometry is visible on a screen.
 
@@ -117,7 +118,8 @@ Everything from here changes one thing at a time against that picture: first how
 
 No rule book was written in advance. The decision comes from whichever labelled examples happen to lie nearest.
 
-### What does *nearest* mean?
+<!-- ct319:beat -->
+## What does *nearest* mean?
 
 The examples have to be represented as features first. If both features are numerical, each example becomes a point, and KNN needs a way to measure the distance between points. For two-dimensional numerical data the familiar choice is **Euclidean distance** — ordinary straight-line distance.
 
@@ -131,7 +133,8 @@ We do not need to do that arithmetic by hand. The consequence is what matters:
 
 Two examples that are close in feature space are treated as similar. Which creates a design problem immediately.
 
-### Is distance always meaningful?
+<!-- ct319:beat -->
+## Is distance always meaningful?
 
 Suppose a customer is represented as `age = 37` and `income = 75000`. The numerical scale of income is enormously larger than the scale of age, so a distance calculation is dominated by income — not because income matters more, but because of the units somebody picked.
 
@@ -143,7 +146,8 @@ Suppose a customer is represented as `age = 37` and `income = 75000`. The numeri
 
 Today's dataset deliberately keeps both feature scales comparable, so that this effect is held still while we vary something else. In a real problem it is not held still, and scaling becomes part of the representation decision.
 
-### What does `k` change?
+<!-- ct319:beat -->
+## What does `k` change?
 
 `k` is how many neighbours get consulted. With `k = 1` a single nearby example decides. With `k = 15`, fifteen of them vote and a much larger region influences the answer.
 
@@ -217,7 +221,8 @@ KNN keeps the training examples and consults them when a new case arrives. That 
 
 <!-- ct319:endfocus -->
 
-### Lazy and eager learning
+<!-- ct319:beat -->
+## Lazy and eager learning
 
 The classical terminology for that difference is **lazy** against **eager** learning.
 
@@ -232,7 +237,8 @@ The classical terminology for that difference is **lazy** against **eager** lear
 
 Neither label means better. They describe *when* the work happens, and what has to be kept around afterwards.
 
-### What if we let the tree keep growing?
+<!-- ct319:beat -->
+## What if we let the tree keep growing?
 
 A shallow tree gets most training examples right. Allow more branches and it can start writing very specific rules that deal with individual training examples. Training accuracy improves. Is that good?
 
@@ -298,7 +304,8 @@ Train a classifier on 100 examples, then ask it to predict those same 100. It ge
 
 The useful question is what happens on examples it did not see during training — which means arranging, in advance, for some to exist.
 
-### Training data and test data
+<!-- ct319:beat -->
+## Training data and test data
 
 The standard move is to hold some labelled examples back before any learning happens.
 
@@ -328,7 +335,8 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 Train on everything and you have no clean check left. The result then looks good for a reason that has nothing to do with the model being any good.
 
-### Overfitting, measured
+<!-- ct319:beat -->
+## Overfitting, measured
 
 A model **overfits** when it fits its training data so closely that performance on new data suffers. On this dataset the pattern is not subtle:
 
@@ -348,7 +356,8 @@ Training accuracy climbs all the way to perfect. Test accuracy falls the whole w
 
 <!-- ct319:endfocus -->
 
-### Accuracy, and where it goes blind
+<!-- ct319:beat -->
+## Accuracy, and where it goes blind
 
 For a simple problem the obvious measure is **accuracy**: what proportion of predictions were correct? 18 of 20 test examples is 90%. Useful — but not the whole story.
 
@@ -379,7 +388,8 @@ There is a problem sitting underneath every classifier on this page. The algorit
 
 Which takes us straight back to Week 2.
 
-### An email is not a feature vector
+<!-- ct319:beat -->
+## An email is not a feature vector
 
 Suppose the message is *FREE tickets available in Galway tomorrow*. A classical classifier cannot work with the meaning of that sentence. It needs something countable first.
 
@@ -401,7 +411,8 @@ We are not building a text classifier today. The point is more fundamental than 
 
 <!-- ct319:endfocus -->
 
-### Similarity changes too
+<!-- ct319:beat -->
+## Similarity changes too
 
 For some representations, ordinary Euclidean distance is not the most useful notion of similarity. Text as word counts is usually sparse — most entries are zero — and measures such as **cosine similarity** compare the direction of those vectors rather than the straight-line distance between them.
 
