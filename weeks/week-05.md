@@ -398,12 +398,16 @@ The Search Lab has an **Anneal** mode that runs this rule on the unchanged maze.
 
 With the default seed `743` and the Week 2 successor order, the run descends to `(4,8)` in fourteen steps — arriving at the exact Week 4 trap — and then meets the same two worse-looking moves. It refuses one and takes the other.
 
+<!-- ct319:focus -->
+
 | Step 15 — rejected | Step 16 — accepted |
 |---|---|
 | ![At (4,8) the lab proposes UP to (3,8), delta plus one, and rejects it](../../media/week-05/anneal-reject-4-8.png) | ![At (4,8) the lab proposes LEFT to (4,7), delta plus one, and accepts it](../../media/week-05/anneal-accept-4-8.png) |
 | `UP → (3,8)`, `Δ = +1`, `T = 2.10`, `P = 0.622`, draw `0.831` → **reject** | `LEFT → (4,7)`, `Δ = +1`, `T = 1.98`, `P = 0.603`, draw `0.198` → **accept** |
 
 <sub><em>Figure 15. Two consecutive steps at the same state, under almost the same temperature and almost the same probability. The rule is not “accept worse moves”; it is “accept a worse move with a controlled probability”. Screenshots created for these pages from the Search Lab; no external image licence is used.</em></sub>
+
+<!-- ct319:endfocus -->
 
 The accepted move is `LEFT → (4,7)` — precisely the move Week 4's strict rule rejected. From there the run continues `(5,7) → (6,7) → (6,8)` and finishes.
 
@@ -434,17 +438,17 @@ There is no setting that avoids both costs.
 
 No single schedule is best for every problem. A run can also spend its budget in poor regions, or cool without ever reaching the goal — the Search Lab reports exactly that when it happens.
 
+<!-- ct319:focus -->
+
 The claim is not that simulated annealing solves local search. It is that:
 
 > **allowing occasional worse moves gives the search an escape mechanism that strict hill climbing does not have**
 
-<!-- ct319:focus -->
+<!-- ct319:endfocus -->
 
 ### Why this matters this week
 
 Week 4 ended with a reachable goal the algorithm could not reach. The obstacle was never the maze. It was one line of the acceptance rule, and changing that line is enough to reopen the route.
-
-<!-- ct319:endfocus -->
 
 <!-- ct319:beat -->
 ## Three ways to escape

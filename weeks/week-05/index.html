@@ -197,8 +197,10 @@ worse move
 <details class="beat" id="watch-it-happen-at-48"><summary><h2 class="beat__title">Watch it happen at (4,8)</h2></summary><div class="beat__body"><p>The Search Lab has an <strong>Anneal</strong> mode that runs this rule on the unchanged maze.</p>
 <p><strong>Seeded</strong> is worth a reminder from Week 2. The accept-or-reject draw is random, but the randomness comes from a generator started at a fixed number — the <em>seed</em>. The same seed always produces the same sequence of draws, and therefore the same run, move for move. Change the seed and you get a different run of the same algorithm. So a seeded run is reproducible rather than lucky: what you see again is the mechanism, not one fortunate outcome.</p>
 <p>With the default seed <code>743</code> and the Week 2 successor order, the run descends to <code>(4,8)</code> in fourteen steps — arriving at the exact Week 4 trap — and then meets the same two worse-looking moves. It refuses one and takes the other.</p>
+<div class="focus-block">
 <div class="table-scroll"><table><thead><tr><th>Step 15 — rejected</th><th>Step 16 — accepted</th></tr></thead><tbody><tr><td><img src="../../media/week-05/anneal-reject-4-8.png" alt="At (4,8) the lab proposes UP to (3,8), delta plus one, and rejects it"></td><td><img src="../../media/week-05/anneal-accept-4-8.png" alt="At (4,8) the lab proposes LEFT to (4,7), delta plus one, and accepts it"></td></tr><tr><td><code>UP → (3,8)</code>, <code>Δ = +1</code>, <code>T = 2.10</code>, <code>P = 0.622</code>, draw <code>0.831</code> → <strong>reject</strong></td><td><code>LEFT → (4,7)</code>, <code>Δ = +1</code>, <code>T = 1.98</code>, <code>P = 0.603</code>, draw <code>0.198</code> → <strong>accept</strong></td></tr></tbody></table></div>
 <p class="standalone-caption"><sub><em>Figure 15. Two consecutive steps at the same state, under almost the same temperature and almost the same probability. The rule is not “accept worse moves”; it is “accept a worse move with a controlled probability”. Screenshots created for these pages from the Search Lab; no external image licence is used.</em></sub></p>
+</div>
 <p>The accepted move is <code>LEFT → (4,7)</code> — precisely the move Week 4's strict rule rejected. From there the run continues <code>(5,7) → (6,7) → (6,8)</code> and finishes.</p>
 <figure class="figure--wide"><img class="figure__img" src="../../media/week-05/anneal-complete.png" alt="The completed annealing run: goal reached in 16 moves with one worse move accepted" loading="lazy" decoding="async"><figcaption>Figure 16. The same seeded run reaches <code>(6,8)</code> in 16 moves, having accepted exactly one worse move and rejected seven others along the way. On the same maze, the strict rule that enters <code>(4,8)</code> stops there permanently. Screenshot created for these pages from the Search Lab; no external image licence is used.</figcaption></figure>
 <div class="callout callout--important"><span class="callout__label">Important</span><p><strong>In this maze every legal move changes <code>h</code> by exactly one.</strong></p>
@@ -212,12 +214,12 @@ worse move
 </div>
 </div>
 <p>No single schedule is best for every problem. A run can also spend its budget in poor regions, or cool without ever reaching the goal — the Search Lab reports exactly that when it happens.</p>
+<div class="focus-block">
 <p>The claim is not that simulated annealing solves local search. It is that:</p>
 <blockquote><p><strong>allowing occasional worse moves gives the search an escape mechanism that strict hill climbing does not have</strong></p></blockquote>
-<div class="focus-block">
+</div>
 <h3 id="why-this-matters-this-week">Why this matters this week</h3>
-<p>Week 4 ended with a reachable goal the algorithm could not reach. The obstacle was never the maze. It was one line of the acceptance rule, and changing that line is enough to reopen the route.</p>
-</div></div></details>
+<p>Week 4 ended with a reachable goal the algorithm could not reach. The obstacle was never the maze. It was one line of the acceptance rule, and changing that line is enough to reopen the route.</p></div></details>
 <details class="beat" id="three-ways-to-escape"><summary><h2 class="beat__title">Three ways to escape</h2></summary><div class="beat__body"><p>All three methods this week attack the same failure, and each changes exactly one design choice.</p>
 <figure class="figure--hero"><img class="figure__img" src="../../media/week-05/three-escapes.svg" alt="From a stuck hill climber, three routes: START to random restart, NEIGHBOURHOOD to VNS, ACCEPTANCE to simulated annealing" loading="lazy" decoding="async"><figcaption>Figure 17. Each method changes one of the three design choices and leaves the other two alone. Diagram created for these pages; no external image licence is used.</figcaption></figure>
 <p><strong><code>START</code></strong> — begin from a different initial candidate, and keep the best result across runs. The rule that climbs is untouched. This is <em>random-restart hill climbing</em>.</p>
