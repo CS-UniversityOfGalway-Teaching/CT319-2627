@@ -5,6 +5,7 @@ question: Can a machine discover useful structure when nobody tells it the corre
 description: CT319 Week 10. K-means, DBSCAN and hierarchical clustering on fixed datasets, then collaborative filtering — what counts as similar, and who decided how many groups there are.
 bar: Week 10 · Sections
 source: week-10.md
+deck: yes
 ---
 
 Last week the examples arrived with labels, and the job was to predict one. This week the labels are gone. The points stay exactly where they were; only the answers disappear.
@@ -16,6 +17,7 @@ Last week the examples arrived with labels, and the job was to predict one. This
 <!-- ct319:endfocus -->
 
 There is a trap waiting in that question, and it is worth naming before we start. An algorithm will always return groups. Whether those groups mean anything is a separate question, and not one the algorithm can answer.
+<!-- ct319:key An algorithm will always return groups. -->
 
 We work through five things.
 
@@ -43,6 +45,7 @@ Three ideas carry the page, and it is worth keeping them apart:
 ## Remove the labels — what can the machine still see?
 
 Last week every example came with a target attached. Take it away and the picture barely changes — which is exactly the problem.
+<!-- ct319:key Take it away and the picture barely changes — which is exactly the problem. -->
 
 <!-- ct319:focus -->
 
@@ -121,6 +124,7 @@ For `k = 3` it starts with three candidate centres, called **centroids**. A cent
 If a centroid starts too far to the right, where does it move once nearby points are assigned to it? And what happens if one distant point is assigned to it as well?
 
 The mean moves towards the assigned points — *including* the distant one. Which tells you the shape of problem K-means is built for: groups that form reasonably compact regions around a centre.
+<!-- ct319:key Which tells you the shape of problem K-means is built for: groups that form reasonably compact regions around a centre. -->
 
 ```python
 from sklearn.cluster import KMeans
@@ -136,6 +140,7 @@ The returned values `0`, `1` and `2` are identifiers. They are not class names a
 ## One dataset, three values of `k`
 
 The demonstration uses 180 deterministic points in three compact regions. The data and the axes never move; only `k` changes. Black stars mark the fitted centroids.
+<!-- ct319:key The data and the axes never move; only k changes. -->
 
 <!-- ct319:focus -->
 
@@ -186,11 +191,13 @@ The lowest inertia belongs to `k = 5`, which is the one that splits two perfectl
 ### Why this matters this week
 
 K-means did not discover the one true grouping at `k = 3`. It produced a grouping under the representation, the `k`, the initialisation and the centre-based assumption we handed it. Change any of the four and the answer changes with it.
+<!-- ct319:key K-means did not discover the one true grouping at k = 3. -->
 
 <!-- ct319:beat -->
 ## What if the groups are not blobs? — does every algorithm see the same structure?
 
 K-means works naturally when groups are compact regions around a centre. Nothing obliges data to be shaped that way.
+<!-- ct319:key Nothing obliges data to be shaped that way. -->
 
 The second dataset is 220 points in two interleaving crescents — the same shape as Week 9, with its own fixed settings.
 
@@ -206,6 +213,7 @@ The second dataset is 220 points in two interleaving crescents — the same shap
 ## Centres against density
 
 Ask K-means for two clusters and it will give you two clusters. Then compare it with **DBSCAN**, which looks for dense, connected regions instead of organising everything around a centre. Two parameters carry the intuition: **`eps`**, the neighbourhood radius around a point, and **`min_samples`**, the local density a neighbourhood has to reach.
+<!-- ct319:key Ask K-means for two clusters and it will give you two clusters. -->
 
 ```python
 from sklearn.cluster import DBSCAN
@@ -226,6 +234,7 @@ labels = model.fit_predict(X)
 <!-- ct319:endfocus -->
 
 Two things in that right-hand panel are worth naming. DBSCAN was never told there were two groups — it found two. And it is allowed to say *neither*: those four noise points are a legitimate output, not a failure.
+<!-- ct319:key DBSCAN was never told there were two groups — it found two. -->
 
 `eps = 0.18` is tuned to the scale and density of these particular crescents. It is not a universal setting, and on a different dataset it would be meaningless.
 
@@ -233,6 +242,7 @@ Two things in that right-hand panel are worth naming. DBSCAN was never told ther
 ## A third view — hierarchy
 
 Hierarchical clustering records groups within groups. An **agglomerative** approach starts from small groups and repeatedly merges; a **divisive** one starts from a single large group and repeatedly splits. A **dendrogram** displays that history.
+<!-- ct319:key Hierarchical clustering records groups within groups. -->
 
 <!-- ct319:focus -->
 
@@ -306,10 +316,12 @@ Both are classical collaborative strategies, and neither exhausts the possibilit
 If item features exist — genre, director, cast, release year, language — a **content-based** recommender can find items related to what a user already prefers. A **hybrid** combines the two signals.
 
 The distinction is where the relationship comes from: behaviour across users and items, or features describing the items themselves.
+<!-- ct319:key The distinction is where the relationship comes from: behaviour across users and items, or features describing the items themselves. -->
 
 ### Why this matters this week
 
 A recommendation is a prediction, in exactly the sense Week 9 used the word — will this user click, watch, buy or rate highly? But it is also a decision about what the user gets the chance to see at all. That second half has a consequence, and it is the last thing on this page.
+<!-- ct319:key But it is also a decision about what the user gets the chance to see at all. -->
 
 <!-- ct319:beat -->
 ## Useful pattern or misleading pattern — what can go wrong?
@@ -346,6 +358,7 @@ Old behaviour goes stale as interests change. An account can also represent more
 ## Recommendations change the next dataset
 
 A recommender does not sit outside the process that generates its evidence. It takes part in it.
+<!-- ct319:key A recommender does not sit outside the process that generates its evidence. It takes part in it. -->
 
 <!-- ct319:focus -->
 
@@ -379,6 +392,7 @@ python experiments/week-10/clustering_demo.py
 ```
 
 Press **Space**, the **right arrow** or the on-screen button to advance. Two fixed datasets serve every stage, so each visible change is attributable to the algorithm or parameter that changed.
+<!-- ct319:key Two fixed datasets serve every stage, so each visible change is attributable to the algorithm or parameter that changed. -->
 
 ### Try it yourself
 
@@ -388,6 +402,7 @@ Press **Space**, the **right arrow** or the on-screen button to advance. Two fix
 4. Switch to `--mode moons` and trace the two shapes before running anything.
 5. Run `--mode moons-kmeans`, then `--mode moons-dbscan`. Name the assumption that makes the difference.
 6. Find the four noise points, and decide whether you would want an algorithm that is allowed to say "neither".
+<!-- ct319:key Notice that the lowest value is not the best grouping. -->
 
 To regenerate every plot on this page without opening a window:
 
@@ -414,6 +429,7 @@ That is where Week 11 begins.
 ## Quick revision
 
 If you can answer these without reopening the page, you have the core of this week.
+<!-- ct319:key If you can answer these without reopening the page, you have the core of this week. -->
 
 1. **[WK-10-01]** What does an unsupervised learner receive that a supervised one does not, and what is it looking for instead?
 2. Why is “similar” a design decision rather than a property of the data?
@@ -435,14 +451,17 @@ If you can answer these without reopening the page, you have the core of this we
 ### CT319 source material
 
 This week follows selected material from the formal CT319 *Clustering & Recommender Systems* material on Canvas, which remains the broader reference. These pages do not reproduce every slide; they develop a smaller number of points in more depth.
+<!-- ct319:key This week follows selected material from the formal CT319 Clustering & Recommender Systems material on Canvas, which remains the broader reference. -->
 
 The page concentrates on what remains available once class labels are removed; K-means as a repeated cycle of assignment and centroid movement driven by a chosen `k`; the visible consequences of choosing `k` badly, on one fixed dataset; density-based clustering as a different set of assumptions, with noise as a legitimate output; hierarchical clustering as a nested alternative that needs no `k` in advance; recommendation from patterns of behaviour, without clustering first; and a clustering as an output to interpret, with cold start as a structural limit.
 
 The inertia comparison is not in the formal material. It is included because the obvious escape from choosing `k` is to let a score choose it, and on this dataset that score picks the wrong answer — which is worth seeing once.
+<!-- ct319:key The inertia comparison is not in the formal material. -->
 
 ### Continuity from Week 9
 
 Week 9 predicted a category from labelled examples. This week removes the labels and asks what structure can still be justified.
+<!-- ct319:key This week removes the labels and asks what structure can still be justified. -->
 
 Both weeks use scikit-learn's two-moons generator, with **different settings**: Week 9 uses `n_samples=140, noise=0.23, random_state=2`, and this week uses `n_samples=220, noise=0.08, random_state=7`. The shape is familiar while each page keeps its own fixed data.
 
@@ -468,6 +487,7 @@ Figures 1–9 were **created for these pages**. They use no external image licen
 
 - Figures 1, 2, 8 and 9 are original diagrams.
 - Figures 3, 4, 5, 6 and 7 are plots generated by the demonstration script from the datasets above. Every value quoted beside them is computed, not transcribed.
+<!-- ct319:key Every value quoted beside them is computed, not transcribed. -->
 
 No external images, videos, papers or interactives are used.
 

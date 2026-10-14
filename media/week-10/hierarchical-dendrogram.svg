@@ -28,9 +28,9 @@
   <text class="leaf" x="650" y="390">D</text>
   <text class="leaf" x="800" y="390">E</text>
 
-  <text class="join" x="190" y="267">A + B</text>
-  <text class="join" x="725" y="222">D + E</text>
-  <text class="join" x="310" y="162">A + B + C</text>
+  <text class="join" x="190" y="304">A + B</text>
+  <text class="join" x="725" y="259">D + E</text>
+  <text class="join" x="310" y="199">A + B + C</text>
   <text class="join" x="518" y="102">all examples</text>
 
   <circle class="knot" cx="190" cy="280" r="7"/>
