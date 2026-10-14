@@ -1,0 +1,76 @@
+/* CT319 slide decks: one focus block per screen, flicked with the arrow
+   keys. Built on ct319.css, so lens cards, tables and figures look the same
+   as on the page. */
+
+.deck-body { margin: 0; overflow: hidden; background: var(--page); }
+
+.slide {
+  display: none;
+  box-sizing: border-box;
+  height: 100vh;
+  height: 100dvh;
+  padding: 3.6rem 5vw 3rem;
+  flex-direction: column;
+  justify-content: center;
+}
+.slide.is-current { display: flex; }
+
+/* The section the slide comes from. It links back to that section on the
+   page, for when a question needs the full text. */
+.slide__section {
+  position: absolute;
+  top: 1.2rem;
+  left: 5vw;
+  right: 8rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.slide__section:hover { color: var(--accent); }
+
+/* On a slide the blow-up is the normal size. */
+.slide .focus-block {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: clamp(1.3rem, 2.3vw, 2.1rem);
+  transform-origin: center center;
+}
+.slide .focus-block :where(.figure--hero, .figure--wide, .figure--secondary) {
+  width: auto;
+  max-width: 100%;
+  margin: 0.8rem 0;
+}
+.slide .focus-block figure img {
+  width: auto;
+  max-width: 100%;
+  max-height: 62vh;
+  margin: 0 auto;
+}
+.slide .focus-block figcaption { font-size: 0.55em; max-width: none; text-align: center; }
+.slide .focus-block .table-scroll:has(img) { width: auto; margin-left: 0; }
+.slide .focus-block table { font-size: 0.8em; }
+.slide .focus-block .lenses { gap: 1rem; }
+
+.slide--title { align-items: flex-start; padding-left: 8vw; padding-right: 8vw; }
+.slide--title h1 { font-size: clamp(2.2rem, 5vw, 4rem); margin: 0.4rem 0 1.4rem; }
+.slide--title .week-question { font-size: clamp(1.2rem, 2.4vw, 1.9rem); }
+
+.deck__count {
+  position: fixed;
+  top: 1.2rem;
+  right: 5vw;
+  margin: 0;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}

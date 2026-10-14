@@ -5,6 +5,7 @@ question: What does it mean for a machine to learn?
 description: CT319 Week 8. From specifying search behaviour to learning it — examples, features and labels, supervised, unsupervised and reinforcement learning, and why generalisation is the real test.
 bar: Week 8 · Sections
 source: week-08.md
+deck: yes
 ---
 
 Across Weeks 2 to 6 we designed the machinery ourselves. We chose the representation, the legal actions, the search rule, the heuristic, the neighbourhood, the fitness function and the population operators. The machine then followed the structure we gave it — faithfully, and only as far as that structure allowed.

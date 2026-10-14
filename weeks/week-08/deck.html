@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 8 — Learning from data — slides</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230969da'/%3E%3Cpath d='M8 8h7v4h-3v8h3v4H8zm9 0h7v16h-7v-4h3v-8h-3z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/ct319.css">
+<link rel="stylesheet" href="../../assets/deck.css">
+</head>
+<body class="deck-body">
+<main class="deck">
+<section class="slide slide--title"><p class="eyebrow">CT319 Artificial Intelligence · Week 8 · Learning from data</p><h1>Week 8 — Learning from data</h1><p class="week-question">What does it mean for a machine to learn?</p></section>
+<section class="slide"><a class="slide__section" href="./">This week</a><div class="focus-block"><blockquote><p><strong>What if we gave the machine data or experience, and asked it to improve from that?</strong></p></blockquote></div></section>
+<section class="slide"><a class="slide__section" href="./">This week</a><div class="focus-block"><div class="lenses">
+<div class="lens"><span class="lens__key">Data</span><span class="lens__gloss">learning depends on examples or experience that actually contain information about the problem</span></div>
+<div class="lens"><span class="lens__key">Model</span><span class="lens__gloss">what the learning algorithm builds or adjusts, and the only part that meets a new case</span></div>
+<div class="lens"><span class="lens__key">Generalisation</span><span class="lens__gloss">the real test: does what was learned stay useful on cases nobody has labelled?</span></div>
+</div></div></section>
+<section class="slide"><a class="slide__section" href="./#from-rules-to-learning--what-changes-when-the-machine-learns-from-experience">From rules to learning — what changes when the machine learns from experience?</a><div class="focus-block"><figure class="figure--hero"><img class="figure__img" src="../../media/week-08/learning-pipeline.svg" alt="Past examples feed a learning algorithm, which produces a model that a new example is then given to" loading="lazy" decoding="async"><figcaption>Figure 1. Past data builds the model. A new example — one nobody has labelled — is given to that same model, which returns a prediction or a decision. Diagram created for these pages; no external image licence is used.</figcaption></figure></div></section>
+<section class="slide"><a class="slide__section" href="./#from-rules-to-learning--what-changes-when-the-machine-learns-from-experience">From rules to learning — what changes when the machine learns from experience?</a><div class="focus-block"><blockquote><p><strong>Part of the decision behaviour is learned from data, rather than specified case by case by the programmer.</strong></p></blockquote></div></section>
+<section class="slide"><a class="slide__section" href="./#search-and-learning-are-different-questions">Search and learning are different questions</a><div class="focus-block"><div class="lenses lenses--pair">
+<div class="lens"><span class="lens__key">Search</span><span class="lens__gloss">we specify how to explore the possibilities</span></div>
+<div class="lens"><span class="lens__key">Learning</span><span class="lens__gloss">we supply data or experience, and a method that adjusts a model</span></div>
+</div></div></section>
+<section class="slide"><a class="slide__section" href="./#ai-machine-learning-and-deep-learning">AI, machine learning and deep learning</a><div class="focus-block"><figure class="figure--hero"><img class="figure__img" src="../../media/week-08/ai-ml-dl.svg" alt="Artificial intelligence contains machine learning, which contains deep learning" loading="lazy" decoding="async"><figcaption>Figure 2. Three nested scopes, not three names for the same thing. Everything from Weeks 2 to 6 sits in the outer ring. Diagram created for these pages; no external image licence is used.</figcaption></figure></div></section>
+<section class="slide"><a class="slide__section" href="./#why-did-machine-learning-become-so-prominent">Why did machine learning become so prominent?</a><div class="focus-block"><blockquote><p><strong>What exactly counts as data for a learning system?</strong></p></blockquote></div></section>
+<section class="slide"><a class="slide__section" href="./#data-becomes-evidence--what-exactly-do-we-give-the-learner">Data becomes evidence — what exactly do we give the learner?</a><div class="focus-block"><blockquote><p><strong>The features must be available when the new application is considered — before anyone knows its outcome.</strong></p></blockquote></div></section>
+<section class="slide"><a class="slide__section" href="./#raw-data-is-rarely-ready-to-learn-from">Raw data is rarely ready to learn from</a><div class="focus-block"><figure class="figure--hero"><img class="figure__img" src="../../media/week-08/data-lifecycle.svg" alt="Question, gather, prepare, model, validate, communicate, with a dashed return from validate to prepare" loading="lazy" decoding="async"><figcaption>Figure 3. The model is one step in a larger loop, not the whole of it. The dashed return is the ordinary case: validation sends you back to preparation. Diagram created for these pages; no external image licence is used.</figcaption></figure></div></section>
+<section class="slide"><a class="slide__section" href="./#is-an-available-feature-an-appropriate-feature">Is an available feature an appropriate feature?</a><div class="focus-block"><blockquote><p><strong>If a feature is available, should the model use it?</strong></p></blockquote></div></section>
+<section class="slide"><a class="slide__section" href="./#is-an-available-feature-an-appropriate-feature">Is an available feature an appropriate feature?</a><div class="focus-block"><blockquote><p><strong>Available data is not automatically appropriate data.</strong></p></blockquote></div></section>
+<section class="slide"><a class="slide__section" href="./#the-tool-landscape">The tool landscape</a><div class="focus-block"><p><strong>The first choice is the question, not the software.</strong> The lecture's analytics categories give a compact way to tell those questions apart:</p>
+<div class="table-scroll"><table><thead><tr><th>Question</th><th>What it asks</th></tr></thead><tbody><tr><td><strong>Descriptive</strong></td><td>What happened?</td></tr><tr><td><strong>Diagnostic</strong></td><td>Why might it have happened?</td></tr><tr><td><strong>Predictive</strong></td><td>What is likely to happen?</td></tr><tr><td><strong>Prescriptive</strong></td><td>What action should we consider?</td></tr></tbody></table></div>
+<p>Machine learning contributes to prediction and to pattern discovery. A summary, a chart or a spreadsheet may answer the other two without any learned model at all.</p></div></section>
+<section class="slide"><a class="slide__section" href="./#learning-from-answers--what-does-supervised-learning-look-like">Learning from answers — what does supervised learning look like?</a><div class="focus-block"><blockquote><p><strong>“Supervised” does not mean a person watches every prediction. It means the training examples carry the outcomes the learner is supposed to model.</strong></p></blockquote></div></section>
+<section class="slide"><a class="slide__section" href="./#learning-from-answers--what-does-supervised-learning-look-like">Learning from answers — what does supervised learning look like?</a><div class="focus-block"><div class="lenses lenses--pair">
+<div class="lens"><span class="lens__key">Classification</span><span class="lens__gloss">predicts a category — spam or not spam, fraud or not fraud, low / medium / high risk</span></div>
+<div class="lens"><span class="lens__key">Regression</span><span class="lens__gloss">predicts a numerical value — a house price, tomorrow's temperature, expected delivery time</span></div>
+</div></div></section>
+<section class="slide"><a class="slide__section" href="./#a-classification-teaser--which-class-would-you-predict">A classification teaser — which class would you predict?</a><div class="focus-block"><figure class="figure--secondary"><img class="figure__img" src="../../media/week-08/classification-before.svg" alt="Six labelled points in classes A and B, plus an unknown diamond at 2.4, 1.8, before prediction" loading="lazy" decoding="async"><figcaption>Figure 4. The supplied classes A and B, plus a visible unknown point whose answer the learner has never been given. Plot created for these pages from the demonstration's synthetic data; no external image licence is used.</figcaption></figure>
+<blockquote><p><strong>Would you expect the unknown point to be A or B — and what in the picture supports that?</strong></p></blockquote></div></section>
+<section class="slide"><a class="slide__section" href="./#a-classification-teaser--which-class-would-you-predict">A classification teaser — which class would you predict?</a><div class="focus-block"><figure class="figure--secondary"><img class="figure__img" src="../../media/week-08/classification-after.svg" alt="The same labelled examples, with the unknown point now showing predicted class A" loading="lazy" decoding="async"><figcaption>Figure 5. The classifier predicts A for the diamond. The supplied labels and the model's prediction are two different sources of information, and the plot keeps them visually distinct. Plot created for these pages by the scikit-learn demonstration; no external image licence is used.</figcaption></figure></div></section>
+<section class="slide"><a class="slide__section" href="./#what-did-the-machine-actually-learn">What did the machine actually learn?</a><div class="focus-block"><ol class="flow" aria-label="What a prediction depends on, in order">
+<li><span>data</span></li>
+<li><span>representation</span></li>
+<li><span class="is-pivot">learning algorithm</span></li>
+<li><span>model</span></li>
+<li><span>predictions</span></li>
+</ol>
+<p class="flow__note">The model is never independent of the choices that produced it. The highlighted step is the only one we usually name when we describe the system.</p></div></section>
+<section class="slide"><a class="slide__section" href="./#different-feedback--what-does-the-learner-actually-receive">Different feedback — what does the learner actually receive?</a><div class="focus-block"><blockquote><p><strong>What feedback is available — an answer for an example, no supplied label, or a consequence of an action?</strong></p></blockquote></div></section>
+<section class="slide"><a class="slide__section" href="./#different-feedback--what-does-the-learner-actually-receive">Different feedback — what does the learner actually receive?</a><div class="focus-block"><figure class="figure--secondary"><img class="figure__img" src="../../media/week-08/clustering-before.svg" alt="The same six example coordinates drawn neutrally, with no supplied labels" loading="lazy" decoding="async"><figcaption>Figure 6. The six example points from Figure 4 with their labels removed. Not a single position has moved. Plot created for these pages from the same synthetic data; no external image licence is used.</figcaption></figure>
+<blockquote><p><strong>Can you still see structure? What grouping would you expect, without being told A or B?</strong></p></blockquote></div></section>
+<section class="slide"><a class="slide__section" href="./#a-clustering-teaser--run-then-reveal-the-groups">A clustering teaser — run, then reveal the groups</a><div class="focus-block"><figure class="figure--secondary"><img class="figure__img" src="../../media/week-08/clustering-after.svg" alt="The same six points assigned to two clusters, using group identifiers rather than A or B" loading="lazy" decoding="async"><figcaption>Figure 7. K-means groups the same six examples without ever receiving their class labels. The group numbers are identifiers, not supplied meanings — swapping them changes nothing. Plot created for these pages by the scikit-learn demonstration; no external image licence is used.</figcaption></figure></div></section>
+<section class="slide"><a class="slide__section" href="./#a-clustering-teaser--run-then-reveal-the-groups">A clustering teaser — run, then reveal the groups</a><div class="focus-block"><div class="lenses lenses--pair">
+<div class="lens"><span class="lens__key">Classification</span><span class="lens__gloss">X and y → fit → predict a class for the unknown point</span></div>
+<div class="lens"><span class="lens__key">Clustering</span><span class="lens__gloss">X only → fit → group the six examples</span></div>
+</div></div></section>
+<section class="slide"><a class="slide__section" href="./#a-third-kind-of-feedback--reinforcement-learning">A third kind of feedback — reinforcement learning</a><div class="focus-block"><figure class="figure--hero"><img class="figure__img" src="../../media/week-08/agent-environment.svg" alt="An agent sends an action to an environment, which returns a new state and a reward" loading="lazy" decoding="async"><figcaption>Figure 8. Learning through interaction. The agent is not told the correct action; it receives what happened afterwards. Diagram created for these pages; no external image licence is used.</figcaption></figure></div></section>
+<section class="slide"><a class="slide__section" href="./#learning-is-not-remembering--how-do-we-know-the-model-learned-something-useful">Learning is not remembering — how do we know the model learned something useful?</a><div class="focus-block"><blockquote><p><strong>100 out of 100 on the training examples is evidence of fit to those 100 cases. It is not evidence that the model will work on anything else.</strong></p></blockquote></div></section>
+<section class="slide"><a class="slide__section" href="./#learning-is-not-remembering--how-do-we-know-the-model-learned-something-useful">Learning is not remembering — how do we know the model learned something useful?</a><div class="focus-block"><ol class="flow" aria-label="What generalisation asks, in order">
+<li><span>training data</span></li>
+<li><span>learn a pattern</span></li>
+<li><span>new unseen data</span></li>
+<li><span class="is-pivot">still useful?</span></li>
+</ol>
+<p class="flow__note">Only the highlighted step is a test. Everything before it is preparation, and it is entirely possible to do all of it well and fail there.</p></div></section>
+<section class="slide"><a class="slide__section" href="./#overfitting">Overfitting</a><div class="focus-block"><blockquote><p><strong>Memorising the training examples is not the same thing as generalising to new ones.</strong></p></blockquote></div></section>
+<section class="slide"><a class="slide__section" href="./#what-if-the-learning-signal-is-wrong">What if the learning signal is wrong?</a><div class="focus-block"><blockquote><p><strong>A system can technically learn, and still learn the wrong thing.</strong></p></blockquote></div></section>
+<section class="slide"><a class="slide__section" href="./#what-if-the-learning-signal-is-wrong">What if the learning signal is wrong?</a><div class="focus-block"><ol class="flow" aria-label="The progression from representation to learning">
+<li><span>Week 2 · representation</span></li>
+<li><span>Week 3 · blind search</span></li>
+<li><span>Week 4 · heuristic</span></li>
+<li><span>Week 5 · local search</span></li>
+<li><span>Week 6 · population</span></li>
+<li><span class="is-pivot">Week 8 · learning</span></li>
+</ol>
+<p class="flow__note">The words are new. The habit is not: ask what information the system receives, how that information changes its behaviour, and what evidence tells us the result is useful.</p></div></section>
+<section class="slide"><a class="slide__section" href="./">Review</a><div class="focus-block"><blockquote><p><strong>If we know the classes of previous examples, how can a machine decide the class of a new one?</strong></p></blockquote></div></section>
+</main>
+<p class="deck__count" aria-live="polite"></p>
+<script src="../../assets/deck.js" defer></script>
+</body>
+</html>
