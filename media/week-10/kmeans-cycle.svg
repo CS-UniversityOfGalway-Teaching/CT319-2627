@@ -18,9 +18,9 @@
   <rect width="960" height="400" rx="18" fill="var(--bg)"/>
   <text class="lab" x="30" y="40">TWO STEPS, REPEATED &#183; AND WE CHOOSE k BEFORE EITHER OF THEM RUNS</text>
 
-  <text class="cap" x="30" y="78">START</text>
-  <text class="sub" x="140" y="78" style="text-anchor:start">choose k, then place k centroids</text>
-  <path class="arr" d="M58 90 V128"/>
+  <text class="cap" x="130" y="78" style="text-anchor:middle">START</text>
+  <text class="sub" x="182" y="78" style="text-anchor:start">choose k, then place k centroids</text>
+  <path class="arr" d="M130 90 V128"/>
 
   <rect x="90" y="134" width="330" height="92" rx="12" fill="var(--accentbg)" stroke="var(--accent)" stroke-width="2.4"/>
   <text class="step" x="255" y="178">ASSIGN</text>
@@ -33,7 +33,7 @@
   <text class="sub"  x="705" y="203">each centroid to the mean of its points</text>
 
   <path class="arr" d="M705 232 C705 302 255 302 255 238"/>
-  <text class="cap" x="480" y="296" text-anchor="middle" fill="var(--accent)">REPEAT</text>
+  <text class="cap" x="480" y="306" text-anchor="middle" fill="var(--accent)">REPEAT</text>
 
   <text class="note" x="30" y="344">Fitting stops when centroid movement becomes small enough, or the iteration limit is reached.</text>
   <text class="note" x="30" y="368">A centroid is the mean position of the points currently assigned to it &#8212; which is why one distant point drags it outwards.</text>
