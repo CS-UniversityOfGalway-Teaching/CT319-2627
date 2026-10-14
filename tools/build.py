@@ -513,27 +513,38 @@ def build_page(md_path: Path) -> str:
 
 DECK_TEMPLATE = ROOT / "tools" / "templates" / "deck.html"
 
+# Words of ordinary text per slide. Longer passages are split between
+# paragraphs; a lead-in this short or shorter rides on its focus slide.
+SLIDE_WORDS = 130
+LEAD_IN_WORDS = 40
 
-def focus_blocks(markdown: str) -> list[str]:
-    """The Markdown inside each focus block, in page order."""
-    blocks: list[str] = []
-    current: list[str] | None = None
+
+def word_count(markdown: str) -> int:
+    return len(re.sub(r"<[^>]+>|\]\([^)]*\)|[#*`>|]", " ", markdown).split())
+
+
+def segments(markdown: str) -> list[tuple[bool, str]]:
+    """(is_focus, Markdown) for the text and the focus blocks, in page order."""
+    out: list[tuple[bool, str]] = []
+    current: list[str] = []
     for line in markdown.split("\n"):
         stripped = line.strip()
-        if stripped == FOCUS_START:
+        if stripped in (FOCUS_START, FOCUS_END):
+            text = "\n".join(current).strip()
+            if text:
+                out.append((stripped == FOCUS_END, text))
             current = []
-        elif stripped == FOCUS_END and current is not None:
-            blocks.append("\n".join(current).strip())
-            current = None
-        elif current is not None:
+        else:
             current.append(line)
-    return blocks
+    text = "\n".join(current).strip()
+    if text:
+        out.append((False, text))
+    return out
 
 
 def slide_parts(block_md: str) -> list[str]:
-    """A focus block that holds a figure and some text becomes a slide for the
-    figure, with its caption, and a slide for the text either side of it, so
-    the figure can fill the screen."""
+    """Split Markdown around its figures, so each figure, with its caption,
+    can have a slide to itself and fill the screen."""
     parts: list[list[str]] = [[]]
     lines = block_md.split("\n")
     i = 0
@@ -553,40 +564,143 @@ def slide_parts(block_md: str) -> list[str]:
     return [text for text in ("\n".join(part).strip() for part in parts) if text]
 
 
+def text_blocks(markdown: str) -> list[str]:
+    """Blank-line separated blocks, never splitting a code fence or an HTML
+    block such as lens cards or a flow strip."""
+    blocks: list[str] = []
+    current: list[str] = []
+    fence = False
+    depth = 0
+    for line in markdown.split("\n"):
+        stripped = line.strip()
+        if stripped.startswith("```"):
+            fence = not fence
+        elif not fence:
+            depth += len(re.findall(r"<(?:div|ol|ul|table|details)\b", stripped))
+            depth -= len(re.findall(r"</(?:div|ol|ul|table|details)>", stripped))
+        if not stripped and not fence and depth <= 0:
+            if current:
+                blocks.append("\n".join(current))
+            current = []
+        else:
+            current.append(line)
+    if current:
+        blocks.append("\n".join(current))
+    return [b for b in blocks if b.strip() != "---"]
+
+
+def text_slides(markdown: str) -> list[str]:
+    """Pack blocks into slides of about SLIDE_WORDS words. A heading, or a
+    sentence ending in a colon, stays with the block it introduces."""
+    slides: list[list[str]] = []
+    current: list[str] = []
+    count = 0
+    for block in text_blocks(markdown):
+        words = word_count(block)
+        if current and count + words > SLIDE_WORDS:
+            carry: list[str] = []
+            while current and (current[-1].lstrip().startswith("#")
+                               or current[-1].rstrip().endswith(":")):
+                carry.insert(0, current.pop())
+            if current:
+                slides.append(current)
+                current = carry
+                count = sum(word_count(b) for b in carry)
+            else:
+                current = carry
+        current.append(block)
+        count += words
+    if current:
+        slides.append(current)
+    return ["\n\n".join(slide) for slide in slides]
+
+
 def build_deck(md_path: Path) -> str | None:
-    """A week with "deck: yes" also gets deck.html: one slide per focus block,
-    in page order, under a title slide. Everything outside the focus blocks
-    stays on the page."""
+    """A week with "deck: yes" also gets deck.html: the whole page, in page
+    order, as slides. Each section opens with its heading; ordinary text is
+    set at reading size, a few paragraphs to a slide; each focus block is a
+    slide of its own at display size; each figure gets a slide to itself."""
     meta, body = front_matter(md_path.read_text(encoding="utf-8"))
     if meta.get("deck", "").lower() not in ("yes", "true"):
         return None
     opening_md, beats, tail_md = split_page(md_path, body)
 
-    def slide(section: str, href: str, block_md: str) -> str:
-        return "\n".join(
-            f'<section class="slide">'
-            f'<a class="slide__section" href="{href}">{section}</a>'
-            f'<div class="focus-block">{render(part)[0]}</div>'
+    sections: list[tuple[str, str, str]] = [("This week", "./", opening_md)]
+    sections += [(title, f"./#{slugify(title)}", rest_md) for _, title, rest_md in beats]
+    # The tail is ordinary Markdown; each of its "## " headings opens a section.
+    tail_title, tail_lines = "", []
+    for line in tail_md.strip().split("\n") + ["## "]:
+        if line.startswith("## "):
+            if "\n".join(tail_lines).strip():
+                sections.append((tail_title or "This week", "./", "\n".join(tail_lines)))
+            tail_title, tail_lines = line[3:].strip(), []
+        else:
+            tail_lines.append(line)
+
+    slides: list[dict[str, str]] = []
+    for section, href, md in sections:
+        heading = "" if section == "This week" else section
+        segs = segments(md)
+        leads: dict[int, str] = {}
+        for n, (is_focus, text) in enumerate(segs):
+            # A sentence or two of plain text rides on the neighbouring focus
+            # slide: a lead-in on the one after it, a closing line on the one
+            # before. Never on a figure's slide; the figure has it to itself.
+            short = (not is_focus and word_count(text) <= LEAD_IN_WORDS
+                     and not re.search(r"!\[|```|^\||^<", text, re.M))
+            if (short and n + 1 < len(segs) and segs[n + 1][0]
+                    and "![" not in slide_parts(segs[n + 1][1])[0]):
+                leads[n + 1] = text
+                continue
+            if short and n > 0 and segs[n - 1][0] and slides[-1]["kind"] == "focus":
+                slides[-1]["after"] = text
+                continue
+            lead = leads.get(n, "")
+            for part in slide_parts(text):
+                if is_focus or part.startswith("!["):
+                    # A figure, or a table of pictures side by side.
+                    kind = "figure" if "![" in part else "focus"
+                    slides.append({"section": section, "href": href, "kind": kind,
+                                   "heading": heading, "prose": lead, "focus": part})
+                    lead = ""
+                else:
+                    for chunk in text_slides(part):
+                        slides.append({"section": section, "href": href, "kind": "text",
+                                       "heading": heading, "prose": chunk})
+                heading = ""
+
+    def slide_html(sl: dict[str, str]) -> str:
+        inner = ""
+        if sl.get("heading"):
+            inner += f'<h2 class="slide__title">{inline(sl["heading"])}</h2>'
+        if sl.get("prose"):
+            inner += f'<div class="slide__prose">{render(sl["prose"])[0]}</div>'
+        if sl.get("focus"):
+            inner += f'<div class="focus-block">{render(sl["focus"])[0]}</div>'
+        if sl.get("after"):
+            inner += f'<div class="slide__prose">{render(sl["after"])[0]}</div>'
+        return (
+            f'<section class="slide slide--{sl["kind"]}">'
+            f'<a class="slide__section" href="{sl["href"]}">{inline(sl["section"])}</a>'
+            f'<div class="slide__body">{inner}</div>'
             f"</section>"
-            for part in slide_parts(block_md)
         )
 
     question = meta.get("question", "")
-    slides = [
-        f'<section class="slide slide--title">'
+    title_slide = (
+        f'<section class="slide slide--cover">'
         f'<p class="eyebrow">{html.escape(meta.get("eyebrow", ""), quote=True)}</p>'
         f'<h1>{inline(meta.get("title", md_path.stem))}</h1>'
         + (f'<p class="week-question">{inline(question)}</p>' if question else "")
         + "</section>"
-    ]
-    slides += [slide("This week", "./", b) for b in focus_blocks(opening_md)]
-    for _, title, rest_md in beats:
-        slides += [slide(inline(title), f"./#{slugify(title)}", b) for b in focus_blocks(rest_md)]
-    slides += [slide("Review", "./", b) for b in focus_blocks(tail_md)]
+    )
+    # Links to a section of the page point at the page, not at the deck.
+    deck_html = "\n".join([title_slide] + [slide_html(sl) for sl in slides])
+    deck_html = deck_html.replace('href="#', 'href="./#')
 
     parts = {
         "TITLE": html.escape(meta.get("title", md_path.stem), quote=True),
-        "SLIDES": "\n".join(slides),
+        "SLIDES": deck_html,
     }
     page = DECK_TEMPLATE.read_text(encoding="utf-8")
     for key, value in parts.items():
