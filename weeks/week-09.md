@@ -5,6 +5,7 @@ question: How can a machine decide which category a new example belongs to?
 description: CT319 Week 9. k-nearest neighbours and decision trees on one fixed dataset — what changes when k changes, what a tree learns, and why training accuracy proves nothing on its own.
 bar: Week 9 · Sections
 source: week-09.md
+deck: yes
 ---
 
 Last week introduced learning from data and experience in general. This week narrows it to one setting — **labelled examples** — and one question: how do known answers become category predictions for new cases?
