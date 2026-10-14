@@ -530,6 +530,29 @@ def focus_blocks(markdown: str) -> list[str]:
     return blocks
 
 
+def slide_parts(block_md: str) -> list[str]:
+    """A focus block that holds a figure and some text becomes a slide for the
+    figure, with its caption, and a slide for the text either side of it, so
+    the figure can fill the screen."""
+    parts: list[list[str]] = [[]]
+    lines = block_md.split("\n")
+    i = 0
+    while i < len(lines):
+        if lines[i].startswith("!["):
+            figure = [lines[i]]
+            j = i + 1
+            while j < len(lines) and not lines[j].strip():
+                j += 1
+            if j < len(lines) and lines[j].startswith("<sub><em>"):
+                figure += ["", lines[j]]
+                i = j
+            parts += [figure, []]
+        else:
+            parts[-1].append(lines[i])
+        i += 1
+    return [text for text in ("\n".join(part).strip() for part in parts) if text]
+
+
 def build_deck(md_path: Path) -> str | None:
     """A week with "deck: yes" also gets deck.html: one slide per focus block,
     in page order, under a title slide. Everything outside the focus blocks
@@ -540,12 +563,12 @@ def build_deck(md_path: Path) -> str | None:
     opening_md, beats, tail_md = split_page(md_path, body)
 
     def slide(section: str, href: str, block_md: str) -> str:
-        inner, _ = render(block_md)
-        return (
+        return "\n".join(
             f'<section class="slide">'
             f'<a class="slide__section" href="{href}">{section}</a>'
-            f'<div class="focus-block">{inner}</div>'
+            f'<div class="focus-block">{render(part)[0]}</div>'
             f"</section>"
+            for part in slide_parts(block_md)
         )
 
     question = meta.get("question", "")
