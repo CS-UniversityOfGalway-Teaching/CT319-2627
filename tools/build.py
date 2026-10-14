@@ -25,6 +25,10 @@ Three markers divide the page:
 Each beat begins with an "## " heading, which becomes its summary line. The
 markers are HTML comments, so the same file still reads correctly on GitHub
 and in any other Markdown renderer.
+
+A week whose front matter says "deck: yes" also gets weeks/<name>/deck.html:
+one slide per focus block, using tools/templates/deck.html, assets/deck.css
+and assets/deck.js.
 """
 
 from __future__ import annotations
@@ -425,10 +429,8 @@ BEATS_END = "<!-- ct319:endbeats -->"
 BEAT_RE = re.compile(r"^<!--\s*ct319:beat(?P<flags>[^>]*?)-->\s*$")
 
 
-def build_page(md_path: Path) -> str:
-    raw = md_path.read_text(encoding="utf-8")
-    meta, body = front_matter(raw)
-
+def split_page(md_path: Path, body: str) -> tuple[str, list[tuple[bool, str, str]], str]:
+    """Opening Markdown, (open, title, body Markdown) per beat, tail Markdown."""
     if BEATS_START not in body:
         raise SystemExit(f"{md_path}: missing {BEATS_START}")
     opening_md, rest = body.split(BEATS_START, 1)
@@ -436,8 +438,6 @@ def build_page(md_path: Path) -> str:
         beats_md, tail_md = rest.split(BEATS_END, 1)
     else:
         beats_md, tail_md = rest, ""
-
-    opening_html, _ = render(opening_md.strip())
 
     # split the beat region on the beat markers
     chunks: list[tuple[bool, list[str]]] = []
@@ -455,18 +455,27 @@ def build_page(md_path: Path) -> str:
     if current is not None:
         chunks.append((current_open, current))
 
-    beat_html: list[str] = []
-    outline: list[tuple[str, str]] = []
+    beats: list[tuple[bool, str, str]] = []
     for is_open, chunk_lines in chunks:
         text = "\n".join(chunk_lines).strip("\n")
         m = re.match(r"^##\s+(.*)$", text.split("\n", 1)[0].strip())
         if not m:
             raise SystemExit(f"{md_path}: a beat does not start with an '## ' heading:\n{text[:120]}")
-        title = m.group(1).strip()
-        slug = slugify(title)
         rest_md = text.split("\n", 1)[1] if "\n" in text else ""
-        inner, _ = render(rest_md.strip())
-        outline.append((title, slug))
+        beats.append((is_open, m.group(1).strip(), rest_md.strip()))
+    return opening_md, beats, tail_md
+
+
+def build_page(md_path: Path) -> str:
+    raw = md_path.read_text(encoding="utf-8")
+    meta, body = front_matter(raw)
+    opening_md, beats, tail_md = split_page(md_path, body)
+    opening_html, _ = render(opening_md.strip())
+
+    beat_html: list[str] = []
+    for is_open, title, rest_md in beats:
+        slug = slugify(title)
+        inner, _ = render(rest_md)
         beat_html.append(
             f'<details class="beat" id="{slug}"{" open" if is_open else ""}>'
             f'<summary><h2 class="beat__title">{inline(title)}</h2></summary>'
@@ -489,8 +498,74 @@ def build_page(md_path: Path) -> str:
         "BEATS": "\n".join(beat_html),
         "TAIL": tail_html,
         "SOURCE": html.escape(meta.get("source", md_path.name), quote=True),
+        "DECKLINK": ('\n    <a class="beat-bar__deck" href="deck.html">Slides</a>'
+                     if meta.get("deck", "").lower() in ("yes", "true") else ""),
     }
     page = template
+    for key, value in parts.items():
+        page = page.replace("{{" + key + "}}", value)
+    return page
+
+
+# --------------------------------------------------------------------------
+# deck
+# --------------------------------------------------------------------------
+
+DECK_TEMPLATE = ROOT / "tools" / "templates" / "deck.html"
+
+
+def focus_blocks(markdown: str) -> list[str]:
+    """The Markdown inside each focus block, in page order."""
+    blocks: list[str] = []
+    current: list[str] | None = None
+    for line in markdown.split("\n"):
+        stripped = line.strip()
+        if stripped == FOCUS_START:
+            current = []
+        elif stripped == FOCUS_END and current is not None:
+            blocks.append("\n".join(current).strip())
+            current = None
+        elif current is not None:
+            current.append(line)
+    return blocks
+
+
+def build_deck(md_path: Path) -> str | None:
+    """A week with "deck: yes" also gets deck.html: one slide per focus block,
+    in page order, under a title slide. Everything outside the focus blocks
+    stays on the page."""
+    meta, body = front_matter(md_path.read_text(encoding="utf-8"))
+    if meta.get("deck", "").lower() not in ("yes", "true"):
+        return None
+    opening_md, beats, tail_md = split_page(md_path, body)
+
+    def slide(section: str, href: str, block_md: str) -> str:
+        inner, _ = render(block_md)
+        return (
+            f'<section class="slide">'
+            f'<a class="slide__section" href="{href}">{section}</a>'
+            f'<div class="focus-block">{inner}</div>'
+            f"</section>"
+        )
+
+    question = meta.get("question", "")
+    slides = [
+        f'<section class="slide slide--title">'
+        f'<p class="eyebrow">{html.escape(meta.get("eyebrow", ""), quote=True)}</p>'
+        f'<h1>{inline(meta.get("title", md_path.stem))}</h1>'
+        + (f'<p class="week-question">{inline(question)}</p>' if question else "")
+        + "</section>"
+    ]
+    slides += [slide("This week", "./", b) for b in focus_blocks(opening_md)]
+    for _, title, rest_md in beats:
+        slides += [slide(inline(title), f"./#{slugify(title)}", b) for b in focus_blocks(rest_md)]
+    slides += [slide("Review", "./", b) for b in focus_blocks(tail_md)]
+
+    parts = {
+        "TITLE": html.escape(meta.get("title", md_path.stem), quote=True),
+        "SLIDES": "\n".join(slides),
+    }
+    page = DECK_TEMPLATE.read_text(encoding="utf-8")
     for key, value in parts.items():
         page = page.replace("{{" + key + "}}", value)
     return page
@@ -510,6 +585,11 @@ def main() -> None:
         out = out_dir / "index.html"
         out.write_text(build_page(md), encoding="utf-8")
         print(f"built {out.relative_to(ROOT)}  ({out.stat().st_size // 1024} KB)")
+        deck = build_deck(md)
+        if deck:
+            out = out_dir / "deck.html"
+            out.write_text(deck, encoding="utf-8")
+            print(f"built {out.relative_to(ROOT)}  ({out.stat().st_size // 1024} KB)")
 
 
 if __name__ == "__main__":

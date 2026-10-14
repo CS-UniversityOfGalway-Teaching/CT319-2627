@@ -215,6 +215,16 @@ a:hover { text-decoration-thickness: 2px; }
   padding: 0.35rem 0.8rem;
   cursor: pointer;
 }
+.beat-bar__deck {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--page);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 0.35rem 0.8rem;
+  text-decoration: none;
+}
 .beat-bar button:hover { background: var(--surface-strong); border-color: var(--line-strong); }
 .beat-bar button:active { transform: translateY(1px); }
 
