@@ -26,9 +26,13 @@ Each beat begins with an "## " heading, which becomes its summary line. The
 markers are HTML comments, so the same file still reads correctly on GitHub
 and in any other Markdown renderer.
 
-A week whose front matter says "deck: yes" also gets weeks/<name>/deck.html:
-one slide per focus block, using tools/templates/deck.html, assets/deck.css
-and assets/deck.js.
+A week whose front matter says "deck: yes" also gets weeks/<name>/deck.html,
+the whole page as slides, using tools/templates/deck.html, assets/deck.css
+and assets/deck.js. A slide of ordinary text takes its main point from a
+
+    <!-- ct319:key A sentence quoted exactly from that text. -->
+
+line placed next to the sentence. The page ignores it.
 """
 
 from __future__ import annotations
@@ -128,6 +132,9 @@ FIGURE_LEVELS = {"wide", "hero", "secondary"}
 # comments, so the Markdown still reads normally on GitHub.
 FOCUS_START = "<!-- ct319:focus -->"
 FOCUS_END = "<!-- ct319:endfocus -->"
+# A slide's main point, quoted from the text around it. Only the deck shows
+# it; the page renders as if the line were not there.
+KEY_RE = re.compile(r"^[ \t]*<!--\s*ct319:key\s+(.+?)\s*-->[ \t]*(?:\n|$)", re.M)
 LINKED_IMAGE_RE = re.compile(
     r"^\[!\[([^\]]*)\]\((" + URL_DEST + r")\)\]\((" + URL_DEST + r")\)\s*$"
 )
@@ -401,7 +408,7 @@ class Renderer:
 
 
 def render(markdown: str) -> tuple[str, list[tuple[int, str, str]]]:
-    r = Renderer(markdown.split("\n"))
+    r = Renderer(KEY_RE.sub("", markdown).split("\n"))
     return r.run(), r.headings
 
 
@@ -516,8 +523,16 @@ DECK_TEMPLATE = ROOT / "tools" / "templates" / "deck.html"
 # Words of ordinary text per slide; longer passages are split between
 # paragraphs. A focus block is set larger, so each of its words counts
 # FOCUS_WEIGHT times against the slide.
-SLIDE_WORDS = 150
+SLIDE_WORDS = 170
 FOCUS_WEIGHT = 2
+# A slide never ends with less text than this; a short line joins the next.
+MIN_WORDS = 40
+
+
+def plain(markdown: str) -> str:
+    """Markdown reduced to its words, for checking a quotation."""
+    text = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", markdown)
+    return " ".join(re.sub(r"[*`]", "", text).split())
 
 
 def word_count(markdown: str) -> int:
@@ -591,28 +606,35 @@ def text_blocks(markdown: str) -> list[str]:
 
 
 def text_slides(markdown: str) -> list[str]:
-    """Pack blocks into slides of about SLIDE_WORDS words. A heading, or a
-    sentence ending in a colon, stays with the block it introduces."""
+    """Pack blocks into slides of about SLIDE_WORDS words. A heading, a
+    sentence ending in a colon, or a one-line lead-in stays with the block
+    it introduces."""
     slides: list[list[str]] = []
     current: list[str] = []
     count = 0
     for block in text_blocks(markdown):
-        words = word_count(block)
-        if current and count + words > SLIDE_WORDS:
+        words = word_count(block) + sum(FOCUS_WEIGHT * word_count(k) for k in KEY_RE.findall(block))
+        if (current and count + words > SLIDE_WORDS
+                and sum(word_count(b) for b in current) >= MIN_WORDS):
             carry: list[str] = []
             while current and (current[-1].lstrip().startswith("#")
-                               or current[-1].rstrip().endswith(":")):
+                               or KEY_RE.sub("", current[-1]).rstrip().endswith(":")
+                               or word_count(current[-1]) <= 12):
                 carry.insert(0, current.pop())
             if current:
                 slides.append(current)
                 current = carry
-                count = sum(word_count(b) for b in carry)
+                count = sum(word_count(b) + sum(FOCUS_WEIGHT * word_count(k) for k in KEY_RE.findall(b))
+                            for b in carry)
             else:
                 current = carry
         current.append(block)
         count += words
     if current:
-        slides.append(current)
+        if slides and sum(word_count(b) for b in current) < MIN_WORDS:
+            slides[-1] += current
+        else:
+            slides.append(current)
     return ["\n\n".join(slide) for slide in slides]
 
 
@@ -639,6 +661,7 @@ def build_deck(md_path: Path) -> str | None:
             tail_lines.append(line)
 
     slides: list[dict] = []
+    warnings: list[str] = []
     for section, href, md in sections:
         first = len(slides)
         pending: list[str] = []  # text blocks still waiting for a slide
@@ -662,7 +685,20 @@ def build_deck(md_path: Path) -> str | None:
                 last["cost"] += word_count(text)
                 return
             for chunk in text_slides(text):
-                add("text", prose=chunk)
+                keys = KEY_RE.findall(chunk)
+                for key in keys:
+                    if plain(key) not in plain(KEY_RE.sub("", chunk)):
+                        raise SystemExit(f"{md_path}: key sentence not found in its slide's text:\n  {key}")
+                if len(keys) != 1:
+                    warnings.append(f"{len(keys)} key sentences on a slide in {section!r}: "
+                                    + plain(KEY_RE.sub("", chunk))[:70])
+                if keys:
+                    # A key sentence that is the slide's whole text is not
+                    # repeated under itself.
+                    rest = "" if plain(KEY_RE.sub("", chunk)) == plain(keys[0]) else chunk
+                    add("key", prose=rest, focus="> **" + keys[0].replace("**", "") + "**")
+                else:
+                    add("text", prose=chunk)
 
         for is_focus, text in segments(md):
             for part in slide_parts(text):
@@ -693,6 +729,8 @@ def build_deck(md_path: Path) -> str | None:
         inner = ""
         if sl.get("heading"):
             inner += f'<h2 class="slide__title">{inline(sl["heading"])}</h2>'
+        if sl["kind"] == "key":
+            sl = dict(sl, after=sl["prose"], prose="")
         if sl.get("prose"):
             inner += f'<div class="slide__prose">{render(sl["prose"])[0]}</div>'
         if sl.get("focus"):
@@ -705,6 +743,9 @@ def build_deck(md_path: Path) -> str | None:
             f'<div class="slide__body">{inner}</div>'
             f"</section>"
         )
+
+    for warning in warnings:
+        print(f"  {md_path.stem} deck: {warning}", file=sys.stderr)
 
     question = meta.get("question", "")
     title_slide = (

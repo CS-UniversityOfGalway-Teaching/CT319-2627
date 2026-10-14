@@ -17,8 +17,10 @@ Last week introduced learning from data and experience in general. This week nar
 <!-- ct319:endfocus -->
 
 Everything on this page runs on one dataset, with one fixed split, one fixed pair of axes and one unknown point. Nothing else moves. That is deliberate: when the picture changes, exactly one thing caused it, and you should be able to name it.
+<!-- ct319:key That is deliberate: when the picture changes, exactly one thing caused it, and you should be able to name it. -->
 
 We work through five things.
+<!-- ct319:key We work through five things. -->
 
 * [**From examples to categories**](#from-examples-to-categories--what-are-we-asking-the-machine-to-learn) — what a supervised task asks for once the training examples already carry their answers.
 * [**Ask the neighbours**](#ask-the-neighbours--how-does-knn-make-a-decision) — how KNN predicts by consulting the labelled examples nearest a new case.
@@ -76,11 +78,13 @@ The classifier does not know the answer. That is the entire point — it has to 
 ### Binary and multiclass
 
 Sometimes there are exactly two possible classes — spam or not spam, fraud or not fraud, approve or reject. That is **binary classification**. Sometimes there are more — cat, dog or rabbit; red, amber or green. That is **multiclass classification**. The structure is identical either way; only the size of the answer set changes.
+<!-- ct319:key The structure is identical either way; only the size of the answer set changes. -->
 
 <!-- ct319:beat -->
 ## The dataset everything else runs on
 
 The loan table gives us the vocabulary. For the live experiments we switch to one deterministic two-dimensional dataset, so that the geometry is visible on a screen.
+<!-- ct319:key For the live experiments we switch to one deterministic two-dimensional dataset, so that the geometry is visible on a screen. -->
 
 ```python
 make_moons(n_samples=140, noise=0.23, random_state=2)
@@ -108,6 +112,7 @@ Everything from here changes one thing at a time against that picture: first how
 ## Ask the neighbours — how does KNN make a decision?
 
 **k-nearest neighbours**, written **KNN**, makes a prediction by looking at the labelled examples nearest the new one. That is the whole idea, and it is deliberately unambitious: find the nearby examples, look at their classes, count the votes.
+<!-- ct319:key That is the whole idea, and it is deliberately unambitious: find the nearby examples, look at their classes, count the votes. -->
 
 <!-- ct319:focus -->
 
@@ -118,6 +123,7 @@ Everything from here changes one thing at a time against that picture: first how
 <!-- ct319:endfocus -->
 
 No rule book was written in advance. The decision comes from whichever labelled examples happen to lie nearest.
+<!-- ct319:key No rule book was written in advance. The decision comes from whichever labelled examples happen to lie nearest. -->
 
 <!-- ct319:beat -->
 ## What does *nearest* mean?
@@ -208,11 +214,13 @@ A very small `k` makes the classifier hypersensitive to individual examples. A l
 ### Why this matters this week
 
 The score is part of the evidence; the picture is the experiment. Ask where the decision region moved, and which examples now reach the diamond. The number alone will not tell you that the answer flipped.
+<!-- ct319:key The score is part of the evidence; the picture is the experiment. -->
 
 <!-- ct319:beat -->
 ## Learn the rules instead — what does a decision tree do differently?
 
 KNN keeps the training examples and consults them when a new case arrives. That is not the only option. A **decision tree** instead learns a sequence of questions during training, and afterwards just follows them.
+<!-- ct319:key A decision tree instead learns a sequence of questions during training, and afterwards just follows them. -->
 
 <!-- ct319:focus -->
 
@@ -273,6 +281,7 @@ prediction = model.predict(X_new)
 <!-- ct319:endfocus -->
 
 Now remove the limit entirely.
+<!-- ct319:key Now remove the limit entirely. -->
 
 <!-- ct319:focus -->
 
@@ -287,6 +296,7 @@ Now remove the limit entirely.
 They disagree because they assume different things about how useful structure should be extracted. KNN assumes nearby examples are similar. A tree assumes the classes can be separated by cuts across one feature at a time.
 
 The dataset does not uniquely determine one model. It never did.
+<!-- ct319:key The dataset does not uniquely determine one model. It never did. -->
 
 ### Why this matters this week
 
@@ -309,6 +319,7 @@ The useful question is what happens on examples it did not see during training �
 ## Training data and test data
 
 The standard move is to hold some labelled examples back before any learning happens.
+<!-- ct319:key The standard move is to hold some labelled examples back before any learning happens. -->
 
 <!-- ct319:focus -->
 
@@ -348,6 +359,7 @@ A model **overfits** when it fits its training data so closely that performance 
 | unrestricted | 33 | 17 | **100.0%** | **76.2%** |
 
 Training accuracy climbs all the way to perfect. Test accuracy falls the whole way down. The model that memorised every training label is the worst of the three at the only job that matters.
+<!-- ct319:key The model that memorised every training label is the worst of the three at the only job that matters. -->
 
 <!-- ct319:focus -->
 
@@ -393,6 +405,7 @@ Which takes us straight back to Week 2.
 ## An email is not a feature vector
 
 Suppose the message is *FREE tickets available in Galway tomorrow*. A classical classifier cannot work with the meaning of that sentence. It needs something countable first.
+<!-- ct319:key A classical classifier cannot work with the meaning of that sentence. It needs something countable first. -->
 
 <!-- ct319:focus -->
 
@@ -443,6 +456,7 @@ python experiments/week-09/classification_demo.py
 ```
 
 Press **Space**, the **right arrow** or **Next →** to advance. Each stage carries its own prompt and measured result on the figure, and the dataset, split, axes and unknown point never move.
+<!-- ct319:key Each stage carries its own prompt and measured result on the figure, and the dataset, split, axes and unknown point never move. -->
 
 ### Try it yourself
 
@@ -451,6 +465,7 @@ Press **Space**, the **right arrow** or **Next →** to advance. Each stage carr
 3. Find where the diamond changes class, and name the examples responsible.
 4. Switch to `--mode tree --depth 2`, then `5`, then `none`. Predict whether test accuracy will follow training accuracy up.
 5. Finish on `--mode compare` and pick out three things: the setting that memorised every training example, the setting with the best test score, and why training accuracy cannot tell you which is which.
+<!-- ct319:key Find where the diamond changes class, and name the examples responsible. -->
 
 To regenerate every figure on this page without opening a window:
 
@@ -477,6 +492,7 @@ That is where Week 10 begins: **clustering**.
 ## Quick revision
 
 If you can answer these without reopening the page, you have the core of this week.
+<!-- ct319:key If you can answer these without reopening the page, you have the core of this week. -->
 
 1. **[WK-09-01]** What makes classification a supervised task, and what does the learner receive that an unsupervised one does not?
 2. What is the difference between binary and multiclass classification, and what stays the same?
@@ -498,12 +514,14 @@ If you can answer these without reopening the page, you have the core of this we
 ### CT319 source material
 
 This week follows selected material from the formal CT319 *Classification* material on Canvas, which remains the broader reference. These pages do not reproduce every slide; they develop a smaller number of points in more depth.
+<!-- ct319:key This week follows selected material from the formal CT319 Classification material on Canvas, which remains the broader reference. -->
 
 The page concentrates on classification as a supervised task; k-nearest neighbours as a decision reached by consulting nearby labelled examples; the effect of `k` on both the decision boundary and one individual prediction; decision trees as a learned sequence of questions, and the effect of depth; training accuracy against held-out accuracy, and why the first alone establishes nothing; the blind spot in accuracy when one class is rare; and representation — features, numerical scale, and what the classifier actually receives.
 
 ### Continuity from Week 8
 
 Week 8 used `KNeighborsClassifier` only to expose the scikit-learn workflow of `fit(...)` followed by prediction. This week teaches k-nearest neighbours in its own right, adds decision trees, and turns Week 8's remarks about generalisation and overfitting into a measured train/test comparison.
+<!-- ct319:key This week teaches k-nearest neighbours in its own right, adds decision trees, and turns Week 8's remarks about generalisation and overfitting into a measured train/test comparison. -->
 
 ### Examples and measured values
 
@@ -515,6 +533,7 @@ train_test_split(test_size=0.30, random_state=42, stratify=y)
 ```
 
 Because the dataset, the split and the estimators are all seeded, every accuracy, node count and leaf count quoted here is **reproducible rather than illustrative**. They were last regenerated with scikit-learn 1.9.1, matplotlib 3.11.2 and NumPy 2.5.3 on **5 October 2026**, by the script in this repository.
+<!-- ct319:key Because the dataset, the split and the estimators are all seeded, every accuracy, node count and leaf count quoted here is reproducible rather than illustrative. -->
 
 The loan table in the first highlight is a vocabulary example only, and no model is fitted to it.
 
@@ -534,3 +553,4 @@ No external images, videos, papers or interactives are used.
 - scikit-learn reference — [`KNeighborsClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html) · [`DecisionTreeClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html) · [`train_test_split`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html) · [`make_moons`](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_moons.html)
 
 scikit-learn and NumPy are distributed under the BSD 3-Clause licence, and matplotlib under the Python Software Foundation licence. They are used here as tools; no library code is reproduced on these pages.
+<!-- ct319:key scikit-learn and NumPy are distributed under the BSD 3-Clause licence, and matplotlib under the Python Software Foundation licence. -->

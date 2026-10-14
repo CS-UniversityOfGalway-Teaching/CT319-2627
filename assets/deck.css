@@ -10,21 +10,19 @@
   box-sizing: border-box;
   height: 100vh;
   height: 100dvh;
-  padding: 3.6rem 5vw 2.4rem;
+  padding: 1.2rem 5vw 2rem;
   flex-direction: column;
-  justify-content: center;
+  /* A slide too tall for the screen extends and scrolls, rather than
+     shrinking or running up under the section line. */
+  overflow-y: auto;
 }
 .slide.is-current { display: flex; }
-/* Text slides start at the top, so a run of them doesn't jump about. */
-.slide--text { justify-content: flex-start; padding-top: 4.4rem; }
 
 /* The section the slide comes from. It links back to that section on the
    page. */
 .slide__section {
-  position: absolute;
-  top: 1.2rem;
-  left: 5vw;
-  right: 8rem;
+  flex: none;
+  margin-right: 6rem;
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -37,11 +35,13 @@
 }
 .slide__section:hover { color: var(--accent); }
 
+/* Centred in the space below the section line while it fits; from the top
+   once it doesn't. */
 .slide__body {
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
-  transform-origin: top center;
+  margin: auto;
+  padding-top: 1.6rem;
 }
 .slide--figure .slide__body { max-width: none; }
 
@@ -50,9 +50,9 @@
   margin: 0 0 1.1rem;
 }
 
-/* Ordinary text: reading size, the full width of the slide. */
+/* Ordinary text supports the slide's main point, so it is set smaller. */
 .slide__prose {
-  font-size: clamp(1.05rem, 1.65vw, 1.55rem);
+  font-size: clamp(0.95rem, 1.3vw, 1.3rem);
   line-height: 1.5;
 }
 .slide__prose > :first-child { margin-top: 0; }
@@ -88,7 +88,7 @@
 .slide .focus-block table { font-size: 0.8em; }
 .slide .focus-block .lenses { gap: 1rem; }
 
-.slide--cover { align-items: flex-start; padding-left: 8vw; padding-right: 8vw; }
+.slide--cover { justify-content: center; align-items: flex-start; padding-left: 8vw; padding-right: 8vw; }
 .slide--cover h1 { font-size: clamp(2.2rem, 5vw, 4rem); margin: 0.4rem 0 1.4rem; }
 .slide--cover .week-question { font-size: clamp(1.2rem, 2.4vw, 1.9rem); }
 
