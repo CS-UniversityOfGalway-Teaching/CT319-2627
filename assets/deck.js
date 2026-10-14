@@ -10,23 +10,24 @@
   // slide no longer fits the screen. Scale the whole slide down only as a
   // last resort.
   function fit(slide) {
-    var block = slide.querySelector(".focus-block");
-    if (!block) return;
-    block.style.transform = "";
-    var room = slide.clientHeight - 6 * 16;
-    var imgs = Array.prototype.slice.call(block.querySelectorAll("figure img"))
+    var body = slide.querySelector(".slide__body");
+    if (!body) return;
+    body.style.transform = "";
+    var room = slide.clientHeight - parseFloat(getComputedStyle(slide).paddingTop)
+      - parseFloat(getComputedStyle(slide).paddingBottom);
+    var imgs = Array.prototype.slice.call(body.querySelectorAll(".focus-block figure img"))
       .filter(function (img) { return img.naturalWidth && img.naturalHeight; });
-    imgs.forEach(function (img) { img.style.width = block.clientWidth + "px"; });
-    var over = block.scrollHeight - room;
+    imgs.forEach(function (img) { img.style.width = body.clientWidth + "px"; });
+    var over = body.scrollHeight - room;
     if (over > 0 && imgs.length) {
       imgs.forEach(function (img) {
         var aspect = img.naturalWidth / img.naturalHeight;
-        var w = block.clientWidth - (over / imgs.length) * aspect;
-        img.style.width = Math.max(block.clientWidth * 0.3, w) + "px";
+        var w = body.clientWidth - (over / imgs.length) * aspect;
+        img.style.width = Math.max(body.clientWidth * 0.3, w) + "px";
       });
     }
-    var need = block.scrollHeight;
-    if (need > room) block.style.transform = "scale(" + (room / need).toFixed(3) + ")";
+    var need = body.scrollHeight;
+    if (need > room) body.style.transform = "scale(" + (room / need).toFixed(3) + ")";
   }
 
   function show(i) {
