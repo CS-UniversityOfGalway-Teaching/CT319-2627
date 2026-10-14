@@ -43,5 +43,6 @@
 
   <text class="sub" x="416" y="278">Sixteen points apart, and neither number appears on the left.</text>
 
-  <text class="note" x="30" y="336">The headline is not wrong. It is an average over a thousand people, four fifths of whom are in Group A &#8212; so it mostly reports Group A's experience.</text>
+  <text class="note" x="30" y="326">The headline is not wrong. It is an average over a thousand people,</text>
+  <text class="note" x="30" y="346">four fifths of whom are in Group A &#8212; so it mostly reports Group A's experience.</text>
 </svg>

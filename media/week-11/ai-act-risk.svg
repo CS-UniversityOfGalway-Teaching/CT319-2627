@@ -39,8 +39,9 @@
   <path d="M120 70 V336" stroke="var(--muted)" stroke-width="2.4" fill="none" marker-end="url(#a)"/>
   <text class="axis" x="104" y="150" text-anchor="end" transform="rotate(-90 104 150)">OBLIGATION DECREASES</text>
 
-  <text class="note" x="30" y="376">The same technique can land in different bands depending on what it is used for &#8212; the Act classifies the use, not the algorithm.</text>
-  <text class="note" x="30" y="400">The law supports this discussion. It does not replace judgement about whether a particular system is appropriate at all.</text>
+  <text class="note" x="30" y="366">The same technique can land in different bands depending on what it is used for &#8212;</text>
+  <text class="note" x="30" y="386">the Act classifies the use, not the algorithm.</text>
+  <text class="note" x="30" y="408">The law supports this discussion. It does not replace judgement about whether a particular system is appropriate at all.</text>
 
   <defs>
     <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
