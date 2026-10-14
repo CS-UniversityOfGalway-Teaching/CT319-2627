@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" role="img" aria-labelledby="t d">
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="430" viewBox="0 0 960 430" role="img" aria-labelledby="t d">
   <title id="t">With k = 3, the three nearest labelled examples vote</title>
   <desc id="d">An unknown point sits among labelled examples. A dashed circle encloses its three nearest neighbours: two belong to class A and one to class B. The majority vote is two to one, so the prediction is A. Examples outside the circle take no part in the decision.</desc>
   <style>
@@ -16,7 +16,7 @@
     .ring { fill:none; stroke:var(--accent); stroke-width:2.2; stroke-dasharray:8 6; }
     .far  { opacity:0.32; }
   </style>
-  <rect width="960" height="420" rx="18" fill="var(--bg)"/>
+  <rect width="960" height="430" rx="18" fill="var(--bg)"/>
   <text class="lab" x="30" y="40">ONLY THE NEAREST k EXAMPLES GET A VOTE</text>
 
   <rect x="30" y="58" width="570" height="302" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
@@ -53,5 +53,6 @@
   <text class="row" x="666" y="296" fill="var(--good)" style="font-size:30px">PREDICT A</text>
   <text class="note" x="666" y="330">The five fainter points are too far to count.</text>
 
-  <text class="note" x="30" y="396">No rule was written in advance. The answer comes from whichever labelled examples happen to lie nearest the new point &#8212; so changing k changes who gets to speak.</text>
+  <text class="note" x="30" y="390">No rule was written in advance. The answer comes from whichever labelled examples happen to lie nearest</text>
+  <text class="note" x="30" y="410">the new point &#8212; so changing k changes who gets to speak.</text>
 </svg>
