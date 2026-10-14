@@ -5,6 +5,7 @@ question: When should we trust an AI system?
 description: CT319 Week 11. Fairness, privacy, transparency and accountability — why one accuracy figure settles nothing, and what evidence would justify deploying a system at all.
 bar: Week 11 · Sections
 source: week-11.md
+deck: yes
 ---
 
 For three weeks we asked whether a machine can learn from data, classify new examples, discover structure and make recommendations. Every question was a version of *does it work?*
@@ -18,8 +19,10 @@ Now suppose it does. Suppose the accuracy is high. Suppose people are already us
 <!-- ct319:endfocus -->
 
 This is the one week on the module where the interesting answers are not technical. They are still answers, though — the discipline is the same one we have used since Week 1: say what the evidence establishes, and say what it does not.
+<!-- ct319:key This is the one week on the module where the interesting answers are not technical. -->
 
 We work through five things.
+<!-- ct319:key We work through five things. -->
 
 * [**Accurate, but trustworthy?**](#accurate-but-trustworthy--is-good-performance-enough) — why a headline accuracy figure does not settle whether a system should be relied on.
 * [**The data were biased before the model arrived**](#the-data-were-biased-before-the-model-arrived--where-can-unfairness-enter) — where unfairness enters the sequence of choices that builds a system.
@@ -80,6 +83,7 @@ Here is a classifier with a perfectly respectable headline figure.
 Sixteen points separate the two groups, and neither number appears in the headline. Generalisation does not require identical performance in every subgroup — but a gap like that needs investigating rather than averaging away.
 
 It does not, on its own, prove unlawful discrimination, and it does not tell us *why* the gap exists. It tells us that one aggregate score is not enough to understand how a system behaves.
+<!-- ct319:key It tells us that one aggregate score is not enough to understand how a system behaves. -->
 
 <!-- ct319:beat -->
 ## What does "trustworthy" mean?
@@ -121,6 +125,7 @@ For any system, five questions replace the one we have been asking:
 ## The data were biased before the model arrived — where can unfairness enter?
 
 It is tempting to talk as though a model becomes unfair by itself, somewhere during training. It does not. A system is built through a sequence of decisions, and most of them are made before anything is fitted.
+<!-- ct319:key A system is built through a sequence of decisions, and most of them are made before anything is fitted. -->
 
 <!-- ct319:focus -->
 
@@ -166,6 +171,7 @@ Two applicants score `0.71` and `0.69`. Somebody then chooses: *interview if sco
 ### Why this matters this week
 
 Fairness is not a checkbox applied after training, because by then most of the decisions that could have caused a problem have already been taken. The audit has to run across all seven steps in Figure 2.
+<!-- ct319:key Fairness is not a checkbox applied after training, because by then most of the decisions that could have caused a problem have already been taken. -->
 
 <!-- ct319:beat -->
 ## Just because we can collect it — how much data should a system use?
@@ -204,11 +210,13 @@ Assessment information may be easier to justify for a stated support purpose tha
 ### More data can mean more risk
 
 Unnecessary personal information increases what can be exposed in a breach, misused, misunderstood, kept too long, combined with other records, or used for things people never expected. The cost does not sit in the model; it sits with the people in the dataset.
+<!-- ct319:key The cost does not sit in the model; it sits with the people in the dataset. -->
 
 <!-- ct319:beat -->
 ## Removing identifiers is not anonymisation
 
 This is the point most often got wrong, and it is worth being exact about.
+<!-- ct319:key This is the point most often got wrong, and it is worth being exact about. -->
 
 <!-- ct319:focus -->
 
@@ -231,6 +239,7 @@ This is the point most often got wrong, and it is worth being exact about.
 ### What about synthetic data?
 
 Synthetic data is not automatically private, not automatically unbiased and not automatically safe. Those properties depend entirely on how it was generated and which patterns from the original it preserves.
+<!-- ct319:key Synthetic data is not automatically private, not automatically unbiased and not automatically safe. -->
 
 ### Why this matters this week
 
@@ -240,6 +249,7 @@ Every dataset in this module arrived ready-made. In practice somebody decides wh
 ## Why did the model say no? — what does transparency actually require?
 
 Return to the loan decision, and compare two systems that reach the same kind of outcome.
+<!-- ct319:key Return to the loan decision, and compare two systems that reach the same kind of outcome. -->
 
 <!-- ct319:focus -->
 
@@ -252,6 +262,7 @@ Return to the loan decision, and compare two systems that reach the same kind of
 If an applicant asks why they were sent for review, the tree can be walked. The right-hand system has nothing to walk. What would the affected person reasonably want to know? What data was used, what factors mattered, what `0.83` means, how reliable the model is, whether a human was involved, and how to challenge the result.
 
 Publishing the source code answers none of those six.
+<!-- ct319:key Publishing the source code answers none of those six. -->
 
 <!-- ct319:beat -->
 ## Three words that are not synonyms
@@ -277,6 +288,7 @@ These terms are used somewhat differently across the literature; this is the pra
 <!-- ct319:endfocus -->
 
 A system can produce an explanation for one prediction while being badly governed and poorly communicated overall. Explanation is one requirement, not the whole of transparency.
+<!-- ct319:key Explanation is one requirement, not the whole of transparency. -->
 
 <!-- ct319:beat -->
 ## Explanation is not justification
@@ -298,6 +310,7 @@ An explanation can reveal a problem rather than excuse one. That is arguably the
 ## Transparency as an obligation
 
 The [EU AI Act](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai) takes a risk-based approach: the obligations follow what a system is used for, not which technique it uses.
+<!-- ct319:key The EU AI Act takes a risk-based approach: the obligations follow what a system is used for, not which technique it uses. -->
 
 <!-- ct319:focus -->
 
@@ -345,6 +358,7 @@ Six questions carry the discussion — and the point of the exercise is to decid
 ### Purpose
 
 What is the system actually for? Predicting dropout, identifying students who need support, prioritising scarce staff time and triggering automatic intervention are **four different systems**, and a proposal that has not chosen between them makes everything downstream impossible to justify.
+<!-- ct319:key What is the system actually for? -->
 
 ### Data
 
@@ -361,6 +375,7 @@ That result should trigger investigation, not an automatic verdict of discrimina
 ### Transparency
 
 Now reveal how a prediction becomes an action: a risk score from 0 to 100, and above 75 an automatic message to the student plus a flag to programme staff. The threshold and the automatic contact are deployment choices, not model outputs.
+<!-- ct319:key The threshold and the automatic contact are deployment choices, not model outputs. -->
 
 Should students know that AI is being used, what data is included, what the score is used for, whether a human reviews it, and how to challenge incorrect information? A system that affects people while hiding its own existence makes meaningful oversight impossible by construction.
 
@@ -393,6 +408,7 @@ A nominal human in the loop who clicks **Approve** on everything is not oversigh
 ## Accountability
 
 Now suppose the system causes harm.
+<!-- ct319:key Now suppose the system causes harm. -->
 
 <!-- ct319:focus -->
 
@@ -403,6 +419,7 @@ Now suppose the system causes harm.
 <!-- ct319:endfocus -->
 
 Responsibility exists across the whole chain, and it does not stop at deployment. Who monitors the running system, who investigates complaints, and who has the authority to change or withdraw it?
+<!-- ct319:key Responsibility exists across the whole chain, and it does not stop at deployment. -->
 
 ### Would your judgement change?
 
@@ -435,6 +452,7 @@ There is no correct verdict supplied here. What you are asked for is which evide
 - **Transparency** — communicate how AI is used, what its limits are and who is responsible. Interpretability lets you inspect a model; explainability methods describe its outputs. Neither makes an influence appropriate.
 - **Human oversight** — people need information, authority and time, or the oversight is nominal.
 - **Accountability** — responsibility stays with the people and organisations who design, deploy and use the system, including long after it goes live.
+<!-- ct319:key Accountability — responsibility stays with the people and organisations who design, deploy and use the system, including long after it goes live. -->
 
 ---
 
@@ -468,6 +486,7 @@ Carry one question out of the module:
 ## Quick revision
 
 If you can answer these without reopening the page, you have the core of this week.
+<!-- ct319:key If you can answer these without reopening the page, you have the core of this week. -->
 
 1. **[WK-11-01]** Why does a single accuracy figure not settle whether a system should be relied on?
 2. A classifier scores 92.8% overall, 96% on one group and 80% on another. Why is the overall figure so close to the higher one?
@@ -489,6 +508,7 @@ If you can answer these without reopening the page, you have the core of this we
 ### CT319 source material
 
 This week follows selected material from the formal CT319 *Lecture 10: AI Ethics* material on Canvas — fairness across the development process, privacy and data minimisation, synthetic data, transparency and responsibility. The formal slides remain the broader reference; these pages develop selected requirements rather than the whole framework.
+<!-- ct319:key The formal slides remain the broader reference; these pages develop selected requirements rather than the whole framework. -->
 
 ### External sources
 
@@ -500,6 +520,7 @@ This week follows selected material from the formal CT319 *Lecture 10: AI Ethics
 - European Commission — [Transparency obligations under Article 50 of the AI Act](https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act)
 
 The Commission sources were checked on **10 September 2026**, and the regulatory overview is deliberately limited to the teaching context and the staged application of Article 50. Dates in this area move; check the linked pages before relying on them.
+<!-- ct319:key Dates in this area move; check the linked pages before relying on them. -->
 
 ### Quotation and licensing
 
@@ -510,6 +531,7 @@ The Commission material is **linked, not reproduced**. Where the Ethics Guidelin
 The University X case, the loan-approval example, and **every numerical value used in them**, are fictional teaching examples constructed for these pages.
 
 They are not findings, measurements or claims about any actual institution, lender or deployed system. The accuracy figures and the feature contributions in Figure 5 were chosen to make a teaching point, not measured from data — Figure 5 is labelled schematic for that reason, and is not the output of LIME, SHAP or any other method.
+<!-- ct319:key They are not findings, measurements or claims about any actual institution, lender or deployed system. -->
 
 ### Figures
 
