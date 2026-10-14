@@ -48,5 +48,6 @@
   <circle class="pt" cx="839" cy="196" r="10" fill="var(--muted)"/>
   <text class="key" x="564" y="299">no class, no legend, no answer key</text>
 
-  <text class="note" x="30" y="358">You can still see two groups. Nobody told you there were two &#8212; and nobody told the algorithm either. That is the whole question this week.</text>
+  <text class="note" x="30" y="350">You can still see two groups. Nobody told you there were two &#8212; and nobody told the algorithm either.</text>
+  <text class="note" x="30" y="370">That is the whole question this week.</text>
 </svg>
