@@ -51,7 +51,8 @@
   <line x1="666" y1="224" x2="904" y2="224" stroke="var(--line)" stroke-width="2"/>
   <text class="cap" x="666" y="256">MAJORITY</text>
   <text class="row" x="666" y="296" fill="var(--good)" style="font-size:30px">PREDICT A</text>
-  <text class="note" x="666" y="330">The five fainter points are too far to count.</text>
+  <text class="note" x="666" y="324">The five fainter points</text>
+  <text class="note" x="666" y="342">are too far to count.</text>
 
   <text class="note" x="30" y="390">No rule was written in advance. The answer comes from whichever labelled examples happen to lie nearest</text>
   <text class="note" x="30" y="410">the new point &#8212; so changing k changes who gets to speak.</text>
