@@ -6,12 +6,25 @@
   var count = document.querySelector(".deck__count");
   var current = 0;
 
-  // Scale a slide down only when it does not fit the screen.
+  // Blow each figure up to the slide's width, then give back height if the
+  // slide no longer fits the screen. Scale the whole slide down only as a
+  // last resort.
   function fit(slide) {
     var block = slide.querySelector(".focus-block");
     if (!block) return;
     block.style.transform = "";
     var room = slide.clientHeight - 6 * 16;
+    var imgs = Array.prototype.slice.call(block.querySelectorAll("figure img"))
+      .filter(function (img) { return img.naturalWidth && img.naturalHeight; });
+    imgs.forEach(function (img) { img.style.width = block.clientWidth + "px"; });
+    var over = block.scrollHeight - room;
+    if (over > 0 && imgs.length) {
+      imgs.forEach(function (img) {
+        var aspect = img.naturalWidth / img.naturalHeight;
+        var w = block.clientWidth - (over / imgs.length) * aspect;
+        img.style.width = Math.max(block.clientWidth * 0.3, w) + "px";
+      });
+    }
     var need = block.scrollHeight;
     if (need > room) block.style.transform = "scale(" + (room / need).toFixed(3) + ")";
   }

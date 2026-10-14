@@ -50,12 +50,10 @@
   max-width: 100%;
   margin: 0.8rem 0;
 }
-.slide .focus-block figure img {
-  width: auto;
-  max-width: 100%;
-  max-height: 62vh;
-  margin: 0 auto;
-}
+/* A slide with a figure uses the full width; deck.js then sizes each picture
+   to the room the rest of the slide leaves it. */
+.slide .focus-block:has(img) { max-width: none; }
+.slide .focus-block figure img { max-width: none; margin: 0 auto; }
 .slide .focus-block figcaption { font-size: 0.55em; max-width: none; text-align: center; }
 .slide .focus-block .table-scroll:has(img) { width: auto; margin-left: 0; }
 .slide .focus-block table { font-size: 0.8em; }
