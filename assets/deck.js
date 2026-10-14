@@ -6,34 +6,30 @@
   var count = document.querySelector(".deck__count");
   var current = 0;
 
-  // Blow each figure up to the slide's width, then give back height if the
-  // slide no longer fits the screen. Scale the whole slide down only as a
-  // last resort.
+  // Blow each figure up to the slide's width, then give back height until
+  // the slide fits the screen. Anything else too tall scrolls.
   function fit(slide) {
     var body = slide.querySelector(".slide__body");
     if (!body) return;
-    body.style.transform = "";
-    var room = slide.clientHeight - parseFloat(getComputedStyle(slide).paddingTop)
-      - parseFloat(getComputedStyle(slide).paddingBottom);
     var imgs = Array.prototype.slice.call(body.querySelectorAll(".focus-block figure img"))
       .filter(function (img) { return img.naturalWidth && img.naturalHeight; });
+    if (!imgs.length) return;
     imgs.forEach(function (img) { img.style.width = body.clientWidth + "px"; });
-    var over = body.scrollHeight - room;
-    if (over > 0 && imgs.length) {
+    var over = slide.scrollHeight - slide.clientHeight;
+    if (over > 0) {
       imgs.forEach(function (img) {
         var aspect = img.naturalWidth / img.naturalHeight;
         var w = body.clientWidth - (over / imgs.length) * aspect;
         img.style.width = Math.max(body.clientWidth * 0.3, w) + "px";
       });
     }
-    var need = body.scrollHeight;
-    if (need > room) body.style.transform = "scale(" + (room / need).toFixed(3) + ")";
   }
 
   function show(i) {
     current = Math.max(0, Math.min(slides.length - 1, i));
     slides.forEach(function (s, j) { s.classList.toggle("is-current", j === current); });
     fit(slides[current]);
+    slides[current].scrollTop = 0;
     count.textContent = (current + 1) + " / " + slides.length;
     history.replaceState(null, "", "#" + (current + 1));
   }
