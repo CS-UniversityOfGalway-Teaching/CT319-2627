@@ -513,10 +513,11 @@ def build_page(md_path: Path) -> str:
 
 DECK_TEMPLATE = ROOT / "tools" / "templates" / "deck.html"
 
-# Words of ordinary text per slide. Longer passages are split between
-# paragraphs; a lead-in this short or shorter rides on its focus slide.
-SLIDE_WORDS = 130
-LEAD_IN_WORDS = 40
+# Words of ordinary text per slide; longer passages are split between
+# paragraphs. A focus block is set larger, so each of its words counts
+# FOCUS_WEIGHT times against the slide.
+SLIDE_WORDS = 150
+FOCUS_WEIGHT = 2
 
 
 def word_count(markdown: str) -> int:
@@ -637,39 +638,58 @@ def build_deck(md_path: Path) -> str | None:
         else:
             tail_lines.append(line)
 
-    slides: list[dict[str, str]] = []
+    slides: list[dict] = []
     for section, href, md in sections:
-        heading = "" if section == "This week" else section
-        segs = segments(md)
-        leads: dict[int, str] = {}
-        for n, (is_focus, text) in enumerate(segs):
-            # A sentence or two of plain text rides on the neighbouring focus
-            # slide: a lead-in on the one after it, a closing line on the one
-            # before. Never on a figure's slide; the figure has it to itself.
-            short = (not is_focus and word_count(text) <= LEAD_IN_WORDS
-                     and not re.search(r"!\[|```|^\||^<", text, re.M))
-            if (short and n + 1 < len(segs) and segs[n + 1][0]
-                    and "![" not in slide_parts(segs[n + 1][1])[0]):
-                leads[n + 1] = text
-                continue
-            if short and n > 0 and segs[n - 1][0] and slides[-1]["kind"] == "focus":
-                slides[-1]["after"] = text
-                continue
-            lead = leads.get(n, "")
-            for part in slide_parts(text):
-                if is_focus or part.startswith("!["):
-                    # A figure, or a table of pictures side by side.
-                    kind = "figure" if "![" in part else "focus"
-                    slides.append({"section": section, "href": href, "kind": kind,
-                                   "heading": heading, "prose": lead, "focus": part})
-                    lead = ""
-                else:
-                    for chunk in text_slides(part):
-                        slides.append({"section": section, "href": href, "kind": "text",
-                                       "heading": heading, "prose": chunk})
-                heading = ""
+        first = len(slides)
+        pending: list[str] = []  # text blocks still waiting for a slide
 
-    def slide_html(sl: dict[str, str]) -> str:
+        def add(kind: str, prose: str = "", focus: str = "") -> None:
+            cost = word_count(prose) + FOCUS_WEIGHT * word_count(focus)
+            heading = section if len(slides) == first and section != "This week" else ""
+            slides.append({"section": section, "href": href, "kind": kind,
+                           "heading": heading, "prose": prose, "focus": focus, "cost": cost})
+
+        def flush() -> None:
+            # Text after a focus block closes that block's slide when it fits;
+            # otherwise it gets slides of its own.
+            text = "\n\n".join(pending)
+            pending.clear()
+            if not text:
+                return
+            last = slides[-1] if len(slides) > first else None
+            if last and last["kind"] == "focus" and last["cost"] + word_count(text) <= SLIDE_WORDS:
+                last["after"] = text
+                last["cost"] += word_count(text)
+                return
+            for chunk in text_slides(text):
+                add("text", prose=chunk)
+
+        for is_focus, text in segments(md):
+            for part in slide_parts(text):
+                if "![" in part:
+                    # A figure, or a table of pictures, has the slide to itself.
+                    flush()
+                    add("figure", focus=part)
+                elif not is_focus:
+                    pending.extend(text_blocks(part))
+                else:
+                    # The text leading into a focus block shares its slide, as
+                    # much of it as fits; anything earlier goes before it.
+                    room = SLIDE_WORDS - FOCUS_WEIGHT * word_count(part)
+                    i, words = len(pending), 0
+                    while i > 0 and words + word_count(pending[i - 1]) <= room:
+                        i -= 1
+                        words += word_count(pending[i])
+                    while 0 < i < len(pending) and (pending[i - 1].lstrip().startswith("#")
+                                                    or pending[i - 1].rstrip().endswith(":")):
+                        i -= 1
+                    lead = "\n\n".join(pending[i:])
+                    del pending[i:]
+                    flush()
+                    add("focus", prose=lead, focus=part)
+        flush()
+
+    def slide_html(sl: dict) -> str:
         inner = ""
         if sl.get("heading"):
             inner += f'<h2 class="slide__title">{inline(sl["heading"])}</h2>'
