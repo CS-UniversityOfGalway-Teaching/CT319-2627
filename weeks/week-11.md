@@ -8,9 +8,9 @@ source: week-11.md
 deck: yes
 ---
 
-For three weeks we asked whether a machine can learn from data, classify new examples, discover structure and make recommendations. Every question was a version of *does it work?*
+For three weeks we asked whether a machine can learn from data, classify new examples, find structure and make recommendations. Every question was a version of *does it work?*
 
-Now suppose it does. Suppose the accuracy is high. Suppose people are already using it.
+Now suppose it does. Suppose the accuracy is high, and people are already using the system.
 
 <!-- ct319:focus -->
 
@@ -18,18 +18,18 @@ Now suppose it does. Suppose the accuracy is high. Suppose people are already us
 
 <!-- ct319:endfocus -->
 
-This is the one week on the module where the interesting answers are not technical. They are still answers, though — the discipline is the same one we have used since Week 1: say what the evidence establishes, and say what it does not.
-<!-- ct319:key This is the one week on the module where the interesting answers are not technical. -->
+This week the most important answers are not technical. They still need the same discipline we have used since Week 1. Say what the evidence shows, and say what it does not show.
+<!-- ct319:key This week the most important answers are not technical. They still need the same discipline we have used since Week 1. -->
 
-We work through five things.
+This week covers five topics.
 
-* [**Accurate, but trustworthy?**](#accurate-but-trustworthy--is-good-performance-enough) — why a headline accuracy figure does not settle whether a system should be relied on.
-* [**The data were biased before the model arrived**](#the-data-were-biased-before-the-model-arrived--where-can-unfairness-enter) — where unfairness enters the sequence of choices that builds a system.
-* [**Just because we can collect it**](#just-because-we-can-collect-it--how-much-data-should-a-system-use) — how much data a system *should* use, rather than how much it could.
-* [**Why did the model say no?**](#why-did-the-model-say-no--what-does-transparency-actually-require) — what transparency actually requires of an explanation.
-* [**From principles to responsibility**](#from-principles-to-responsibility--who-is-accountable) — who remains accountable, worked through one fictional university system.
+* [**Accurate, but trustworthy?**](#accurate-but-trustworthy--is-good-performance-enough) — why a high accuracy figure does not tell us whether to rely on a system.
+* [**The data were biased before the model arrived**](#the-data-were-biased-before-the-model-arrived--where-can-unfairness-enter) — where unfairness can enter the series of choices that builds a system.
+* [**Just because we can collect it**](#just-because-we-can-collect-it--how-much-data-should-a-system-use) — how much data a system *should* use, not just how much it could.
+* [**Why did the model say no?**](#why-did-the-model-say-no--what-does-transparency-actually-require) — what transparency really requires of an explanation.
+* [**From principles to responsibility**](#from-principles-to-responsibility--who-is-accountable) — who stays accountable, worked through with one fictional university system.
 
-Three ideas carry the page, and it is worth keeping them apart:
+Keep three ideas separate as you read.
 
 <!-- ct319:focus -->
 
@@ -46,9 +46,9 @@ Three ideas carry the page, and it is worth keeping them apart:
 <!-- ct319:beat -->
 ## Accurate, but trustworthy? — is good performance enough?
 
-Imagine a system that helps decide whether loan applications are approved. Its test accuracy is **94%**. That sounds impressive. Then somebody reports the approval rate by group: **78%** for Group A, **42%** for Group B.
+Imagine a system that helps decide which loan applications are approved. Its test accuracy is **94%**. That sounds impressive. Then someone reports the approval rate for each group. It is **78%** for Group A and **42%** for Group B.
 
-A difference in outcomes does not by itself prove unfairness. What it does prove is that one number was never going to settle the question.
+A difference in outcomes does not prove unfairness by itself. But it does show that one number could never settle the question.
 
 <!-- ct319:focus -->
 
@@ -56,12 +56,12 @@ A difference in outcomes does not by itself prove unfairness. What it does prove
 
 <!-- ct319:endfocus -->
 
-It does not say whether the data were representative, whether particular groups are disadvantaged, whether sensitive information was used appropriately, whether anybody affected understands the decision, whether it can be challenged, or who is responsible when it goes wrong.
+The accuracy figure does not tell us whether the data represented everyone. It does not tell us whether some groups are disadvantaged, or whether sensitive information was used properly. And it does not tell us whether the people affected understand the decision, whether they can challenge it, or who is responsible when it goes wrong.
 
 <!-- ct319:beat -->
 ## How does performance vary across the people affected?
 
-Week 9 asked whether a classifier generalises to unseen data. Add a second question to it:
+In Week 9 we asked whether a classifier works on data it has not seen. Now add a second question.
 
 <!-- ct319:focus -->
 
@@ -69,25 +69,25 @@ Week 9 asked whether a classifier generalises to unseen data. Add a second quest
 
 <!-- ct319:endfocus -->
 
-Here is a classifier with a perfectly respectable headline figure.
+Here is a classifier with a perfectly respectable overall score.
 
 <!-- ct319:focus -->
 
 ![92.8% overall, which is 96% for Group A with 800 examples and 80% for Group B with 200](../../media/week-11/aggregate-hides-the-gap.svg "hero")
 
-<sub><em>Figure 1. Fictional figures, chosen to make one arithmetic point: the aggregate is an average weighted by group size, so the larger group's experience dominates it. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 1. Fictional figures, chosen to make one arithmetic point. The overall figure is an average weighted by group size, so the larger group's experience dominates it. Diagram created for these pages. No external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
-Sixteen points separate the two groups, and neither number appears in the headline. Generalisation does not require identical performance in every subgroup — but a gap like that needs investigating rather than averaging away.
+The two groups are sixteen points apart, and neither number appears in the overall figure. A good model does not have to perform identically for every group. But a gap this size needs investigating, not hiding inside an average.
 
-It does not, on its own, prove unlawful discrimination, and it does not tell us *why* the gap exists. It tells us that one aggregate score is not enough to understand how a system behaves.
-<!-- ct319:key It tells us that one aggregate score is not enough to understand how a system behaves. -->
+The gap does not prove unlawful discrimination by itself, and it does not tell us *why* the gap exists. One overall score is not enough to understand how a system behaves.
+<!-- ct319:key One overall score is not enough to understand how a system behaves. -->
 
 <!-- ct319:beat -->
 ## What does "trustworthy" mean?
 
-The 2019 [Ethics Guidelines for Trustworthy AI](https://digital-strategy.ec.europa.eu/en/library/ethics-guidelines-trustworthy-ai), from the Commission's High-Level Expert Group on AI, describe trustworthy AI under three headings.
+In 2019 the European Commission's High-Level Expert Group on AI published the [Ethics Guidelines for Trustworthy AI](https://digital-strategy.ec.europa.eu/en/library/ethics-guidelines-trustworthy-ai). The guidelines describe trustworthy AI under three headings.
 
 <!-- ct319:focus -->
 
@@ -99,13 +99,21 @@ The 2019 [Ethics Guidelines for Trustworthy AI](https://digital-strategy.ec.euro
 
 <!-- ct319:endfocus -->
 
-The guidelines then set out seven requirements: human agency and oversight; technical robustness and safety; privacy and data governance; transparency; diversity, non-discrimination and fairness; societal and environmental wellbeing; and accountability.
+The guidelines then list seven requirements.
 
-This week takes selected requirements seriously rather than treating all seven as a list to memorise. Fairness, privacy, transparency and accountability are part of that framework, not the whole of it.
+- human agency and oversight
+- technical robustness and safety
+- privacy and data governance
+- transparency
+- diversity, non-discrimination and fairness
+- societal and environmental wellbeing
+- accountability
+
+This week we look closely at a few of these requirements, rather than memorising all seven. Fairness, privacy, transparency and accountability are part of the framework, not the whole of it.
 
 ### Why this matters this week
 
-For any system, five questions replace the one we have been asking:
+Until now we asked one question about every system. Now we ask five.
 
 <!-- ct319:focus -->
 
@@ -116,31 +124,31 @@ For any system, five questions replace the one we have been asking:
 <li><span>Can people understand or challenge it?</span></li>
 <li><span>Who remains responsible?</span></li>
 </ol>
-<p class="flow__note">Only the first is answered by a test score. The highlighted one is where most of the trouble on this page starts.</p>
+<p class="flow__note">A test score answers only the first question. Most of the problems this week begin with the highlighted one.</p>
 
 <!-- ct319:endfocus -->
 
 <!-- ct319:beat -->
 ## The data were biased before the model arrived — where can unfairness enter?
 
-It is tempting to talk as though a model becomes unfair by itself, somewhere during training. It does not. A system is built through a sequence of decisions, and most of them are made before anything is fitted.
-<!-- ct319:key A system is built through a sequence of decisions, and most of them are made before anything is fitted. -->
+People often talk as if a model becomes unfair by itself, somewhere during training. That is not what happens. A system is built through a series of decisions, and most of them are made before any model is trained.
+<!-- ct319:key A system is built through a series of decisions, and most of them are made before any model is trained. -->
 
 <!-- ct319:focus -->
 
 ![Purpose, data, labels, features, model, decision rule and use, each with its own fairness question](../../media/week-11/where-unfairness-enters.svg "hero")
 
-<sub><em>Figure 2. Seven decisions. The one most people mean by "the AI" is the fifth, and four have already been made by the time it arrives. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 2. Seven decisions. The one most people mean by "the AI" is the fifth, and four have already been made by the time it arrives. Diagram created for these pages. No external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
 ### Who appears in the data?
 
-Suppose a recruitment model is trained mainly on previous successful employees. That sounds sensible — until you ask what the previous hiring process favoured. If it favoured one kind of candidate, the historical record encodes that, and the learner has no way of knowing which patterns were worth preserving.
+Suppose a recruitment model is trained mainly on data about past successful employees. That sounds sensible, until you ask what the past hiring process favoured. If it favoured one kind of candidate, the records reflect that. The learning algorithm cannot tell which patterns are worth keeping and which are unfair.
 
 ### Who decided the labels?
 
-Imagine previous employees labelled `successful` or `unsuccessful`. What does `successful` mean? Stayed three years? High manager ratings? Earned promotion? Sold the most? Worked the longest hours?
+Imagine past employees are labelled `successful` or `unsuccessful`. What does `successful` mean? Did they stay three years? Get high ratings from managers? Get promoted? Sell the most? Work the longest hours?
 
 <!-- ct319:focus -->
 
@@ -151,9 +159,9 @@ Imagine previous employees labelled `successful` or `unsuccessful`. What does `s
 <!-- ct319:beat -->
 ## Which features are allowed to matter?
 
-Suppose the model receives education, experience, assessment score and postcode. Even with a protected characteristic removed, another feature can correlate strongly with it. Dropping one column does not remove the possibility of unfair treatment — it removes one route to it.
+Suppose the model uses education, experience, an assessment score and postcode. A protected characteristic, such as a person's ethnicity, might be removed from the data. But another feature, such as postcode, can still be closely linked to it. Removing one column does not remove the risk of unfair treatment. It only removes one way for it to happen.
 
-The design question is broader, and it is the one from Week 8 again:
+So the design question is wider. It is the question from Week 8 again.
 
 <!-- ct319:focus -->
 
@@ -161,23 +169,23 @@ The design question is broader, and it is the one from Week 8 again:
 
 <!-- ct319:endfocus -->
 
-Available data is not automatically appropriate data.
+Data being available does not make it appropriate to use.
 
 ### What happens after the model produces a score?
 
-Two applicants score `0.71` and `0.69`. Somebody then chooses: *interview if score ≥ 0.70*. The model produced numbers. The threshold turned them into consequences — and the threshold is a design decision made by a person, usually one who is not in the room when the model is discussed.
+Two applicants score `0.71` and `0.69`. Someone then sets a rule to interview anyone who scores 0.70 or more. The model only produced numbers. The threshold turned those numbers into consequences. Every threshold is a design decision made by a person, often someone who is not part of the discussion about the model.
+<!-- ct319:key Every threshold is a design decision made by a person, often someone who is not part of the discussion about the model. -->
 
 ### Why this matters this week
 
-Fairness is not a checkbox applied after training, because by then most of the decisions that could have caused a problem have already been taken. The audit has to run across all seven steps in Figure 2.
-<!-- ct319:key Fairness is not a checkbox applied after training, because by then most of the decisions that could have caused a problem have already been taken. -->
+Fairness cannot be checked once, after training. By then, most of the decisions that could cause a problem have already been made. The check has to cover all seven steps in Figure 2.
 
 <!-- ct319:beat -->
 ## Just because we can collect it — how much data should a system use?
 
-Imagine a university wants to identify students who may need additional academic support. Which data should it collect — attendance, assessment history, LMS activity, library use, postcode, family income, browser history, medical information, social media?
+Imagine a university wants to find students who may need extra academic support. Which data should it collect? It could use attendance, assessment history, LMS activity, library use, postcode, family income, browser history, medical information or social media.
 
-Using every available source would not necessarily produce a better system. And there are two separate questions hiding in the word "should".
+Using every possible source would not necessarily give a better system. And the word "should" hides two separate questions.
 
 <!-- ct319:focus -->
 
@@ -188,12 +196,12 @@ Using every available source would not necessarily produce a better system. And 
 
 <!-- ct319:endfocus -->
 
-Those are not the same question, and the first one answering *yes* does not settle the second.
+These are different questions. A *yes* to the first does not settle the second.
 
 <!-- ct319:beat -->
 ## Data minimisation
 
-Under the GDPR, **data minimisation** means personal data should be adequate, relevant and limited to what is necessary for the intended purpose — see the [Commission's guidance on GDPR principles](https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/principles-gdpr_en). The principle is deliberately restrictive, and it runs in the opposite direction to the instinct of anyone who has ever built a dataset.
+Under the [GDPR](https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/principles-gdpr_en), **data minimisation** means personal data should be adequate, relevant and limited to what is necessary for the intended purpose. The rule is deliberately strict. It goes against the instinct of most people who build datasets.
 
 <!-- ct319:focus -->
 
@@ -204,30 +212,30 @@ Under the GDPR, **data minimisation** means personal data should be adequate, re
 
 <!-- ct319:endfocus -->
 
-Assessment information may be easier to justify for a stated support purpose than unrelated browsing behaviour — but every use still needs an appropriate purpose and basis. Having collected data for one academic purpose does not automatically permit reusing it for another.
+Assessment results may be easier to justify for a support purpose than unrelated browsing history. But every use still needs an appropriate purpose and basis. Data collected for one academic purpose is not automatically allowed to be reused for another.
 
 ### More data can mean more risk
 
-Unnecessary personal information increases what can be exposed in a breach, misused, misunderstood, kept too long, combined with other records, or used for things people never expected. The cost does not sit in the model; it sits with the people in the dataset.
-<!-- ct319:key The cost does not sit in the model; it sits with the people in the dataset. -->
+Collecting personal information you do not need adds risk. It can be exposed in a data breach, misused, misunderstood, kept too long, combined with other records, or used in ways people never expected. The cost of extra data does not fall on the model. It falls on the people in the dataset.
+<!-- ct319:key The cost of extra data does not fall on the model. It falls on the people in the dataset. -->
 
 <!-- ct319:beat -->
 ## Removing identifiers is not anonymisation
 
-This is the point most often got wrong, and it is worth being exact about.
-<!-- ct319:key This is the point most often got wrong, and it is worth being exact about. -->
+Removing names from a dataset does not make it anonymous. This point is often misunderstood, so it helps to be precise.
+<!-- ct319:key Removing names from a dataset does not make it anonymous. -->
 
 <!-- ct319:focus -->
 
 ![Identified and pseudonymised data are both personal data; only genuinely anonymised data is not](../../media/week-11/identifiability.svg "hero")
 
-<sub><em>Figure 3. Deleting the name column moves you one box to the right, not two. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 3. Deleting the name column moves you one box to the right, not two. Diagram created for these pages. No external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
-**Pseudonymisation** replaces direct identifiers with codes and keeps the identifying information separately. It is real protection — and data that can still be linked back to a person remains personal data.
+**Pseudonymisation** replaces names and other direct identifiers with codes, and keeps the information that links them back somewhere separate. This is real protection. But if the data can still be linked back to a person, it is still personal data.
 
-**Genuine anonymisation** means the individual is no longer identifiable, and such data is not personal data under the GDPR. The distinction is whether identification remains possible, not whether a column was dropped. See the [Commission's explanation of personal data](https://commission.europa.eu/law/law-topic/data-protection/data-protection-explained_en).
+**Anonymisation** means the person can no longer be identified at all. Truly anonymised data is not personal data under the [GDPR](https://commission.europa.eu/law/law-topic/data-protection/data-protection-explained_en). The test is whether anyone could still identify the person, not whether a column was deleted.
 
 <!-- ct319:focus -->
 
@@ -237,31 +245,31 @@ This is the point most often got wrong, and it is worth being exact about.
 
 ### What about synthetic data?
 
-Synthetic data is not automatically private, not automatically unbiased and not automatically safe. Those properties depend entirely on how it was generated and which patterns from the original it preserves.
-<!-- ct319:key Synthetic data is not automatically private, not automatically unbiased and not automatically safe. -->
+Synthetic data is artificial data generated to imitate real data. Whether synthetic data is private, unbiased or safe depends on how it was generated, and on which patterns from the real data it keeps. None of these properties comes automatically.
+<!-- ct319:key Whether synthetic data is private, unbiased or safe depends on how it was generated, and on which patterns from the real data it keeps. -->
 
 ### Why this matters this week
 
-Every dataset in this module arrived ready-made. In practice somebody decides what goes into one, and that decision is the first place a system can go wrong — before a single line of modelling code is written.
+Every dataset in this module came ready-made. In practice, someone decides what goes into a dataset. That decision is the first place a system can go wrong, before any modelling code is written.
 
 <!-- ct319:beat -->
 ## Why did the model say no? — what does transparency actually require?
 
-Return to the loan decision, and compare two systems that reach the same kind of outcome.
-<!-- ct319:key Return to the loan decision, and compare two systems that reach the same kind of outcome. -->
+Go back to the loan decision. Compare two systems that reach the same kind of outcome.
+<!-- ct319:key Go back to the loan decision. Compare two systems that reach the same kind of outcome. -->
 
 <!-- ct319:focus -->
 
 ![A traceable decision tree beside an opaque model emitting the score 0.83 and a rejection](../../media/week-11/interpretable-vs-opaque.svg "hero")
 
-<sub><em>Figure 4. Fictional example. On the left there is a route to show somebody. On the right there is a number. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 4. Fictional example. On the left there is a route to show somebody. On the right there is a number. Diagram created for these pages. No external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
-If an applicant asks why they were sent for review, the tree can be walked. The right-hand system has nothing to walk. What would the affected person reasonably want to know? What data was used, what factors mattered, what `0.83` means, how reliable the model is, whether a human was involved, and how to challenge the result.
+Suppose an applicant asks why they were sent for review. With the decision tree, we can follow the path that led to the decision. The system on the right gives only a number, so there is no path to follow.
+<!-- ct319:key With the decision tree, we can follow the path that led to the decision. The system on the right gives only a number, so there is no path to follow. -->
 
-Publishing the source code answers none of those six.
-<!-- ct319:key Publishing the source code answers none of those six. -->
+What would the applicant reasonably want to know? They would want to know what data was used, which factors mattered, what `0.83` means, how reliable the model is, whether a person was involved, and how to challenge the result. Publishing the program's source code answers none of these six questions.
 
 <!-- ct319:beat -->
 ## Three words that are not synonyms
@@ -276,23 +284,23 @@ Publishing the source code answers none of those six.
 
 <!-- ct319:endfocus -->
 
-These terms are used somewhat differently across the literature; this is the practical sense we use here. A small decision tree is interpretable. For more complicated models, tools such as **LIME** and **SHAP** estimate or attribute how features contributed to a prediction. We do not need their mathematics this week — only the kind of output they try to produce.
+Different writers use these terms in slightly different ways. Here we use them in this practical sense. A small decision tree is interpretable. For more complex models, tools such as **LIME** and **SHAP** estimate how much each feature contributed to a prediction. You do not need their mathematics this week, only an idea of what their output looks like.
 
 <!-- ct319:focus -->
 
 ![A schematic bar display showing debt and missed payments pushing towards reject and income towards approve](../../media/week-11/contribution-display.svg "hero")
 
-<sub><em>Figure 5. **Schematic** — this is the shape of such an output, not a measured LIME or SHAP result. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 5. **Schematic** — this is the shape of such an output, not a measured LIME or SHAP result. Diagram created for these pages. No external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
-A system can produce an explanation for one prediction while being badly governed and poorly communicated overall. Explanation is one requirement, not the whole of transparency.
-<!-- ct319:key Explanation is one requirement, not the whole of transparency. -->
+A system can explain a single prediction and still be badly managed and poorly communicated overall. An explanation is one requirement. It is not the whole of transparency.
+<!-- ct319:key A system can explain a single prediction and still be badly managed and poorly communicated overall. An explanation is one requirement. It is not the whole of transparency. -->
 
 <!-- ct319:beat -->
 ## Explanation is not justification
 
-Look at the fourth row of Figure 5. Suppose an explanation reports that postcode strongly influenced the decision. That tells us something true about the model. It does not tell us that postcode *should* have influenced it.
+Look at the fourth row of Figure 5. Suppose an explanation shows that postcode strongly influenced a decision. That tells us something true about the model. It does not tell us that postcode *should* have influenced the decision.
 
 <!-- ct319:focus -->
 
@@ -303,25 +311,25 @@ Look at the fourth row of Figure 5. Suppose an explanation reports that postcode
 
 <!-- ct319:endfocus -->
 
-An explanation can reveal a problem rather than excuse one. That is arguably the most useful thing it does.
+An explanation can reveal a problem instead of excusing it. That may be the most useful thing an explanation does.
 
 <!-- ct319:beat -->
 ## Transparency as an obligation
 
-The [EU AI Act](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai) takes a risk-based approach: the obligations follow what a system is used for, not which technique it uses.
-<!-- ct319:key The EU AI Act takes a risk-based approach: the obligations follow what a system is used for, not which technique it uses. -->
+The [EU AI Act](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai) takes a risk-based approach. A system's obligations depend on what it is used for, not on which technique it uses.
+<!-- ct319:key The EU AI Act takes a risk-based approach. A system's obligations depend on what it is used for, not on which technique it uses. -->
 
 <!-- ct319:focus -->
 
 ![Four bands: unacceptable risk, high risk, transparency risk, and minimal or no risk](../../media/week-11/ai-act-risk.svg "hero")
 
-<sub><em>Figure 6. The same technique can sit in different bands depending on its use. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 6. The same technique can sit in different bands depending on its use. Diagram created for these pages. No external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
-The Act applies in stages. The **Article 50 transparency obligations have applied since 2 August 2026**, covering disclosure of direct AI interaction, machine-readable marking of certain AI-generated content, and disclosure of deepfakes, subject to the relevant conditions and exceptions.
+The Act applies in stages. The **Article 50 transparency obligations have applied since 2 August 2026**. They cover telling people when they are interacting directly with an AI system, marking certain AI-generated content in a machine-readable way, and disclosing deepfakes. Each comes with its own conditions and exceptions.
 
-Limited transitional arrangements apply to some pre-existing systems. The Commission's FAQ identifies a narrow grace period until **2 December 2026** for the Article 50(2) content-marking and detection obligations of systems placed on the market before 2 August 2026 — this is not a delay to every transparency duty. See the [Commission's Article 50 FAQ](https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act).
+Some systems that already existed get limited extra time. The Commission's [Article 50 FAQ](https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act) describes a narrow grace period, until **2 December 2026**. It covers the Article 50(2) duties to mark and detect AI-generated content, for systems placed on the market before 2 August 2026. It does not delay every transparency duty.
 
 ### Why this matters this week
 
@@ -334,11 +342,11 @@ Limited transitional arrangements apply to some pre-existing systems. The Commis
 <!-- ct319:beat -->
 ## From principles to responsibility — who is accountable?
 
-Take one fictional case and work it through, revealing a piece at a time.
+Let us work through one fictional case, one piece at a time.
 
 > **University X proposes an AI system to identify students who may need academic support.**
 
-Six questions carry the discussion — and the point of the exercise is to decide what further evidence or changes you would require *before* deployment, not to reach a verdict from the description alone.
+Six questions guide the discussion. The aim is not to reach a verdict from this short description. The aim is to decide what extra evidence or changes you would need *before* the system is used.
 
 <!-- ct319:focus -->
 
@@ -356,27 +364,28 @@ Six questions carry the discussion — and the point of the exercise is to decid
 
 ### Purpose
 
-What is the system actually for? Predicting dropout, identifying students who need support, prioritising scarce staff time and triggering automatic intervention are **four different systems**, and a proposal that has not chosen between them makes everything downstream impossible to justify.
+What is the system actually for? Predicting who will drop out, finding students who need support, deciding how to use limited staff time, and sending automatic interventions are **four different systems**. If a proposal has not chosen between them, nothing that follows can be justified.
 <!-- ct319:key What is the system actually for? -->
 
 ### Data
 
-The proposal uses attendance, grades, postcode, library use and LMS activity. Which of those are necessary for a support purpose, and which would you remove? What purpose and basis support using the records at all?
+The proposal uses attendance, grades, postcode, library use and LMS activity. Which of these are needed for a support purpose, and which would you remove? What purpose and basis allow the university to use these records at all?
 
-Would postcode improve the prediction? Possibly. Should it therefore be used? Not automatically — and that gap between the two answers is the whole of the previous highlight.
+Would postcode improve the prediction? Possibly. Does that mean it should be used? Not automatically. Whether data *helps* and whether it *should be used* are different questions.
 
 ### Fairness
 
-Overall accuracy **88%**; Group A **91%**; Group B **72%**. Should it be deployed unchanged?
+Overall accuracy is **88%**. For Group A it is **91%**, and for Group B it is **72%**. Should the system be used as it is?
 
-That result should trigger investigation, not an automatic verdict of discrimination. Perhaps Group B is under-represented in the training data. Perhaps a feature behaves differently for that group. Perhaps the labels are weaker there. The aggregate cannot distinguish between those, and each one implies a different fix.
+In the University X case, accuracy for Group B is 19 points lower than for Group A. A gap like that should trigger an investigation, not an automatic verdict of discrimination. Perhaps Group B is under-represented in the training data. Perhaps a feature behaves differently for that group. Perhaps the labels are less reliable for that group. The overall figure cannot tell these causes apart, and each one needs a different fix.
+<!-- ct319:key In the University X case, accuracy for Group B is 19 points lower than for Group A. A gap like that should trigger an investigation, not an automatic verdict of discrimination. -->
 
 ### Transparency
 
-Now reveal how a prediction becomes an action: a risk score from 0 to 100, and above 75 an automatic message to the student plus a flag to programme staff. The threshold and the automatic contact are deployment choices, not model outputs.
-<!-- ct319:key The threshold and the automatic contact are deployment choices, not model outputs. -->
+Now we learn how a prediction becomes an action. The system gives each student a risk score from 0 to 100. Above 75, it automatically sends the student a message and flags them to programme staff. The threshold and the automatic message are choices about how the system is used. They are not outputs of the model.
 
-Should students know that AI is being used, what data is included, what the score is used for, whether a human reviews it, and how to challenge incorrect information? A system that affects people while hiding its own existence makes meaningful oversight impossible by construction.
+Should students know that AI is being used? Should they know what data is included, what the score is used for, whether a person reviews it, and how to challenge wrong information? If a system affects people while hiding that it exists, nobody can oversee it properly.
+<!-- ct319:key If a system affects people while hiding that it exists, nobody can oversee it properly. -->
 
 <!-- ct319:beat -->
 ## Oversight
@@ -393,7 +402,7 @@ The model says `risk = 82`. Should that decide what happens next?
 
 <!-- ct319:endfocus -->
 
-All three are called "human oversight". The question that separates real oversight from the appearance of it is practical:
+All three are called "human oversight". What separates real oversight from the appearance of it is a practical question.
 
 <!-- ct319:focus -->
 
@@ -401,7 +410,7 @@ All three are called "human oversight". The question that separates real oversig
 
 <!-- ct319:endfocus -->
 
-A nominal human in the loop who clicks **Approve** on everything is not oversight. Ask what they can genuinely review, override or stop.
+A person who clicks **Approve** on everything is not really overseeing anything. Ask what they can actually check, override or stop.
 
 <!-- ct319:beat -->
 ## Accountability
@@ -413,26 +422,26 @@ Now suppose the system causes harm.
 
 ![The vendor, developer, data team, deploying organisation and staff member, and the claim that the AI did it](../../media/week-11/accountability-chain.svg "hero")
 
-<sub><em>Figure 7. Every link in that chain is a person or an organisation. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 7. Every link in that chain is a person or an organisation. Diagram created for these pages. No external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
-Responsibility exists across the whole chain, and it does not stop at deployment. Who monitors the running system, who investigates complaints, and who has the authority to change or withdraw it?
-<!-- ct319:key Responsibility exists across the whole chain, and it does not stop at deployment. -->
+Responsibility runs through the whole chain, and it does not end when the system goes live. Someone has to monitor the running system, investigate complaints, and have the authority to change it or switch it off.
+<!-- ct319:key Responsibility runs through the whole chain, and it does not end when the system goes live. -->
 
 ### Would your judgement change?
 
-Keep the case and change one deployment condition at a time.
+Keep the same case, and change one condition at a time.
 
 > **Instead of contacting students automatically, the system only gives academic advisers a ranked list.**
 
-Does that change your judgement? Consider whether advisers can inspect and challenge the ranking — and whether it still decides who receives attention.
+Does that change your judgement? Think about whether advisers can check and question the ranking. Think also about whether the ranking still decides who gets attention.
 
 > **Overall accuracy falls from 88% to 76%, but the gap between groups becomes much smaller.**
 
-Is the lower-accuracy system automatically worse? Is the smaller gap enough to justify it? Weigh the remaining errors, their consequences, and the support purpose before deciding.
+Is the less accurate system automatically worse? Is the smaller gap enough to justify it? Before deciding, weigh up the errors that remain, what they lead to, and the purpose of the support.
 
-There is no correct verdict supplied here. What you are asked for is which evidence and which deployment conditions your judgement depends on.
+There is no single correct answer here. What matters is which evidence and which conditions your judgement depends on.
 
 ### Why this matters this week
 
@@ -446,18 +455,20 @@ There is no correct verdict supplied here. What you are asked for is which evide
 
 ## What to carry out of this week
 
-- **Fairness** — investigate who benefits and who is harmed, across purpose, data, labels, features, decisions and use. A subgroup gap calls for investigation; it is not automatic proof of discrimination.
-- **Privacy and data minimisation** — define the purpose, then use only the personal data that purpose needs. Removing identifiers establishes neither anonymity nor permission to reuse.
-- **Transparency** — communicate how AI is used, what its limits are and who is responsible. Interpretability lets you inspect a model; explainability methods describe its outputs. Neither makes an influence appropriate.
-- **Human oversight** — people need information, authority and time, or the oversight is nominal.
-- **Accountability** — responsibility stays with the people and organisations who design, deploy and use the system, including long after it goes live.
-<!-- ct319:key Accountability — responsibility stays with the people and organisations who design, deploy and use the system, including long after it goes live. -->
+Five ideas from this week matter most.
+<!-- ct319:key Five ideas from this week matter most. -->
+
+- **Fairness** — check who benefits and who is harmed, across the purpose, data, labels, features, decisions and use. A gap between groups calls for investigation. It is not automatic proof of discrimination.
+- **Privacy and data minimisation** — define the purpose first, then use only the personal data that purpose needs. Removing identifiers does not make data anonymous, and it does not give permission to reuse it.
+- **Transparency** — explain how AI is used, what its limits are and who is responsible. Interpretability lets you inspect a model. Explainability methods describe its outputs. Neither one shows that an influence was appropriate.
+- **Human oversight** — people need information, authority and time. Without them, oversight exists in name only.
+- **Accountability** — responsibility stays with the people and organisations who design, deploy and use the system, long after it goes live.
 
 ---
 
 ## Before the end of the module
 
-Weeks 8 to 11 ran a progression, and it is worth seeing it whole.
+Weeks 8 to 11 followed one progression. Here it is in full.
 
 <!-- ct319:focus -->
 
@@ -472,7 +483,7 @@ Weeks 8 to 11 ran a progression, and it is worth seeing it whole.
 
 <!-- ct319:endfocus -->
 
-Carry one question out of the module:
+Take one question with you when the module ends.
 
 <!-- ct319:focus -->
 
@@ -507,7 +518,6 @@ If you can answer these without reopening the page, you have the core of this we
 ### CT319 source material
 
 This week follows selected material from the formal CT319 *Lecture 10: AI Ethics* material on Canvas — fairness across the development process, privacy and data minimisation, synthetic data, transparency and responsibility. The formal slides remain the broader reference; these pages develop selected requirements rather than the whole framework.
-<!-- ct319:key The formal slides remain the broader reference; these pages develop selected requirements rather than the whole framework. -->
 
 ### External sources
 
@@ -519,7 +529,6 @@ This week follows selected material from the formal CT319 *Lecture 10: AI Ethics
 - European Commission — [Transparency obligations under Article 50 of the AI Act](https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act)
 
 The Commission sources were checked on **10 September 2026**, and the regulatory overview is deliberately limited to the teaching context and the staged application of Article 50. Dates in this area move; check the linked pages before relying on them.
-<!-- ct319:key Dates in this area move; check the linked pages before relying on them. -->
 
 ### Quotation and licensing
 
@@ -530,7 +539,6 @@ The Commission material is **linked, not reproduced**. Where the Ethics Guidelin
 The University X case, the loan-approval example, and **every numerical value used in them**, are fictional teaching examples constructed for these pages.
 
 They are not findings, measurements or claims about any actual institution, lender or deployed system. The accuracy figures and the feature contributions in Figure 5 were chosen to make a teaching point, not measured from data — Figure 5 is labelled schematic for that reason, and is not the output of LIME, SHAP or any other method.
-<!-- ct319:key They are not findings, measurements or claims about any actual institution, lender or deployed system. -->
 
 ### Figures
 
