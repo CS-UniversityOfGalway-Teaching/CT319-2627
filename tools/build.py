@@ -651,10 +651,11 @@ def build_deck(md_path: Path) -> str | None:
     sections: list[tuple[str, str, str]] = [("This week", "./", opening_md)]
     sections += [(title, f"./#{slugify(title)}", rest_md) for _, title, rest_md in beats]
     # The tail is ordinary Markdown; each of its "## " headings opens a section.
+    # Sources and licensing notes stay on the page; they are not lecture material.
     tail_title, tail_lines = "", []
     for line in tail_md.strip().split("\n") + ["## "]:
         if line.startswith("## "):
-            if "\n".join(tail_lines).strip():
+            if "\n".join(tail_lines).strip() and not tail_title.startswith("Sources"):
                 sections.append((tail_title or "This week", "./", "\n".join(tail_lines)))
             tail_title, tail_lines = line[3:].strip(), []
         else:
