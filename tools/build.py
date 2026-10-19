@@ -523,7 +523,7 @@ DECK_TEMPLATE = ROOT / "tools" / "templates" / "deck.html"
 # Words of ordinary text per slide; longer passages are split between
 # paragraphs. A focus block is set larger, so each of its words counts
 # FOCUS_WEIGHT times against the slide.
-SLIDE_WORDS = 170
+SLIDE_WORDS = 180
 FOCUS_WEIGHT = 2
 # A slide never ends with less text than this; a short line joins the next.
 MIN_WORDS = 40
@@ -535,9 +535,27 @@ def plain(markdown: str) -> str:
     return " ".join(re.sub(r"[*`]", "", text).split())
 
 
+def without_sentence(markdown: str, sentence: str) -> str:
+    """The Markdown with one quoted sentence removed, whatever inline markup
+    (bold, code, links) the source wraps around parts of it; a paragraph left
+    empty disappears."""
+    markup = r"(?:[*`\[]|\]\([^)]*\))*"
+    pattern = markup
+    for ch in plain(sentence):
+        pattern += r"(?:[*`\[\s]|\]\([^)]*\))+" if ch.isspace() else re.escape(ch) + markup
+    pattern += r"[:.]?[ \t]*"
+    markdown = KEY_RE.sub("", markdown)
+    markdown = re.sub(pattern, "", markdown, count=1)
+    markdown = re.sub(r"[ \t]+$", "", markdown, flags=re.M)
+    return re.sub(r"\n{3,}", "\n\n", markdown).strip()
+
+
 def word_count(markdown: str) -> int:
-    # A table row takes a line of the slide however few words it holds.
+    # A table row or a line of code takes a line of the slide however few
+    # words it holds.
     rows = len(re.findall(r"^\s*\|", markdown, re.M))
+    rows += sum(len(code.strip("\n").split("\n"))
+                for code in re.findall(r"^```[^\n]*\n(.*?)^```", markdown, re.M | re.S))
     return len(re.sub(r"<[^>]+>|\]\([^)]*\)|[#*`>|]", " ", markdown).split()) + 8 * rows
 
 
@@ -615,7 +633,9 @@ def text_slides(markdown: str) -> list[str]:
     current: list[str] = []
     count = 0
     for block in text_blocks(markdown):
-        words = word_count(block) + sum(FOCUS_WEIGHT * word_count(k) for k in KEY_RE.findall(block))
+        # A key sentence moves from the text into the highlight, where it is
+        # set larger: it costs the difference.
+        words = word_count(block) + sum((FOCUS_WEIGHT - 1) * word_count(k) for k in KEY_RE.findall(block))
         if (current and count + words > SLIDE_WORDS
                 and sum(word_count(b) for b in current) >= MIN_WORDS):
             carry: list[str] = []
@@ -626,7 +646,7 @@ def text_slides(markdown: str) -> list[str]:
             if current:
                 slides.append(current)
                 current = carry
-                count = sum(word_count(b) + sum(FOCUS_WEIGHT * word_count(k) for k in KEY_RE.findall(b))
+                count = sum(word_count(b) + sum((FOCUS_WEIGHT - 1) * word_count(k) for k in KEY_RE.findall(b))
                             for b in carry)
             else:
                 current = carry
@@ -696,10 +716,13 @@ def build_deck(md_path: Path) -> str | None:
                     warnings.append(f"{len(keys)} key sentences on a slide in {section!r}: "
                                     + plain(KEY_RE.sub("", chunk))[:70])
                 if keys:
-                    # A key sentence that is the slide's whole text is not
-                    # repeated under itself.
-                    rest = "" if plain(KEY_RE.sub("", chunk)) == plain(keys[0]) else chunk
-                    add("key", prose=rest, focus="> **" + keys[0].replace("**", "") + "**")
+                    # The key sentence is the slide's highlight, so it is taken
+                    # out of the text underneath rather than said twice.
+                    shown = keys[0].replace("**", "").rstrip(":")
+                    if not shown.endswith((".", "?", "!")):
+                        shown += "."
+                    add("key", prose=without_sentence(chunk, keys[0]),
+                        focus="> **" + shown + "**")
                 else:
                     add("text", prose=chunk)
 

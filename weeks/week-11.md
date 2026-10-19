@@ -22,7 +22,6 @@ This is the one week on the module where the interesting answers are not technic
 <!-- ct319:key This is the one week on the module where the interesting answers are not technical. -->
 
 We work through five things.
-<!-- ct319:key We work through five things. -->
 
 * [**Accurate, but trustworthy?**](#accurate-but-trustworthy--is-good-performance-enough) — why a headline accuracy figure does not settle whether a system should be relied on.
 * [**The data were biased before the model arrived**](#the-data-were-biased-before-the-model-arrived--where-can-unfairness-enter) — where unfairness enters the sequence of choices that builds a system.
