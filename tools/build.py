@@ -536,7 +536,9 @@ def plain(markdown: str) -> str:
 
 
 def word_count(markdown: str) -> int:
-    return len(re.sub(r"<[^>]+>|\]\([^)]*\)|[#*`>|]", " ", markdown).split())
+    # A table row takes a line of the slide however few words it holds.
+    rows = len(re.findall(r"^\s*\|", markdown, re.M))
+    return len(re.sub(r"<[^>]+>|\]\([^)]*\)|[#*`>|]", " ", markdown).split()) + 8 * rows
 
 
 def segments(markdown: str) -> list[tuple[bool, str]]:
