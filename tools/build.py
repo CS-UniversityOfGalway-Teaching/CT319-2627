@@ -511,6 +511,8 @@ def build_page(md_path: Path) -> str:
     page = template
     for key, value in parts.items():
         page = page.replace("{{" + key + "}}", value)
+    if "ct319:key" in page:
+        raise SystemExit(f"{md_path}: a ct319:key line is not on a line of its own, so it shows on the page")
     return page
 
 
@@ -547,6 +549,7 @@ def without_sentence(markdown: str, sentence: str) -> str:
     markdown = KEY_RE.sub("", markdown)
     markdown = re.sub(pattern, "", markdown, count=1)
     markdown = re.sub(r"[ \t]+$", "", markdown, flags=re.M)
+    markdown = re.sub(r"^\s*(?:[-*]|\d+\.)\s*\n", "", markdown + "\n", flags=re.M)
     return re.sub(r"\n{3,}", "\n\n", markdown).strip()
 
 
@@ -639,9 +642,13 @@ def text_slides(markdown: str) -> list[str]:
         if (current and count + words > SLIDE_WORDS
                 and sum(word_count(b) for b in current) >= MIN_WORDS):
             carry: list[str] = []
+            # A short paragraph introducing code, a table or a list stays
+            # with it, whether or not it ends in a colon.
+            introduces = re.match(r"\s*(```|\||[-*] |\d+\. )", block)
             while current and (current[-1].lstrip().startswith("#")
                                or KEY_RE.sub("", current[-1]).rstrip().endswith(":")
-                               or word_count(current[-1]) <= 12):
+                               or word_count(current[-1]) <= 12
+                               or (introduces and not carry and word_count(current[-1]) <= 30)):
                 carry.insert(0, current.pop())
             if current:
                 slides.append(current)
