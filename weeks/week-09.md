@@ -480,6 +480,11 @@ To save every figure on this page as a file, without opening a window, run this.
 python experiments/week-09/classification_demo.py --save-dir media/week-09
 ```
 
+### Try it in a notebook
+
+[Open the Week 9 notebook in Google Colab](https://colab.research.google.com/github/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-09/week-09-classification.ipynb) to work through the same dataset cell by cell. It splits the data, fits KNN and decision trees, and collects the results in a table you can extend. You can change any setting and run it again, with nothing to install. The same [notebook file](https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-09/week-09-classification.ipynb) also opens in VS Code.
+<!-- ct319:key Open the Week 9 notebook in Google Colab to work through the same dataset cell by cell. -->
+
 ---
 
 ## Before Week 10
@@ -553,6 +558,7 @@ No external images, videos, papers or interactives are used.
 ### Software
 
 - 📦 [**`classification_demo.py`**](https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-09/classification_demo.py) — written for this module. Requires `numpy`, `matplotlib` and `scikit-learn`; nothing is downloaded at run time.
+- 📓 [**`week-09-classification.ipynb`**](https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-09/week-09-classification.ipynb) — a notebook version of the same dataset and models, for [Google Colab](https://colab.research.google.com/github/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-09/week-09-classification.ipynb) or VS Code.
 - scikit-learn User Guide — [nearest neighbours](https://scikit-learn.org/stable/modules/neighbors.html) · [decision trees](https://scikit-learn.org/stable/modules/tree.html)
 - scikit-learn reference — [`KNeighborsClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html) · [`DecisionTreeClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html) · [`train_test_split`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html) · [`make_moons`](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_moons.html)
 
