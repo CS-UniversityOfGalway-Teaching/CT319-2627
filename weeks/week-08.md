@@ -585,6 +585,11 @@ python learning_demo.py
 The program shows the data first, and only runs the model when you ask for the reveal. That way you can make your own prediction before you see the answer. Use `--mode classification` or `--mode clustering` to open one example at a time.
 <!-- ct319:key The program shows the data first, and only runs the model when you ask for the reveal. That way you can make your own prediction before you see the answer. -->
 
+### Try it in a notebook
+
+Notebooks are the usual way to work in machine learning. [Open the Week 8 notebook in Google Colab](https://colab.research.google.com/github/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-08/week-08-learning-from-data.ipynb) to run the same two examples cell by cell. You can change the code, run it again and see what happens, with nothing to install. The same [notebook file](https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-08/week-08-learning-from-data.ipynb) also opens in VS Code.
+<!-- ct319:key Notebooks are the usual way to work in machine learning. -->
+
 ---
 
 ## Before Week 9
@@ -661,6 +666,7 @@ No external images, videos, papers or interactives are used.
 ### Software
 
 - 📦 [**`learning_demo.py`**](https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-08/learning_demo.py) — written for this module. Requires `scikit-learn` and `matplotlib`; no data download and no build step.
+- 📓 [**`week-08-learning-from-data.ipynb`**](https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-08/week-08-learning-from-data.ipynb) — a notebook version of the same two examples, for [Google Colab](https://colab.research.google.com/github/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-08/week-08-learning-from-data.ipynb) or VS Code.
 - [scikit-learn — `KNeighborsClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html)
 - [scikit-learn — `KMeans`](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html)
 - [scikit-learn documentation](https://scikit-learn.org/stable/) · [Python](https://www.python.org/) · [R](https://www.r-project.org/) · [Weka](https://www.cs.waikato.ac.nz/ml/weka/)
