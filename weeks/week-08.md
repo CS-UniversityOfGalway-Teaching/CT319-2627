@@ -131,6 +131,7 @@ One big reason is data. Everyday systems now record huge amounts of it: shop tra
 <!-- ct319:key One big reason is data. -->
 
 Big Data does not just mean "a lot of rows". It is usually described with a set of words that begin with V, and each one points to a different challenge:
+<!-- ct319:key Big Data does not just mean "a lot of rows". -->
 
 | Idea | The question it asks |
 | --- | --- |

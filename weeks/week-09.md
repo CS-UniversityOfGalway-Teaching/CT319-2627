@@ -8,7 +8,7 @@ source: week-09.md
 deck: yes
 ---
 
-Last week introduced learning from data and experience in general. This week narrows it to one setting — **labelled examples** — and one question: how do known answers become category predictions for new cases?
+Last week introduced machine learning in general. This week we focus on one kind: learning from **labelled examples**, where we already know the right answer for every past case. The question is how those known answers help the machine predict the category of a new case.
 
 <!-- ct319:focus -->
 
@@ -16,19 +16,19 @@ Last week introduced learning from data and experience in general. This week nar
 
 <!-- ct319:endfocus -->
 
-Everything on this page runs on one dataset, with one fixed split, one fixed pair of axes and one unknown point. Nothing else moves. That is deliberate: when the picture changes, exactly one thing caused it, and you should be able to name it.
-<!-- ct319:key That is deliberate: when the picture changes, exactly one thing caused it, and you should be able to name it. -->
+All the experiments this week use the same dataset, the same split into training and test data, the same axes and the same unknown point. Only one thing changes at a time. So when a picture changes, you can say exactly what caused it.
+<!-- ct319:key Only one thing changes at a time. So when a picture changes, you can say exactly what caused it. -->
 
-We work through five things.
-<!-- ct319:key We work through five things. -->
+This week covers five topics:
+<!-- ct319:key This week covers five topics: -->
 
-* [**From examples to categories**](#from-examples-to-categories--what-are-we-asking-the-machine-to-learn) — what a supervised task asks for once the training examples already carry their answers.
-* [**Ask the neighbours**](#ask-the-neighbours--how-does-knn-make-a-decision) — how KNN predicts by consulting the labelled examples nearest a new case.
-* [**Learn the rules instead**](#learn-the-rules-instead--what-does-a-decision-tree-do-differently) — how a decision tree learns a sequence of questions rather than keeping the examples.
-* [**Good on what data?**](#good-on-what-data--did-the-classifier-actually-learn) — why scoring well on the training examples establishes nothing on its own.
-* [**Representation first**](#representation-first--what-does-the-classifier-actually-see) — what the algorithm actually receives once a customer, an email or a photograph becomes features.
+* [**From examples to categories**](#from-examples-to-categories--what-are-we-asking-the-machine-to-learn) — what a classification task is, when every training example already has its answer.
+* [**Ask the neighbours**](#ask-the-neighbours--how-does-knn-make-a-decision) — how KNN predicts by looking at the labelled examples closest to a new case.
+* [**Learn the rules instead**](#learn-the-rules-instead--what-does-a-decision-tree-do-differently) — how a decision tree learns a series of questions instead of keeping the examples.
+* [**Good on what data?**](#good-on-what-data--did-the-classifier-actually-learn) — why a high score on the training examples proves nothing by itself.
+* [**Representation first**](#representation-first--what-does-the-classifier-actually-see) — what the algorithm actually receives once a customer, an email or a photo has been turned into features.
 
-Three ideas carry the page, and it is worth keeping them apart:
+Keep three ideas separate as you read:
 
 <!-- ct319:focus -->
 
@@ -40,16 +40,17 @@ Three ideas carry the page, and it is worth keeping them apart:
 
 <!-- ct319:endfocus -->
 
-Two algorithms this week, and they disagree with each other on the same data. That disagreement is the lesson.
+We use two algorithms this week. On the same data, they give different answers, and understanding why is the main lesson.
 
 <!-- ct319:beats -->
 
 <!-- ct319:beat -->
 ## From examples to categories — what are we asking the machine to learn?
 
-Classification is a **supervised learning** task, which means the training examples arrive with their answers attached.
+Classification is a **supervised learning** task. That means every training example comes with its correct answer.
+<!-- ct319:key Classification is a **supervised learning** task. -->
 
-Suppose we have a set of previous customers, and we already know whether each one repaid a loan.
+Suppose a bank has records of past customers, and it knows whether each one repaid their loan:
 
 | Income (€k) | Savings (€k) | Repaid? |
 |---:|---:|:---|
@@ -59,15 +60,15 @@ Suppose we have a set of previous customers, and we already know whether each on
 | 55 | 18 | Yes |
 | 63 | 24 | Yes |
 
-Each row is an **example**. `Income` and `Savings` are **features** — the measurements we chose to represent each case. `Repaid?` is the **class label**, the answer we want predicted.
+Each row is an **example**. `Income` and `Savings` are **features**: the measurements we chose to describe each customer. `Repaid?` is the **class label**: the answer we want the classifier to predict.
 
-Now a new customer arrives, and the one column that matters is empty.
+Now a new customer applies. We know their features, but the answer is missing:
 
 | Income (€k) | Savings (€k) | Repaid? |
 |---:|---:|:---|
 | 46 | 12 | **?** |
 
-The classifier does not know the answer. That is the entire point — it has to use what the previous examples taught it.
+The classifier does not know the answer. It has to work it out from what the past examples showed it.
 
 <!-- ct319:focus -->
 
@@ -77,20 +78,20 @@ The classifier does not know the answer. That is the entire point — it has to 
 
 ### Binary and multiclass
 
-Sometimes there are exactly two possible classes — spam or not spam, fraud or not fraud, approve or reject. That is **binary classification**. Sometimes there are more — cat, dog or rabbit; red, amber or green. That is **multiclass classification**. The structure is identical either way; only the size of the answer set changes.
-<!-- ct319:key The structure is identical either way; only the size of the answer set changes. -->
+Sometimes there are only two possible classes: spam or not spam, fraud or not fraud, approve or reject. This is **binary classification**. Sometimes there are more: cat, dog or rabbit; red, amber or green. This is **multiclass classification**. The task works the same way in both cases. Only the number of possible answers changes.
+<!-- ct319:key The task works the same way in both cases. Only the number of possible answers changes. -->
 
 <!-- ct319:beat -->
 ## The dataset everything else runs on
 
-The loan table gives us the vocabulary. For the live experiments we switch to one deterministic two-dimensional dataset, so that the geometry is visible on a screen.
-<!-- ct319:key For the live experiments we switch to one deterministic two-dimensional dataset, so that the geometry is visible on a screen. -->
+The loan table is useful for learning the vocabulary. For the experiments, we switch to a dataset with two features, so every example can be drawn as a point on a flat plot. The dataset is generated the same way every time, so the results never change between runs:
+<!-- ct319:key For the experiments, we switch to a dataset with two features, so every example can be drawn as a point on a flat plot. -->
 
 ```python
 make_moons(n_samples=140, noise=0.23, random_state=2)
 ```
 
-140 points, two numerical features on comparable scales, every point labelled `A` or `B`, and one diamond marking the unknown point at `[-0.4, 0.15]`.
+It has 140 points. Each has two numerical features on similar scales and is labelled `A` or `B`. The diamond is the unknown point, at `[-0.4, 0.15]`.
 
 <!-- ct319:focus -->
 
@@ -102,17 +103,17 @@ make_moons(n_samples=140, noise=0.23, random_state=2)
 
 <!-- ct319:endfocus -->
 
-Answer that before any model runs. Then ask what, exactly, your eye was doing. That turns out to be most of this week.
+Decide on your answer before running any model. Then think about how you decided. You probably looked at which points are close to the diamond. That is exactly the idea behind the first algorithm.
 
 ### Why this matters this week
 
-Everything from here changes one thing at a time against that picture: first how many neighbours get consulted, then which algorithm is doing the consulting, then how much of the data it was allowed to see.
+From here on, we change one thing at a time and compare against this picture: first how many neighbours the algorithm looks at, then which algorithm we use, then how much of the data it is allowed to see.
 
 <!-- ct319:beat -->
 ## Ask the neighbours — how does KNN make a decision?
 
-**k-nearest neighbours**, written **KNN**, makes a prediction by looking at the labelled examples nearest the new one. That is the whole idea, and it is deliberately unambitious: find the nearby examples, look at their classes, count the votes.
-<!-- ct319:key That is the whole idea, and it is deliberately unambitious: find the nearby examples, look at their classes, count the votes. -->
+**k-nearest neighbours**, or **KNN**, predicts the class of a new example by looking at the labelled examples closest to it. The method is simple: find the *k* nearest examples, look at their classes, and let them vote.
+<!-- ct319:key The method is simple: find the k nearest examples, look at their classes, and let them vote. -->
 
 <!-- ct319:focus -->
 
@@ -122,15 +123,15 @@ Everything from here changes one thing at a time against that picture: first how
 
 <!-- ct319:endfocus -->
 
-No rule book was written in advance. The decision comes from whichever labelled examples happen to lie nearest.
-<!-- ct319:key No rule book was written in advance. The decision comes from whichever labelled examples happen to lie nearest. -->
+Nobody wrote any rules in advance. The prediction depends only on which labelled examples happen to be nearest.
+<!-- ct319:key Nobody wrote any rules in advance. The prediction depends only on which labelled examples happen to be nearest. -->
 
 <!-- ct319:beat -->
 ## What does *nearest* mean?
 
-The examples have to be represented as features first. If both features are numerical, each example becomes a point, and KNN needs a way to measure the distance between points. For two-dimensional numerical data the familiar choice is **Euclidean distance** — ordinary straight-line distance.
+To measure "nearest", each example has to be described by features. If both features are numbers, each example becomes a point, and KNN measures the distance between points. For two numerical features the usual choice is **Euclidean distance**: the ordinary straight-line distance.
 
-We do not need to do that arithmetic by hand. The consequence is what matters:
+The computer does the arithmetic. What matters for us is the consequence:
 
 <!-- ct319:focus -->
 
@@ -138,12 +139,12 @@ We do not need to do that arithmetic by hand. The consequence is what matters:
 
 <!-- ct319:endfocus -->
 
-Two examples that are close in feature space are treated as similar. Which creates a design problem immediately.
+KNN treats two examples that are close together as similar. So how we represent the data decides which examples count as similar, and that can cause problems.
 
 <!-- ct319:beat -->
 ## Is distance always meaningful?
 
-Suppose a customer is represented as `age = 37` and `income = 75000`. The numerical scale of income is enormously larger than the scale of age, so a distance calculation is dominated by income — not because income matters more, but because of the units somebody picked.
+Suppose a customer is described by `age = 37` and `income = 75000`. Income is measured in much bigger numbers than age. So when KNN calculates a distance, income almost completely decides it. That is not because income matters more. It is only because of the units it happens to be recorded in.
 
 <!-- ct319:focus -->
 
@@ -151,14 +152,14 @@ Suppose a customer is represented as `age = 37` and `income = 75000`. The numeri
 
 <!-- ct319:endfocus -->
 
-Today's dataset deliberately keeps both feature scales comparable, so that this effect is held still while we vary something else. In a real problem it is not held still, and scaling becomes part of the representation decision.
+In this week's dataset both features use similar scales, so this problem does not affect our experiments. With real data it often does. Then the features have to be rescaled, and choosing how to scale them is part of choosing the representation.
 
 <!-- ct319:beat -->
 ## What does `k` change?
 
-`k` is how many neighbours get consulted. With `k = 1` a single nearby example decides. With `k = 15`, fifteen of them vote and a much larger region influences the answer.
+`k` is the number of neighbours that get a vote. With `k = 1`, the single closest example decides. With `k = 15`, fifteen examples vote, so a much larger area around the new point affects the answer.
 
-Before running anything:
+Before running anything, make a prediction:
 
 <!-- ct319:focus -->
 
@@ -166,7 +167,7 @@ Before running anything:
 
 <!-- ct319:endfocus -->
 
-The scikit-learn version is three lines, and it is not the interesting part:
+In scikit-learn, KNN takes three lines of code:
 
 ```python
 from sklearn.neighbors import KNeighborsClassifier
@@ -176,7 +177,7 @@ model.fit(X_train, y_train)
 prediction = model.predict(X_new)
 ```
 
-The behaviour is the interesting part. Same data, same split, same axes, same diamond — change only `k`.
+The code is the easy part. What matters is how the results change. Everything stays the same (the data, the split, the axes and the diamond) except `k`.
 
 <!-- ct319:focus -->
 
@@ -200,7 +201,8 @@ The behaviour is the interesting part. Same data, same split, same axes, same di
 
 <!-- ct319:endfocus -->
 
-Read the two tables together:
+Here are all four results together. Notice that the diamond's predicted class changes between `k = 3` and `k = 9`:
+<!-- ct319:key Notice that the diamond's predicted class changes between `k = 3` and `k = 9` -->
 
 | `k` | Training accuracy | Test accuracy | Diamond |
 |---:|---:|---:|:---|
@@ -209,18 +211,18 @@ Read the two tables together:
 | 9 | 93.9% | 95.2% | **B** |
 | 15 | 93.9% | 95.2% | B |
 
-A very small `k` makes the classifier hypersensitive to individual examples. A larger `k` smooths that out — but larger is not automatically better, because eventually examples that are nowhere near the new point are influencing what should have been a local decision.
+With a very small `k`, the prediction depends heavily on single examples, so one unusual point can change the answer. A larger `k` smooths this out. But bigger is not always better: if `k` is too large, examples far from the new point start to affect a decision that should depend on what is nearby.
 
 ### Why this matters this week
 
-The score is part of the evidence; the picture is the experiment. Ask where the decision region moved, and which examples now reach the diamond. The number alone will not tell you that the answer flipped.
-<!-- ct319:key The score is part of the evidence; the picture is the experiment. -->
+Do not just read the accuracy numbers; look at the plots. Check where the boundary between the classes moved, and which examples are now closest to the diamond. The numbers alone would not show you that the diamond's predicted class changed.
+<!-- ct319:key Do not just read the accuracy numbers; look at the plots. -->
 
 <!-- ct319:beat -->
 ## Learn the rules instead — what does a decision tree do differently?
 
-KNN keeps the training examples and consults them when a new case arrives. That is not the only option. A **decision tree** instead learns a sequence of questions during training, and afterwards just follows them.
-<!-- ct319:key A decision tree instead learns a sequence of questions during training, and afterwards just follows them. -->
+KNN keeps all the training examples and looks at them every time a new case arrives. There is another approach. A **decision tree** learns a series of yes/no questions during training. After that, it only needs to follow those questions to classify a new case.
+<!-- ct319:key A decision tree learns a series of yes/no questions during training. -->
 
 <!-- ct319:focus -->
 
@@ -233,7 +235,7 @@ KNN keeps the training examples and consults them when a new case arrives. That 
 <!-- ct319:beat -->
 ## Lazy and eager learning
 
-The classical terminology for that difference is **lazy** against **eager** learning.
+There are standard names for this difference: **lazy** learning and **eager** learning.
 
 <!-- ct319:focus -->
 
@@ -244,14 +246,14 @@ The classical terminology for that difference is **lazy** against **eager** lear
 
 <!-- ct319:endfocus -->
 
-Neither label means better. They describe *when* the work happens, and what has to be kept around afterwards.
+Neither one is better. The names describe *when* the work is done, and what has to be stored afterwards.
 
 <!-- ct319:beat -->
 ## What if we let the tree keep growing?
 
-A shallow tree gets most training examples right. Allow more branches and it can start writing very specific rules that deal with individual training examples. Training accuracy improves. Is that good?
+A small tree with only a few questions gets most of the training examples right. If we let it ask more questions, it can add very specific rules that deal with single training examples. Its training accuracy goes up. Is that a good thing?
 
-No — and this is the Week 8 distinction arriving with evidence attached:
+No. This is the idea from Week 8, now with real numbers to show it:
 
 <!-- ct319:focus -->
 
@@ -259,7 +261,7 @@ No — and this is the Week 8 distinction arriving with evidence attached:
 
 <!-- ct319:endfocus -->
 
-The second classifier is the same three lines with one word changed, which is the point: the data stays put, the learning algorithm moves.
+The code is the same three lines as before, with a different classifier. The data stays the same; only the learning algorithm changes:
 
 ```python
 from sklearn.tree import DecisionTreeClassifier
@@ -268,6 +270,8 @@ model = DecisionTreeClassifier(max_depth=2, random_state=42)
 model.fit(X_train, y_train)
 prediction = model.predict(X_new)
 ```
+
+`max_depth` limits how many questions the tree can ask, one after another, before it gives an answer.
 
 <!-- ct319:focus -->
 
@@ -280,8 +284,8 @@ prediction = model.predict(X_new)
 
 <!-- ct319:endfocus -->
 
-Now remove the limit entirely.
-<!-- ct319:key Now remove the limit entirely. -->
+Now remove the depth limit completely:
+<!-- ct319:key Now remove the depth limit completely: -->
 
 <!-- ct319:focus -->
 
@@ -293,19 +297,19 @@ Now remove the limit entirely.
 
 ### If the data are identical, why do the models disagree?
 
-They disagree because they assume different things about how useful structure should be extracted. KNN assumes nearby examples are similar. A tree assumes the classes can be separated by cuts across one feature at a time.
+Because each algorithm makes a different assumption about what the data looks like. KNN assumes that examples close together belong to the same class. A decision tree assumes the classes can be separated by straight cuts, one feature at a time.
 
-The dataset does not uniquely determine one model. It never did.
-<!-- ct319:key The dataset does not uniquely determine one model. It never did. -->
+The same data can produce different models. There is no single "correct" model hidden in the data.
+<!-- ct319:key The same data can produce different models. There is no single "correct" model hidden in the data. -->
 
 ### Why this matters this week
 
-Two algorithms, one dataset, two different answers — and neither of them is reading the data wrongly. The choice of learner is a modelling decision, exactly like the choice of representation in Week 2.
+Two algorithms, one dataset, two different answers, and neither algorithm is reading the data wrongly. Choosing the learning algorithm is a design decision, just like choosing the representation in Week 2.
 
 <!-- ct319:beat -->
 ## Good on what data? — did the classifier actually learn?
 
-Train a classifier on 100 examples, then ask it to predict those same 100. It gets all of them right.
+Train a classifier on 100 examples, then ask it to predict those same 100. It gets them all right.
 
 <!-- ct319:focus -->
 
@@ -313,13 +317,13 @@ Train a classifier on 100 examples, then ask it to predict those same 100. It ge
 
 <!-- ct319:endfocus -->
 
-The useful question is what happens on examples it did not see during training — which means arranging, in advance, for some to exist.
+What we really want to know is how it does on examples it did not see during training. To find out, we have to set some examples aside before training starts.
 
 <!-- ct319:beat -->
 ## Training data and test data
 
-The standard move is to hold some labelled examples back before any learning happens.
-<!-- ct319:key The standard move is to hold some labelled examples back before any learning happens. -->
+The standard approach is to hold back some of the labelled examples before any learning happens. The model trains on the rest. The held-back examples are used only at the end, to test it.
+<!-- ct319:key The standard approach is to hold back some of the labelled examples before any learning happens. -->
 
 <!-- ct319:focus -->
 
@@ -337,7 +341,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 ```
 
-`random_state=42` makes the split reproducible, so the same figures come back every time. `stratify=y` preserves the class proportions. With 140 examples that gives 98 for training and 42 held back.
+`test_size=0.30` holds back 30% of the data for testing. `random_state=42` makes the split the same every time, so you always get the same figures. `stratify=y` keeps the same mix of A and B in both parts. With 140 examples, that gives 98 for training and 42 for testing.
 
 <!-- ct319:focus -->
 
@@ -345,12 +349,12 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 <!-- ct319:endfocus -->
 
-Train on everything and you have no clean check left. The result then looks good for a reason that has nothing to do with the model being any good.
+If you train on all the data, nothing is left for a fair test. The model might then look good only because it is being tested on examples it has already seen.
 
 <!-- ct319:beat -->
 ## Overfitting, measured
 
-A model **overfits** when it fits its training data so closely that performance on new data suffers. On this dataset the pattern is not subtle:
+A model **overfits** when it fits its training data so closely that it does worse on new data. On this dataset, the effect is easy to see:
 
 | Decision tree | Nodes | Leaves | Training | Test |
 |:---|---:|---:|---:|---:|
@@ -358,8 +362,8 @@ A model **overfits** when it fits its training data so closely that performance 
 | `max_depth=5` | 23 | 12 | 96.9% | 85.7% |
 | unrestricted | 33 | 17 | **100.0%** | **76.2%** |
 
-Training accuracy climbs all the way to perfect. Test accuracy falls the whole way down. The model that memorised every training label is the worst of the three at the only job that matters.
-<!-- ct319:key The model that memorised every training label is the worst of the three at the only job that matters. -->
+As the tree grows, training accuracy rises all the way to 100%, while test accuracy keeps falling. The tree that memorised every training label does worst on new data, which is the job that actually matters.
+<!-- ct319:key The tree that memorised every training label does worst on new data, which is the job that actually matters. -->
 
 <!-- ct319:focus -->
 
@@ -372,9 +376,9 @@ Training accuracy climbs all the way to perfect. Test accuracy falls the whole w
 <!-- ct319:beat -->
 ## Accuracy, and where it goes blind
 
-For a simple problem the obvious measure is **accuracy**: what proportion of predictions were correct? 18 of 20 test examples is 90%. Useful — but not the whole story.
+The simplest way to score a classifier is **accuracy**: the proportion of predictions it got right. If it gets 18 of 20 test examples right, its accuracy is 90%. That is useful, but it does not tell the whole story.
 
-Imagine detecting something rare, where 99 of every 100 examples belong to the same class. A system that always predicts the majority class scores **99%** accuracy while detecting **none** of the events anyone cares about.
+Imagine trying to detect something rare, where 99 out of every 100 examples belong to the same class. A system that always predicts that common class scores **99%** accuracy, yet it detects **none** of the rare cases we actually care about.
 
 <!-- ct319:focus -->
 
@@ -382,16 +386,17 @@ Imagine detecting something rare, where 99 of every 100 examples belong to the s
 
 <!-- ct319:endfocus -->
 
-We are not turning this week into a catalogue of metrics. The habit is what carries forward.
+There are many other ways to measure a classifier, and we do not cover them here. The habit to take away is to ask whether the measure fits the problem.
 
 ### Why this matters this week
 
-Three numbers now exist for every model: a training score, a test score, and the gap between them. The gap is the one that says something.
+For every model we now have three numbers: the training score, the test score, and the gap between them. The gap is the most informative of the three.
+<!-- ct319:key The gap is the most informative of the three. -->
 
 <!-- ct319:beat -->
 ## Representation first — what does the classifier actually see?
 
-There is a problem sitting underneath every classifier on this page. The algorithm does not see a customer, an email, a photograph or a patient.
+Every classifier this week has the same hidden limitation. The algorithm never sees a real customer, email, photograph or patient.
 
 <!-- ct319:focus -->
 
@@ -399,13 +404,13 @@ There is a problem sitting underneath every classifier on this page. The algorit
 
 <!-- ct319:endfocus -->
 
-Which takes us straight back to Week 2.
+This brings us back to the idea of representation from Week 2.
 
 <!-- ct319:beat -->
 ## An email is not a feature vector
 
-Suppose the message is *FREE tickets available in Galway tomorrow*. A classical classifier cannot work with the meaning of that sentence. It needs something countable first.
-<!-- ct319:key A classical classifier cannot work with the meaning of that sentence. It needs something countable first. -->
+Suppose an email says *FREE tickets available in Galway tomorrow*. A classical classifier cannot understand the meaning of that sentence. The text first has to be turned into numbers it can count.
+<!-- ct319:key A classical classifier cannot understand the meaning of that sentence. The text first has to be turned into numbers it can count. -->
 
 <!-- ct319:focus -->
 
@@ -415,9 +420,9 @@ Suppose the message is *FREE tickets available in Galway tomorrow*. A classical 
 
 <!-- ct319:endfocus -->
 
-`good` and `not good` both contain `good`, so counting words alone cannot tell a recommendation from its opposite. One response is to count short sequences of neighbouring words as features too: `"not good"` is a **bigram**, and sequences of neighbouring terms in general are **n-grams**.
+Both `good` and `not good` contain the word `good`. So if we only count single words, a positive review and a negative one can look almost the same. One fix is to also count pairs of neighbouring words: `"not good"` is a **bigram**. In general, a sequence of *n* neighbouring words is called an **n-gram**.
 
-We are not building a text classifier today. The point is more fundamental than any particular fix:
+The specific fix matters less than the general point:
 
 <!-- ct319:focus -->
 
@@ -428,9 +433,9 @@ We are not building a text classifier today. The point is more fundamental than 
 <!-- ct319:beat -->
 ## Similarity changes too
 
-For some representations, ordinary Euclidean distance is not the most useful notion of similarity. Text as word counts is usually sparse — most entries are zero — and measures such as **cosine similarity** compare the direction of those vectors rather than the straight-line distance between them.
+For some kinds of data, straight-line distance is not the best way to measure similarity. When text is turned into word counts, most of the counts are zero, because any one document uses only a few of all possible words. For data like this, **cosine similarity** is often used instead. It compares the direction of two lists of numbers rather than the distance between them.
 
-The formula is not today's target. The design question is:
+You do not need the formula. The important design question is:
 
 <!-- ct319:focus -->
 
@@ -438,36 +443,37 @@ The formula is not today's target. The design question is:
 
 <!-- ct319:endfocus -->
 
-That is not a question the classifier can answer, because the answer is built into the representation before the classifier ever runs.
+The classifier cannot answer this question for us. The answer is decided when we choose the representation, before the classifier ever runs.
+<!-- ct319:key The classifier cannot answer this question for us. -->
 
 ### Why this matters this week
 
-Week 2 made us decide what a state was, what actions existed, and what counted as a goal. Machine learning does not take that responsibility away. For classification we still decide what an example is, which features represent it, what the labels mean, which data get used for learning, and how success is measured. The algorithm works inside those choices — all of them ours.
+In Week 2 we had to decide what a state was, which actions were possible and what counted as a goal. Machine learning does not take those decisions away from us. For classification, we still decide what an example is, which features describe it, what the labels mean, which data the model learns from, and how we measure success. The algorithm only works within the choices we make.
 
 <!-- ct319:endbeats -->
 
 ## The classification demo
 
-📦 **[`classification_demo.py`](https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-09/classification_demo.py)** — every figure on this page, as a sequence you can step through.
+📦 **[`classification_demo.py`](https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-09/classification_demo.py)** — shows every figure from this page, one step at a time.
 
 ```sh
 python -m pip install numpy matplotlib scikit-learn
 python experiments/week-09/classification_demo.py
 ```
 
-Press **Space**, the **right arrow** or **Next →** to advance. Each stage carries its own prompt and measured result on the figure, and the dataset, split, axes and unknown point never move.
-<!-- ct319:key Each stage carries its own prompt and measured result on the figure, and the dataset, split, axes and unknown point never move. -->
+Press **Space**, the **right arrow** or **Next →** to move to the next step. Each step shows a question and its measured result on the figure. The dataset, the split, the axes and the unknown point stay the same throughout.
+<!-- ct319:key The dataset, the split, the axes and the unknown point stay the same throughout. -->
 
 ### Try it yourself
 
 1. Open `--mode data` and predict the diamond's class by eye. Say what evidence you used.
-2. Step `--mode knn --k 1`, then `3`, then `9`, then `15`. Predict the boundary before each one.
+2. Step through `--mode knn --k 1`, then `3`, then `9`, then `15`. Predict how the boundary will look before each one.
 3. Find where the diamond changes class, and name the examples responsible.
-4. Switch to `--mode tree --depth 2`, then `5`, then `none`. Predict whether test accuracy will follow training accuracy up.
-5. Finish on `--mode compare` and pick out three things: the setting that memorised every training example, the setting with the best test score, and why training accuracy cannot tell you which is which.
+4. Switch to `--mode tree --depth 2`, then `5`, then `none`. Predict whether test accuracy will rise along with training accuracy.
+5. Finish on `--mode compare` and find three things: the setting that memorised every training example, the setting with the best test score, and why training accuracy cannot tell you which is which.
 <!-- ct319:key Find where the diamond changes class, and name the examples responsible. -->
 
-To regenerate every figure on this page without opening a window:
+To save every figure on this page as a file, without opening a window:
 
 ```sh
 python experiments/week-09/classification_demo.py --save-dir media/week-09
@@ -477,7 +483,7 @@ python experiments/week-09/classification_demo.py --save-dir media/week-09
 
 ## Before Week 10
 
-Every classifier this week learned from examples that arrived with a correct label attached. Somebody had already done the hard part.
+Every classifier this week learned from examples that already had the correct label. Someone had already done the hard work of labelling them.
 
 <!-- ct319:focus -->
 
@@ -514,14 +520,12 @@ If you can answer these without reopening the page, you have the core of this we
 ### CT319 source material
 
 This week follows selected material from the formal CT319 *Classification* material on Canvas, which remains the broader reference. These pages do not reproduce every slide; they develop a smaller number of points in more depth.
-<!-- ct319:key This week follows selected material from the formal CT319 Classification material on Canvas, which remains the broader reference. -->
 
 The page concentrates on classification as a supervised task; k-nearest neighbours as a decision reached by consulting nearby labelled examples; the effect of `k` on both the decision boundary and one individual prediction; decision trees as a learned sequence of questions, and the effect of depth; training accuracy against held-out accuracy, and why the first alone establishes nothing; the blind spot in accuracy when one class is rare; and representation — features, numerical scale, and what the classifier actually receives.
 
 ### Continuity from Week 8
 
 Week 8 used `KNeighborsClassifier` only to expose the scikit-learn workflow of `fit(...)` followed by prediction. This week teaches k-nearest neighbours in its own right, adds decision trees, and turns Week 8's remarks about generalisation and overfitting into a measured train/test comparison.
-<!-- ct319:key This week teaches k-nearest neighbours in its own right, adds decision trees, and turns Week 8's remarks about generalisation and overfitting into a measured train/test comparison. -->
 
 ### Examples and measured values
 
@@ -533,7 +537,6 @@ train_test_split(test_size=0.30, random_state=42, stratify=y)
 ```
 
 Because the dataset, the split and the estimators are all seeded, every accuracy, node count and leaf count quoted here is **reproducible rather than illustrative**. They were last regenerated with scikit-learn 1.9.1, matplotlib 3.11.2 and NumPy 2.5.3 on **5 October 2026**, by the script in this repository.
-<!-- ct319:key Because the dataset, the split and the estimators are all seeded, every accuracy, node count and leaf count quoted here is reproducible rather than illustrative. -->
 
 The loan table in the first highlight is a vocabulary example only, and no model is fitted to it.
 
@@ -553,4 +556,3 @@ No external images, videos, papers or interactives are used.
 - scikit-learn reference — [`KNeighborsClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html) · [`DecisionTreeClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html) · [`train_test_split`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html) · [`make_moons`](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_moons.html)
 
 scikit-learn and NumPy are distributed under the BSD 3-Clause licence, and matplotlib under the Python Software Foundation licence. They are used here as tools; no library code is reproduced on these pages.
-<!-- ct319:key scikit-learn and NumPy are distributed under the BSD 3-Clause licence, and matplotlib under the Python Software Foundation licence. -->

@@ -296,6 +296,7 @@ Five people, five films, and two gaps.
 Ben and Carla share Aoife's high ratings for Films A and B and her low rating for Film D. Both of them prefer Film C to Film E. That is evidence for recommending Film C — and notice what it is not based on: nobody described what Film C is about.
 
 This is **collaborative filtering**: using patterns in collective behaviour to estimate a preference nobody has observed yet.
+<!-- ct319:key This is **collaborative filtering**: using patterns in collective behaviour to estimate a preference nobody has observed yet. -->
 
 <!-- ct319:beat -->
 ## Two ways to use the same table
