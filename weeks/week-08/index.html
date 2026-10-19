@@ -175,7 +175,7 @@ prediction = model.predict(unknown)</code></pre>
 </div>
 <h3 id="the-loan-example-becomes-supervised-learning">The loan example becomes supervised learning</h3>
 <p>Back to the bank. If each past application is recorded with its outcome, <code>REPAID</code> or <code>NOT REPAID</code>, then predicting the outcome for a new applicant is a supervised classification problem.</p>
-<p>Now suppose the model gets every past application right. Does that make it a good model? Not necessarily. <a href="#learning-is-not-remembering--how-do-we-know-the-model-learned-something-useful">Learning is not remembering</a> explains why.</p>
+<p>Now suppose the model gets every past application right. Does that make it a good model? Not necessarily. A model can get every past application right and still fail on new applicants. We look at why at the end of this week.</p>
 <h3 id="why-this-matters-this-week">Why this matters this week</h3>
 <p>Supervised learning works well because the labels tell the algorithm exactly which outcome matters. But labels are often hard or expensive to get. There may be millions of images, but that does not mean anyone has labelled them correctly. There may be millions of customer records, but nobody may have sorted them into the groups we care about.</p>
 <p>What can a learning system do when there are no answers to learn from?</p></div></details>

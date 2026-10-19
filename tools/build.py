@@ -772,7 +772,7 @@ def build_deck(md_path: Path) -> str | None:
             inner += f'<div class="slide__prose">{render(sl["after"])[0]}</div>'
         return (
             f'<section class="slide slide--{sl["kind"]}">'
-            f'<a class="slide__section" href="{sl["href"]}">{inline(sl["section"])}</a>'
+            f'<p class="slide__section">{inline(sl["section"])}</p>'
             f'<div class="slide__body">{inner}</div>'
             f"</section>"
         )
@@ -790,7 +790,9 @@ def build_deck(md_path: Path) -> str | None:
     )
     # Links to a section of the page point at the page, not at the deck.
     deck_html = "\n".join([title_slide] + [slide_html(sl) for sl in slides])
-    deck_html = deck_html.replace('href="#', 'href="./#')
+    # A link would take the lecturer out of the deck and back to the page,
+    # so on a slide every link is shown as its text alone.
+    deck_html = re.sub(r"<a\b[^>]*>(.*?)</a>", r"\1", deck_html, flags=re.S)
 
     parts = {
         "TITLE": html.escape(meta.get("title", md_path.stem), quote=True),
