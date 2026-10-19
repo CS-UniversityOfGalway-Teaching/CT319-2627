@@ -18,11 +18,11 @@
 }
 .slide.is-current { display: flex; }
 
-/* The section the slide comes from. It links back to that section on the
-   page. */
+/* The section the slide comes from. */
 .slide__section {
   flex: none;
-  margin-right: 6rem;
+  margin: 0 6rem 0 0;
+  max-width: none;
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -33,7 +33,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.slide__section:hover { color: var(--accent); }
 
 /* Centred in the space below the section line while it fits; from the top
    once it doesn't. */

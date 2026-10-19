@@ -370,7 +370,7 @@ If you change the data, the result can change. If you change the features, the a
 
 Back to the bank. If each past application is recorded with its outcome, `REPAID` or `NOT REPAID`, then predicting the outcome for a new applicant is a supervised classification problem.
 
-Now suppose the model gets every past application right. Does that make it a good model? Not necessarily. [Learning is not remembering](#learning-is-not-remembering--how-do-we-know-the-model-learned-something-useful) explains why.
+Now suppose the model gets every past application right. Does that make it a good model? Not necessarily. A model can get every past application right and still fail on new applicants. We look at why at the end of this week.
 
 ### Why this matters this week
 
