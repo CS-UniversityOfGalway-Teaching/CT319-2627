@@ -19,32 +19,32 @@
   <rect width="1040" height="330" rx="18" fill="var(--bg)"/>
   <text class="lab" x="30" y="42">PAST DATA BUILDS THE MODEL &#183; THE MODEL MEETS THE NEW CASE</text>
 
-  <rect class="box" x="40" y="90" width="200" height="60" rx="10"/>
-  <text class="node" x="140" y="127">PAST EXAMPLES</text>
+  <rect class="box" x="40" y="90" width="180" height="60" rx="10"/>
+  <text class="node" x="130" y="127">PAST EXAMPLES</text>
 
-  <path class="arr" d="M244 120 H284"/>
-  <text class="edge" x="264" y="108">train</text>
+  <path class="arr" d="M224 120 H299"/>
+  <text class="edge" x="261.5" y="108">train</text>
 
-  <rect class="box" x="290" y="90" width="240" height="60" rx="10"/>
-  <text class="node" x="410" y="127">LEARNING ALGORITHM</text>
+  <rect class="box" x="303" y="90" width="220" height="60" rx="10"/>
+  <text class="node" x="413" y="127">LEARNING ALGORITHM</text>
 
-  <path class="arr" d="M534 120 H574"/>
-  <text class="edge" x="554" y="108">produces</text>
+  <path class="arr" d="M527 120 H602"/>
+  <text class="edge" x="564.5" y="108">produces</text>
 
-  <rect class="box box--key" x="580" y="90" width="170" height="60" rx="10"/>
-  <text class="node" x="665" y="127">MODEL</text>
+  <rect class="box box--key" x="606" y="90" width="140" height="60" rx="10"/>
+  <text class="node" x="676" y="127">MODEL</text>
 
-  <path class="arr" d="M754 120 H794"/>
+  <path class="arr" d="M750 120 H825"/>
 
-  <rect class="box" x="800" y="90" width="200" height="60" rx="10"/>
-  <text class="node" x="900" y="115">PREDICTION</text>
-  <text class="node" x="900" y="137">OR DECISION</text>
+  <rect class="box" x="829" y="90" width="170" height="60" rx="10"/>
+  <text class="node" x="914" y="115">PREDICTION</text>
+  <text class="node" x="914" y="137">OR DECISION</text>
 
-  <rect class="box" x="290" y="220" width="200" height="60" rx="10"/>
-  <text class="node" x="390" y="257">NEW EXAMPLE</text>
+  <rect class="box" x="303" y="220" width="200" height="60" rx="10"/>
+  <text class="node" x="403" y="257">NEW EXAMPLE</text>
 
-  <path class="arr" d="M494 250 H665 V158"/>
-  <text class="edge" x="570" y="238">never seen during training</text>
+  <path class="arr" d="M507 250 H676 V158"/>
+  <text class="edge" x="522" y="275" style="text-anchor:start">never seen during training</text>
 
   <text class="note" x="30" y="308">The learning algorithm is the procedure. The model is what it produces &#8212; and the only part that meets a case nobody has labelled.</text>
 
