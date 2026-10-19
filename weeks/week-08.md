@@ -10,7 +10,7 @@ deck: yes
 
 In Weeks 2 to 6 we built every part of the problem-solver ourselves. We chose how to represent the problem, which moves were allowed, how to search, how to score a state and how to improve a population. The machine followed those instructions exactly, and it could never do better than they allowed.
 
-This week we ask a different question:
+This week we ask a different question.
 
 <!-- ct319:focus -->
 
@@ -18,8 +18,8 @@ This week we ask a different question:
 
 <!-- ct319:endfocus -->
 
-That question is the starting point for **machine learning**. This week covers five topics:
-<!-- ct319:key That question is the starting point for machine learning. -->
+**Machine learning** starts from that question. This week covers five topics.
+<!-- ct319:key Machine learning starts from that question. -->
 
 * [**From rules to learning**](#from-rules-to-learning--what-changes-when-the-machine-learns-from-experience) — how a program can learn its behaviour from examples instead of following rules we wrote.
 * [**Data becomes evidence**](#data-becomes-evidence--what-exactly-do-we-give-the-learner) — what examples, features and labels are, and why data has to be prepared.
@@ -27,26 +27,26 @@ That question is the starting point for **machine learning**. This week covers f
 * [**Different feedback**](#different-feedback--what-does-the-learner-actually-receive) — learning with labels, without labels and from rewards, with a small clustering example.
 * [**Learning is not remembering**](#learning-is-not-remembering--how-do-we-know-the-model-learned-something-useful) — why doing well on the training data is not enough.
 
-Keep three ideas separate as you read:
+Keep three ideas separate as you read.
 
 <!-- ct319:focus -->
 
 <div class="lenses">
 <div class="lens"><span class="lens__key">Data</span><span class="lens__gloss">learning depends on examples or experience that actually contain information about the problem</span></div>
 <div class="lens"><span class="lens__key">Model</span><span class="lens__gloss">what the learning algorithm builds or adjusts, and the only part that meets a new case</span></div>
-<div class="lens"><span class="lens__key">Generalisation</span><span class="lens__gloss">the real test: does what was learned stay useful on cases nobody has labelled?</span></div>
+<div class="lens"><span class="lens__key">Generalisation</span><span class="lens__gloss">whether what was learned still works on new cases that nobody has labelled</span></div>
 </div>
 
 <!-- ct319:endfocus -->
 
-Machine learning does not remove design decisions. It moves them: instead of writing the rules, we now choose the data, the features and the way success is measured.
+Machine learning does not remove design decisions. It moves them. Instead of writing the rules, we now choose the data, the features and the way success is measured.
 
 <!-- ct319:beats -->
 
 <!-- ct319:beat -->
 ## From rules to learning — what changes when the machine learns from experience?
 
-Suppose we want a program that separates spam from normal email. One way is to write the rules ourselves:
+Suppose we want a program that separates spam from normal email. One way is to write the rules ourselves.
 
 ```text
 IF subject contains "FREE MONEY"       THEN spam
@@ -54,12 +54,12 @@ IF message contains 5 or more links    THEN spam
 IF sender unknown AND text has "urgent" THEN spam
 ```
 
-This breaks down quickly. A normal email can contain the word `urgent`. A spammer can simply stop writing `FREE MONEY`. Every time spammers change tactics, someone has to notice and write another rule. Hand-written rules are brittle: they stop working as soon as the world changes.
-<!-- ct319:key Hand-written rules are brittle: they stop working as soon as the world changes. -->
+This breaks down quickly. A normal email can contain the word `urgent`. A spammer can simply stop writing `FREE MONEY`. Every time spammers change tactics, someone has to notice and write another rule. Hand-written rules are brittle. They stop working as soon as the world changes.
+<!-- ct319:key Hand-written rules are brittle. They stop working as soon as the world changes. -->
 
 ### Learn from examples instead
 
-Now suppose we have a collection of old emails, and we already know which ones were spam:
+Now suppose we have a collection of old emails, and we already know which ones were spam.
 
 ```text
 message 1 -> spam
@@ -68,18 +68,18 @@ message 3 -> not spam
 message 4 -> spam
 ```
 
-We give these examples to a **learning algorithm**. The algorithm studies them and produces a **model**. The model is the part we actually use: give it a new email and it returns a prediction, spam or not spam. The algorithm is the procedure; the model is the result.
-<!-- ct319:key The algorithm is the procedure; the model is the result. -->
+We give these examples to a **learning algorithm**. The algorithm studies them and produces a **model**. The model is the part we actually use. Give it a new email, and it predicts whether the email is spam. The algorithm is the procedure, and the model is the result.
+<!-- ct319:key The algorithm is the procedure, and the model is the result. -->
 
 <!-- ct319:focus -->
 
 ![Past examples feed a learning algorithm, which produces a model that a new example is then given to](../../media/week-08/learning-pipeline.svg "hero")
 
-<sub><em>Figure 1. Past data builds the model. A new example — one nobody has labelled — is given to that same model, which returns a prediction or a decision. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 1. Past data builds the model. A new example — one nobody has labelled — is given to that same model, which returns a prediction or a decision. Diagram created for these pages. No external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
-So the important change is this:
+This is the important change.
 
 <!-- ct319:focus -->
 
@@ -103,7 +103,7 @@ In the first half of the module we wrote the rules for how a machine explores it
 
 <!-- ct319:endfocus -->
 
-The line between the two is not sharp. Learning algorithms use optimisation inside them, and search can be one part of a larger learning system. But here is a simple way to tell them apart: **search explores possible solutions using rules we give it; machine learning improves its behaviour using data or experience.**
+The line between the two is not sharp. Learning algorithms use optimisation inside them, and search can be one part of a larger learning system. But there is a simple way to tell them apart. **Search explores possible solutions using rules we give it. Machine learning improves its behaviour using data or experience.**
 
 <!-- ct319:beat -->
 ## AI, machine learning and deep learning
@@ -115,11 +115,11 @@ People often use these three terms as if they meant the same thing. They do not.
 
 ![Artificial intelligence contains machine learning, which contains deep learning](../../media/week-08/ai-ml-dl.svg "hero")
 
-<sub><em>Figure 2. Three nested scopes, not three names for the same thing. Everything from Weeks 2 to 6 sits in the outer ring. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 2. Three nested scopes, not three names for the same thing. Everything from Weeks 2 to 6 sits in the outer ring. Diagram created for these pages. No external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
-**Artificial Intelligence (AI)** is the whole field. It includes search, optimisation, reasoning and planning, as well as learning. **Machine Learning (ML)** is the part of AI where a system improves from data or experience, instead of following rules written for every case. **Deep Learning** is one part of machine learning: the methods built on neural networks with many layers.
+**Artificial Intelligence (AI)** is the whole field. It includes search, optimisation, reasoning and planning, as well as learning. **Machine Learning (ML)** is the part of AI where a system improves from data or experience, instead of following rules written for every case. **Deep Learning** is one part of machine learning. It covers the methods built on neural networks with many layers.
 
 Everything we did in Weeks 2 to 6 was AI too. It just was not machine learning.
 <!-- ct319:key Everything we did in Weeks 2 to 6 was AI too. It just was not machine learning. -->
@@ -127,10 +127,10 @@ Everything we did in Weeks 2 to 6 was AI too. It just was not machine learning.
 <!-- ct319:beat -->
 ## Why did machine learning become so prominent?
 
-One big reason is data. Everyday systems now record huge amounts of it: shop transactions, sensors, websites, phones, images and video, text, location data and scientific instruments. This is often called **Big Data**.
+One big reason is data. Everyday systems now record huge amounts of it. Think of shop transactions, sensors, websites, phones, images and video, text, location data and scientific instruments. This is often called **Big Data**.
 <!-- ct319:key One big reason is data. -->
 
-Big Data does not just mean "a lot of rows". It is usually described with a set of words that begin with V, and each one points to a different challenge:
+Big Data does not just mean "a lot of rows". It is usually described with a set of words that begin with V, and each one points to a different challenge.
 
 | Idea | The question it asks |
 | --- | --- |
@@ -149,7 +149,7 @@ More data does not automatically help. A million poor-quality records can be les
 
 ### Why this matters this week
 
-Search is still useful. This week adds a second way to build intelligent behaviour: instead of writing every decision ourselves, we let patterns in data shape a model. That leads straight to the next question:
+Search is still useful. This week adds a second way to build intelligent behaviour. Instead of writing every decision ourselves, we let patterns in data shape a model. That leads straight to the next question.
 
 <!-- ct319:focus -->
 
@@ -160,8 +160,8 @@ Search is still useful. This week adds a second way to build intelligent behavio
 <!-- ct319:beat -->
 ## Data becomes evidence — what exactly do we give the learner?
 
-Take a bank that decides whether to approve loans. The bank keeps a record of every past application, and knows whether each loan was repaid:
-<!-- ct319:key The bank keeps a record of every past application, and knows whether each loan was repaid -->
+Here is an example. A bank keeps a record of every past loan application, and knows whether each loan was repaid.
+<!-- ct319:key A bank keeps a record of every past loan application, and knows whether each loan was repaid. -->
 
 | Income | Savings | Existing debt | Loan later repaid? |
 | ---: | ---: | ---: | --- |
@@ -170,9 +170,9 @@ Take a bank that decides whether to approve loans. The bank keeps a record of ev
 | €28,000 | €800 | €14,000 | No |
 | €47,000 | €5,500 | €18,000 | No |
 
-Each **row** is one **example** (also called an *instance*). Income, savings and existing debt are **features**: the facts recorded about each applicant when they applied. Whether the loan was repaid is the **target**, the thing we want to predict. Its value, Yes or No, is the **label**. A prediction about repayment can help a person decide on a loan, but it is not the decision itself.
+Each **row** is one **example** (also called an *instance*). Income, savings and existing debt are **features**. They are the facts recorded about each applicant when they applied. Whether the loan was repaid is the **target**, the thing we want to predict. Its value, Yes or No, is the **label**. A prediction about repayment can help a person decide on a loan, but it is not the decision itself.
 
-Timing matters here:
+Timing matters here.
 
 <!-- ct319:focus -->
 
@@ -182,31 +182,31 @@ Timing matters here:
 
 ### What forms can the examples take?
 
-Data comes in different forms. Four common ones are:
+Data comes in different forms. Here are four common ones.
 
 - **Numerical** — a measurement, such as salary or temperature, or a count, such as the number of missed payments.
 - **Categorical** — a group something belongs to, such as payment type or product category. It is a label, not an amount.
 - **Time series** — values recorded over time, such as hourly demand or daily sales. The order of the values matters.
 - **Text** — an email or a review. It has to be turned into something a computer can work with before anything can be learned from it.
 
-These forms can overlap: a time series is usually a sequence of numbers. Images, audio and networks also have to be turned into a form the computer can learn from. The question from Week 2 still applies: **what must we record for this task?**
-<!-- ct319:key The question from Week 2 still applies: what must we record for this task? -->
+These forms can overlap. A time series, for example, is usually a sequence of numbers. Images, audio and networks also have to be turned into a form the computer can learn from. The question from Week 2 still applies. **What must we record for this task?**
+<!-- ct319:key The question from Week 2 still applies. What must we record for this task? -->
 
 <!-- ct319:beat -->
 ## Raw data is rarely ready to learn from
 
 Real data is messy. In the loan table, `€35k` and `35000` might be the same income written two different ways. `N/A` means the value is missing, not that it is zero. Duplicate applications and wrong dates can distort the results without anyone noticing.
 
-Getting data ready is called **preparation**. It means checking the records, fixing errors, deciding what to do about missing values, turning categories into a usable form, choosing which features to keep, and sometimes rescaling the numbers. Each of these choices changes what the learning algorithm actually sees.
-<!-- ct319:key Each of these choices changes what the learning algorithm actually sees. -->
+Getting data ready is called **preparation**. It means checking the records, fixing errors, deciding what to do about missing values, turning categories into a usable form, choosing which features to keep, and sometimes rescaling the numbers. Every choice made during preparation changes what the learning algorithm actually sees.
+<!-- ct319:key Every choice made during preparation changes what the learning algorithm actually sees. -->
 
-Building the model is only one step in a longer process. Standard methods such as CRISP-DM and KDD describe that process in detail. Its basic shape looks like this:
+Building the model is only one step in a longer process. Standard methods such as CRISP-DM and KDD describe that process in detail. Figure 3 shows its basic shape.
 
 <!-- ct319:focus -->
 
 ![Question, gather, prepare, model, validate, communicate, with a dashed return from validate to prepare](../../media/week-08/data-lifecycle.svg "hero")
 
-<sub><em>Figure 3. The model is one step in a larger loop, not the whole of it. The dashed return is the ordinary case: validation sends you back to preparation. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 3. The model is one step in a larger loop, not the whole of it. The dashed return is the normal case. Validation often sends you back to preparation. Diagram created for these pages. No external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
@@ -234,7 +234,7 @@ We come back to the ethics of this in Week 11.
 <!-- ct319:beat -->
 ## The tool landscape
 
-Several tools are commonly used for this kind of work:
+Several tools are commonly used for this kind of work.
 
 | Tool | Useful for |
 | --- | --- |
@@ -250,7 +250,7 @@ Several tools are commonly used for this kind of work:
 
 <!-- ct319:focus -->
 
-**The first choice is the question, not the software.** Data analysis usually asks one of four kinds of question:
+**The first choice is the question, not the software.** Data analysis usually asks one of four kinds of question.
 
 | Question | What it asks |
 | --- | --- |
@@ -265,13 +265,13 @@ Machine learning helps most with prediction and with finding patterns. Many desc
 
 ### Why this matters this week
 
-We now have the basic ingredients: examples, features and, sometimes, labels. Sometimes we know the correct answer for past examples. Sometimes nobody does. Whether labels exist is what splits machine learning into its main types.
+We now have the basic ingredients. These are examples, features and, sometimes, labels. Sometimes we know the correct answer for past examples. Sometimes nobody does. Whether labels exist is what splits machine learning into its main types.
 <!-- ct319:key Whether labels exist is what splits machine learning into its main types. -->
 
 <!-- ct319:beat -->
 ## Learning from answers — what does supervised learning look like?
 
-Go back to the email example. For each old email, someone already knows whether it was spam. So the learning algorithm receives two things for every example: the features (what the email contains) and the correct answer (spam or not spam).
+Go back to the email example. For each old email, someone already knows whether it was spam. So the learning algorithm receives two things for every example. It gets the features (what the email contains) and the correct answer (spam or not spam).
 
 Learning from examples with known answers is called **supervised learning**.
 
@@ -283,7 +283,7 @@ Learning from examples with known answers is called **supervised learning**.
 
 ### Classification and regression
 
-There are two main kinds of supervised learning. The difference is the kind of answer being predicted:
+There are two main kinds of supervised learning. The difference is the kind of answer being predicted.
 
 <!-- ct319:focus -->
 
@@ -294,7 +294,7 @@ There are two main kinds of supervised learning. The difference is the kind of a
 
 <!-- ct319:endfocus -->
 
-An easy way to tell them apart: if the answer is a **category**, it is classification; if the answer is a **number**, it is regression. We look at classification in detail next week.
+There is an easy way to tell them apart. If the answer is a **category**, it is classification. If the answer is a **number**, it is regression. We look at classification in detail next week.
 
 <!-- ct319:beat -->
 ## A classification teaser — which class would you predict?
@@ -306,13 +306,13 @@ Here are six labelled examples. Each has two numerical features, so each can be 
 
 ![Six labelled points in classes A and B, plus an unknown diamond at 2.4, 1.8, before prediction](../../media/week-08/classification-before.svg "secondary")
 
-<sub><em>Figure 4. The supplied classes A and B, plus a visible unknown point whose answer the learner has never been given. Plot created for these pages from the demonstration's synthetic data; no external image licence is used.</em></sub>
+<sub><em>Figure 4. The supplied classes A and B, plus a visible unknown point whose answer the learner has never been given. Plot created for these pages from the demonstration's synthetic data. No external image licence is used.</em></sub>
 
 > **Would you expect the unknown point to be A or B — and what in the picture supports that?**
 
 <!-- ct319:endfocus -->
 
-You can run this example yourself:
+You can run this example yourself.
 
 ```sh
 python -m pip install scikit-learn matplotlib
@@ -322,7 +322,7 @@ python learning_demo.py --mode classification
 The window first shows the unknown point. Make your own prediction, then click **Run and reveal** (or press **Space**). The computer's prediction appears on the same point.
 <!-- ct319:key Make your own prediction, then click **Run and reveal** (or press **Space**). -->
 
-The machine-learning part is only three lines:
+The machine-learning part is only three lines.
 
 ```python
 from sklearn.neighbors import KNeighborsClassifier
@@ -339,7 +339,7 @@ prediction = model.predict(unknown)
 
 ![The same labelled examples, with the unknown point now showing predicted class A](../../media/week-08/classification-after.svg "secondary")
 
-<sub><em>Figure 5. The classifier predicts A for the diamond. The supplied labels and the model's prediction are two different sources of information, and the plot keeps them visually distinct. Plot created for these pages by the scikit-learn demonstration; no external image licence is used.</em></sub>
+<sub><em>Figure 5. The classifier predicts A for the diamond. The supplied labels and the model's prediction are two different sources of information, and the plot keeps them visually distinct. Plot created for these pages by the scikit-learn demonstration. No external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
@@ -351,7 +351,7 @@ The new point was given one of the classes we supplied, A or B. That is what cla
 
 Be careful how you describe this. The model did not learn that `A` is good or that `B` is bad. It used the link between the feature values and the labels it was given, through one particular algorithm. This algorithm, k-nearest neighbours (KNN), simply stores the training examples and compares each new point with them. So "training a model" does not always mean finding an equation.
 
-If you change the data, the result can change. If you change the features, the algorithm or the labels, the result can change too. Every prediction depends on a chain of choices:
+If you change the data, the result can change. If you change the features, the algorithm or the labels, the result can change too. Every prediction depends on a chain of choices.
 
 <!-- ct319:focus -->
 
@@ -370,7 +370,7 @@ If you change the data, the result can change. If you change the features, the a
 
 Back to the bank. If each past application is recorded with its outcome, `REPAID` or `NOT REPAID`, then predicting the outcome for a new applicant is a supervised classification problem.
 
-Now suppose the model gets every past application right. Does that make it a good model? Not necessarily: [Learning is not remembering](#learning-is-not-remembering--how-do-we-know-the-model-learned-something-useful) explains why.
+Now suppose the model gets every past application right. Does that make it a good model? Not necessarily. [Learning is not remembering](#learning-is-not-remembering--how-do-we-know-the-model-learned-something-useful) explains why.
 
 ### Why this matters this week
 
@@ -382,7 +382,7 @@ What can a learning system do when there are no answers to learn from?
 <!-- ct319:beat -->
 ## Different feedback — what does the learner actually receive?
 
-So far, the learning algorithm received examples *and* their correct answers. Other kinds of learning receive something different:
+So far, the learning algorithm received examples *and* their correct answers. Other kinds of learning receive something different.
 
 | Learning setting | What the learner receives | The question it can ask |
 | --- | --- | --- |
@@ -396,7 +396,7 @@ So far, the learning algorithm received examples *and* their correct answers. Ot
 
 <!-- ct319:endfocus -->
 
-In unsupervised learning there are no labels at all. Reinforcement learning is different again: the learner gets rewards based on what happens after it acts. That is not the same as simply having data without labels.
+In unsupervised learning there are no labels at all. Reinforcement learning is different again. The learner gets rewards based on what happens after it acts. That is not the same as simply having data without labels.
 <!-- ct319:key In unsupervised learning there are no labels at all. -->
 
 ### Remove the labels — what remains?
@@ -407,7 +407,7 @@ Take the same six points from the classification example and remove their labels
 
 ![The same six example coordinates drawn neutrally, with no supplied labels](../../media/week-08/clustering-before.svg "secondary")
 
-<sub><em>Figure 6. The six example points from Figure 4 with their labels removed. Not a single position has moved. Plot created for these pages from the same synthetic data; no external image licence is used.</em></sub>
+<sub><em>Figure 6. The six example points from Figure 4 with their labels removed. Not a single position has moved. Plot created for these pages from the same synthetic data. No external image licence is used.</em></sub>
 
 > **Can you still see structure? What grouping would you expect, without being told A or B?**
 
@@ -418,13 +418,13 @@ Take the same six points from the classification example and remove their labels
 <!-- ct319:beat -->
 ## A clustering teaser — run, then reveal the groups
 
-You can run the clustering version of the same example:
+You can run the clustering version of the same example.
 
 ```sh
 python learning_demo.py --mode clustering
 ```
 
-Predict a grouping first, then click **Run and reveal**. The six grey points are coloured by group. The code uses `X` but no `y`, because there are no labels:
+Predict a grouping first, then click **Run and reveal**. The six grey points are coloured by group. The code uses `X` but no `y`, because there are no labels.
 
 ```python
 from sklearn.cluster import KMeans
@@ -440,7 +440,7 @@ Notice that **we asked for two clusters**. The model did not work out how many g
 
 ![The same six points assigned to two clusters, using group identifiers rather than A or B](../../media/week-08/clustering-after.svg "secondary")
 
-<sub><em>Figure 7. K-means groups the same six examples without ever receiving their class labels. The group numbers are identifiers, not supplied meanings — swapping them changes nothing. Plot created for these pages by the scikit-learn demonstration; no external image licence is used.</em></sub>
+<sub><em>Figure 7. K-means groups the same six examples without ever receiving their class labels. The group numbers are identifiers, not supplied meanings — swapping them changes nothing. Plot created for these pages by the scikit-learn demonstration. No external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
@@ -474,7 +474,7 @@ In **reinforcement learning**, an **agent** takes actions in an **environment**.
 
 ![An agent sends an action to an environment, which returns a new state and a reward](../../media/week-08/agent-environment.svg "hero")
 
-<sub><em>Figure 8. Learning through interaction. The agent is not told the correct action; it receives what happened afterwards. Diagram created for these pages; no external image licence is used.</em></sub>
+<sub><em>Figure 8. Learning through interaction. The agent is not told the correct action. It only finds out what happened afterwards. Diagram created for these pages. No external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
@@ -487,7 +487,7 @@ A reward is not the same as a label. A label gives the right answer for one exam
 
 ### Why this matters this week
 
-The word "learning" covers three very different things. A classifier learns from labelled examples. A clustering algorithm looks for structure without labels. A reinforcement-learning agent learns from rewards over many attempts. All three face the same question, and it is the subject of the next section: how do we know that what was learned is actually useful?
+The word "learning" covers three very different things. A classifier learns from labelled examples. A clustering algorithm looks for structure without labels. A reinforcement-learning agent learns from rewards over many attempts. All three face the same question, and the next section takes it up. How do we know that what was learned is actually useful?
 <!-- ct319:key The word "learning" covers three very different things. -->
 
 <!-- ct319:beat -->
@@ -503,7 +503,7 @@ Suppose we train a model on 100 past examples, and it gets all 100 right. That s
 
 ### The point is generalisation
 
-A useful model learns something that also works on examples it has not seen. This is called **generalisation**, and it is what we are really aiming for:
+A useful model learns something that also works on examples it has not seen. This is called **generalisation**, and it is what we are really aiming for.
 
 <!-- ct319:focus -->
 
@@ -555,7 +555,7 @@ That is why we check the data, the feedback and the evidence that the system is 
 
 ### Why this matters this week
 
-Here is how this week fits with what came before:
+Here is how this week fits with what came before.
 
 <!-- ct319:focus -->
 
@@ -567,7 +567,7 @@ Here is how this week fits with what came before:
 <li><span>Week 6 · population</span></li>
 <li><span class="is-pivot">Week 8 · learning</span></li>
 </ol>
-<p class="flow__note">The words are new, but the habit is the same. Always ask: what information does the system receive, how does that information change its behaviour, and what evidence shows the result is useful?</p>
+<p class="flow__note">The words are new, but the habit is the same. Always ask three things. What information does the system receive? How does that information change its behaviour? What evidence shows the result is useful?</p>
 
 <!-- ct319:endfocus -->
 
@@ -575,7 +575,7 @@ Here is how this week fits with what came before:
 
 ## The demonstration
 
-📦 **[`learning_demo.py`](https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-08/learning_demo.py)** — runs both examples from this page on one small made-up dataset. Needs `scikit-learn` and `matplotlib`; there is nothing else to download.
+📦 **[`learning_demo.py`](https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-08/learning_demo.py)** — runs both examples from this page on one small made-up dataset. It needs `scikit-learn` and `matplotlib`, and nothing else has to be downloaded.
 
 ```sh
 python -m pip install scikit-learn matplotlib
@@ -589,9 +589,9 @@ The program shows the data first, and only runs the model when you ask for the r
 
 ## Before Week 9
 
-We have now met the three main kinds of learning — supervised, unsupervised and reinforcement — and two small examples: a classifier learning from labelled points, and a clustering algorithm finding groups without labels.
+We have now met the three main kinds of learning. They are supervised, unsupervised and reinforcement learning. We have also seen two small examples. A classifier learned from labelled points, and a clustering algorithm found groups without labels.
 
-Next week we look at classification in detail:
+Next week we look at classification in detail.
 
 <!-- ct319:focus -->
 
