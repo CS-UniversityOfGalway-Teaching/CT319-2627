@@ -108,8 +108,8 @@ The line between the two is not sharp. Learning algorithms use optimisation insi
 <!-- ct319:beat -->
 ## AI, machine learning and deep learning
 
-People often use these three terms as if they meant the same thing. They do not:
-<!-- ct319:key People often use these three terms as if they meant the same thing. -->
+People often use these three terms as if they meant the same thing. They do not.
+<!-- ct319:key People often use these three terms as if they meant the same thing. They do not. -->
 
 <!-- ct319:focus -->
 
@@ -121,8 +121,8 @@ People often use these three terms as if they meant the same thing. They do not:
 
 **Artificial Intelligence (AI)** is the whole field. It includes search, optimisation, reasoning and planning, as well as learning. **Machine Learning (ML)** is the part of AI where a system improves from data or experience, instead of following rules written for every case. **Deep Learning** is one part of machine learning: the methods built on neural networks with many layers.
 
-So everything we did in Weeks 2 to 6 was AI too. It just was not machine learning.
-<!-- ct319:key So everything we did in Weeks 2 to 6 was AI too. It just was not machine learning. -->
+Everything we did in Weeks 2 to 6 was AI too. It just was not machine learning.
+<!-- ct319:key Everything we did in Weeks 2 to 6 was AI too. It just was not machine learning. -->
 
 <!-- ct319:beat -->
 ## Why did machine learning become so prominent?
@@ -131,7 +131,6 @@ One big reason is data. Everyday systems now record huge amounts of it: shop tra
 <!-- ct319:key One big reason is data. -->
 
 Big Data does not just mean "a lot of rows". It is usually described with a set of words that begin with V, and each one points to a different challenge:
-<!-- ct319:key Big Data does not just mean "a lot of rows". -->
 
 | Idea | The question it asks |
 | --- | --- |
@@ -161,7 +160,8 @@ Search is still useful. This week adds a second way to build intelligent behavio
 <!-- ct319:beat -->
 ## Data becomes evidence — what exactly do we give the learner?
 
-Take a bank that decides whether to approve loans. It keeps records of past applications, and it knows whether each loan was repaid:
+Take a bank that decides whether to approve loans. The bank keeps a record of every past application, and knows whether each loan was repaid:
+<!-- ct319:key The bank keeps a record of every past application, and knows whether each loan was repaid -->
 
 | Income | Savings | Existing debt | Loan later repaid? |
 | ---: | ---: | ---: | --- |
@@ -170,7 +170,7 @@ Take a bank that decides whether to approve loans. It keeps records of past appl
 | €28,000 | €800 | €14,000 | No |
 | €47,000 | €5,500 | €18,000 | No |
 
-Each **row** is one **example** (also called an *instance*). Income, savings and existing debt are **features**: the facts recorded about each applicant when they applied. Whether the loan was repaid is the **target**, the thing we want to predict. Its value, Yes or No, is the **label**.
+Each **row** is one **example** (also called an *instance*). Income, savings and existing debt are **features**: the facts recorded about each applicant when they applied. Whether the loan was repaid is the **target**, the thing we want to predict. Its value, Yes or No, is the **label**. A prediction about repayment can help a person decide on a loan, but it is not the decision itself.
 
 Timing matters here:
 
@@ -179,9 +179,6 @@ Timing matters here:
 > **The features must be available when the new application is considered — before anyone knows its outcome.**
 
 <!-- ct319:endfocus -->
-
-A prediction about repayment can help a person decide on a loan. It is not the decision itself.
-<!-- ct319:key A prediction about repayment can help a person decide on a loan. It is not the decision itself. -->
 
 ### What forms can the examples take?
 
@@ -192,8 +189,8 @@ Data comes in different forms. Four common ones are:
 - **Time series** — values recorded over time, such as hourly demand or daily sales. The order of the values matters.
 - **Text** — an email or a review. It has to be turned into something a computer can work with before anything can be learned from it.
 
-These forms can overlap: a time series is usually a sequence of numbers. Images, audio and networks also have to be turned into a form the computer can learn from. So the question from Week 2 still applies: **what must we record for this task?**
-<!-- ct319:key So the question from Week 2 still applies: what must we record for this task? -->
+These forms can overlap: a time series is usually a sequence of numbers. Images, audio and networks also have to be turned into a form the computer can learn from. The question from Week 2 still applies: **what must we record for this task?**
+<!-- ct319:key The question from Week 2 still applies: what must we record for this task? -->
 
 <!-- ct319:beat -->
 ## Raw data is rarely ready to learn from
@@ -268,8 +265,8 @@ Machine learning helps most with prediction and with finding patterns. Many desc
 
 ### Why this matters this week
 
-We now have the basic ingredients: examples, features and, sometimes, labels. Whether we have labels matters a great deal. Sometimes we know the correct answer for past examples. Sometimes nobody does. That difference splits machine learning into its main types.
-<!-- ct319:key That difference splits machine learning into its main types. -->
+We now have the basic ingredients: examples, features and, sometimes, labels. Sometimes we know the correct answer for past examples. Sometimes nobody does. Whether labels exist is what splits machine learning into its main types.
+<!-- ct319:key Whether labels exist is what splits machine learning into its main types. -->
 
 <!-- ct319:beat -->
 ## Learning from answers — what does supervised learning look like?
@@ -303,7 +300,7 @@ An easy way to tell them apart: if the answer is a **category**, it is classific
 ## A classification teaser — which class would you predict?
 
 Here are six labelled examples. Each has two numerical features, so each can be drawn as a point. The diamond marked **?** is a new example at `(2.4, 1.8)`. It is not one of the six, and nobody has told the computer its class.
-<!-- ct319:key The diamond marked ? is a new example at `(2.4, 1.8)`. -->
+<!-- ct319:key The diamond marked ? is a new example at `(2.4, 1.8)`. It is not one of the six, and nobody has told the computer its class. -->
 
 <!-- ct319:focus -->
 
@@ -315,8 +312,6 @@ Here are six labelled examples. Each has two numerical features, so each can be 
 
 <!-- ct319:endfocus -->
 
-In this small example both features use similar scales. That matters for methods that compare distances, because a feature measured in bigger numbers can dominate the distance. We come back to this in Week 9.
-
 You can run this example yourself:
 
 ```sh
@@ -325,7 +320,7 @@ python learning_demo.py --mode classification
 ```
 
 The window first shows the unknown point. Make your own prediction, then click **Run and reveal** (or press **Space**). The computer's prediction appears on the same point.
-<!-- ct319:key Make your own prediction, then click Run and reveal (or press Space). -->
+<!-- ct319:key Make your own prediction, then click **Run and reveal** (or press **Space**). -->
 
 The machine-learning part is only three lines:
 
@@ -348,8 +343,8 @@ prediction = model.predict(unknown)
 
 <!-- ct319:endfocus -->
 
-The new point was given one of the classes we supplied, A or B. That is what classification does. But one sensible-looking prediction tells us nothing about how well the model works on other points. The method used here, k-nearest neighbours, is covered in Week 9.
-<!-- ct319:key But one sensible-looking prediction tells us nothing about how well the model works on other points. -->
+The new point was given one of the classes we supplied, A or B. That is what classification does. One sensible-looking prediction tells us nothing about how well the model works on other points. The method used here, k-nearest neighbours, is covered in Week 9. It works by comparing distances between points, so it relies on both features using similar scales, as they do here. A feature measured in much bigger numbers would dominate the distance.
+<!-- ct319:key One sensible-looking prediction tells us nothing about how well the model works on other points. -->
 
 <!-- ct319:beat -->
 ## What did the machine actually learn?
@@ -375,16 +370,14 @@ If you change the data, the result can change. If you change the features, the a
 
 Back to the bank. If each past application is recorded with its outcome, `REPAID` or `NOT REPAID`, then predicting the outcome for a new applicant is a supervised classification problem.
 
-Now suppose the model gets every past application right. Does that make it a good model?
-<!-- ct319:key Now suppose the model gets every past application right. Does that make it a good model? -->
-
-Not necessarily. [Learning is not remembering](#learning-is-not-remembering--how-do-we-know-the-model-learned-something-useful) explains why.
+Now suppose the model gets every past application right. Does that make it a good model? Not necessarily: [Learning is not remembering](#learning-is-not-remembering--how-do-we-know-the-model-learned-something-useful) explains why.
 
 ### Why this matters this week
 
 Supervised learning works well because the labels tell the algorithm exactly which outcome matters. But labels are often hard or expensive to get. There may be millions of images, but that does not mean anyone has labelled them correctly. There may be millions of customer records, but nobody may have sorted them into the groups we care about.
 
-So what can a learning system do when there are no answers to learn from?
+What can a learning system do when there are no answers to learn from?
+<!-- ct319:key What can a learning system do when there are no answers to learn from? -->
 
 <!-- ct319:beat -->
 ## Different feedback — what does the learner actually receive?
@@ -489,8 +482,8 @@ Nobody tells the agent the correct action in each situation. It has to find out,
 
 A game shows the difference. In supervised learning, the learner might receive many board positions, each labelled with the best move. In reinforcement learning, the agent makes a move, the game carries on, and only at the end does it get a win, a loss or a score.
 
-So a reward is not the same as a label. A label gives the right answer for one example. A reward tells the agent how things turned out, sometimes long after the action that caused it.
-<!-- ct319:key So a reward is not the same as a label. -->
+A reward is not the same as a label. A label gives the right answer for one example. A reward tells the agent how things turned out, sometimes long after the action that caused it.
+<!-- ct319:key A reward is not the same as a label. -->
 
 ### Why this matters this week
 
@@ -590,7 +583,7 @@ python learning_demo.py
 ```
 
 The program shows the data first, and only runs the model when you ask for the reveal. That way you can make your own prediction before you see the answer. Use `--mode classification` or `--mode clustering` to open one example at a time.
-<!-- ct319:key The program shows the data first, and only runs the model when you ask for the reveal. -->
+<!-- ct319:key The program shows the data first, and only runs the model when you ask for the reveal. That way you can make your own prediction before you see the answer. -->
 
 ---
 

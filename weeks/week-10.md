@@ -322,7 +322,6 @@ The distinction is where the relationship comes from: behaviour across users and
 ### Why this matters this week
 
 A recommendation is a prediction, in exactly the sense Week 9 used the word — will this user click, watch, buy or rate highly? But it is also a decision about what the user gets the chance to see at all. That second half has a consequence, and it is the last thing on this page.
-<!-- ct319:key But it is also a decision about what the user gets the chance to see at all. -->
 
 <!-- ct319:beat -->
 ## Useful pattern or misleading pattern — what can go wrong?

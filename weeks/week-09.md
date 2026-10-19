@@ -20,7 +20,6 @@ All the experiments this week use the same dataset, the same split into training
 <!-- ct319:key Only one thing changes at a time. So when a picture changes, you can say exactly what caused it. -->
 
 This week covers five topics:
-<!-- ct319:key This week covers five topics: -->
 
 * [**From examples to categories**](#from-examples-to-categories--what-are-we-asking-the-machine-to-learn) — what a classification task is, when every training example already has its answer.
 * [**Ask the neighbours**](#ask-the-neighbours--how-does-knn-make-a-decision) — how KNN predicts by looking at the labelled examples closest to a new case.
@@ -48,7 +47,7 @@ We use two algorithms this week. On the same data, they give different answers, 
 ## From examples to categories — what are we asking the machine to learn?
 
 Classification is a **supervised learning** task. That means every training example comes with its correct answer.
-<!-- ct319:key Classification is a **supervised learning** task. -->
+<!-- ct319:key Classification is a **supervised learning** task. That means every training example comes with its correct answer. -->
 
 Suppose a bank has records of past customers, and it knows whether each one repaid their loan:
 
