@@ -412,6 +412,11 @@ To save every plot on this page as a file, without opening a window, run this.
 python experiments/week-10/clustering_demo.py --save-dir media/week-10
 ```
 
+### Try it in a notebook
+
+[Open the Week 10 notebook in Google Colab](https://colab.research.google.com/github/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-10/week-10-clustering.ipynb) to work through the same two datasets cell by cell. It runs K-means for several values of `k`, compares K-means with DBSCAN on the crescents, and makes a recommendation from the ratings table. You can change any setting and run it again, with nothing to install. The same [notebook file](https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-10/week-10-clustering.ipynb) also opens in VS Code.
+<!-- ct319:key Open the Week 10 notebook in Google Colab to work through the same two datasets cell by cell. -->
+
 ---
 
 ## Before Week 11
@@ -492,6 +497,7 @@ No external images, videos, papers or interactives are used.
 ### Software
 
 - 📦 [**`clustering_demo.py`**](https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-10/clustering_demo.py) — written for this module. Requires `numpy`, `matplotlib` and `scikit-learn`; nothing is downloaded at run time.
+- 📓 [**`week-10-clustering.ipynb`**](https://github.com/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-10/week-10-clustering.ipynb) — a notebook version of the same datasets and models, for [Google Colab](https://colab.research.google.com/github/CS-UniversityOfGalway-Teaching/CT319-2627/blob/main/experiments/week-10/week-10-clustering.ipynb) or VS Code.
 - scikit-learn User Guide — [clustering](https://scikit-learn.org/stable/modules/clustering.html)
 - scikit-learn reference — [`KMeans`](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html) · [`DBSCAN`](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html) · [`make_blobs`](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_blobs.html) · [`make_moons`](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_moons.html)
 
