@@ -16,8 +16,8 @@ Last week introduced machine learning in general. This week we focus on one kind
 
 <!-- ct319:endfocus -->
 
-All the experiments this week use the same dataset, the same split into training and test data, the same axes and the same unknown point. Only one thing changes at a time. So when a picture changes, you can say exactly what caused it.
-<!-- ct319:key Only one thing changes at a time. So when a picture changes, you can say exactly what caused it. -->
+All the experiments this week use the same dataset, the same split into training and test data, the same axes and the same unknown point.
+<!-- ct319:key All the experiments this week use the same dataset, the same split into training and test data, the same axes and the same unknown point. -->
 
 This week covers five topics.
 
