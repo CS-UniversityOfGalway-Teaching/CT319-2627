@@ -16,8 +16,7 @@ Last week introduced learning from data and experience in general. This week nar
 
 <!-- ct319:endfocus -->
 
-Everything on this page runs on one dataset, with one fixed split, one fixed pair of axes and one unknown point. Nothing else moves. That is deliberate: when the picture changes, exactly one thing caused it, and you should be able to name it.
-<!-- ct319:key That is deliberate: when the picture changes, exactly one thing caused it, and you should be able to name it. -->
+Everything on this page runs on one dataset, with one fixed split, one fixed pair of axes and one unknown point. Nothing else moves.
 
 We work through five things.
 <!-- ct319:key We work through five things. -->
