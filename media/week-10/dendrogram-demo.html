@@ -31,14 +31,26 @@ button.on{background:var(--text);color:var(--bg);border-color:var(--text)}
 .grp{display:flex;align-items:center;gap:8px;font-size:16px;color:var(--muted)}
 .grp button{flex:0 0 auto;font-size:16px;padding:8px 12px}
 .hint{font-size:14px;color:var(--muted);margin:12px 0 0;line-height:1.5}
-/* On a CT319 slide: the slide's own background shows through, and the demo
-   keeps this layout and scales as a whole to fit its frame (see fitFrame). */
+/* On a CT319 slide: the slide's own background shows through, the two plots
+   span the frame one above the other, and the controls sit below them in
+   three rows: the counts and status, the buttons, the hint. fitFrame scales
+   the demo to the frame's width and gives the plots the height left over. */
 .embedded body{background:transparent}
-.embedded .wrap{width:1200px;max-width:none;padding:4px}
-.embedded .panels{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-.embedded h1{margin-bottom:10px}
-.embedded .status{margin:12px 0 10px}
-.embedded .hint{margin-top:8px}
+.embedded .wrap{width:1280px;max-width:none;padding:4px}
+.embedded h1{margin-bottom:8px}
+.embedded .panels{grid-template-columns:minmax(0,1fr);gap:10px}
+.embedded .panel{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;padding:8px 10px 6px}
+.embedded .ptitle{margin:0 0 2px 4px}
+.embedded .panel svg{grid-row:2;grid-column:1/-1}
+.embedded .note{grid-row:1;grid-column:2;margin:0 4px 0 0;min-height:0}
+.embedded .side{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;margin-top:10px}
+.embedded .bar,.embedded .opts{display:contents}
+.embedded .stat{order:1}
+.embedded .status{order:2;flex:1 1 600px;font-size:18px;min-height:54px;margin:0}
+.embedded .btns{order:3;flex:0 0 auto;min-width:0}
+.embedded .btns button{flex:0 0 auto;white-space:nowrap}
+.embedded .grp{order:4;margin-left:16px}
+.embedded .hint{order:5;flex-basis:100%;margin:0}
 </style>
 </head>
 <body>
@@ -48,6 +60,7 @@ button.on{background:var(--text);color:var(--bg);border-color:var(--text)}
 <div class="panel"><div class="ptitle">The data</div><svg id="sc" viewBox="0 0 520 380" role="img" aria-label="Scatter plot of the points, coloured by group"></svg></div>
 <div class="panel"><div class="ptitle">The dendrogram (drag up and down to cut)</div><svg id="dg" viewBox="0 0 520 380" role="img" aria-label="Dendrogram showing the order and height of each merge"></svg><div class="note" id="note"></div></div>
 </div>
+<div class="side">
 <p class="status" id="status"></p>
 <div class="bar">
 <div class="stat"><div class="l">Groups</div><div class="v" id="k">0</div></div>
@@ -59,6 +72,7 @@ button.on{background:var(--text);color:var(--bg);border-color:var(--text)}
 <div class="grp">Linkage <span id="lbtns" style="display:flex;gap:8px"></span></div>
 </div>
 <p class="hint" id="hint">Right arrow, space or page down moves on a step and left arrow or page up goes back, so a presenter clicker works. F shows the full tree, R starts over, 1 to 4 switch the linkage and D switches the data.</p>
+</div>
 </div>
 <script>
 const PAL=['#7F77DD','#1D9E75','#D85A30','#378ADD','#BA7517','#D4537E','#639922','#E24B4A'];
@@ -86,12 +100,24 @@ const NEXT=embedded?['ArrowRight',' ','PageDown']:['ArrowRight',' ','PageDown','
 const BACK=embedded?['ArrowLeft','PageUp']:['ArrowLeft','PageUp','ArrowDown'];
 const DECK_KEYS=['ArrowRight','ArrowLeft','ArrowUp','ArrowDown','PageUp','PageDown',' ','Home','End'];
 const handBack=key=>parent.postMessage({ct319:'key',key},'*');
+// On a slide the demo is scaled to the frame's width, so both plots span it.
+// They share the height the rest of the demo leaves, the data getting more:
+// points spread in two directions need height, and the tree needs less.
+function plotShape(w,hs,hd){
+  Object.assign(SC,{w,h:hs,pad:30});Object.assign(DG,{r:w-20,b:hd-30});
+  $('sc').setAttribute('viewBox',`0 0 ${w} ${hs}`);$('dg').setAttribute('viewBox',`0 0 ${w} ${hd}`);
+  draw();
+}
 function fitFrame(){
-  const de=document.documentElement,w=document.querySelector('.wrap');
   if(!innerWidth||!innerHeight)return;
+  const de=document.documentElement,w=document.querySelector('.wrap'),box=el=>el.getBoundingClientRect();
+  de.style.zoom=1;
+  const z=0.995*innerWidth/box(w).width;
+  const rest=box(w).height-box($('sc')).height-box($('dg')).height;
+  const free=Math.max(320,innerHeight/z-rest);
+  plotShape(Math.round(box($('sc')).width),Math.floor(free*0.6),Math.floor(free*0.4));
   // A hair under the exact fit, so rounding at a fractional zoom never adds a scrollbar.
-  de.style.zoom=1;const r=w.getBoundingClientRect();
-  de.style.zoom=0.995*Math.min(innerWidth/r.width,innerHeight/r.height);
+  de.style.zoom=Math.min(z,0.995*innerHeight/box(w).height);
 }
 
 function makeData(name){
