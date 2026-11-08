@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>k-means step by step</title>
+<style>
+:root{color-scheme:light dark;--bg:#ffffff;--panel:#f6f8fa;--text:#1f2328;--muted:#57606a;--border:#d0d7de;--grid:#e3e8ed;--point:#8c959f;--ring:#ffffff}
+@media (prefers-color-scheme: dark){:root{--bg:#0d1117;--panel:#161b22;--text:#e6edf3;--muted:#8b949e;--border:#30363d;--grid:#262c34;--point:#6e7681;--ring:#0d1117}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+.wrap{max-width:1150px;margin:0 auto;padding:24px;display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:28px;align-items:start}
+@media (max-width:780px){.wrap{grid-template-columns:1fr}}
+h1{grid-column:1/-1;font-size:30px;font-weight:500;margin:0}
+svg{width:100%;height:auto;display:block;background:var(--panel);border:1px solid var(--border);border-radius:12px}
+.status{font-size:20px;line-height:1.5;min-height:92px;margin:0 0 16px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.stat{background:var(--panel);border-radius:8px;padding:12px 16px}
+.stat .l{font-size:15px;color:var(--muted)}
+.stat .v{font-size:30px;font-weight:500}
+.clist{background:var(--panel);border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:17px}
+.clist .t{font-size:15px;color:var(--muted);margin-bottom:4px}
+.ci{display:flex;align-items:center;gap:10px;padding:3px 0;font-variant-numeric:tabular-nums}
+.dot{width:14px;height:14px;border-radius:50%;flex:0 0 14px}
+.ci .n{margin-left:auto;color:var(--muted);font-size:15px}
+.row{display:flex;gap:10px;margin-bottom:10px}
+button{font:inherit;font-size:18px;padding:10px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer;flex:1}
+button:hover{background:var(--panel)}
+button.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.k{display:flex;align-items:center;gap:8px;font-size:18px;margin:6px 0 10px}
+.k button{flex:0 0 52px;padding:8px 0}
+.hint{font-size:14px;color:var(--muted);margin:8px 0 0;line-height:1.5}
+/* On a CT319 slide: the slide's own background shows through, and the plot
+   gives up width until the whole demo fits the frame's height. The layout is
+   the one a 1280x720 screen gives the frame; fitFrame scales it up from there. */
+.embedded body{background:transparent}
+.embedded .wrap{max-width:1152px;padding:4px 2px;gap:18px 28px}
+.embedded .status,.embedded .stats,.embedded .clist{margin-bottom:12px}
+.embedded .ci{padding:2px 0}
+.embedded svg{max-width:calc((100vh - 70px) * 340 / 262);margin:0 auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>k-means, step by step</h1>
+<svg id="plot" viewBox="0 0 340 262" role="img" aria-label="Scatter plot of points and k-means centres"></svg>
+<div>
+<p class="status" id="status"></p>
+<div class="stats">
+<div class="stat"><div class="l">Round</div><div class="v" id="round">0</div></div>
+<div class="stat"><div class="l">Total squared distance J</div><div class="v" id="jval">–</div></div>
+</div>
+<div class="clist"><div class="t">Centre positions (average x, average y)</div><div id="clist"></div></div>
+<div class="row"><button id="next">Next step</button><button id="play">Play</button></div>
+<div class="row"><button id="reset">New random start</button></div>
+<div class="k">k =<span id="kbtns" style="display:flex;gap:8px"></span></div>
+<p class="hint" id="hint">Keys: right arrow, space or page down for the next step (works with a presenter clicker), P to play or pause, R for a new start, 2 to 5 to change k.</p>
+</div>
+</div>
+<script>
+const COLORS=['#7F77DD','#1D9E75','#D85A30','#378ADD','#BA7517'];
+let seed=7;
+const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
+const g=()=>rnd()+rnd()+rnd()-1.5;
+const blobs=[[2.5,7],[7.5,7.5],[5,2.5]];
+const pts=[];
+blobs.forEach(b=>{for(let i=0;i<14;i++)pts.push([b[0]+g()*1.6,b[1]+g()*1.6]);});
+let k=3,cents,lab,phase,round,trail,timer=null;
+const X=v=>20+v*30,Y=v=>240-v*22;
+const d2=(a,b)=>(a[0]-b[0])**2+(a[1]-b[1])**2;
+const $=id=>document.getElementById(id);
+// Inside a slide deck the deck owns the keyboard: it passes this demo the
+// keys below, and takes back the ones the demo has no use for.
+const embedded=window.parent!==window;
+const DECK_KEYS=['ArrowLeft','ArrowUp','ArrowDown','PageUp','Home','End','f','F'];
+// A bigger screen scales the whole demo up, as it does the text on every
+// other slide; a smaller one keeps the layout and lets it reflow.
+function fitFrame(){document.documentElement.style.zoom=Math.max(1,Math.min(innerWidth/1152,innerHeight/650));}
+if(embedded){
+  document.documentElement.classList.add('embedded');
+  fitFrame();addEventListener('resize',fitFrame);
+  $('hint').textContent='Clicker or right arrow: next step, then the next slide once the centres settle. Down arrow skips ahead. P play or pause, R new start, 2 to 5 change k.';
+}
+
+function init(bad){
+  stopPlay();
+  if(bad&&k===3){cents=[[1,9],[2,8],[1.5,6.5]];}
+  else{
+    const idx=[];
+    while(idx.length<k){const i=Math.floor(rnd()*pts.length);if(!idx.includes(i))idx.push(i);}
+    cents=idx.map(i=>[pts[i][0],pts[i][1]]);
+  }
+  lab=pts.map(()=>-1);phase='assign';round=0;trail=cents.map(c=>[[...c]]);
+  $('next').textContent='Next step';
+  setStatus(bad&&k===3?'Three centres dropped in a poor spot on purpose. Press next step.':k+' centres placed on randomly chosen data points. Press next step.');
+  draw();
+}
+
+function J(){if(lab[0]<0)return null;return pts.reduce((s,p,i)=>s+d2(p,cents[lab[i]]),0);}
+function setStatus(t){$('status').textContent=t;}
+
+function draw(){
+  let h='';
+  for(let v=0;v<=10;v+=2){
+    h+=`<line x1="${X(v)}" y1="${Y(0)}" x2="${X(v)}" y2="${Y(10)}" style="stroke:var(--grid)" stroke-width="0.6"/>`;
+    h+=`<line x1="${X(0)}" y1="${Y(v)}" x2="${X(10)}" y2="${Y(v)}" style="stroke:var(--grid)" stroke-width="0.6"/>`;
+    h+=`<text x="${X(v)}" y="${Y(0)+14}" font-size="8" text-anchor="middle" style="fill:var(--muted)">${v}</text>`;
+    h+=`<text x="${X(0)-6}" y="${Y(v)+3}" font-size="8" text-anchor="end" style="fill:var(--muted)">${v}</text>`;
+  }
+  pts.forEach((p,i)=>{if(lab[i]>=0){const c=cents[lab[i]];h+=`<line x1="${X(p[0])}" y1="${Y(p[1])}" x2="${X(c[0])}" y2="${Y(c[1])}" stroke="${COLORS[lab[i]]}" stroke-width="0.8" opacity="0.35"/>`;}});
+  trail.forEach((t,j)=>{if(t.length>1)h+=`<polyline points="${t.map(c=>X(c[0])+','+Y(c[1])).join(' ')}" fill="none" stroke="${COLORS[j]}" stroke-width="1.5" stroke-dasharray="3 3"/>`;});
+  pts.forEach((p,i)=>{h+=`<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="4.5" style="fill:${lab[i]>=0?COLORS[lab[i]]:'var(--point)'}" opacity="0.85"/>`;});
+  cents.forEach((c,j)=>{const cx=X(c[0]),cy=Y(c[1]);h+=`<circle cx="${cx}" cy="${cy}" r="10" fill="${COLORS[j]}" style="stroke:var(--ring)" stroke-width="2.5"/><path d="M${cx-4} ${cy}h8M${cx} ${cy-4}v8" stroke="#fff" stroke-width="2"/>`;});
+  $('plot').innerHTML=h;
+  $('round').textContent=round;
+  const j=J();$('jval').textContent=j===null?'–':j.toFixed(1);
+  $('clist').innerHTML=cents.map((c,j)=>{
+    const n=lab.filter(l=>l===j).length;
+    return `<div class="ci"><span class="dot" style="background:${COLORS[j]}"></span>(${c[0].toFixed(1)}, ${c[1].toFixed(1)})<span class="n">${lab[0]<0?'':n+' point'+(n===1?'':'s')}</span></div>`;
+  }).join('');
+}
+
+function step(){
+  if(phase==='done'){init(false);return;}
+  if(phase==='assign'){
+    let changed=0;
+    lab=pts.map((p,i)=>{let b=0;cents.forEach((c,j)=>{if(d2(p,c)<d2(p,cents[b]))b=j;});if(b!==lab[i])changed++;return b;});
+    round++;
+    if(changed===0&&round>1){
+      phase='done';round--;stopPlay();
+      $('next').textContent='Start again';
+      setStatus('No point switched group, so the centres have settled and k-means stops here.');
+    }else{
+      phase='update';
+      setStatus('Assign. Every point joins its nearest centre ('+changed+' point'+(changed===1?'':'s')+' changed group).');
+    }
+  }else{
+    cents=cents.map((c,j)=>{
+      const m=pts.filter((p,i)=>lab[i]===j);
+      if(!m.length)return c;
+      return [m.reduce((s,p)=>s+p[0],0)/m.length,m.reduce((s,p)=>s+p[1],0)/m.length];
+    });
+    cents.forEach((c,j)=>trail[j].push([...c]));
+    phase='assign';
+    setStatus('Update. Each centre jumps to the average x and average y of its own points.');
+  }
+  draw();
+}
+
+function stopPlay(){if(timer){clearInterval(timer);timer=null;}$('play').textContent='Play';$('play').classList.remove('on');}
+function togglePlay(){
+  if(timer){stopPlay();return;}
+  if(phase==='done')init(false);
+  $('play').textContent='Pause';$('play').classList.add('on');
+  timer=setInterval(step,1000);
+}
+function setK(n){k=n;document.querySelectorAll('#kbtns button').forEach(b=>b.classList.toggle('on',+b.dataset.k===k));init(k===3);}
+
+function press(key){
+  if(['ArrowRight',' ','PageDown'].includes(key)){
+    // On a slide, the press after the centres settle moves the deck on.
+    if(embedded&&phase==='done')parent.postMessage({ct319:'advance'},'*');
+    else step();
+  }
+  else if(key==='p'||key==='P')togglePlay();
+  else if(key==='r'||key==='R')init(false);
+  else if(['2','3','4','5'].includes(key))setK(+key);
+  else return false;
+  return true;
+}
+
+[2,3,4,5].forEach(n=>{const b=document.createElement('button');b.textContent=n;b.dataset.k=n;b.onclick=e=>{e.currentTarget.blur();setK(n);};$('kbtns').appendChild(b);});
+$('next').onclick=e=>{e.currentTarget.blur();step();};
+$('play').onclick=e=>{e.currentTarget.blur();togglePlay();};
+$('reset').onclick=e=>{e.currentTarget.blur();init(false);};
+document.addEventListener('keydown',e=>{
+  if(e.altKey||e.ctrlKey||e.metaKey)return;
+  if(press(e.key))e.preventDefault();
+  else if(embedded&&DECK_KEYS.includes(e.key)){e.preventDefault();parent.postMessage({ct319:'key',key:e.key},'*');}
+});
+window.addEventListener('message',e=>{
+  if(e.source!==parent||!e.data)return;
+  if(e.data.ct319==='key')press(e.data.key);
+  // Coming back to a finished run starts it over, rather than skipping past.
+  else if(e.data.ct319==='shown'){fitFrame();if(phase==='done')setK(k);}
+});
+setK(3);
+</script>
+</body>
+</html>

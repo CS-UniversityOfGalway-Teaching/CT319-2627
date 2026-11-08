@@ -87,6 +87,11 @@
 .slide .focus-block table { font-size: 0.8em; }
 .slide .focus-block .lenses { gap: 1rem; }
 
+/* A live demo fills the room below the section line. */
+.slide--embed { padding-bottom: 1rem; }
+.slide--embed .slide__body { max-width: none; margin: 0; flex: 1; display: flex; padding-top: 0.8rem; }
+.slide__embed { flex: 1; width: 100%; border: 0; }
+
 .slide--cover { justify-content: center; align-items: flex-start; padding-left: 8vw; padding-right: 8vw; }
 .slide--cover h1 { font-size: clamp(2.2rem, 5vw, 4rem); margin: 0.4rem 0 1.4rem; }
 .slide--cover .week-question { font-size: clamp(1.2rem, 2.4vw, 1.9rem); }
