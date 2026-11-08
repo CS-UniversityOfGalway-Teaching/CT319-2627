@@ -135,6 +135,8 @@ centroids = model.cluster_centers_
 
 `fit_predict` gives each point a cluster number. The numbers `0`, `1` and `2` are only identifiers. They are not class names, and they mean nothing until somebody interprets them.
 
+<!-- ct319:embed ../../media/week-10/kmeans-demo.html k-means, step by step -->
+
 <!-- ct319:beat -->
 ## One dataset, three values of `k`
 

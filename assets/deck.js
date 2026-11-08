@@ -1,10 +1,16 @@
 /* CT319 slide decks. One slide at a time: arrows, space, PageUp/PageDown
    (so a clicker works) or a swipe to move; F for fullscreen. The slide number
-   sits in the URL, so a reload keeps your place. */
+   sits in the URL, so a reload keeps your place. On a slide with a live demo,
+   the forward keys drive the demo, and it hands the deck back the next press
+   once it has finished; the down arrow always moves on. */
 (function () {
   var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
   var count = document.querySelector(".deck__count");
   var current = 0;
+  // The keys a live demo takes for itself while its slide is showing.
+  var DEMO_KEYS = ["ArrowRight", "PageDown", " ", "p", "P", "r", "R", "2", "3", "4", "5"];
+
+  function demo() { return slides[current].querySelector(".slide__embed"); }
 
   // Blow each figure up to the slide's width, then give back height until
   // the slide fits the screen. Anything else too tall scrolls.
@@ -48,11 +54,14 @@
     slides[current].scrollTop = 0;
     count.textContent = (current + 1) + " / " + slides.length;
     history.replaceState(null, "", "#" + (current + 1));
+    // A demo clicked into keeps the keyboard until its slide lets it go.
+    var active = document.activeElement;
+    if (active && active.tagName === "IFRAME" && !slides[current].contains(active)) active.blur();
+    var frame = demo();
+    if (frame) frame.contentWindow.postMessage({ ct319: "shown" }, "*");
   }
 
-  document.addEventListener("keydown", function (e) {
-    if (e.altKey || e.ctrlKey || e.metaKey) return;
-    var k = e.key;
+  function navigate(k) {
     if (k === "ArrowRight" || k === "ArrowDown" || k === "PageDown" || k === " ") show(current + 1);
     else if (k === "ArrowLeft" || k === "ArrowUp" || k === "PageUp") show(current - 1);
     else if (k === "Home") show(0);
@@ -60,8 +69,25 @@
     else if (k === "f" || k === "F") {
       if (document.fullscreenElement) document.exitFullscreen();
       else document.documentElement.requestFullscreen();
-    } else return;
+    } else return false;
+    return true;
+  }
+
+  document.addEventListener("keydown", function (e) {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    var frame = demo();
+    if (frame && DEMO_KEYS.indexOf(e.key) >= 0) frame.contentWindow.postMessage({ ct319: "key", key: e.key }, "*");
+    else if (!navigate(e.key)) return;
     e.preventDefault();
+  });
+
+  // A demo with the keyboard passes on the keys it has no use for, and asks
+  // to move on once its run is over.
+  window.addEventListener("message", function (e) {
+    var frame = demo();
+    if (!frame || e.source !== frame.contentWindow || !e.data) return;
+    if (e.data.ct319 === "advance") show(current + 1);
+    else if (e.data.ct319 === "key") navigate(e.data.key);
   });
 
   var x0 = null;

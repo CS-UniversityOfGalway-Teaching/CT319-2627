@@ -32,7 +32,12 @@ and assets/deck.js. A slide of ordinary text takes its main point from a
 
     <!-- ct319:key A sentence quoted exactly from that text. -->
 
-line placed next to the sentence. The page ignores it.
+line placed next to the sentence. A live demo the lecturer drives, such as
+an HTML page with its own controls, gets a slide of its own from a
+
+    <!-- ct319:embed ../../media/week-NN/demo.html Its title -->
+
+line, the path written as an image path would be. The page ignores both.
 """
 
 from __future__ import annotations
@@ -135,6 +140,8 @@ FOCUS_END = "<!-- ct319:endfocus -->"
 # A slide's main point, quoted from the text around it. Only the deck shows
 # it; the page renders as if the line were not there.
 KEY_RE = re.compile(r"^[ \t]*<!--\s*ct319:key\s+(.+?)\s*-->[ \t]*(?:\n|$)", re.M)
+# A live demo, framed on a slide of its own. Only the deck shows it.
+EMBED_RE = re.compile(r"^[ \t]*<!--\s*ct319:embed\s+(\S+)\s+(.+?)\s*-->[ \t]*(?:\n|$)", re.M)
 LINKED_IMAGE_RE = re.compile(
     r"^\[!\[([^\]]*)\]\((" + URL_DEST + r")\)\]\((" + URL_DEST + r")\)\s*$"
 )
@@ -408,7 +415,7 @@ class Renderer:
 
 
 def render(markdown: str) -> tuple[str, list[tuple[int, str, str]]]:
-    r = Renderer(KEY_RE.sub("", markdown).split("\n"))
+    r = Renderer(EMBED_RE.sub("", KEY_RE.sub("", markdown)).split("\n"))
     return r.run(), r.headings
 
 
@@ -513,6 +520,8 @@ def build_page(md_path: Path) -> str:
         page = page.replace("{{" + key + "}}", value)
     if "ct319:key" in page:
         raise SystemExit(f"{md_path}: a ct319:key line is not on a line of its own, so it shows on the page")
+    if "ct319:embed" in page:
+        raise SystemExit(f"{md_path}: a ct319:embed line is not on a line of its own, so it shows on the page")
     return page
 
 
@@ -582,8 +591,8 @@ def segments(markdown: str) -> list[tuple[bool, str]]:
 
 
 def slide_parts(block_md: str) -> list[str]:
-    """Split Markdown around its figures, so each figure, with its caption,
-    can have a slide to itself and fill the screen."""
+    """Split Markdown around its figures and live demos, so each figure, with
+    its caption, and each demo can have a slide to itself and fill the screen."""
     parts: list[list[str]] = [[]]
     lines = block_md.split("\n")
     i = 0
@@ -597,6 +606,8 @@ def slide_parts(block_md: str) -> list[str]:
                 figure += ["", lines[j]]
                 i = j
             parts += [figure, []]
+        elif EMBED_RE.match(lines[i]):
+            parts += [[lines[i]], []]
         else:
             parts[-1].append(lines[i])
         i += 1
@@ -735,7 +746,15 @@ def build_deck(md_path: Path) -> str | None:
 
         for is_focus, text in segments(md):
             for part in slide_parts(text):
-                if "![" in part:
+                embed = EMBED_RE.match(part)
+                if embed:
+                    src, title = embed.groups()
+                    if not (WEEKS / md_path.stem / src).resolve().is_file():
+                        raise SystemExit(f"{md_path}: embedded demo not found: {src}")
+                    flush()
+                    add("embed")
+                    slides[-1].update(src=src, title=title)
+                elif "![" in part:
                     # A figure, or a table of pictures, has the slide to itself.
                     flush()
                     add("figure", focus=part)
@@ -770,6 +789,9 @@ def build_deck(md_path: Path) -> str | None:
             inner += f'<div class="focus-block">{render(sl["focus"])[0]}</div>'
         if sl.get("after"):
             inner += f'<div class="slide__prose">{render(sl["after"])[0]}</div>'
+        if sl["kind"] == "embed":
+            inner += (f'<iframe class="slide__embed" src="{html.escape(sl["src"], quote=True)}" '
+                      f'title="{html.escape(sl["title"], quote=True)}"></iframe>')
         return (
             f'<section class="slide slide--{sl["kind"]}">'
             f'<p class="slide__section">{inline(sl["section"])}</p>'
