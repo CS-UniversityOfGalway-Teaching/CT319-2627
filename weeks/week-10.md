@@ -253,6 +253,8 @@ The value `eps = 0.18` was tuned to the size and spacing of these crescents. It 
 
 <!-- ct319:endfocus -->
 
+<!-- ct319:embed ../../media/week-10/dendrogram-demo.html Agglomerative clustering, step by step -->
+
 <!-- ct319:focus -->
 
 <div class="lenses">

@@ -69,10 +69,12 @@ let k=3,cents,lab,phase,round,trail,timer=null;
 const X=v=>20+v*30,Y=v=>240-v*22;
 const d2=(a,b)=>(a[0]-b[0])**2+(a[1]-b[1])**2;
 const $=id=>document.getElementById(id);
-// Inside a slide deck the deck owns the keyboard: it passes this demo the
-// keys below, and takes back the ones the demo has no use for.
+// Inside a slide deck the deck offers this demo every key first. It takes the
+// ones it uses and hands back the rest, along with a step past the end of the
+// run, so the clicker moves the deck on once the centres settle.
 const embedded=window.parent!==window;
-const DECK_KEYS=['ArrowLeft','ArrowUp','ArrowDown','PageUp','Home','End','f','F'];
+const DECK_KEYS=['ArrowRight','ArrowLeft','ArrowUp','ArrowDown','PageUp','PageDown',' ','Home','End','f','F'];
+const handBack=key=>parent.postMessage({ct319:'key',key},'*');
 // A bigger screen scales the whole demo up, as it does the text on every
 // other slide; a smaller one keeps the layout and lets it reflow.
 function fitFrame(){document.documentElement.style.zoom=Math.max(1,Math.min(innerWidth/1152,innerHeight/650));}
@@ -158,9 +160,9 @@ function setK(n){k=n;document.querySelectorAll('#kbtns button').forEach(b=>b.cla
 
 function press(key){
   if(['ArrowRight',' ','PageDown'].includes(key)){
-    // On a slide, the press after the centres settle moves the deck on.
-    if(embedded&&phase==='done')parent.postMessage({ct319:'advance'},'*');
-    else step();
+    // On a slide, a step past the end of the run goes back to the deck.
+    if(embedded&&phase==='done')return false;
+    step();
   }
   else if(key==='p'||key==='P')togglePlay();
   else if(key==='r'||key==='R')init(false);
@@ -176,15 +178,17 @@ $('reset').onclick=e=>{e.currentTarget.blur();init(false);};
 document.addEventListener('keydown',e=>{
   if(e.altKey||e.ctrlKey||e.metaKey)return;
   if(press(e.key))e.preventDefault();
-  else if(embedded&&DECK_KEYS.includes(e.key)){e.preventDefault();parent.postMessage({ct319:'key',key:e.key},'*');}
+  else if(embedded&&DECK_KEYS.includes(e.key)){e.preventDefault();handBack(e.key);}
 });
 window.addEventListener('message',e=>{
   if(e.source!==parent||!e.data)return;
-  if(e.data.ct319==='key')press(e.data.key);
+  if(e.data.ct319==='key'){if(!press(e.data.key))handBack(e.data.key);}
+  else if(e.data.ct319==='hello')parent.postMessage({ct319:'ready'},'*');
   // Coming back to a finished run starts it over, rather than skipping past.
   else if(e.data.ct319==='shown'){fitFrame();if(phase==='done')setK(k);}
 });
 setK(3);
+if(embedded)parent.postMessage({ct319:'ready'},'*');
 </script>
 </body>
 </html>

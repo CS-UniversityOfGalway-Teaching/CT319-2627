@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agglomerative clustering step by step</title>
+<style>
+:root{color-scheme:light dark;--bg:#ffffff;--panel:#f6f8fa;--text:#1f2328;--muted:#57606a;--border:#d0d7de;--grid:#e3e8ed;--point:#8c959f}
+@media (prefers-color-scheme: dark){:root{--bg:#0d1117;--panel:#161b22;--text:#e6edf3;--muted:#8b949e;--border:#30363d;--grid:#262c34;--point:#6e7681}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+.wrap{max-width:1240px;margin:0 auto;padding:24px}
+h1{font-size:30px;font-weight:500;margin:0 0 16px}
+.panels{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+@media (max-width:900px){.panels{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 12px 8px}
+.ptitle{font-size:15px;color:var(--muted);margin:0 0 4px 6px}
+svg{width:100%;height:auto;display:block}
+#dg{touch-action:none;cursor:ns-resize}
+.note{font-size:13px;color:var(--muted);margin:4px 6px 0;min-height:18px}
+.status{font-size:20px;line-height:1.5;min-height:62px;margin:18px 0 14px}
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:stretch;margin-bottom:12px}
+.stat{background:var(--panel);border-radius:8px;padding:8px 16px;min-width:140px}
+.stat .l{font-size:14px;color:var(--muted)}
+.stat .v{font-size:26px;font-weight:500;font-variant-numeric:tabular-nums}
+.btns{display:flex;gap:10px;flex:1;min-width:300px}
+button{font:inherit;font-size:18px;padding:10px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer;flex:1}
+button:hover{background:var(--panel)}
+button.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.opts{display:flex;flex-wrap:wrap;gap:16px 28px;margin:6px 0 4px}
+.grp{display:flex;align-items:center;gap:8px;font-size:16px;color:var(--muted)}
+.grp button{flex:0 0 auto;font-size:16px;padding:8px 12px}
+.hint{font-size:14px;color:var(--muted);margin:12px 0 0;line-height:1.5}
+/* On a CT319 slide: the slide's own background shows through, and the demo
+   keeps this layout and scales as a whole to fit its frame (see fitFrame). */
+.embedded body{background:transparent}
+.embedded .wrap{width:1200px;max-width:none;padding:4px}
+.embedded .panels{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.embedded h1{margin-bottom:10px}
+.embedded .status{margin:12px 0 10px}
+.embedded .hint{margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Agglomerative clustering, step by step</h1>
+<div class="panels">
+<div class="panel"><div class="ptitle">The data</div><svg id="sc" viewBox="0 0 520 380" role="img" aria-label="Scatter plot of the points, coloured by group"></svg></div>
+<div class="panel"><div class="ptitle">The dendrogram (drag up and down to cut)</div><svg id="dg" viewBox="0 0 520 380" role="img" aria-label="Dendrogram showing the order and height of each merge"></svg><div class="note" id="note"></div></div>
+</div>
+<p class="status" id="status"></p>
+<div class="bar">
+<div class="stat"><div class="l">Groups</div><div class="v" id="k">0</div></div>
+<div class="stat"><div class="l" id="s2l">Merges done</div><div class="v" id="s2v">0</div></div>
+<div class="btns"><button id="back">Back</button><button id="next">Next step</button><button id="full">Full tree</button><button id="reset">Start over</button></div>
+</div>
+<div class="opts">
+<div class="grp">Data <span id="dbtns" style="display:flex;gap:8px"></span></div>
+<div class="grp">Linkage <span id="lbtns" style="display:flex;gap:8px"></span></div>
+</div>
+<p class="hint" id="hint">Right arrow, space or page down moves on a step and left arrow or page up goes back, so a presenter clicker works. F shows the full tree, R starts over, 1 to 4 switch the linkage and D switches the data.</p>
+</div>
+<script>
+const PAL=['#7F77DD','#1D9E75','#D85A30','#378ADD','#BA7517','#D4537E','#639922','#E24B4A'];
+const LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const DATASETS=[['street','Street'],['blobs','Blobs'],['moons','Crescents']];
+const LINKS=[['single','Single'],['complete','Complete'],['average','Average'],['ward','Ward']];
+const SC={w:520,h:380,pad:44};
+const DG={l:56,r:500,t:22,b:320};
+let seed=11;
+const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
+const g=()=>rnd()+rnd()+rnd()-1.5;
+const $=id=>document.getElementById(id);
+const fmt=v=>Math.abs(v-Math.round(v))<1e-9?String(Math.round(v)):v.toFixed(1);
+const dist=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]);
+const cen=(ids,P)=>{let x=0,y=0;ids.forEach(i=>{x+=P[i][0];y+=P[i][1];});return[x/ids.length,y/ids.length];};
+const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
+
+let dataName='street',link='single',D,merges,order,pos,mode='build',shown=0,cutH=0,topH=1,dragging=false;
+// Inside a slide deck the deck offers this demo every key first. It takes the
+// ones it uses and hands back the rest, along with a step past either end of
+// the run, so the clicker moves the deck on from the top of the tree. The up
+// and down arrows are left to the deck there, as on every other slide.
+const embedded=window.parent!==window;
+const NEXT=embedded?['ArrowRight',' ','PageDown']:['ArrowRight',' ','PageDown','ArrowUp'];
+const BACK=embedded?['ArrowLeft','PageUp']:['ArrowLeft','PageUp','ArrowDown'];
+const DECK_KEYS=['ArrowRight','ArrowLeft','ArrowUp','ArrowDown','PageUp','PageDown',' ','Home','End'];
+const handBack=key=>parent.postMessage({ct319:'key',key},'*');
+function fitFrame(){
+  const de=document.documentElement,w=document.querySelector('.wrap');
+  if(!innerWidth||!innerHeight)return;
+  // A hair under the exact fit, so rounding at a fractional zoom never adds a scrollbar.
+  de.style.zoom=1;const r=w.getBoundingClientRect();
+  de.style.zoom=0.995*Math.min(innerWidth/r.width,innerHeight/r.height);
+}
+
+function makeData(name){
+  if(name==='street'){const xs=[1,2,6,7,15];return{pts:xs.map(x=>[x,0]),labels:xs.map(String),oneD:true};}
+  seed=11;
+  const pts=[];
+  if(name==='blobs'){
+    [[2,7],[7.5,8],[5,2.5]].forEach(b=>{for(let i=0;i<5;i++)pts.push([b[0]+g()*1.4,b[1]+g()*1.4]);});
+  }else{
+    for(let i=0;i<10;i++){const t=Math.PI*i/9;pts.push([3*Math.cos(t)+g()*0.06,3*Math.sin(t)+g()*0.06]);}
+    for(let i=0;i<10;i++){const t=Math.PI*i/9;pts.push([3*(1-Math.cos(t))+g()*0.06,3*(0.5-Math.sin(t))+g()*0.06]);}
+  }
+  return{pts,labels:pts.map((_,i)=>LETTERS[i]),oneD:false};
+}
+
+function linkDist(A,B,P,L){
+  if(L==='ward'){const ca=cen(A,P),cb=cen(B,P);const dj=A.length*B.length/(A.length+B.length)*((ca[0]-cb[0])**2+(ca[1]-cb[1])**2);return{h:Math.sqrt(2*dj),dj};}
+  if(L==='average'){let s=0;A.forEach(i=>B.forEach(j=>{s+=dist(P[i],P[j]);}));return{h:s/(A.length*B.length)};}
+  let best=null,pair=null;
+  A.forEach(i=>B.forEach(j=>{const v=dist(P[i],P[j]);if(best===null||(L==='single'?v<best:v>best)){best=v;pair=[i,j];}}));
+  return{h:best,pair};
+}
+
+function cluster(P,L){
+  const n=P.length;let active=P.map((_,i)=>({id:i,m:[i]}));const out=[];
+  while(active.length>1){
+    let bi=0,bj=1,bv=null;
+    for(let i=0;i<active.length;i++)for(let j=i+1;j<active.length;j++){const r=linkDist(active[i].m,active[j].m,P,L);if(bv===null||r.h<bv.h-1e-12){bv=r;bi=i;bj=j;}}
+    const A=active[bi],B=active[bj];
+    const node={id:n+out.length,a:A.id,b:B.id,h:bv.h,dj:bv.dj,pair:bv.pair,A:A.m.slice(),B:B.m.slice(),m:A.m.concat(B.m)};
+    out.push(node);
+    active=active.filter((_,k)=>k!==bi&&k!==bj);active.push({id:node.id,m:node.m});
+  }
+  return out;
+}
+
+function leafOrder(){
+  const n=D.pts.length;const by={};merges.forEach(m=>{by[m.id]=m;});
+  const mem=id=>id<n?[id]:by[id].m;const out=[];
+  (function rec(id){
+    if(id<n){out.push(id);return;}
+    let a=by[id].a,b=by[id].b;
+    if(cen(mem(a),D.pts)[0]>cen(mem(b),D.pts)[0]){const t=a;a=b;b=t;}
+    rec(a);rec(b);
+  })(n+merges.length-1);
+  return out;
+}
+
+function heights(){return merges.map(m=>m.h);}
+function distinct(){const out=[];merges.forEach(m=>{if(!out.length||m.h-out[out.length-1]>1e-9)out.push(m.h);});return out;}
+function levels(){const d=distinct();const L=[d[0]/2];for(let i=1;i<d.length;i++)L.push((d[i-1]+d[i])/2);L.push(Math.min(d[d.length-1]*1.05,topH*0.98));return L;}
+function bestGap(){const H=heights();let bi=0,bg=-1;for(let i=0;i<H.length-1;i++){const gp=H[i+1]-H[i];if(gp>bg+1e-9){bg=gp;bi=i;}}return[H[bi],H[bi+1]];}
+function bestCut(){const[a,b]=bestGap();return(a+b)/2;}
+function appliedCount(){return mode==='build'?shown:merges.filter(m=>m.h<cutH).length;}
+function labelsFor(s){const n=D.pts.length;const lab=[...Array(n).keys()];for(let k=0;k<s;k++)merges[k].m.forEach(i=>{lab[i]=merges[k].id;});return lab;}
+
+function colourMap(lab){
+  const groups={};lab.forEach((c,i)=>{(groups[c]=groups[c]||[]).push(i);});
+  const ids=Object.keys(groups);const k=ids.length;
+  ids.sort((x,y)=>Math.min(...groups[x].map(i=>pos[i]))-Math.min(...groups[y].map(i=>pos[i])));
+  const col={};let c=0;
+  ids.forEach(id=>{if(groups[id].length>1||(mode==='cut'&&k<=PAL.length)){col[id]=PAL[c%PAL.length];c++;}else col[id]=null;});
+  return{col,groups,k};
+}
+
+function fitter(){
+  const P=D.pts;
+  let x0=Math.min(...P.map(p=>p[0])),x1=Math.max(...P.map(p=>p[0])),y0=Math.min(...P.map(p=>p[1])),y1=Math.max(...P.map(p=>p[1]));
+  if(D.oneD){x0=0;x1=16;}
+  const dx=Math.max(x1-x0,1e-6),dy=Math.max(y1-y0,1e-6);
+  const s=D.oneD?(SC.w-2*SC.pad)/dx:Math.min((SC.w-2*SC.pad)/dx,(SC.h-2*SC.pad)/dy);
+  const ox=(SC.w-s*dx)/2,oy=(SC.h-s*dy)/2;
+  return p=>[ox+(p[0]-x0)*s,D.oneD?SC.h/2:SC.h-oy-(p[1]-y0)*s];
+}
+
+function hull(pts){
+  if(pts.length<3)return pts;
+  const p=pts.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
+  const cr=(o,a,b)=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);
+  const lo=[],up=[];
+  for(const q of p){while(lo.length>=2&&cr(lo[lo.length-2],lo[lo.length-1],q)<=0)lo.pop();lo.push(q);}
+  for(let i=p.length-1;i>=0;i--){const q=p[i];while(up.length>=2&&cr(up[up.length-2],up[up.length-1],q)<=0)up.pop();up.push(q);}
+  up.pop();lo.pop();return lo.concat(up);
+}
+
+function linkageMarks(m,F){
+  let h='';const st='stroke:var(--text)';
+  const lbl=(x,y,t)=>`<text x="${x}" y="${y}" font-size="13" font-weight="500" text-anchor="middle" style="fill:var(--text);paint-order:stroke;stroke:var(--panel);stroke-width:5px">${t}</text>`;
+  const seg=(a,b)=>{
+    if(D.oneD){const y=SC.h/2-30;return `<path d="M${a[0]} ${y+6}V${y}H${b[0]}V${y+6}" fill="none" style="${st}" stroke-width="1.6"/>`;}
+    return `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" style="${st}" stroke-width="2" stroke-dasharray="6 4"/>`;
+  };
+  const mid=(a,b)=>D.oneD?[(a[0]+b[0])/2,SC.h/2-38]:[(a[0]+b[0])/2,(a[1]+b[1])/2-8];
+  if(link==='single'||link==='complete'){
+    const a=F(D.pts[m.pair[0]]),b=F(D.pts[m.pair[1]]);h+=seg(a,b);const q=mid(a,b);h+=lbl(q[0],q[1],fmt(m.h));
+  }else if(link==='average'){
+    const ca=F(cen(m.A,D.pts)),cb=F(cen(m.B,D.pts));
+    if(D.oneD)h+=seg(ca,cb);
+    else m.A.forEach(i=>m.B.forEach(j=>{const a=F(D.pts[i]),b=F(D.pts[j]);h+=`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" style="${st}" stroke-width="1" opacity="0.3"/>`;}));
+    const q=mid(ca,cb);h+=lbl(q[0],q[1],'avg '+fmt(m.h));
+  }else{
+    const ca=F(cen(m.A,D.pts)),cb=F(cen(m.B,D.pts));h+=seg(ca,cb);
+    [ca,cb].forEach(c=>{h+=`<path d="M${c[0]-6} ${c[1]-6}l12 12M${c[0]+6} ${c[1]-6}l-12 12" style="${st}" stroke-width="2.5"/>`;});
+    const q=mid(ca,cb);h+=lbl(q[0],q[1],'ΔJ '+fmt(m.dj));
+  }
+  return h;
+}
+
+function drawScatter(lab,cm,s){
+  const F=fitter();const P=D.pts.map(F);let h='';
+  if(D.oneD){
+    const y=SC.h/2;h+=`<line x1="${F([0,0])[0]}" y1="${y}" x2="${F([16,0])[0]}" y2="${y}" style="stroke:var(--border)" stroke-width="2"/>`;
+    for(let v=0;v<=16;v+=2){const x=F([v,0])[0];h+=`<line x1="${x}" y1="${y-4}" x2="${x}" y2="${y+4}" style="stroke:var(--border)" stroke-width="1.5"/><text x="${x}" y="${y+40}" font-size="12" text-anchor="middle" style="fill:var(--muted)">${v}</text>`;}
+  }
+  Object.keys(cm.groups).forEach(id=>{
+    const c=cm.col[id],m=cm.groups[id];if(!c||m.length<2)return;
+    const H=hull(m.map(i=>P[i]));
+    h+=`<g opacity="0.18"><polygon points="${H.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' ')}" fill="${c}" stroke="${c}" stroke-width="26" stroke-linejoin="round"/></g>`;
+  });
+  if(mode==='build'&&s>0)h+=linkageMarks(merges[s-1],F);
+  D.pts.forEach((p,i)=>{
+    const c=cm.col[lab[i]],q=P[i];
+    h+=`<circle cx="${q[0]}" cy="${q[1]}" r="7" style="fill:${c||'var(--point)'};stroke:var(--panel)" stroke-width="2"/>`;
+    h+=`<text x="${q[0]+(D.oneD?0:10)}" y="${q[1]-(D.oneD?14:9)}" font-size="13" text-anchor="${D.oneD?'middle':'start'}" style="fill:var(--text)">${D.labels[i]}</text>`;
+  });
+  $('sc').innerHTML=h;
+}
+
+function nice(x){const e=Math.pow(10,Math.floor(Math.log10(x)));const f=x/e;return(f<1.5?1:f<3?2:f<7?5:10)*e;}
+const fmtTick=(v,st)=>st>=1?String(Math.round(v)):v.toFixed(st>=0.1?1:2);
+
+function drawDendro(lab,cm,s){
+  const n=D.pts.length;
+  const X=p=>DG.l+12+p*((DG.r-DG.l-24)/(n-1));
+  const Y=v=>DG.b-v/topH*(DG.b-DG.t);
+  let h='';const step=nice(topH/5);
+  for(let v=0;v<=topH+1e-9;v+=step){const y=Y(v);h+=`<line x1="${DG.l}" y1="${y}" x2="${DG.r}" y2="${y}" style="stroke:var(--grid)" stroke-width="1"/><text x="${DG.l-8}" y="${y+4}" font-size="12" text-anchor="end" style="fill:var(--muted)">${fmtTick(v,step)}</text>`;}
+  h+=`<text transform="translate(16 ${(DG.t+DG.b)/2}) rotate(-90)" font-size="13" text-anchor="middle" style="fill:var(--muted)">${link==='ward'?'Ward distance':'Merge distance'}</text>`;
+  const nx={},ny={};
+  order.forEach(id=>{nx[id]=X(pos[id]);ny[id]=Y(0);});
+  merges.forEach(m=>{nx[m.id]=(nx[m.a]+nx[m.b])/2;ny[m.id]=Y(m.h);});
+  merges.forEach((m,k)=>{
+    const applied=k<s;if(mode==='build'&&!applied)return;
+    const c=applied?cm.col[lab[m.m[0]]]:null;
+    const latest=mode==='build'&&k===s-1;
+    h+=`<path d="M${nx[m.a]} ${ny[m.a]}V${ny[m.id]}H${nx[m.b]}V${ny[m.b]}" fill="none" style="stroke:${c||'var(--point)'}" stroke-width="${latest?4:2.2}" stroke-linejoin="round"/>`;
+  });
+  order.forEach(id=>{
+    const c=cm.col[lab[id]];
+    h+=`<circle cx="${nx[id]}" cy="${DG.b}" r="4.5" style="fill:${c||'var(--point)'}"/><text x="${nx[id]}" y="${DG.b+22}" font-size="13" text-anchor="middle" style="fill:var(--text)">${D.labels[id]}</text>`;
+  });
+  if(mode==='cut'){
+    const y=Y(cutH);
+    h+=`<line x1="${DG.l}" y1="${y}" x2="${DG.r}" y2="${y}" style="stroke:var(--text)" stroke-width="1.8" stroke-dasharray="7 5"/><circle cx="${DG.r+6}" cy="${y}" r="7" style="fill:var(--text)"/><text x="${DG.r-6}" y="${y-9}" font-size="14" font-weight="500" text-anchor="end" style="fill:var(--text);paint-order:stroke;stroke:var(--panel);stroke-width:5px">k = ${cm.k}</text>`;
+  }
+  $('dg').innerHTML=h;
+}
+
+function gname(ids){const L=ids.map(i=>D.labels[i]);return L.length<=4?'{'+L.join(', ')+'}':'a group of '+L.length;}
+
+function statusText(s,k){
+  const n=D.pts.length;
+  if(mode==='build'){
+    if(s===0)return 'Every point starts as its own group. Press next to join the two closest groups.';
+    const m=merges[s-1],A=gname(m.A),B=gname(m.B);let t;
+    if(link==='single')t=`${A} and ${B} join at distance ${fmt(m.h)}, measured between their nearest points.`;
+    else if(link==='complete')t=`${A} and ${B} join at distance ${fmt(m.h)}, measured between their farthest points.`;
+    else if(link==='average')t=`${A} and ${B} join at an average distance of ${fmt(m.h)} over every pair of points.`;
+    else t=`${A} and ${B} join because merging them raises J by only ${fmt(m.dj)}, less than any other pair.`;
+    t=`Merge ${s}. `+cap(t);
+    if(s===n-1)t+=' Everything is now one group. Press next to cut the tree.';
+    return t;
+  }
+  const[a,b]=bestGap();
+  if(cutH>a&&cutH<b)return `Cutting here gives ${k} groups. This is the longest vertical gap in the tree, a hint that ${k} is a natural number of groups.`;
+  return `Cutting at height ${fmt(cutH)} gives ${k} group${k===1?'':'s'}. Drag the line to try other cuts.`;
+}
+
+function draw(){
+  const s=appliedCount(),lab=labelsFor(s),cm=colourMap(lab);
+  drawScatter(lab,cm,s);drawDendro(lab,cm,s);
+  $('k').textContent=cm.k;
+  if(mode==='build'){$('s2l').textContent='Merges done';$('s2v').textContent=s+' of '+merges.length;}
+  else{$('s2l').textContent='Cut height';$('s2v').textContent=fmt(cutH);}
+  $('note').textContent=link==='ward'?'Ward heights are drawn as √(2ΔJ), the same scale SciPy uses.':'';
+  $('status').textContent=statusText(s,cm.k);
+  document.querySelectorAll('#dbtns button').forEach(b=>b.classList.toggle('on',b.dataset.v===dataName));
+  document.querySelectorAll('#lbtns button').forEach(b=>b.classList.toggle('on',b.dataset.v===link));
+}
+
+function recompute(){
+  D=makeData(dataName);merges=cluster(D.pts,link);order=leafOrder();pos={};order.forEach((id,p)=>{pos[id]=p;});
+  topH=merges[merges.length-1].h*1.1;
+  if(mode==='cut')cutH=bestCut();else shown=0;
+  draw();
+}
+
+function next(){
+  if(mode==='build'){if(shown<merges.length)shown++;else{mode='cut';cutH=bestCut();}}
+  else{const nx=levels().find(v=>v>cutH+1e-9);if(nx!==undefined)cutH=nx;}
+  draw();
+}
+function back(){
+  if(mode==='build'){if(shown>0)shown--;}
+  else{const pv=levels().reverse().find(v=>v<cutH-1e-9);if(pv!==undefined)cutH=pv;}
+  draw();
+}
+function full(){mode='cut';cutH=bestCut();draw();}
+function reset(){mode='build';shown=0;draw();}
+
+const dg=$('dg');
+function cutFromEvent(e){
+  const pt=dg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;
+  const p=pt.matrixTransform(dg.getScreenCTM().inverse());
+  return Math.max(0.0001,Math.min(topH*0.995,(DG.b-p.y)/(DG.b-DG.t)*topH));
+}
+dg.addEventListener('pointerdown',e=>{dragging=true;dg.setPointerCapture(e.pointerId);mode='cut';cutH=cutFromEvent(e);draw();});
+dg.addEventListener('pointermove',e=>{if(!dragging)return;cutH=cutFromEvent(e);draw();});
+dg.addEventListener('pointerup',()=>{dragging=false;});
+dg.addEventListener('pointercancel',()=>{dragging=false;});
+
+function addBtns(host,list,onPick){
+  list.forEach(([v,t])=>{const b=document.createElement('button');b.textContent=t;b.dataset.v=v;b.onclick=e=>{e.currentTarget.blur();onPick(v);};$(host).appendChild(b);});
+}
+addBtns('dbtns',DATASETS,v=>{dataName=v;recompute();});
+addBtns('lbtns',LINKS,v=>{link=v;recompute();});
+$('next').onclick=e=>{e.currentTarget.blur();next();};
+$('back').onclick=e=>{e.currentTarget.blur();back();};
+$('full').onclick=e=>{e.currentTarget.blur();full();};
+$('reset').onclick=e=>{e.currentTarget.blur();reset();};
+function atStart(){return mode==='build'&&shown===0;}
+function atEnd(){return mode==='cut'&&levels().find(v=>v>cutH+1e-9)===undefined;}
+function press(key){
+  // On a slide, a step past either end of the run goes back to the deck.
+  if(NEXT.includes(key)){if(embedded&&atEnd())return false;next();}
+  else if(BACK.includes(key)){if(embedded&&atStart())return false;back();}
+  else if(key==='f'||key==='F')full();
+  else if(key==='r'||key==='R')reset();
+  else if(['1','2','3','4'].includes(key)){link=LINKS[+key-1][0];recompute();}
+  else if(key==='d'||key==='D'){const i=DATASETS.findIndex(x=>x[0]===dataName);dataName=DATASETS[(i+1)%DATASETS.length][0];recompute();}
+  else return false;
+  return true;
+}
+document.addEventListener('keydown',e=>{
+  if(e.altKey||e.ctrlKey||e.metaKey)return;
+  if(press(e.key))e.preventDefault();
+  else if(embedded&&DECK_KEYS.includes(e.key)){e.preventDefault();handBack(e.key);}
+});
+window.addEventListener('message',e=>{
+  if(e.source!==parent||!e.data)return;
+  if(e.data.ct319==='key'){if(!press(e.data.key))handBack(e.data.key);}
+  else if(e.data.ct319==='hello')parent.postMessage({ct319:'ready'},'*');
+  // Coming back to a finished run starts it over, rather than skipping past.
+  else if(e.data.ct319==='shown'){fitFrame();if(atEnd())reset();}
+});
+recompute();
+if(embedded){
+  document.documentElement.classList.add('embedded');
+  $('hint').textContent='Clicker or left and right arrows: step through, and past either end, change slide. F full tree, R start over, 1 to 4 linkage, D data, down arrow skips ahead.';
+  fitFrame();addEventListener('resize',fitFrame);
+  parent.postMessage({ct319:'ready'},'*');
+}
+</script>
+</body>
+</html>

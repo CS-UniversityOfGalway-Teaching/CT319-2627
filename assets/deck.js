@@ -1,16 +1,22 @@
 /* CT319 slide decks. One slide at a time: arrows, space, PageUp/PageDown
    (so a clicker works) or a swipe to move; F for fullscreen. The slide number
    sits in the URL, so a reload keeps your place. On a slide with a live demo,
-   the forward keys drive the demo, and it hands the deck back the next press
-   once it has finished; the down arrow always moves on. */
+   the demo is offered each key first and hands back the ones it has no use
+   for, so the clicker steps the demo and, past either end of its run, moves
+   the deck. */
 (function () {
   var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
   var count = document.querySelector(".deck__count");
   var current = 0;
-  // The keys a live demo takes for itself while its slide is showing.
-  var DEMO_KEYS = ["ArrowRight", "PageDown", " ", "p", "P", "r", "R", "2", "3", "4", "5"];
+  var frames = Array.prototype.slice.call(document.querySelectorAll(".slide__embed"));
+  var NAV_KEYS = ["ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End"];
 
-  function demo() { return slides[current].querySelector(".slide__embed"); }
+  // The current slide's live demo, once it has said it is ready for keys. A
+  // page that never says so is left alone, and the deck keeps the keyboard.
+  function demo() {
+    var frame = slides[current].querySelector(".slide__embed");
+    return frame && frame.dataset.ready ? frame : null;
+  }
 
   // Blow each figure up to the slide's width, then give back height until
   // the slide fits the screen. Anything else too tall scrolls.
@@ -76,19 +82,23 @@
   document.addEventListener("keydown", function (e) {
     if (e.altKey || e.ctrlKey || e.metaKey) return;
     var frame = demo();
-    if (frame && DEMO_KEYS.indexOf(e.key) >= 0) frame.contentWindow.postMessage({ ct319: "key", key: e.key }, "*");
+    if (frame && (e.key.length === 1 || NAV_KEYS.indexOf(e.key) >= 0)) frame.contentWindow.postMessage({ ct319: "key", key: e.key }, "*");
     else if (!navigate(e.key)) return;
     e.preventDefault();
   });
 
-  // A demo with the keyboard passes on the keys it has no use for, and asks
-  // to move on once its run is over.
+  // A demo hands back the keys it has no use for, including a step past
+  // either end of its run. It says it is ready when it loads, and again when
+  // the deck says hello, in case it loaded first.
   window.addEventListener("message", function (e) {
+    if (!e.data) return;
+    frames.forEach(function (f) {
+      if (e.source === f.contentWindow && e.data.ct319 === "ready") f.dataset.ready = "1";
+    });
     var frame = demo();
-    if (!frame || e.source !== frame.contentWindow || !e.data) return;
-    if (e.data.ct319 === "advance") show(current + 1);
-    else if (e.data.ct319 === "key") navigate(e.data.key);
+    if (frame && e.source === frame.contentWindow && e.data.ct319 === "key") navigate(e.data.key);
   });
+  frames.forEach(function (f) { f.contentWindow.postMessage({ ct319: "hello" }, "*"); });
 
   var x0 = null;
   document.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; }, { passive: true });
