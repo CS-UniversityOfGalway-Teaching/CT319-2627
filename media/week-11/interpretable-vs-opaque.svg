@@ -22,43 +22,43 @@
   <rect width="1040" height="400" rx="18" fill="var(--bg)"/>
   <text class="lab" x="30" y="40">&#8220;WHY WAS I SENT FOR REVIEW?&#8221;</text>
 
-  <rect x="30" y="62" width="580" height="268" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
+  <rect x="30" y="62" width="620" height="272" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
   <text class="cap" x="56" y="90">INTERPRETABLE &#183; THERE IS A ROUTE TO SHOW</text>
 
-  <path class="link" d="M320 148 V166 H140 V186"/>
-  <path class="link" d="M320 148 V166 H440 V186"/>
-  <path class="link" d="M440 230 V248 H320 V268"/>
-  <path class="link" d="M440 230 V248 H540 V268"/>
+  <path class="link" d="M290 154 V172 H145 V192"/>
+  <path class="link" d="M290 154 V172 H435 V192"/>
+  <path class="link" d="M435 236 V254 H335 V274"/>
+  <path class="link" d="M435 236 V254 H535 V274"/>
 
-  <rect x="220" y="104" width="200" height="44" rx="8" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.2"/>
-  <text class="q" x="320" y="132">income (&#8364;k) &#62; 45?</text>
-  <text class="edge" x="205" y="162">no</text>
-  <text class="edge" x="408" y="162">yes</text>
+  <rect x="190" y="110" width="200" height="44" rx="8" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.2"/>
+  <text class="q" x="290" y="138">income (&#8364;k) &#62; 45?</text>
+  <text class="edge" x="217" y="167">no</text>
+  <text class="edge" x="362" y="167">yes</text>
 
-  <rect x="66" y="186" width="148" height="40" rx="8" fill="var(--warnbg)" stroke="var(--warn)" stroke-width="2"/>
-  <text class="leaf" x="140" y="212" fill="var(--warn)">REVIEW</text>
+  <rect x="75" y="192" width="140" height="40" rx="8" fill="var(--warnbg)" stroke="var(--warn)" stroke-width="2"/>
+  <text class="leaf" x="145" y="218" fill="var(--warn)">REVIEW</text>
 
-  <rect x="340" y="186" width="200" height="44" rx="8" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.2"/>
-  <text class="q" x="440" y="214">debt ratio &#60; 0.40?</text>
-  <text class="edge" x="345" y="244">no</text>
-  <text class="edge" x="508" y="244">yes</text>
+  <rect x="335" y="192" width="200" height="44" rx="8" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.2"/>
+  <text class="q" x="435" y="220">debt ratio &#60; 0.40?</text>
+  <text class="edge" x="385" y="249">no</text>
+  <text class="edge" x="485" y="249">yes</text>
 
-  <rect x="246" y="268" width="148" height="40" rx="8" fill="var(--warnbg)" stroke="var(--warn)" stroke-width="2"/>
-  <text class="leaf" x="320" y="294" fill="var(--warn)">REVIEW</text>
+  <rect x="265" y="274" width="140" height="40" rx="8" fill="var(--warnbg)" stroke="var(--warn)" stroke-width="2"/>
+  <text class="leaf" x="335" y="300" fill="var(--warn)">REVIEW</text>
 
-  <rect x="466" y="268" width="148" height="40" rx="8" fill="var(--goodbg)" stroke="var(--good)" stroke-width="2"/>
-  <text class="leaf" x="540" y="294" fill="var(--good)">APPROVE</text>
+  <rect x="465" y="274" width="140" height="40" rx="8" fill="var(--goodbg)" stroke="var(--good)" stroke-width="2"/>
+  <text class="leaf" x="535" y="300" fill="var(--good)">APPROVE</text>
 
-  <rect x="640" y="62" width="370" height="268" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
-  <text class="cap" x="666" y="90">OPAQUE &#183; THERE IS A NUMBER</text>
+  <rect x="680" y="62" width="330" height="272" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
+  <text class="cap" x="706" y="90">OPAQUE &#183; THERE IS A NUMBER</text>
 
-  <rect x="700" y="112" width="250" height="48" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="2"/>
-  <text class="q" x="825" y="142">MODEL</text>
-  <path class="arr" d="M825 166 V194"/>
-  <text class="huge" x="825" y="238">0.83</text>
-  <path class="arr" d="M825 254 V282"/>
-  <rect x="740" y="288" width="170" height="40" rx="8" fill="var(--warnbg)" stroke="var(--warn)" stroke-width="2"/>
-  <text class="leaf" x="825" y="314" fill="var(--warn)">REJECT</text>
+  <rect x="730" y="110" width="230" height="46" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="2"/>
+  <text class="q" x="845" y="139">MODEL</text>
+  <path class="arr" d="M845 162 V190"/>
+  <text class="huge" x="845" y="236">0.83</text>
+  <path class="arr" d="M845 246 V268"/>
+  <rect x="760" y="274" width="170" height="40" rx="8" fill="var(--warnbg)" stroke="var(--warn)" stroke-width="2"/>
+  <text class="leaf" x="845" y="300" fill="var(--warn)">REJECT</text>
 
   <text class="note" x="30" y="366">What would the person reasonably want to know? What data were used, what mattered, what 0.83 means, how reliable the model is,</text>
   <text class="note" x="30" y="388">whether a human was involved, and how to challenge it. Publishing the source code answers none of those six.</text>

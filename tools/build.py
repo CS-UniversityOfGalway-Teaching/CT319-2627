@@ -37,7 +37,12 @@ an HTML page with its own controls, gets a slide of its own from a
 
     <!-- ct319:embed ../../media/week-NN/demo.html Its title -->
 
-line, the path written as an image path would be. The page ignores both.
+line, the path written as an image path would be. A section that belongs
+on the page but not in the lecture carries a
+
+    <!-- ct319:nodeck -->
+
+line, and the deck leaves the whole section out. The page ignores all three.
 """
 
 from __future__ import annotations
@@ -142,6 +147,8 @@ FOCUS_END = "<!-- ct319:endfocus -->"
 KEY_RE = re.compile(r"^[ \t]*<!--\s*ct319:key\s+(.+?)\s*-->[ \t]*(?:\n|$)", re.M)
 # A live demo, framed on a slide of its own. Only the deck shows it.
 EMBED_RE = re.compile(r"^[ \t]*<!--\s*ct319:embed\s+(\S+)\s+(.+?)\s*-->[ \t]*(?:\n|$)", re.M)
+# A section the deck leaves out. The page keeps it.
+NODECK_RE = re.compile(r"^[ \t]*<!--\s*ct319:nodeck\s*-->[ \t]*(?:\n|$)", re.M)
 LINKED_IMAGE_RE = re.compile(
     r"^\[!\[([^\]]*)\]\((" + URL_DEST + r")\)\]\((" + URL_DEST + r")\)\s*$"
 )
@@ -415,7 +422,7 @@ class Renderer:
 
 
 def render(markdown: str) -> tuple[str, list[tuple[int, str, str]]]:
-    r = Renderer(EMBED_RE.sub("", KEY_RE.sub("", markdown)).split("\n"))
+    r = Renderer(NODECK_RE.sub("", EMBED_RE.sub("", KEY_RE.sub("", markdown))).split("\n"))
     return r.run(), r.headings
 
 
@@ -700,6 +707,7 @@ def build_deck(md_path: Path) -> str | None:
             tail_title, tail_lines = line[3:].strip(), []
         else:
             tail_lines.append(line)
+    sections = [sec for sec in sections if not NODECK_RE.search(sec[2])]
 
     slides: list[dict] = []
     warnings: list[str] = []
@@ -715,13 +723,15 @@ def build_deck(md_path: Path) -> str | None:
 
         def flush() -> None:
             # Text after a focus block closes that block's slide when it fits;
-            # otherwise it gets slides of its own.
+            # otherwise it gets slides of its own. Text with a key sentence
+            # always does, since only a slide of its own can show the key.
             text = "\n\n".join(pending)
             pending.clear()
             if not text:
                 return
             last = slides[-1] if len(slides) > first else None
-            if last and last["kind"] == "focus" and last["cost"] + word_count(text) <= SLIDE_WORDS:
+            if (last and last["kind"] == "focus" and not KEY_RE.search(text)
+                    and last["cost"] + word_count(text) <= SLIDE_WORDS):
                 last["after"] = text
                 last["cost"] += word_count(text)
                 return
@@ -771,6 +781,12 @@ def build_deck(md_path: Path) -> str | None:
                     while 0 < i < len(pending) and (pending[i - 1].lstrip().startswith("#")
                                                     or pending[i - 1].rstrip().endswith(":")):
                         i -= 1
+                    # Between two focus blocks, the text that follows the first
+                    # one, up to the first heading, stays on its slide if it fits.
+                    h = next((j for j, b in enumerate(pending) if b.lstrip().startswith("#")), 0)
+                    if (h > i and len(slides) > first and slides[-1]["kind"] == "focus"
+                            and slides[-1]["cost"] + sum(map(word_count, pending[:h])) <= SLIDE_WORDS):
+                        i = h
                     lead = "\n\n".join(pending[i:])
                     del pending[i:]
                     flush()

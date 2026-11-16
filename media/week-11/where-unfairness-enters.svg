@@ -21,57 +21,57 @@
   <rect width="1040" height="400" rx="18" fill="var(--bg)"/>
   <text class="lab" x="30" y="40">A SYSTEM IS A SEQUENCE OF CHOICES &#183; EVERY ONE OF THEM IS A PLACE UNFAIRNESS CAN ENTER</text>
 
-  <line x1="88" y1="72" x2="952" y2="72" stroke="var(--warn)" stroke-width="2" stroke-dasharray="6 5"/>
-  <line class="tick" x1="88"  y1="66" x2="88"  y2="94"/>
-  <line class="tick" x1="232" y1="66" x2="232" y2="94"/>
-  <line class="tick" x1="376" y1="66" x2="376" y2="94"/>
-  <line class="tick" x1="520" y1="66" x2="520" y2="94"/>
-  <line class="tick" x1="664" y1="66" x2="664" y2="94"/>
-  <line class="tick" x1="808" y1="66" x2="808" y2="94"/>
-  <line class="tick" x1="952" y1="66" x2="952" y2="94"/>
+  <line x1="82" y1="72" x2="958" y2="72" stroke="var(--warn)" stroke-width="2" stroke-dasharray="6 5"/>
+  <line class="tick" x1="82" y1="72" x2="82" y2="98"/>
+  <line class="tick" x1="228" y1="72" x2="228" y2="98"/>
+  <line class="tick" x1="374" y1="72" x2="374" y2="98"/>
+  <line class="tick" x1="520" y1="72" x2="520" y2="98"/>
+  <line class="tick" x1="666" y1="72" x2="666" y2="98"/>
+  <line class="tick" x1="812" y1="72" x2="812" y2="98"/>
+  <line class="tick" x1="958" y1="72" x2="958" y2="98"/>
 
-  <rect class="box"    x="23"  y="106" width="130" height="64" rx="10"/>
-  <text class="node" x="88"  y="144">PURPOSE</text>
-  <text class="q"    x="88"  y="194">what is this for?</text>
-  <path class="arr" d="M157 138 H167"/>
+  <rect class="box" x="25" y="106" width="114" height="64" rx="10"/>
+  <text class="node" x="82" y="144">PURPOSE</text>
+  <text class="q"    x="82" y="194">what is this for?</text>
+  <path class="arr" d="M143 138 H167"/>
 
-  <rect class="box"    x="167" y="106" width="130" height="64" rx="10"/>
-  <text class="node" x="232" y="144">DATA</text>
-  <text class="q"    x="232" y="194">who is represented?</text>
-  <path class="arr" d="M301 138 H311"/>
+  <rect class="box" x="171" y="106" width="114" height="64" rx="10"/>
+  <text class="node" x="228" y="144">DATA</text>
+  <text class="q"    x="228" y="194">who is represented?</text>
+  <path class="arr" d="M289 138 H313"/>
 
-  <rect class="box"    x="311" y="106" width="130" height="64" rx="10"/>
-  <text class="node" x="376" y="144">LABELS</text>
-  <text class="q"    x="376" y="194">what counts as</text>
-  <text class="q"    x="376" y="210">the right answer?</text>
-  <path class="arr" d="M445 138 H455"/>
+  <rect class="box" x="317" y="106" width="114" height="64" rx="10"/>
+  <text class="node" x="374" y="144">LABELS</text>
+  <text class="q"    x="374" y="194">what counts as</text>
+  <text class="q"    x="374" y="210">the right answer?</text>
+  <path class="arr" d="M435 138 H459"/>
 
-  <rect class="box"    x="455" y="106" width="130" height="64" rx="10"/>
+  <rect class="box" x="463" y="106" width="114" height="64" rx="10"/>
   <text class="node" x="520" y="144">FEATURES</text>
   <text class="q"    x="520" y="194">why should this</text>
   <text class="q"    x="520" y="210">variable matter?</text>
-  <path class="arr" d="M589 138 H599"/>
+  <path class="arr" d="M581 138 H605"/>
 
-  <rect class="box--m" x="599" y="106" width="130" height="64" rx="10"/>
-  <text class="node" x="664" y="144">MODEL</text>
-  <text class="q"    x="664" y="194">does performance</text>
-  <text class="q"    x="664" y="210">differ by group?</text>
-  <path class="arr" d="M733 138 H743"/>
+  <rect class="box--m" x="609" y="106" width="114" height="64" rx="10"/>
+  <text class="node" x="666" y="144">MODEL</text>
+  <text class="q"    x="666" y="194">does performance</text>
+  <text class="q"    x="666" y="210">differ by group?</text>
+  <path class="arr" d="M727 138 H751"/>
 
-  <rect class="box"    x="743" y="106" width="130" height="64" rx="10"/>
-  <text class="node" x="808" y="138">DECISION</text>
-  <text class="node" x="808" y="156">RULE</text>
-  <text class="q"    x="808" y="194">how does a score</text>
-  <text class="q"    x="808" y="210">become an action?</text>
-  <path class="arr" d="M877 138 H887"/>
+  <rect class="box" x="755" y="106" width="114" height="64" rx="10"/>
+  <text class="node" x="812" y="138">DECISION</text>
+  <text class="node" x="812" y="156">RULE</text>
+  <text class="q"    x="812" y="194">how does a score</text>
+  <text class="q"    x="812" y="210">become an action?</text>
+  <path class="arr" d="M873 138 H897"/>
 
-  <rect class="box"    x="887" y="106" width="130" height="64" rx="10"/>
-  <text class="node" x="952" y="144">USE</text>
-  <text class="q"    x="952" y="194">what happens to</text>
-  <text class="q"    x="952" y="210">the person affected?</text>
+  <rect class="box" x="901" y="106" width="114" height="64" rx="10"/>
+  <text class="node" x="958" y="144">USE</text>
+  <text class="q"    x="958" y="194">what happens to</text>
+  <text class="q"    x="958" y="210">the person affected?</text>
 
   <text class="cap" x="30" y="268" fill="var(--warn)">BEFORE A MODEL EXISTS AT ALL</text>
-  <rect x="23" y="282" width="562" height="4" rx="2" fill="var(--warn)" opacity="0.5"/>
+  <rect x="25" y="282" width="552" height="4" rx="2" fill="var(--warn)" opacity="0.5"/>
   <text class="note" x="30" y="318">Four of the seven decisions are already made by the time anything is fitted. The one box most people mean by "the AI" is the fifth.</text>
   <text class="note" x="30" y="352">Fairness is not a check applied after training. The only place it can be applied is across all seven.</text>
 

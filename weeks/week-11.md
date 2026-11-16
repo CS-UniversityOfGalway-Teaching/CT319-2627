@@ -87,7 +87,18 @@ The gap does not prove unlawful discrimination by itself, and it does not tell u
 <!-- ct319:beat -->
 ## What does "trustworthy" mean?
 
-In 2019 the European Commission's High-Level Expert Group on AI published the [Ethics Guidelines for Trustworthy AI](https://digital-strategy.ec.europa.eu/en/library/ethics-guidelines-trustworthy-ai). The guidelines describe trustworthy AI under three headings.
+In 2019 the European Commission's High-Level Expert Group on AI published the [Ethics Guidelines for Trustworthy AI](https://digital-strategy.ec.europa.eu/en/library/ethics-guidelines-trustworthy-ai). Figure 2 shows the document and the framework it sets out.
+<!-- ct319:key In 2019 the European Commission's High-Level Expert Group on AI published the Ethics Guidelines for Trustworthy AI. -->
+
+<!-- ct319:focus -->
+
+![The cover of the Ethics Guidelines for Trustworthy AI beside the guidelines' own framework diagram](../../media/week-11/eu-trustworthy-ai-guidelines.svg "hero")
+
+<sub><em>Figure 2. The document, and its own Figure 1. High-Level Expert Group on AI, [Ethics Guidelines for Trustworthy AI](https://digital-strategy.ec.europa.eu/en/library/ethics-guidelines-trustworthy-ai), 8 April 2019. © European Union, reused under the Commission's reuse policy (Decision 2011/833/EU).</em></sub>
+
+<!-- ct319:endfocus -->
+
+The guidelines describe trustworthy AI under three headings.
 
 <!-- ct319:focus -->
 
@@ -101,6 +112,8 @@ In 2019 the European Commission's High-Level Expert Group on AI published the [E
 
 The guidelines then list seven requirements.
 
+<!-- ct319:focus -->
+
 - human agency and oversight
 - technical robustness and safety
 - privacy and data governance
@@ -108,6 +121,8 @@ The guidelines then list seven requirements.
 - diversity, non-discrimination and fairness
 - societal and environmental wellbeing
 - accountability
+
+<!-- ct319:endfocus -->
 
 This week we look closely at a few of these requirements, rather than memorising all seven. Fairness, privacy, transparency and accountability are part of the framework, not the whole of it.
 
@@ -124,7 +139,6 @@ Until now we asked one question about every system. Now we ask five.
 <li><span>Can people understand or challenge it?</span></li>
 <li><span>Who remains responsible?</span></li>
 </ol>
-<p class="flow__note">A test score answers only the first question. Most of the problems this week begin with the highlighted one.</p>
 
 <!-- ct319:endfocus -->
 
@@ -138,13 +152,24 @@ People often talk as if a model becomes unfair by itself, somewhere during train
 
 ![Purpose, data, labels, features, model, decision rule and use, each with its own fairness question](../../media/week-11/where-unfairness-enters.svg "hero")
 
-<sub><em>Figure 2. Seven decisions. The one most people mean by "the AI" is the fifth, and four have already been made by the time it arrives. Diagram created for these pages. No external image licence is used.</em></sub>
+<sub><em>Figure 3. Seven decisions. The one most people mean by "the AI" is the fifth, and four have already been made by the time it arrives. Diagram created for these pages. No external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
 ### Who appears in the data?
 
 Suppose a recruitment model is trained mainly on data about past successful employees. That sounds sensible, until you ask what the past hiring process favoured. If it favoured one kind of candidate, the records reflect that. The learning algorithm cannot tell which patterns are worth keeping and which are unfair.
+<!-- ct319:key The learning algorithm cannot tell which patterns are worth keeping and which are unfair. -->
+
+This is not only a thought experiment. Figure 4 is a well-documented case.
+
+<!-- ct319:focus -->
+
+![A clipping of the Reuters article of 10 October 2018, Amazon scraps secret AI recruiting tool that showed bias against women](../../media/week-11/news-amazon-recruiting.svg "hero")
+
+<sub><em>Figure 4. [Reuters, 10 October 2018](https://www.reuters.com/article/us-amazon-com-jobs-automation-insight/amazon-scraps-secret-ai-recruiting-tool-that-showed-bias-against-women-idUSKCN1MK08G), by Jeffrey Dastin. Clipped from the [archived page](https://web.archive.org/web/20181011000056/https://www.reuters.com/article/us-amazon-com-jobs-automation-insight/amazon-scraps-secret-ai-recruiting-tool-that-showed-bias-against-women-idUSKCN1MK08G) and laid over the same page, blurred; the three points are our own summary.</em></sub>
+
+<!-- ct319:endfocus -->
 
 ### Who decided the labels?
 
@@ -178,7 +203,7 @@ Two applicants score `0.71` and `0.69`. Someone then sets a rule to interview an
 
 ### Why this matters this week
 
-Fairness cannot be checked once, after training. By then, most of the decisions that could cause a problem have already been made. The check has to cover all seven steps in Figure 2.
+Fairness cannot be checked once, after training. By then, most of the decisions that could cause a problem have already been made. The check has to cover all seven steps in Figure 3.
 
 <!-- ct319:beat -->
 ## Just because we can collect it — how much data should a system use?
@@ -191,7 +216,7 @@ Using every possible source would not necessarily give a better system. And the 
 
 <div class="lenses lenses--pair">
 <div class="lens"><span class="lens__key">Would it help?</span><span class="lens__gloss">does this information improve the prediction?</span></div>
-<div class="lens"><span class="lens__key">Should we?</span><span class="lens__gloss">ought the system to be using this information at all?</span></div>
+<div class="lens"><span class="lens__key">Should we?</span><span class="lens__gloss">is it right to use this information at all?</span></div>
 </div>
 
 <!-- ct319:endfocus -->
@@ -201,7 +226,18 @@ These are different questions. A *yes* to the first does not settle the second.
 <!-- ct319:beat -->
 ## Data minimisation
 
-Under the [GDPR](https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/principles-gdpr_en), **data minimisation** means personal data should be adequate, relevant and limited to what is necessary for the intended purpose. The rule is deliberately strict. It goes against the instinct of most people who build datasets.
+Under the [GDPR](https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/principles-gdpr_en), **data minimisation** means personal data should be adequate, relevant and limited to what is necessary for the intended purpose. The rule is written into Article 5 of the regulation itself (Figure 5).
+<!-- ct319:key Under the GDPR, data minimisation means personal data should be adequate, relevant and limited to what is necessary for the intended purpose. -->
+
+<!-- ct319:focus -->
+
+![The first page of the GDPR in the Official Journal, beside Article 5 with point (c), data minimisation, highlighted](../../media/week-11/gdpr-article-5.svg "hero")
+
+<sub><em>Figure 5. [Regulation (EU) 2016/679](https://eur-lex.europa.eu/eli/reg/2016/679/oj), the General Data Protection Regulation, as published in the Official Journal on 4 May 2016. Pages from EUR-Lex, © European Union, reused under Decision 2011/833/EU. The highlight is ours.</em></sub>
+
+<!-- ct319:endfocus -->
+
+The rule is deliberately strict. It goes against the instinct of most people who build datasets.
 
 <!-- ct319:focus -->
 
@@ -229,7 +265,7 @@ Removing names from a dataset does not make it anonymous. This point is often mi
 
 ![Identified and pseudonymised data are both personal data; only genuinely anonymised data is not](../../media/week-11/identifiability.svg "hero")
 
-<sub><em>Figure 3. Deleting the name column moves you one box to the right, not two. Diagram created for these pages. No external image licence is used.</em></sub>
+<sub><em>Figure 6. Deleting the name column moves you one box to the right, not two. Diagram created for these pages. No external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
@@ -262,7 +298,7 @@ Go back to the loan decision. Compare two systems that reach the same kind of ou
 
 ![A traceable decision tree beside an opaque model emitting the score 0.83 and a rejection](../../media/week-11/interpretable-vs-opaque.svg "hero")
 
-<sub><em>Figure 4. Fictional example. On the left there is a route to show somebody. On the right there is a number. Diagram created for these pages. No external image licence is used.</em></sub>
+<sub><em>Figure 7. Fictional example. On the left there is a route to show somebody. On the right there is a number. Diagram created for these pages. No external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
@@ -270,6 +306,16 @@ Suppose an applicant asks why they were sent for review. With the decision tree,
 <!-- ct319:key With the decision tree, we can follow the path that led to the decision. The system on the right gives only a number, so there is no path to follow. -->
 
 What would the applicant reasonably want to know? They would want to know what data was used, which factors mattered, what `0.83` means, how reliable the model is, whether a person was involved, and how to challenge the result. Publishing the program's source code answers none of these six questions.
+
+These questions come up in real lending. In Figure 8, the decisions turned out to be explainable, and people still did not trust them.
+
+<!-- ct319:focus -->
+
+![A clipping of the BBC News article of 10 November 2019, Apple's 'sexist' credit card investigated by US regulator](../../media/week-11/news-apple-card.svg "hero")
+
+<sub><em>Figure 8. [BBC News, 10 November 2019](https://www.bbc.com/news/business-50365609). The finding is from the [New York State Department of Financial Services, 23 March 2021](https://www.dfs.ny.gov/reports_and_publications/press_releases/pr202103231). Clipped from the [archived page](https://web.archive.org/web/20191111011757/https://www.bbc.com/news/business-50365609) and laid over the same page, blurred; the three points are our own summary.</em></sub>
+
+<!-- ct319:endfocus -->
 
 <!-- ct319:beat -->
 ## Three words that are not synonyms
@@ -284,13 +330,38 @@ What would the applicant reasonably want to know? They would want to know what d
 
 <!-- ct319:endfocus -->
 
-Different writers use these terms in slightly different ways. Here we use them in this practical sense. A small decision tree is interpretable. For more complex models, tools such as **LIME** and **SHAP** estimate how much each feature contributed to a prediction. You do not need their mathematics this week, only an idea of what their output looks like.
+Different writers use these terms in slightly different ways. Here we use them in this practical sense. A small decision tree is interpretable. A large neural network is much harder to inspect, although researchers can still look inside one. Figure 9 shows images built to excite single units of an image classifier, layer by layer.
+<!-- ct319:key A large neural network is much harder to inspect, although researchers can still look inside one. -->
+
+<!-- ct319:focus -->
+
+![Feature visualisations from GoogLeNet: edges and textures in early layers, patterns and parts in the middle, objects such as dog faces in late layers](../../media/week-11/cnn-feature-visualization.svg "hero")
+
+<sub><em>Figure 9. Adapted from Chris Olah, Alexander Mordvintsev and Ludwig Schubert, [Feature Visualization](https://distill.pub/2017/feature-visualization/), *Distill*, 2017, under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Ten of the thirty images in their opening figure, rearranged.</em></sub>
+
+<!-- ct319:endfocus -->
+
+It is a remarkable view of what the network has learned. But it does not say why one particular image got its label, and it says nothing about whether a decision was fair. Looking inside a model is not the same as understanding a decision.
+<!-- ct319:key Looking inside a model is not the same as understanding a decision. -->
+
+For a single decision, tools such as **LIME** and **SHAP** estimate how much each feature contributed to that prediction. You do not need their mathematics this week, only an idea of what their output looks like.
 
 <!-- ct319:focus -->
 
 ![A schematic bar display showing debt and missed payments pushing towards reject and income towards approve](../../media/week-11/contribution-display.svg "hero")
 
-<sub><em>Figure 5. **Schematic** — this is the shape of such an output, not a measured LIME or SHAP result. Diagram created for these pages. No external image licence is used.</em></sub>
+<sub><em>Figure 10. **Schematic** — this is the shape of such an output, not a measured LIME or SHAP result. Diagram created for these pages. No external image licence is used.</em></sub>
+
+<!-- ct319:endfocus -->
+
+Figure 11 is real output. It comes from SHAP, applied to one applicant in a public dataset of real credit applications.
+<!-- ct319:key Figure 11 is real output. It comes from SHAP, applied to one applicant in a public dataset of real credit applications. -->
+
+<!-- ct319:focus -->
+
+![A SHAP waterfall chart for one credit applicant: loan duration, an overdrawn checking account and being a divorced man push the risk score up](../../media/week-11/shap-waterfall-credit.png "hero")
+
+<sub><em>Figure 11. **Real output.** A model trained on the [South German Credit data](https://doi.org/10.24432/C5QG88), 1,000 real applicants, explained with [SHAP](https://github.com/shap/shap). The score is the model's estimate that this applicant is a bad risk: 0.30 on average, 0.79 here. We chose this applicant because personal status and sex is among the factors. Chart made for these pages from CC BY 4.0 data.</em></sub>
 
 <!-- ct319:endfocus -->
 
@@ -300,7 +371,7 @@ A system can explain a single prediction and still be badly managed and poorly c
 <!-- ct319:beat -->
 ## Explanation is not justification
 
-Look at the fourth row of Figure 5. Suppose an explanation shows that postcode strongly influenced a decision. That tells us something true about the model. It does not tell us that postcode *should* have influenced the decision.
+Look at the fourth row of Figure 10. Suppose an explanation shows that postcode strongly influenced a decision. That tells us something true about the model. It does not tell us that postcode *should* have influenced the decision.
 
 <!-- ct319:focus -->
 
@@ -311,7 +382,7 @@ Look at the fourth row of Figure 5. Suppose an explanation shows that postcode s
 
 <!-- ct319:endfocus -->
 
-An explanation can reveal a problem instead of excusing it. That may be the most useful thing an explanation does.
+An explanation can reveal a problem instead of excusing it. That may be the most useful thing an explanation does. Figure 11 is an example. One of the bars that raised the applicant's risk score is their sex and marital status.
 
 <!-- ct319:beat -->
 ## Transparency as an obligation
@@ -323,7 +394,7 @@ The [EU AI Act](https://digital-strategy.ec.europa.eu/en/policies/regulatory-fra
 
 ![Four bands: unacceptable risk, high risk, transparency risk, and minimal or no risk](../../media/week-11/ai-act-risk.svg "hero")
 
-<sub><em>Figure 6. The same technique can sit in different bands depending on its use. Diagram created for these pages. No external image licence is used.</em></sub>
+<sub><em>Figure 12. The same technique can sit in different bands depending on its use. Diagram created for these pages. No external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
@@ -412,6 +483,16 @@ All three are called "human oversight". What separates real oversight from the a
 
 A person who clicks **Approve** on everything is not really overseeing anything. Ask what they can actually check, override or stop.
 
+Oversight can also arrive too late. In England in 2020, a model's exam grades were overridden only after students had received them (Figure 13).
+
+<!-- ct319:focus -->
+
+![A clipping of the Guardian article of 13 August 2020, England A-level downgrades hit pupils from disadvantaged areas hardest](../../media/week-11/news-a-level-grades.svg "hero")
+
+<sub><em>Figure 13. [The Guardian, 13 August 2020](https://www.theguardian.com/education/2020/aug/13/england-a-level-downgrades-hit-pupils-from-disadvantaged-areas-hardest), by Richard Adams and Niamh McIntyre. The government reversed the grades on 17 August 2020. Clipped from the [archived page](https://web.archive.org/web/20200813234058/https://www.theguardian.com/education/2020/aug/13/england-a-level-downgrades-hit-pupils-from-disadvantaged-areas-hardest) and laid over the same page, blurred; the three points are our own summary.</em></sub>
+
+<!-- ct319:endfocus -->
+
 <!-- ct319:beat -->
 ## Accountability
 
@@ -422,12 +503,22 @@ Now suppose the system causes harm.
 
 ![The vendor, developer, data team, deploying organisation and staff member, and the claim that the AI did it](../../media/week-11/accountability-chain.svg "hero")
 
-<sub><em>Figure 7. Every link in that chain is a person or an organisation. Diagram created for these pages. No external image licence is used.</em></sub>
+<sub><em>Figure 14. Every link in that chain is a person or an organisation. Diagram created for these pages. No external image licence is used.</em></sub>
 
 <!-- ct319:endfocus -->
 
 Responsibility runs through the whole chain, and it does not end when the system goes live. Someone has to monitor the running system, investigate complaints, and have the authority to change it or switch it off.
 <!-- ct319:key Responsibility runs through the whole chain, and it does not end when the system goes live. -->
+
+When that fails, the consequences can reach the top of a government (Figure 15).
+
+<!-- ct319:focus -->
+
+![A clipping of the Politico Europe article of 29 March 2022, Dutch scandal serves as a warning for Europe over risks of using algorithms](../../media/week-11/news-dutch-benefits.svg "hero")
+
+<sub><em>Figure 15. [Politico Europe, 29 March 2022](https://www.politico.eu/article/dutch-scandal-serves-as-a-warning-for-europe-over-risks-of-using-algorithms/), by Melissa Heikkilä and Vincent Manancourt. Clipped from the [archived page](https://web.archive.org/web/20220412155940/https://www.politico.eu/article/dutch-scandal-serves-as-a-warning-for-europe-over-risks-of-using-algorithms/) and laid over the same page, blurred; the three points are our own summary.</em></sub>
+
+<!-- ct319:endfocus -->
 
 ### Would your judgement change?
 
@@ -454,6 +545,7 @@ There is no single correct answer here. What matters is which evidence and which
 <!-- ct319:endbeats -->
 
 ## What to carry out of this week
+<!-- ct319:nodeck -->
 
 Five ideas from this week matter most.
 <!-- ct319:key Five ideas from this week matter most. -->
@@ -527,21 +619,50 @@ This week follows selected material from the formal CT319 *Lecture 10: AI Ethics
 - European Commission — [AI Act — regulatory framework and risk-based approach](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai)
 - European Commission — [Guidelines on transparency obligations for providers and deployers of AI systems](https://digital-strategy.ec.europa.eu/en/library/guidelines-transparency-obligations-providers-and-deployers-ai-systems)
 - European Commission — [Transparency obligations under Article 50 of the AI Act](https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act)
+- EUR-Lex — [Regulation (EU) 2016/679, the General Data Protection Regulation](https://eur-lex.europa.eu/eli/reg/2016/679/oj), Official Journal L 119, 4 May 2016
 
 The Commission sources were checked on **10 September 2026**, and the regulatory overview is deliberately limited to the teaching context and the staged application of Article 50. Dates in this area move; check the linked pages before relying on them.
 
+### News reports and real cases
+
+- Jeffrey Dastin, [Amazon scraps secret AI recruiting tool that showed bias against women](https://www.reuters.com/article/us-amazon-com-jobs-automation-insight/amazon-scraps-secret-ai-recruiting-tool-that-showed-bias-against-women-idUSKCN1MK08G), *Reuters*, 10 October 2018
+- BBC News, [Apple's 'sexist' credit card investigated by US regulator](https://www.bbc.com/news/business-50365609), 10 November 2019
+- New York State Department of Financial Services, [DFS Issues Findings on the Apple Card and Its Underwriter Goldman Sachs Bank](https://www.dfs.ny.gov/reports_and_publications/press_releases/pr202103231), 23 March 2021
+- Richard Adams and Niamh McIntyre, [England A-level downgrades hit pupils from disadvantaged areas hardest](https://www.theguardian.com/education/2020/aug/13/england-a-level-downgrades-hit-pupils-from-disadvantaged-areas-hardest), *The Guardian*, 13 August 2020
+- Melissa Heikkilä and Vincent Manancourt, [Dutch scandal serves as a warning for Europe over risks of using algorithms](https://www.politico.eu/article/dutch-scandal-serves-as-a-warning-for-europe-over-risks-of-using-algorithms/), *Politico Europe*, 29 March 2022
+
+These reports were checked on **16 November 2026**.
+
+### Research and data
+
+- Chris Olah, Alexander Mordvintsev and Ludwig Schubert, [Feature Visualization](https://distill.pub/2017/feature-visualization/), *Distill*, 2017
+- Ulrike Grömping, [South German Credit Data](https://doi.org/10.24432/C5QG88), UCI Machine Learning Repository, 2019. A corrected version of the older Statlog German Credit data, whose code descriptions were wrong for several attributes.
+- [SHAP](https://github.com/shap/shap), the open-source library used to produce Figure 11
+
 ### Quotation and licensing
 
-The Commission material is **linked, not reproduced**. Where the Ethics Guidelines are drawn on, this page cites short factual labels — the lawful/ethical/robust framing and the names of the seven requirements — with attribution. The surrounding text is not reproduced, and the AI Act and GDPR material is summarised in this page's own words for teaching rather than quoted.
+Where the Ethics Guidelines are drawn on in the text, this page cites short factual labels — the lawful/ethical/robust framing and the names of the seven requirements — with attribution. The AI Act and GDPR material is summarised in this page's own words for teaching rather than quoted.
+
+Two figures reproduce pages from EU documents. Figure 2 shows the cover and Figure 1 of the Ethics Guidelines, and Figure 5 shows two pages of the GDPR from EUR-Lex. Both are © European Union and reused, with their source acknowledged, under the Commission's reuse policy, [Decision 2011/833/EU](https://eur-lex.europa.eu/eli/dec/2011/833/oj).
+
+Figures 4, 8, 13 and 15 discuss four news reports. Each shows a clipping of the article's masthead, headline, byline and opening lines, cut from the copy held by the [Internet Archive](https://web.archive.org/), over a blurred image of the same page. They are reproduced for criticism and review, with the source acknowledged in each caption. No article photographs are shown, and the three points beside each clipping summarise the reporting in this page's own words. Follow the links to read the articles in full.
 
 ### Fictional teaching material
 
 The University X case, the loan-approval example, and **every numerical value used in them**, are fictional teaching examples constructed for these pages.
 
-They are not findings, measurements or claims about any actual institution, lender or deployed system. The accuracy figures and the feature contributions in Figure 5 were chosen to make a teaching point, not measured from data — Figure 5 is labelled schematic for that reason, and is not the output of LIME, SHAP or any other method.
+They are not findings, measurements or claims about any actual institution, lender or deployed system. The accuracy figures and the feature contributions in Figure 10 were chosen to make a teaching point, not measured from data — Figure 10 is labelled schematic for that reason, and is not the output of LIME, SHAP or any other method.
+
+Figure 11 is the opposite: real output from SHAP for a model trained on real, historical credit data. The model was built for these pages to show what such an explanation looks like. It is not a lender's system.
 
 ### Figures
 
-Figures 1–7 were **created for these pages** and are original diagrams. They use no external image licence.
+Figures 1, 3, 6, 7, 10, 12 and 14 were **created for these pages** and are original diagrams. They use no external image licence.
 
-No external images, videos, papers or interactives are used.
+Figures 4, 8, 13 and 15 were **composed for these pages** from clippings of the news reports, as described above.
+
+Figures 2 and 5 reproduce EU document pages under the Commission's reuse policy, as described above.
+
+Figure 9 is adapted from Olah, Mordvintsev and Schubert's *Feature Visualization*, published in *Distill* under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Ten of the thirty images in the article's opening figure were rearranged into two rows.
+
+Figure 11 was **created for these pages** with the SHAP library, from the South German Credit data, which is published under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
